@@ -35,12 +35,11 @@
             color: white;
             border-radius: 8px;
             box-shadow: 0 8px 20px rgba(0, 86, 179, 0.2);
-            border-bottom: 5px solid #ff8c00; /* Vạch cam an toàn/kỹ thuật */
+            border-bottom: 5px solid #ff8c00; 
             position: relative;
             overflow: hidden;
         }
         
-        /* Biểu tượng tuabin/bánh răng chìm ở góc */
         .header::after {
             content: "⚙️";
             font-size: 140px;
@@ -51,23 +50,8 @@
             transform: rotate(20deg);
         }
 
-        .header h1 { 
-            margin: 0; 
-            font-size: 28px; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .header p { 
-            margin: 10px 0 0 0; 
-            font-size: 16px; 
-            font-weight: 500;
-            color: #e6f2ff;
-            position: relative;
-            z-index: 2;
-        }
+        .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
+        .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; }
         
         .list-container {
             display: flex;
@@ -75,7 +59,7 @@
             gap: 15px;
         }
         
-        /* Các thẻ bài học */
+        /* Các thẻ bài học dùng thẻ <a> mặc định */
         .file-link {
             display: flex;
             align-items: center;
@@ -89,13 +73,11 @@
             font-size: 16px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.04);
             transition: all 0.25s ease;
-            cursor: pointer;
-            position: relative;
         }
         
         .file-link:hover {
             background-color: #fdfdfd;
-            border-left-color: #ff8c00; /* Chuyển viền cam khi trỏ chuột */
+            border-left-color: #ff8c00; 
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
@@ -106,60 +88,10 @@
             font-size: 18px;
             opacity: 0.8;
         }
-
-        /* Khung hiển thị nội dung bài học */
-        #content-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: white;
-            z-index: 1000;
-        }
-
-        #doc-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            padding-top: 65px;
-            box-sizing: border-box;
-            background-color: white;
-        }
-
-        /* Nút quay lại */
-        #back-btn {
-            position: fixed;
-            top: 15px;
-            left: 20px;
-            background-color: #e53935;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            font-family: 'Segoe UI', sans-serif;
-            font-weight: bold;
-            font-size: 14px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            cursor: pointer;
-            z-index: 1001;
-            transition: background 0.3s, transform 0.1s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #back-btn:hover {
-            background-color: #c62828;
-            transform: scale(1.02);
-        }
     </style>
 </head>
 <body>
 
-<!-- Giao diện Menu danh sách -->
 <div id="menu-container">
     <div class="header">
         <h1>Hệ Thống Đào Tạo Lý Thuyết</h1>
@@ -167,46 +99,25 @@
     </div>
 
     <div class="list-container">
-        <!-- Tên file gọi (trong ngoặc) đã được cập nhật KHỚP 100% với tên file viết liền của anh -->
-        <a class="file-link" onclick="openDoc('Ảnhhưởngchânkhôngbìnhngưng.html')">Ảnh hưởng chân không bình ngưng</a>
-        <a class="file-link" onclick="openDoc('Ảnhhưởngcủaáplựcnhiệtđộhơimớivàchânkhôngbìnhngưngcủatuabin.html')">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
-        <a class="file-link" onclick="openDoc('Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html')">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
-        <a class="file-link" onclick="openDoc('bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html')">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
-        <a class="file-link" onclick="openDoc('CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html')">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
-        <a class="file-link" onclick="openDoc('CácloạitổnthấttronghệthốngTuabinBìnhngưng.html')">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
-        <a class="file-link" onclick="openDoc('caoápCấutạotácdụngvàsựcốthườnggặp.html')">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
-        <a class="file-link" onclick="openDoc('Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html')">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
-        <a class="file-link" onclick="openDoc('Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html')">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
-        <a class="file-link" onclick="openDoc('hiệntượngbiệnphápxửlýchênhápdầuchènHyddrodaodộng.html')">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
-        <a class="file-link" onclick="openDoc('khởi động lạnh.html')">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
-        <a class="file-link" onclick="openDoc('Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html')">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
-        <a class="file-link" onclick="openDoc('RunbackhệthốngTuabinvàBOPliênđộng.html')">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
-        <a class="file-link" onclick="openDoc('Sựcốáplựcdầubôitrơntuabingiảmthấp.html')">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
-        <a class="file-link" onclick="openDoc('ThủykíchTuabintáchạinguyênnhânvàxửlý.html')">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
-        <a class="file-link" onclick="openDoc('Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html')">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
+        <!-- Đã đổi sang href="", sẽ mở trang mới khi click -->
+        <a class="file-link" href="Ảnhhưởngchânkhôngbìnhngưng.html">Ảnh hưởng chân không bình ngưng</a>
+        <a class="file-link" href="Ảnhhưởngcủaáplựcnhiệtđộhơimớivàchânkhôngbìnhngưngcủatuabin.html">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
+        <a class="file-link" href="Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
+        <a class="file-link" href="bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
+        <a class="file-link" href="CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
+        <a class="file-link" href="CácloạitổnthấttronghệthốngTuabinBìnhngưng.html">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
+        <a class="file-link" href="caoápCấutạotácdụngvàsựcốthườnggặp.html">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
+        <a class="file-link" href="Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
+        <a class="file-link" href="Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
+        <a class="file-link" href="hiệntượngbiệnphápxửlýchênhápdầuchènHyddrodaodộng.html">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
+        <a class="file-link" href="khởi động lạnh.html">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
+        <a class="file-link" href="Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
+        <a class="file-link" href="RunbackhệthốngTuabinvàBOPliênđộng.html">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
+        <a class="file-link" href="Sựcốáplựcdầubôitrơntuabingiảmthấp.html">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
+        <a class="file-link" href="ThủykíchTuabintáchạinguyênnhânvàxửlý.html">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
+        <a class="file-link" href="Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
     </div>
 </div>
-
-<!-- Giao diện hiển thị nội dung bài học -->
-<div id="content-container">
-    <button id="back-btn" onclick="closeDoc()">⬅ QUAY LẠI MENU</button>
-    <iframe id="doc-iframe" src=""></iframe>
-</div>
-
-<script>
-    function openDoc(filename) {
-        document.getElementById('doc-iframe').src = filename;
-        document.getElementById('menu-container').style.display = 'none';
-        document.getElementById('content-container').style.display = 'block';
-        window.scrollTo(0, 0);
-    }
-
-    function closeDoc() {
-        document.getElementById('doc-iframe').src = "";
-        document.getElementById('content-container').style.display = 'none';
-        document.getElementById('menu-container').style.display = 'block';
-    }
-</script>
 
 </body>
 </html>
