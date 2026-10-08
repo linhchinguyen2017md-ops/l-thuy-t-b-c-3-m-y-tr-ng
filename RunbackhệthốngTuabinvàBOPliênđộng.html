@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Các trường hợp Runback của hệ thống Tuabin và BOP – Tín hiệu liên động</title>
+<style>
+  :root{
+    --primary: #0b5394;
+    --primary-dark: #073b6b;
+    --primary-light: #e8f0fb;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --warning: #f39c12;
+    --warning-light: #fff8e1;
+    --success: #27ae60;
+    --success-light: #e8f8ef;
+    --purple: #7d3c98;
+    --purple-light: #f4ecf7;
+    --cyan: #0e7490;
+    --cyan-light: #e0f7fa;
+    --border: #d0d7de;
+    --bg: #f7f9fc;
+    --text: #1f2328;
+    --muted: #57606a;
+  }
+  *{box-sizing: border-box;}
+  body{
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .container{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+  header{
+    background: linear-gradient(135deg, #7d3c98 0%, #9b59b6 50%, #bb8fce 100%);
+    color: #fff;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 24px rgba(125,60,152,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before{
+    content: "⚡";
+    position: absolute;
+    font-size: 13rem;
+    opacity: 0.1;
+    top: -20px;
+    right: 20px;
+    line-height: 1;
+  }
+  header h1{
+    margin: 0 0 12px;
+    font-size: 1.65rem;
+    line-height: 1.35;
+    position: relative;
+  }
+  header .subtitle{
+    margin: 0;
+    opacity: 0.96;
+    font-size: 1rem;
+    font-style: italic;
+    position: relative;
+  }
+  header .scope{
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    position: relative;
+  }
+  h2{
+    color: var(--primary);
+    border-left: 5px solid var(--primary);
+    padding-left: 14px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+  h3{
+    color: var(--primary-dark);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.14rem;
+  }
+  p{margin: 10px 0;}
+  ul, ol{margin: 8px 0 12px; padding-left: 24px;}
+  li{margin: 6px 0;}
+  code{
+    background: #eef2f7;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    color: #b83280;
+    white-space: nowrap;
+  }
+  .section-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .callout{
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+  }
+  .callout.warning{
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+  }
+  .callout.danger{
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .callout.success{
+    background: var(--success-light);
+    border-left-color: var(--success);
+  }
+  .callout.purple{
+    background: var(--purple-light);
+    border-left-color: var(--purple);
+  }
+  .callout.cyan{
+    background: var(--cyan-light);
+    border-left-color: var(--cyan);
+  }
+  .callout strong{color: var(--primary-dark);}
+  .callout.danger strong{color: var(--accent);}
+  .callout.warning strong{color: #b9770e;}
+  .callout.success strong{color: #1e8449;}
+  .callout.purple strong{color: var(--purple);}
+  .callout.cyan strong{color: var(--cyan);}
+
+  /* CONCEPT BOX */
+  .concept-box{
+    background: linear-gradient(135deg, #f4ecf7 0%, #e8d5f0 100%);
+    border: 1px solid #d5b8e0;
+    border-left: 6px solid var(--purple);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    box-shadow: 0 3px 10px rgba(125,60,152,0.1);
+  }
+  .concept-box .title{
+    color: var(--purple);
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .concept-box .title::before{
+    content: "📖";
+    font-size: 1.3rem;
+  }
+
+  /* TABLE */
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    font-size: 0.9rem;
+  }
+  thead{
+    background: var(--primary);
+    color: #fff;
+  }
+  th, td{
+    padding: 11px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even){background: #f4f7fb;}
+  tbody tr:hover{background: #e8f0fb;}
+  th{font-weight: 600; font-size: 0.85rem;}
+  .rb-table th:nth-child(1){width: 6%;text-align:center;}
+  .rb-table th:nth-child(2){width: 30%;}
+  .rb-table th:nth-child(3){width: 20%;}
+  .rb-table th:nth-child(4){width: 44%;}
+
+  .rb-num{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #7d3c98 0%, #9b59b6 100%);
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .rb-load{
+    display: inline-block;
+    background: linear-gradient(135deg, #b9770e 0%, #f39c12 100%);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-family: "Consolas", monospace;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .rb-load.var{
+    background: linear-gradient(135deg, #0b5394 0%, #1a73c9 100%);
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* CONDITION CHECKLIST */
+  .cond-list{
+    counter-reset: cond;
+    list-style: none;
+    padding-left: 0;
+  }
+  .cond-list li{
+    counter-increment: cond;
+    position: relative;
+    padding: 14px 20px 14px 64px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    border-left: 5px solid var(--purple);
+  }
+  .cond-list li::before{
+    content: counter(cond);
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, #7d3c98 0%, #9b59b6 100%);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  /* INTERLOCK CARDS */
+  .interlock-group{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  }
+  .interlock-header{
+    padding: 14px 22px;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .interlock-header .letter{
+    background: rgba(255,255,255,0.25);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+  .interlock-header.ig-a{background: linear-gradient(135deg, #0b5394 0%, #1a73c9 100%);}
+  .interlock-header.ig-b{background: linear-gradient(135deg, #7b0d0d 0%, #c0392b 100%);}
+  .interlock-header.ig-c{background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);}
+  .interlock-header.ig-d{background: linear-gradient(135deg, #b9770e 0%, #f39c12 100%);}
+  .interlock-header.ig-e{background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%);}
+  .interlock-body{
+    padding: 4px 20px 12px;
+  }
+  .interlock-body ul{margin: 6px 0;}
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .badge.blue{background: var(--primary);}
+  .badge.red{background: var(--accent);}
+  .badge.green{background: var(--success);}
+  .badge.orange{background: var(--warning);}
+  .badge.purple{background: var(--purple);}
+
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc h3{
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc ol{
+    margin: 0;
+    padding-left: 22px;
+    columns: 2;
+    column-gap: 30px;
+  }
+  .toc li{margin: 6px 0;break-inside: avoid;}
+  .toc a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .toc a:hover{
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  @media(max-width: 720px){
+    header h1{font-size: 1.18rem;}
+    header::before{font-size: 7rem; top: 10px;}
+    h2{font-size: 1.15rem;}
+    .toc ol{columns: 1;}
+    table{font-size: 0.78rem;}
+    th, td{padding: 8px 8px;}
+    .rb-table th:nth-child(1){width: 10%;}
+    .cond-list li{padding: 12px 14px 12px 58px;}
+    .cond-list li::before{width: 30px; height: 30px; font-size: 0.85rem; left: 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Các trường hợp Runback của hệ thống Tuabin và BOP</h1>
+    <p class="subtitle">Điều kiện tác động – Mức tải sau Runback – Tín hiệu liên động tự động</p>
+    <span class="scope">Vận hành nhà máy nhiệt điện – TCS Mark VIe &amp; DCS Ovation</span>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Khái niệm và các trường hợp Runback</a></li>
+      <li><a href="#s2">Điều kiện tiên quyết để Runback tác động</a></li>
+      <li><a href="#s3">Các tín hiệu liên động sau Runback</a></li>
+    </ol>
+  </div>
+
+  <!-- I -->
+  <section id="s1">
+    <h2>1. Khái niệm và các trường hợp Runback của Tuabin &amp; BOP</h2>
+
+    <div class="concept-box">
+      <div class="title">Khái niệm Runback</div>
+      <p>Trong vận hành nhiệt điện, <strong>Runback</strong> là chức năng <strong>tự động giảm nhanh phụ tải tổ máy</strong> (Tuabin – Lò hơi) về một ngưỡng tải an toàn tương ứng với khả năng đáp ứng của các thiết bị phụ trợ (BOP) còn lại khi xảy ra sự cố thiết bị chính, nhằm <strong>bảo vệ tổ máy không bị nhảy hoàn toàn</strong> (tránh Trip Tuabin hoặc MFT Lò).</p>
+    </div>
+
+    <h3>Các trường hợp sự cố kích hoạt Runback</h3>
+
+    <table class="rb-table">
+      <thead>
+        <tr>
+          <th>TT</th>
+          <th>Trường hợp sự cố kích hoạt</th>
+          <th>Mức tải sau Runback</th>
+          <th>Mục đích kỹ thuật trong vận hành</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rb-num">1</span></td>
+          <td><strong>Chỉ có 01 Bơm nước tuần hoàn (CWP) làm việc</strong></td>
+          <td><span class="rb-load">60% tải (~ 324 MW)</span></td>
+          <td>Lưu lượng nước làm mát giảm 50%. Giảm tải về 60% nhằm giảm lượng nhiệt thải xuống bình ngưng, tránh sụt giảm độ chân không bình ngưng (ngăn ngừa chạm ngưỡng trip chân không thấp ≥ 0,254 bar) và khống chế nhiệt độ hơi thoát hạ áp không tăng cao.</td>
+        </tr>
+        <tr>
+          <td><span class="rb-num">2</span></td>
+          <td><strong>Chỉ có 01 Bơm nước ngưng (CEP) làm việc</strong></td>
+          <td><span class="rb-load">60% tải (~ 324 MW)</span></td>
+          <td>01 bơm ngưng không đủ lưu lượng đẩy nước về bình khử khí ở 100% tải. Giảm tải về 60% để cân bằng chu trình nước ngưng, tránh tụt mức nước bình khử khí và chống dâng ngập mức nước bình ngưng.</td>
+        </tr>
+        <tr>
+          <td><span class="rb-num">3</span></td>
+          <td><strong>Chỉ có 01 Bơm cấp nước lò hơi (BFP) làm việc</strong></td>
+          <td><span class="rb-load">60% tải (~ 324 MW)</span></td>
+          <td>01 bơm cấp chỉ đáp ứng tối đa khoảng 60% lưu lượng nước cấp định mức cho 2 lò. Runback về 60% để tránh quá dòng bơm cấp (runout), tránh tụt mức nước bao hơi tới mức bảo vệ cạn nước (LL &lt; −279 mm) gây MFT lò hơi.</td>
+        </tr>
+        <tr>
+          <td><span class="rb-num">4</span></td>
+          <td><strong>Sự cố nước làm mát Stator máy phát (SWC Runback)</strong></td>
+          <td><span class="rb-load var">Giảm dòng điện &amp; tải theo logic bảo vệ</span></td>
+          <td>Khi lưu lượng nước làm mát Stator thấp (&lt; 56 m³/h), nhiệt độ Stator tăng cao (&gt; 78,2 °C ÷ 83,2 °C) hoặc áp lực nước làm mát suy giảm. Cắt giảm tải để giảm dòng điện stator, bảo vệ cách điện cuộn dây stator máy phát khỏi quá nhiệt phá hủy.</td>
+        </tr>
+        <tr>
+          <td><span class="rb-num">5</span></td>
+          <td><strong>Trip 01 Quạt khói (ID Fan) / Quạt gió (SA/PA Fan)</strong></td>
+          <td><span class="rb-load var">Giảm theo năng lực quạt còn lại</span></td>
+          <td>Mất 1 quạt khói hoặc quạt gió lò hơi CFB. Hệ thống tự động giảm tải buồng đốt và lưu lượng hơi tương ứng để giữ cân bằng áp lực âm buồng đốt và tỷ lệ than/gió, tránh tăng áp buồng đốt gây MFT.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- II -->
+  <section id="s2">
+    <h2>2. Điều kiện tiên quyết để chức năng Runback tác động</h2>
+
+    <div class="callout purple">
+      <strong>Nguyên tắc:</strong> Để chức năng Runback tự động kích hoạt và thực thi giảm tải nhịp nhàng trên hệ thống điều khiển tổ máy, các điều kiện sau <strong>bắt buộc phải được thỏa mãn</strong>.
+    </div>
+
+    <ol class="cond-list">
+      <li><strong>Tuabin Master</strong> đang ở chế độ <span class="badge purple">Auto</span>.</li>
+      <li><strong>Fuel Master (Coal Master)</strong> đang ở chế độ <span class="badge purple">Auto</span>.</li>
+      <li><strong>Biến tần (VFD)</strong> của quạt khói (ID Fan) A hoặc B đang ở chế độ <span class="badge purple">Auto</span>.</li>
+      <li><strong>Boiler Master</strong> (của lò hơi có thiết bị liên quan bị trip) đạt mức tải quy định: <span class="badge orange">≥ 48%</span>.</li>
+    </ol>
+
+    <div class="callout warning">
+      <strong>Ghi chú quan trọng:</strong> Nếu một trong các vòng điều khiển Master nêu trên đang ở chế độ <strong>Manual (bằng tay)</strong>, chức năng tự động Runback sẽ <strong>không thể thực thi tự động</strong>. Khi đó, người vận hành (Máy trưởng/Trưởng kíp) phải <strong>chủ động can thiệp giảm tải khẩn cấp bằng tay</strong> để tránh sự cố nhảy toàn bộ tổ máy.
+    </div>
+  </section>
+
+  <!-- III -->
+  <section id="s3">
+    <h2>3. Các tín hiệu liên động sau khi Runback</h2>
+
+    <div class="callout">
+      <strong>Nguyên tắc phối hợp:</strong> Sau khi tín hiệu Runback kích hoạt, hệ thống điều khiển tự động phối hợp (<strong>TCS Mark VIe</strong> và <strong>DCS Ovation</strong>) cùng các thiết bị phụ trợ (BOP) đồng thời thực hiện chuỗi liên động sau.
+    </div>
+
+    <!-- a -->
+    <div class="interlock-group">
+      <div class="interlock-header ig-a">
+        <span class="letter">a</span>
+        <span>Liên động Tuabin và Hệ thống van hơi</span>
+      </div>
+      <div class="interlock-body">
+        <ul>
+          <li>Hệ thống điều khiển tuabin tự động chuyển sang <strong>tốc độ giảm tải khẩn cấp</strong> (Ramp Rate cao hơn bình thường) có tích hợp chức năng khống chế ứng suất nhiệt của rôto (<em>Thermal Stress Control</em>).</li>
+          <li>Tự động điều chỉnh <strong>khép bớt góc mở</strong> của các van điều chỉnh hơi chính (<strong>CV</strong>) và van điều chỉnh hơi tái nhiệt (<strong>IV</strong>) tương ứng với mốc phụ tải đích 60% (~ 324 MW).</li>
+          <li>Các van thông hơi (<strong>BVV</strong>), van dòng ngược (<strong>RFV</strong>) luôn ở trạng thái giám sát và sẵn sàng liên động theo chế độ dòng của chu trình.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- b -->
+    <div class="interlock-group">
+      <div class="interlock-header ig-b">
+        <span class="letter">b</span>
+        <span>Liên động Hệ thống Lò hơi (Nhiên liệu &amp; Gió)</span>
+      </div>
+      <div class="interlock-body">
+        <ul>
+          <li><strong>Fuel Master:</strong> Tự động giảm lưu lượng than cấp vào buồng đốt (giảm tốc độ quay hoặc dừng bớt máy cấp than đang làm việc) nhằm kéo giảm nhiệt lượng cấp tức thời.</li>
+          <li><strong>Hệ thống Gió &amp; Khói:</strong> Tự động điều chỉnh giảm lưu lượng gió sơ cấp (<strong>PA</strong>) và gió thứ cấp (<strong>SA</strong>) theo đường đặc tính tải mới để duy trì ổn định tỷ lệ than/gió và khống chế nhiệt độ tầng sôi lò CFB; điều chỉnh biến tần quạt khói (<strong>ID Fan</strong>) duy trì ổn định áp suất âm buồng đốt.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- c -->
+    <div class="interlock-group">
+      <div class="interlock-header ig-c">
+        <span class="letter">c</span>
+        <span>Liên động Hệ thống Nước cấp và Nước ngưng</span>
+      </div>
+      <div class="interlock-body">
+        <ul>
+          <li><strong>Điều khiển nước cấp bao hơi:</strong> Tự động điều chỉnh khép bớt van nước cấp bao hơi theo sản lượng hơi giảm, ổn định mức nước bao hơi, ngăn ngừa hiện tượng sôi bồng hoặc cạn nước bao hơi gây tác động bảo vệ MFT lò.</li>
+          <li><strong>Bảo vệ chống quá tải bơm cấp (Runout protection):</strong> Nếu Runback do trip 1 bơm cấp, hệ thống tự động khống chế độ mở van điều khiển dòng không cho bơm cấp còn lại chạy vượt quá dải lưu lượng an toàn.</li>
+          <li><strong>Liên động phun làm mát cổ thoát hạ áp:</strong> Tự động mở van nước ngưng phun làm mát cổ thoát hơi hạ áp (<strong>LP Hood Spray</strong>) khi nhiệt độ hơi thoát tăng cao (≥ 79 °C hoặc 57,2 °C tùy chế độ) để bảo vệ các tầng cánh cuối.</li>
+          <li><strong>Liên động van tái tuần hoàn nước ngưng:</strong> Mở lớn thêm van tái tuần hoàn nước ngưng về bình ngưng nếu lưu lượng qua bình ngưng hơi chèn bị giảm thấp để đảm bảo làm mát bình ngưng hơi chèn và bảo vệ bơm ngưng.</li>
+          <li><strong>Liên động van xả nước ngưng về bể dự trữ:</strong> Tự động mở van xả về bể chứa dự trữ nước ngưng khi mức nước bình ngưng dâng cao (≥ 950 mm hoặc &gt; 1200 mm) để chống ngập dàn ống trao đổi nhiệt.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- d -->
+    <div class="interlock-group">
+      <div class="interlock-header ig-d">
+        <span class="letter">d</span>
+        <span>Liên động Hệ thống Hơi trích, Bình gia nhiệt &amp; Xả đọng</span>
+      </div>
+      <div class="interlock-body">
+        <ul>
+          <li>Áp lực các cửa trích hơi <strong>tự động suy giảm tự nhiên</strong> theo áp suất hơi trong các xi lanh tuabin.</li>
+          <li>Các van tự động điều chỉnh <strong>mức nước đọng bình gia nhiệt cao áp và hạ áp</strong> tự động tăng độ mở xả về bình khử khí hoặc bình ngưng để duy trì mức nước bình thường, ngăn ngừa trào ngược nước vào thân tuabin.</li>
+          <li>Các cụm van xả đọng đường ống hơi chính, hơi tái và thân tuabin (nhóm xả <strong>A, B, C</strong>) chuyển sang trạng thái sẵn sàng mở tự động theo logic nhiệt độ/áp suất nếu phát hiện hơi có nguy cơ ngưng tụ.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- e -->
+    <div class="interlock-group">
+      <div class="interlock-header ig-e">
+        <span class="letter">e</span>
+        <span>Kích hoạt Bộ đếm thời gian bảo vệ dự phòng</span>
+      </div>
+      <div class="interlock-body">
+        <ul>
+          <li>Trường hợp Runback do hệ thống <strong>nước làm mát Stator (SWC)</strong>, các bộ định thời gian bảo vệ sẽ đếm lùi:
+            <ul>
+              <li><span class="badge blue">T1 = 120 s</span></li>
+              <li><span class="badge blue">T2 = 210 s</span></li>
+              <li><span class="badge blue">T3 = 600 s</span> (hoặc 60 phút)</li>
+            </ul>
+          </li>
+          <li>Nếu sau thời gian quy định mà các thông số làm mát Stator hoặc dòng điện máy phát <strong>không trở về dải an toàn</strong>, hệ thống sẽ tự động phát lệnh <strong>Trip Tuabin</strong> để cô lập tổ máy.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <strong>Kết luận:</strong> Chức năng Runback là <strong>lá chắn bảo vệ quan trọng</strong> giúp tổ máy tránh nhảy hoàn toàn khi mất thiết bị phụ trợ. Tuy nhiên, Runback chỉ hoạt động khi các vòng điều khiển Master đều ở chế độ Auto. Khi có bất kỳ vòng nào ở Manual, vận hành viên phải <strong>chủ động giảm tải bằng tay</strong> để bảo vệ tổ máy.
+    </div>
+  </section>
+
+  <footer>
+    Tài liệu vận hành – Chức năng Runback hệ thống Tuabin &amp; BOP<br>
+    Điều kiện tác động – Mức tải – Chuỗi liên động tự động
+  </footer>
+
+</div>
+</body>
+</html>

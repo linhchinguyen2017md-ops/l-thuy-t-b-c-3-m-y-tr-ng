@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nguyên nhân và biện pháp xử lý sự cố dao động chênh áp dầu chèn – Hydro máy phát điện</title>
+<style>
+  :root{
+    --primary: #0b5394;
+    --primary-dark: #073b6b;
+    --primary-light: #e8f0fb;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --warning: #f39c12;
+    --warning-light: #fff8e1;
+    --success: #27ae60;
+    --success-light: #e8f8ef;
+    --border: #d0d7de;
+    --bg: #f7f9fc;
+    --text: #1f2328;
+    --muted: #57606a;
+  }
+  *{box-sizing: border-box;}
+  body{
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .container{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+  header{
+    background: linear-gradient(135deg, #0b5394 0%, #1a73c9 100%);
+    color: #fff;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 20px rgba(11,83,148,0.25);
+  }
+  header h1{
+    margin: 0 0 12px;
+    font-size: 1.75rem;
+    line-height: 1.35;
+  }
+  header .subtitle{
+    margin: 0;
+    opacity: 0.95;
+    font-size: 0.98rem;
+    font-style: italic;
+  }
+  header .scope{
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255,255,255,0.18);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  h2{
+    color: var(--primary);
+    border-left: 5px solid var(--primary);
+    padding-left: 14px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+  h3{
+    color: var(--primary-dark);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.12rem;
+  }
+  h4{
+    color: #1a4d80;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 1.02rem;
+  }
+  p{margin: 10px 0;}
+  ul{margin: 8px 0 12px; padding-left: 22px;}
+  li{margin: 6px 0;}
+  code{
+    background: #eef2f7;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    color: #b83280;
+    white-space: nowrap;
+  }
+  .formula{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 16px 0;
+    text-align: center;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 1.15rem;
+    color: #0b3d6b;
+    overflow-x: auto;
+    font-weight: 600;
+  }
+  .callout{
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+  }
+  .callout.warning{
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+  }
+  .callout.danger{
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .callout.success{
+    background: var(--success-light);
+    border-left-color: var(--success);
+  }
+  .callout strong{color: var(--primary-dark);}
+  .callout.danger strong{color: var(--accent);}
+  .callout.warning strong{color: #b9770e;}
+  .callout.success strong{color: #1e8449;}
+
+  .section-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .params-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .param-box{
+    background: linear-gradient(135deg, #f4f8fd 0%, #e8f0fb 100%);
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+  }
+  .param-box .label{
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .param-box .value{
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-family: "Consolas", monospace;
+  }
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    font-size: 0.93rem;
+  }
+  thead{
+    background: var(--primary);
+    color: #fff;
+  }
+  th, td{
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even){background: #f4f7fb;}
+  tbody tr:hover{background: #e8f0fb;}
+  th{font-weight: 600; font-size: 0.9rem;}
+  td code{font-size: 0.85em;}
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 6px;
+    color: #fff;
+  }
+  .badge.blue{background: var(--primary);}
+  .badge.red{background: var(--accent);}
+  .badge.green{background: var(--success);}
+  .badge.orange{background: var(--warning);}
+  .badge.gray{background: #6b7280;}
+
+  .step{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-left: 5px solid var(--primary);
+  }
+  .step-title{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+  .step-num{
+    background: var(--primary);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .cause-table th:nth-child(1){width: 18%;}
+  .cause-table th:nth-child(2){width: 55%;}
+  .cause-table th:nth-child(3){width: 27%;}
+
+  .alarm-table th{font-size: 0.85rem;}
+  .alarm-table td{font-size: 0.88rem;}
+
+  .emergency-box{
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    color: #fff;
+    padding: 22px 26px;
+    border-radius: 10px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192,57,43,0.3);
+  }
+  .emergency-box h3{
+    color: #fff;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .emergency-box h3::before{
+    content: "⚠";
+    font-size: 1.5rem;
+  }
+  .emergency-box p{margin: 10px 0;}
+  .emergency-box strong{color: #ffe082;}
+
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc h3{
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc ol{
+    margin: 0;
+    padding-left: 22px;
+    columns: 2;
+    column-gap: 30px;
+  }
+  .toc li{
+    margin: 5px 0;
+    break-inside: avoid;
+  }
+  .toc a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .toc a:hover{
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  @media(max-width: 720px){
+    header h1{font-size: 1.3rem;}
+    h2{font-size: 1.15rem;}
+    table{font-size: 0.82rem;}
+    th, td{padding: 9px 10px;}
+    .toc ol{columns: 1;}
+    .step{padding: 14px 16px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Nguyên nhân và biện pháp xử lý sự cố dao động chênh áp dầu chèn – Hydro máy phát điện</h1>
+    <p class="subtitle">Hiện tượng – Nguyên nhân – Biện pháp xử lý</p>
+    <span class="scope">Áp dụng cho Tổ máy Nhiệt điện công suất lớn 500MW – 600MW<br>làm mát Stator/Rotor bằng Nước/Hydro</span>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Tổng quan và nguyên lý làm việc cốt lõi</a></li>
+      <li><a href="#s2">Hiện tượng khi xảy ra sự cố dao động chênh áp</a></li>
+      <li><a href="#s3">Nguyên nhân gây nên sự cố</a></li>
+      <li><a href="#s4">Biện pháp xử lý sự cố trong ca vận hành</a></li>
+      <li><a href="#s5">Bảng tổng hợp giá trị cảnh báo và hành động của trực ca</a></li>
+    </ol>
+  </div>
+
+  <!-- I -->
+  <section id="s1">
+    <h2>I. Tổng quan và nguyên lý làm việc cốt lõi</h2>
+    <div class="section-card">
+      <p>Trong các tổ máy nhiệt điện công suất lớn, máy phát điện sử dụng khí <strong>Hydro (H₂)</strong> làm môi chất làm mát trực tiếp do tính chất truyền nhiệt vượt trội. Để ngăn chặn tuyệt đối việc khí Hydro áp lực cao rò rỉ qua khe hở giữa trục và vỏ máy phát ra môi trường gối trục (nguy cơ cháy nổ cực kỳ nghiêm trọng), hệ thống <strong>dầu chèn (Seal Oil System)</strong> được trang bị để cấp dầu áp lực cao vào các vành chèn trục (<em>Seal Rings</em>) ở hai đầu máy phát.</p>
+
+      <p><strong>Nguyên lý duy trì chênh áp:</strong> Dầu chèn đưa vào vành chèn luôn được van điều chỉnh chênh áp tự động (DPRV) điều tiết để duy trì áp suất dầu lớn hơn áp suất khí Hydro trong máy phát một giá trị không đổi:</p>
+
+      <div class="formula">
+        ΔP = P<sub>dầu chèn</sub> − P<sub>H₂</sub> = 0,55 ÷ 0,60 bar<br>
+        <span style="font-size:0.85rem;font-weight:400;color:var(--muted);">(định mức: 0,55 bar / 8 psig)</span>
+      </div>
+
+      <h3>Các thông số làm việc giới hạn cần kiểm soát</h3>
+      <div class="params-grid">
+        <div class="param-box">
+          <span class="label">Áp lực khí Hydro danh định</span>
+          <span class="value">5,03 ÷ 5,45 bar</span>
+          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">Thiết kế: 5,17 bar</div>
+        </div>
+        <div class="param-box">
+          <span class="label">Áp lực ống góp đầu đẩy MSOP</span>
+          <span class="value">≥ 8,5 bar</span>
+          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">Bình thường: 9,8 ÷ 11,0 bar</div>
+        </div>
+        <div class="param-box">
+          <span class="label">Chênh áp dầu chèn – Hydro (Low)</span>
+          <span class="value">≤ 0,41 bar</span>
+          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">Cảnh báo còi DCS/TCS</div>
+        </div>
+        <div class="param-box">
+          <span class="label">Chân không bể dầu chèn</span>
+          <span class="value">−760 mmHg</span>
+          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">~ 0 bara</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- II -->
+  <section id="s2">
+    <h2>II. Hiện tượng khi xảy ra sự cố dao động chênh áp</h2>
+    <div class="section-card">
+      <p>Khi hệ thống dầu chèn gặp bất thường, chênh áp ΔP không duy trì được ở giá trị ổn định mà dao động tăng giảm thất thường, thể hiện qua các dấu hiệu cụ thể:</p>
+
+      <h3>1. Chỉ thị trên DCS/TCS và hiện trường</h3>
+      <ul>
+        <li>Chỉ thị chênh áp tại điểm đo vành chèn (<code>13MKW10CP201A/B</code> hoặc <code>13MKW10CP501</code>) dao động liên tục, kim đồng hồ rung lắc mạnh.</li>
+        <li>Xuất hiện cảnh báo âm thanh và hình ảnh: <em>"Seal Oil / Hydrogen Differential Pressure Abnormal"</em> hoặc <em>"Seal Oil / H2 Diff Pressure Low"</em> (≤ 0,41 bar).</li>
+        <li>Áp lực đầu đẩy bơm dầu chèn chính (MSOP-A) và áp lực ống góp dầu chèn dao động, có thể tụt dưới mức báo động 8,5 bar.</li>
+      </ul>
+
+      <h3>2. Khi chênh áp dao động giảm thấp (ΔP ≤ 0,41 bar)</h3>
+      <ul>
+        <li>Màng dầu làm kín tại vành chèn bị suy yếu hoặc bị xé rách, khiến khí Hydro áp lực cao đẩy ngược dầu chèn để thoát ra ngoài.</li>
+        <li>Lượng khí Hydro tiêu hao bổ sung hàng ngày tăng vọt bất thường (vượt tiêu chuẩn &gt; 26 m³/ngày).</li>
+        <li>Nồng độ khí Hydro tại các khoang dầu hồi gối trục (đặc biệt gối số 7, số 8 máy phát), bồn dầu bôi trơn chính và đường xả quạt hút hơi dầu (<em>Vapor Extractor</em>) tăng cao → nguy cơ cháy nổ hỗn hợp Hydro – không khí.</li>
+      </ul>
+
+      <h3>3. Khi chênh áp dao động tăng cao (ΔP ≥ 0,75 ÷ 0,80 bar)</h3>
+      <ul>
+        <li>Áp lực dầu thắng hoàn toàn áp lực khí Hydro, nén màng dầu phun ngược vào bên trong khoang vỏ máy phát.</li>
+        <li>Xuất hiện cảnh báo mức dầu cao tại bình bẫy dầu chèn (<em>Float Trap Tank</em>) hoặc bộ cảm biến phát hiện chất lỏng đáy vỏ máy phát (<code>13MKW21AZ001</code>) báo động.</li>
+        <li>Nhiệt độ kim loại bạc và độ rung gối trục số 7, 8 máy phát dao động tăng do thay đổi tính chất thủy động học màng dầu bôi trơn/chèn trục.</li>
+        <li>Trường hợp dầu lọt quá nhiều có thể thấy hiện tượng bốc khói hoặc rò dầu tại buồng chổi than (<em>Housing</em>) máy phát.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- III -->
+  <section id="s3">
+    <h2>III. Nguyên nhân gây nên sự cố</h2>
+    <table class="cause-table">
+      <thead>
+        <tr>
+          <th>Nhóm nguyên nhân</th>
+          <th>Phân tích cơ chế kỹ thuật</th>
+          <th>Thiết bị / Vị trí liên quan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge blue">1</span><strong>Van điều chỉnh chênh áp (DPRV)</strong></td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Ty van, lõi van hoặc piston bị kẹt cơ khí do cặn bẩn, mạt kim loại trong dầu gây hiện tượng dao động trễ (<em>hunting</em>).</li>
+              <li>Màng cao su điều áp (<em>diaphragm</em>) bị chai cứng, lão hóa hoặc nứt rách làm mất khả năng cân bằng tỷ lệ áp suất.</li>
+              <li>Đường xung tín hiệu đo áp lực dầu và áp lực Hydro về van bị tắc cặn, đọng dầu hoặc có bọt khí.</li>
+            </ul>
+          </td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Van điều áp vi sai (<code>13MKW05AA101</code>)</li>
+              <li>Van tiết lưu tay bypass (<code>13MKW05AA701</code>)</li>
+              <li>Ống trích tín hiệu xung (<em>Sensing lines</em>)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge blue">2</span><strong>Thiết bị bơm &amp; Hệ thống cấp dầu</strong></td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Phin lọc dầu chèn đơn đầu vào bị bám bẩn làm chênh áp qua phin tăng cao, bóp nghẹt dòng cấp gây hụt áp trước van DPRV.</li>
+              <li>Bơm dầu chèn chính (MSOP) bị xâm thực, lọt khí đường hút hoặc mòn trục vít làm áp lực đầu đẩy bơm dao động.</li>
+              <li>Nguồn dầu cấp từ hệ thống dầu bôi trơn chính về bể chân không dầu chèn không ổn định; van phao bể chân không kẹt làm dao động mức dầu.</li>
+            </ul>
+          </td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Phin lọc dầu đơn (<code>13MKW06AT001/002</code>)</li>
+              <li>Bơm trục vít MSOP-A/B</li>
+              <li>Bể chân không (<code>13MKW01AP001</code>)</li>
+              <li>Van phao (<code>13MKW18AA203</code>)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge blue">3</span><strong>Áp suất Hydro biến động</strong></td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Thao tác nạp bổ sung Hydro vào máy phát quá nhanh làm áp lực buồng khí thay đổi đột ngột vượt dải đáp ứng của van DPRV.</li>
+              <li>Rò rỉ Hydro lớn qua gioăng làm kín mặt bích hoặc hệ thống van xả khí máy phát đóng không kín.</li>
+            </ul>
+          </td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Hệ thống ống góp phân phối khí H₂</li>
+              <li>Van nạp/xả khí Hydro máy phát</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge blue">4</span><strong>Cơ khí vành chèn trục</strong></td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Vành chèn (<em>Seal Rings</em>) bị xước, mòn khuyết tật hoặc kẹt cơ khí không tự lựa theo trục rotor máy phát, làm khe hở dầu biến đổi bất thường.</li>
+              <li>Độ lệch tâm rotor hoặc rung trục máy phát tăng cao làm phá vỡ khe hở làm việc tối ưu (&lt; 0,127 mm).</li>
+            </ul>
+          </td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Cụm vành chèn trục hai đầu máy phát (phía TE và CE)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="badge blue">5</span><strong>Lỗi đo lường (C&amp;I)</strong></td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Bộ truyền tín hiệu chênh áp (DPT) lỗi bo mạch điện tử, trôi điểm 0.</li>
+              <li>Đường ống trích áp lực đo bị đọng dầu, bọt khí gây hiển thị sai lệch so với áp lực thủy lực thực tế.</li>
+            </ul>
+          </td>
+          <td>
+            <ul style="margin:0;padding-left:18px;">
+              <li>Cảm biến chênh áp (<code>13MKW10CP201A/B</code>, <code>13MKW10CP501</code>)</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- IV -->
+  <section id="s4">
+    <h2>IV. Biện pháp xử lý sự cố trong ca vận hành</h2>
+
+    <div class="step">
+      <div class="step-title">
+        <span class="step-num">1</span>
+        <span>Kiểm tra, xác nhận hiện trường và loại trừ lỗi đo lường</span>
+      </div>
+      <ul>
+        <li>Ngay khi có báo động, <strong>Máy trưởng</strong> lệnh Máy phó xuống hiện trường kiểm tra đối chiếu đồng thời: đồng hồ đo chênh áp tại chỗ (<code>13MKW10CP501</code>), đồng hồ áp lực khí Hydro thân máy phát và áp lực ống góp đầu đẩy bơm dầu chèn.</li>
+        <li>So sánh đối chiếu với hiển thị trên màn hình DCS để xác định chính xác sự cố do <strong>thủy lực cơ khí thực tế</strong> hay do <strong>lỗi bộ chuyển đổi tín hiệu đo lường C&amp;I</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-title">
+        <span class="step-num">2</span>
+        <span>Xử lý cơ cấu van điều áp DPRV và nguồn cấp dầu</span>
+      </div>
+      <ul>
+        <li><strong>Nếu van DPRV bị kẹt hoặc dao động (hunting):</strong> Thực hiện gõ nhẹ cơ học lên thân van; nếu van không thể tự cân bằng, chuyển van điều chỉnh hoặc sử dụng van tiết lưu bypass bằng tay (<code>13MKW05AA701</code>) để trực tiếp nắn chỉnh, ghim áp lực chênh lệch trở lại dải ổn định <strong>0,55 ÷ 0,60 bar</strong>.</li>
+        <li><strong>Nếu phin lọc dầu chèn bị bẩn (chênh áp ≥ 0,55 bar):</strong> Tiến hành thao tác chuyển đổi sang phin lọc dự phòng (lưu ý: phải mở van xả khí, điền đầy dầu và đuổi sạch khí phin lọc dự phòng trước khi đưa vào làm việc), sau đó cô lập phin lọc bẩn để vệ sinh.</li>
+        <li><strong>Nếu bơm dầu chèn chính (MSOP-A) bị sự cố:</strong> Khởi động ngay bơm dầu chèn dự phòng (MSOP-B hoặc bơm sự cố một chiều ESOP). Xác nhận áp lực ống góp đầu đẩy phục hồi ổn định (≥ 8,5 bar) mới tiến hành dừng và cô lập bơm bị sự cố.</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <div class="step-title">
+        <span class="step-num">3</span>
+        <span>Ngăn chặn nguy cơ cháy nổ Hydro và ngập dầu máy phát</span>
+      </div>
+      <div class="callout danger">
+        <strong>Trường hợp chênh áp giảm thấp (ΔP ≤ 0,41 bar):</strong> Nguy cơ Hydro xì mạnh ra ngoài.
+        <ul>
+          <li>Phải duy trì quạt hút hơi dầu (<em>Vapor Extractor</em>) vận hành liên tục.</li>
+          <li>Mở các cửa thông gió cưỡng bức khu vực gian máy phát.</li>
+          <li>Sử dụng thiết bị đo khí xách tay kiểm tra nồng độ Hydro tại các gối trục và bồn dầu.</li>
+          <li>Phối hợp Trực chính Điện kiểm tra ổn định áp lực Hydro buồng máy phát.</li>
+        </ul>
+      </div>
+      <div class="callout warning">
+        <strong>Trường hợp chênh áp tăng cao:</strong>
+        <ul>
+          <li>Theo dõi chặt chẽ ống thủy bình bẫy dầu (<code>13MKW13CL502</code>).</li>
+          <li>Mở van xả đáy thân máy phát nếu xuất hiện cảnh báo bẫy chất lỏng, ngăn ngừa nguy cơ dầu dâng ngập làm hỏng cách điện cuộn dây stator.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">
+        <span class="step-num">4</span>
+        <span>Thao tác khẩn cấp dừng máy bảo vệ tổ máy</span>
+      </div>
+      <p>Trường hợp chênh áp dầu chèn – Hydro giảm sâu dưới 0,41 bar không thể khôi phục, rò rỉ khí Hydro nghiêm trọng ra ngoài, hoặc phát hiện có âm thanh cọ quẹt kim loại, xuất hiện tia lửa, khói bốc ra từ khu vực gối trục/vành chèn máy phát:</p>
+      <div class="emergency-box">
+        <h3>DỪNG KHẨN CẤP TỔ MÁY</h3>
+        <p><strong>MÁY TRƯỞNG LẬP TỨC NHẤN NÚT DỪNG KHẨN CẤP TỔ MÁY (TRIP TUABIN – MÁY PHÁT) CÓ PHÁ HOẠI CHÂN KHÔNG</strong> để dập tắt nguy cơ thảm họa nổ Hydro và bảo vệ toàn vẹn trục rotor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- V -->
+  <section id="s5">
+    <h2>V. Bảng tổng hợp giá trị cảnh báo và hành động của trực ca</h2>
+    <div style="overflow-x:auto;">
+      <table class="alarm-table">
+        <thead>
+          <tr>
+            <th>Thông số giám sát</th>
+            <th>Mã KKS thiết bị</th>
+            <th>Giá trị tác động</th>
+            <th>Hiện tượng / Nguy cơ</th>
+            <th>Hành động của Kỹ sư vận hành</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chênh áp dầu chèn – H₂ bình thường</td>
+            <td><code>13MKW10CP501</code></td>
+            <td><span class="badge green">0,55 ÷ 0,60 bar</span></td>
+            <td>Chế độ vận hành định mức</td>
+            <td>Giám sát định kỳ thông số trên DCS và kiểm tra hiện trường hàng ca.</td>
+          </tr>
+          <tr>
+            <td>Chênh áp dầu chèn – H₂ thấp (Low)</td>
+            <td><code>13MKW10CP201A/B</code></td>
+            <td><span class="badge red">≤ 0,41 bar</span></td>
+            <td>Rò rỉ Hydro qua vành chèn ra gối trục máy phát</td>
+            <td>Khởi động bơm dầu chèn dự phòng, thao tác mở van tay bypass, tăng quạt hút hơi dầu.</td>
+          </tr>
+          <tr>
+            <td>Áp lực ống góp đẩy bơm dầu chèn</td>
+            <td><code>13MKW05CP202/203</code></td>
+            <td><span class="badge red">≤ 8,5 bar</span></td>
+            <td>Hụt nguồn dầu cấp cho van điều chỉnh vi sai</td>
+            <td>Kiểm tra bơm MSOP, chuyển đổi bơm dự phòng, kiểm tra rò rỉ đường ống đẩy.</td>
+          </tr>
+          <tr>
+            <td>Chênh áp qua phin lọc dầu chèn</td>
+            <td><code>13MKW06CP201</code></td>
+            <td><span class="badge orange">≥ 0,55 bar</span></td>
+            <td>Phin lọc dầu đơn bị nghẹt cặn bẩn</td>
+            <td>Xả khí, điền dầu và đảo chuyển sang phin lọc dầu dự phòng.</td>
+          </tr>
+          <tr>
+            <td>Mức bể dầu chân không cao (High)</td>
+            <td><code>13MKW01CL201</code></td>
+            <td><span class="badge orange">+102 mm (57%)</span></td>
+            <td>Van phao cấp dầu hỏng, nguy cơ ngập dầu bẫy chân không</td>
+            <td>Kiểm tra van phao cấp dầu (<code>13MKW18AA203</code>), kiểm tra bơm chân không SOVP.</td>
+          </tr>
+          <tr>
+            <td>Mức bể dầu chân không thấp (Low)</td>
+            <td><code>13MKW01CL201</code></td>
+            <td><span class="badge red">−152 mm (39%)</span></td>
+            <td>Thiếu dầu cấp cho bơm MSOP, nguy cơ lọt khí vào bơm</td>
+            <td>Kiểm tra nguồn cấp từ bồn dầu bôi trơn, kiểm tra phin lọc đường cấp (chênh áp &gt; 0,39 bar).</td>
+          </tr>
+          <tr>
+            <td>Nhiệt độ cuộn dây động cơ bơm dầu</td>
+            <td><code>13MKW03/04/19CT201</code></td>
+            <td><span class="badge red">≥ 130 °C</span></td>
+            <td>Động cơ bơm dầu chèn quá tải hoặc kẹt cơ khí</td>
+            <td>Chuyển đổi bơm dầu dự phòng, cô lập động cơ bị quá nhiệt.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <strong>Nguyên tắc chung:</strong> Luôn ưu tiên bảo vệ an toàn con người và thiết bị. Khi có bất kỳ dấu hiệu bất thường nào về chênh áp dầu chèn – Hydro, phải xử lý theo đúng quy trình, phối hợp chặt chẽ giữa các ca trực và báo cáo kịp thời cho chỉ huy.
+    </div>
+  </section>
+
+  <footer>
+    Tài liệu hướng dẫn xử lý sự cố – Hệ thống dầu chèn máy phát điện<br>
+    Áp dụng cho tổ máy nhiệt điện 500MW – 600MW
+  </footer>
+
+</div>
+</body>
+</html>

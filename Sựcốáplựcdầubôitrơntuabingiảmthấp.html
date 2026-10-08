@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sự cố áp lực dầu bôi trơn tuabin giảm thấp – Hiện tượng, nguyên nhân, biện pháp xử lý</title>
+<style>
+  :root{
+    --primary: #0b5394;
+    --primary-dark: #073b6b;
+    --primary-light: #e8f0fb;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --warning: #f39c12;
+    --warning-light: #fff8e1;
+    --success: #27ae60;
+    --success-light: #e8f8ef;
+    --border: #d0d7de;
+    --bg: #f7f9fc;
+    --text: #1f2328;
+    --muted: #57606a;
+  }
+  *{box-sizing: border-box;}
+  body{
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .container{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+  header{
+    background: linear-gradient(135deg, #7b0d0d 0%, #c0392b 50%, #e74c3c 100%);
+    color: #fff;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 24px rgba(192,57,43,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before{
+    content: "⚙";
+    position: absolute;
+    font-size: 14rem;
+    opacity: 0.08;
+    top: -30px;
+    right: 20px;
+    line-height: 1;
+  }
+  header h1{
+    margin: 0 0 12px;
+    font-size: 1.7rem;
+    line-height: 1.35;
+    position: relative;
+  }
+  header .subtitle{
+    margin: 0;
+    opacity: 0.96;
+    font-size: 1rem;
+    font-style: italic;
+    position: relative;
+  }
+  header .trip-threshold{
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 8px 20px;
+    border-radius: 22px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    position: relative;
+    font-family: "Consolas", monospace;
+    letter-spacing: 0.3px;
+  }
+  header .trip-threshold .val{
+    color: #ffe082;
+    font-weight: 700;
+  }
+  h2{
+    color: var(--primary);
+    border-left: 5px solid var(--primary);
+    padding-left: 14px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+  h3{
+    color: var(--primary-dark);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.14rem;
+  }
+  h4{
+    color: #1a4d80;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 1.02rem;
+  }
+  p{margin: 10px 0;}
+  ul, ol{margin: 8px 0 12px; padding-left: 24px;}
+  li{margin: 6px 0;}
+  code{
+    background: #eef2f7;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    color: #b83280;
+    white-space: nowrap;
+  }
+  .section-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .callout{
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+  }
+  .callout.warning{
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+  }
+  .callout.danger{
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .callout.success{
+    background: var(--success-light);
+    border-left-color: var(--success);
+  }
+  .callout strong{color: var(--primary-dark);}
+  .callout.danger strong{color: var(--accent);}
+  .callout.warning strong{color: #b9770e;}
+  .callout.success strong{color: #1e8449;}
+
+  .params-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .param-box{
+    background: linear-gradient(135deg, #f4f8fd 0%, #e8f0fb 100%);
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+  }
+  .param-box .label{
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .param-box .value{
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-family: "Consolas", monospace;
+  }
+  .param-box.danger{
+    background: linear-gradient(135deg, #fdf3f2 0%, #fdecea 100%);
+    border-color: #f5c6c0;
+    border-left-color: var(--accent);
+  }
+  .param-box.danger .value{color: var(--accent);}
+  .param-box.warning{
+    background: linear-gradient(135deg, #fffcf0 0%, #fff8e1 100%);
+    border-color: #f5dfa0;
+    border-left-color: var(--warning);
+  }
+  .param-box.warning .value{color: #b9770e;}
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 6px;
+    color: #fff;
+  }
+  .badge.blue{background: var(--primary);}
+  .badge.red{background: var(--accent);}
+  .badge.green{background: var(--success);}
+  .badge.orange{background: var(--warning);}
+  .badge.gray{background: #6b7280;}
+
+  .symptom-list{
+    list-style: none;
+    padding-left: 0;
+    counter-reset: sym;
+  }
+  .symptom-list li{
+    counter-increment: sym;
+    position: relative;
+    padding: 14px 18px 14px 62px;
+    background: #fff8e1;
+    border: 1px solid #f5dfa0;
+    border-left: 5px solid var(--warning);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .symptom-list li::before{
+    content: counter(sym);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    background: var(--warning);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .cause-group{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .cause-group-header{
+    background: linear-gradient(135deg, #7b0d0d 0%, #c0392b 100%);
+    color: #fff;
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cause-group-header .icon{
+    font-size: 1.15rem;
+  }
+  .cause-group-body{
+    padding: 14px 22px 6px;
+  }
+  .cause-group-body ul{
+    margin: 6px 0;
+  }
+
+  .phase{
+    background: #fff;
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .phase-header{
+    padding: 15px 22px;
+    color: #fff;
+    font-size: 1.08rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .phase-header.phase-1{background: linear-gradient(135deg, #b9770e 0%, #f39c12 100%);}
+  .phase-header.phase-2{background: linear-gradient(135deg, #7b0d0d 0%, #c0392b 100%);}
+  .phase-num{
+    background: rgba(255,255,255,0.25);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 0.95rem;
+  }
+  .phase-body{
+    padding: 16px 24px 8px;
+  }
+
+  .emergency-box{
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    color: #fff;
+    padding: 22px 26px;
+    border-radius: 10px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192,57,43,0.3);
+  }
+  .emergency-box h3{
+    color: #fff;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+  }
+  .emergency-box h3::before{
+    content: "⚠";
+    font-size: 1.5rem;
+  }
+  .emergency-box p{margin: 10px 0;}
+  .emergency-box strong{color: #ffe082;}
+  .emergency-box ul{margin: 10px 0 0; padding-left: 22px;}
+  .emergency-box li{margin: 8px 0;}
+
+  .prevent-list{
+    counter-reset: prev;
+    list-style: none;
+    padding-left: 0;
+  }
+  .prevent-list li{
+    counter-increment: prev;
+    position: relative;
+    padding: 14px 18px 14px 62px;
+    background: var(--success-light);
+    border: 1px solid #b7e4c7;
+    border-left: 5px solid var(--success);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .prevent-list li::before{
+    content: counter(prev);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc h3{
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc ol{
+    margin: 0;
+    padding-left: 22px;
+  }
+  .toc li{
+    margin: 6px 0;
+  }
+  .toc a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .toc a:hover{
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  @media(max-width: 720px){
+    header h1{font-size: 1.25rem;}
+    header::before{font-size: 8rem; top: 10px;}
+    h2{font-size: 1.15rem;}
+    .toc ol{columns: 1;}
+    .phase-body{padding: 14px 16px 6px;}
+    .symptom-list li, .prevent-list li{padding-left: 56px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Sự cố áp lực dầu bôi trơn tuabin giảm thấp</h1>
+    <p class="subtitle">Hiện tượng – Nguyên nhân – Biện pháp xử lý và phòng ngừa</p>
+    <span class="trip-threshold">
+      Ngưỡng bảo vệ Trip dừng máy có phá chân không: <span class="val">≤ 1,21 bar</span>
+    </span>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Hiện tượng nhận biết</a></li>
+      <li><a href="#s2">Nguyên nhân sự cố</a></li>
+      <li><a href="#s3">Biện pháp xử lý và phòng ngừa</a></li>
+    </ol>
+  </div>
+
+  <!-- I -->
+  <section id="s1">
+    <h2>1. Hiện tượng nhận biết</h2>
+
+    <div class="callout warning">
+      <strong>Ngưỡng bảo vệ quan trọng:</strong> Khi áp lực dầu bôi trơn giảm sâu tới ngưỡng <code>≤ 1,21 bar</code>, rơ-le bảo vệ tác động phát lệnh <strong>Trip tuabin khẩn cấp có phá hoại chân không</strong>.
+    </div>
+
+    <ol class="symptom-list">
+      <li>
+        Chỉ thị áp lực dầu bôi trơn trên hệ thống điều khiển <strong>DCS/TCS</strong> và đồng hồ áp kế tại chỗ giảm thấp, xuất hiện tín hiệu âm thanh và hình ảnh cảnh báo áp lực dầu bôi trơn thấp (<em>Alarm Low</em>).
+      </li>
+      <li>
+        <strong>Bơm dầu bôi trơn phụ xoay chiều (bơm AC)</strong> tự động liên động khởi động vào làm việc khi áp lực dầu suy giảm tới giá trị cài đặt liên động.
+      </li>
+      <li>
+        Nếu áp lực tiếp tục giảm sâu tới ngưỡng bảo vệ <code>≤ 1,21 bar</code>: <strong>Rơ-le bảo vệ tác động</strong> phát lệnh Trip tuabin khẩn cấp có phá hoại chân không.
+      </li>
+      <li>
+        <strong>Bơm dầu bôi trơn khẩn cấp một chiều (bơm DC)</strong> tự động khởi động liên động nhảy vào làm việc để duy trì cấp dầu cho các ổ đỡ khi tốc độ tuabin suy giảm.
+      </li>
+      <li>
+        <strong>Nhiệt độ kim loại các gối đỡ số 1 đến 8</strong> và gối chặn tuabin – máy phát tăng nhanh do mất màng dầu bôi trơn thủy động; xuất hiện <strong>rung động tăng cao</strong> hoặc <strong>tiếng va chạm kim loại</strong> trong thân máy.
+      </li>
+    </ol>
+  </section>
+
+  <!-- II -->
+  <section id="s2">
+    <h2>2. Nguyên nhân sự cố</h2>
+
+    <div class="cause-group">
+      <div class="cause-group-header">
+        <span class="icon">🔧</span>
+        <span>Lỗi tổ bơm &amp; Thiết bị điều chỉnh</span>
+      </div>
+      <div class="cause-group-body">
+        <ul>
+          <li>Bơm dầu chính (<em>Main Oil Pump</em>) trên trục tuabin bị hỏng hóc hoặc suy giảm công suất cấp dầu.</li>
+          <li>Bơm phụ AC bị sự cố mất điện nguồn, trip động cơ, hoặc mạch tự động liên động khởi động bị lỗi không làm việc.</li>
+          <li>Van điều áp/van duy trì áp lực đường dầu bôi trơn bị kẹt cơ khí ở vị trí mở xả lớn, hoặc van an toàn đầu đẩy xả hồi về bể sớm.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-group-header">
+        <span class="icon">🛢</span>
+        <span>Tuyến ống, Phin lọc &amp; Phẩm chất dầu</span>
+      </div>
+      <div class="cause-group-body">
+        <ul>
+          <li>Phin lọc dầu bôi trơn bị tắc bẩn cục bộ làm chênh lệch áp suất (Δp) qua phin lọc tăng cao, gây sụt áp phía sau lọc.</li>
+          <li>Nứt, vỡ, bục hoặc xì hở nghiêm trọng trên tuyến ống áp lực cấp dầu bôi trơn, mặt bích nối hoặc các van phân phối.</li>
+          <li>Mức dầu bể chứa dầu bôi trơn giảm thấp bất thường (<code>≤ 406 mm</code>) do rò rỉ thất thoát dầu ra ngoài.</li>
+          <li>Nhiệt độ dầu bôi trơn tăng quá cao làm suy giảm độ nhớt động học; dầu bị lẫn nước hoặc bọt khí lớn.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-group-header">
+        <span class="icon">📡</span>
+        <span>Lỗi hệ thống đo lường (C&amp;I)</span>
+      </div>
+      <div class="cause-group-body">
+        <ul>
+          <li>Hỏng cảm biến áp lực hoặc đứt dây truyền tín hiệu gây <strong>cảnh báo ảo</strong>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- III -->
+  <section id="s3">
+    <h2>3. Biện pháp xử lý và phòng ngừa</h2>
+
+    <h3>3.1. Thao tác xử lý trong ca vận hành</h3>
+
+    <!-- GIAI ĐOẠN 1 -->
+    <div class="phase">
+      <div class="phase-header phase-1">
+        <span class="phase-num">1</span>
+        <span>Khi xuất hiện cảnh báo áp lực dầu bôi trơn suy giảm</span>
+      </div>
+      <div class="phase-body">
+        <ul>
+          <li>Kiểm tra ngay trạng thái hoạt động của <strong>bơm dầu phụ xoay chiều (bơm AC)</strong>. Nếu bơm chưa khởi động tự động, vận hành viên phải lập tức bấm khởi động bơm AC bằng tay tại DCS hoặc tại tủ điều khiển hiện trường.</li>
+          <li>Kiểm tra độ chênh lệch áp suất (<strong>Δp</strong>) qua phin lọc dầu bôi trơn. Nếu phát hiện phin lọc bị tắc bẩn, tiến hành chuyển đổi sang phin lọc dự phòng và <strong>xả khí hoàn toàn</strong> khoang lọc mới trước khi đưa vào vận hành.</li>
+          <li>Kiểm tra mức dầu bể chứa chính và tuần tra hiện trường dọc tuyến ống để phát hiện, cô lập các điểm bục vỡ rò rỉ dầu.</li>
+          <li>Báo cáo Trưởng kíp lò máy, Trưởng ca và liên hệ tổ C&amp;I kiểm tra đối chiếu các điểm đo áp lực.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GIAI ĐOẠN 2 -->
+    <div class="phase">
+      <div class="phase-header phase-2">
+        <span class="phase-num">2</span>
+        <span>Khi áp lực tiếp tục giảm sâu xuống ngưỡng bảo vệ ≤ 1,21 bar</span>
+      </div>
+      <div class="phase-body">
+        <ul>
+          <li>Kiểm tra bảo vệ tự động Trip tuabin. Nếu bảo vệ không tác động, người vận hành phải <strong>lập tức nhấn nút TRIP tuabin dừng khẩn cấp bằng tay</strong> tại phòng điều khiển trung tâm hoặc tại chỗ.</li>
+          <li>Thực hiện quy trình ngừng máy có phá hoại chân không: <strong>Mở hoàn toàn 02 van phá hoại chân không bình ngưng</strong>, mở toàn bộ van xả đọng hơi chính, hơi tái nhiệt và van xả vỏ tuabin để giảm nhanh tốc độ quay rô-to, chống cháy ổ đỡ.</li>
+          <li>Kiểm tra xác nhận <strong>bơm dầu bôi trơn khẩn cấp một chiều (bơm DC)</strong> đã tự động vận hành. Nếu bơm DC không tự động chạy, máy phó/trực phụ tại hiện trường phải lập tức <strong>giật cần khởi động cưỡng bức bơm DC</strong> tại chỗ.</li>
+          <li>Theo dõi sát sao <strong>nhiệt độ kim loại gối chặn, gối đỡ 1 đến 8</strong>, nhiệt độ dầu hồi, độ rung và độ di trục trong suốt thời gian rô-to giảm tốc.</li>
+        </ul>
+
+        <div class="emergency-box">
+          <h3>QUY TẮC AN TOÀN CỐT TỬ</h3>
+          <p>Khi tốc độ quay rô-to về <strong>0 v/p</strong>: Chỉ đưa thiết bị quay trục (vần trục) vào làm việc khi:</p>
+          <ul>
+            <li>Áp lực dầu bôi trơn <strong>đã được khôi phục</strong>.</li>
+            <li>Nhiệt độ kim loại các gối <strong>bình thường</strong>.</li>
+            <li><strong>Không có</strong> hiện tượng kẹt cơ học.</li>
+          </ul>
+          <p style="margin-top:14px;">
+            <strong>TUYỆT ĐỐI NGHIÊM CẤM</strong> ép cưỡng bức quay trục khi thiếu dầu bôi trơn hoặc xuất hiện tiếng cọ sát kim loại.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>3.2. Biện pháp phòng ngừa định kỳ</h3>
+    <ol class="prevent-list">
+      <li>
+        Thực hiện nghiêm túc chế độ tuần tra kiểm tra <strong>mức dầu bể bôi trơn</strong>, <strong>áp lực đầu đẩy các bơm</strong> và <strong>độ chênh áp qua phin lọc</strong> trong mỗi ca làm việc.
+      </li>
+      <li>
+        Định kỳ thử nghiệm chuyển đổi chạy thử các <strong>bơm dầu bôi trơn AC, DC</strong> và kiểm tra chức năng <strong>liên động tự động khởi động</strong> của bơm dự phòng.
+      </li>
+      <li>
+        Lấy mẫu kiểm tra <strong>chất lượng dầu bôi trơn định kỳ</strong> (hàm lượng nước, tạp chất cơ học, độ nhớt động học); duy trì vận hành ổn định hệ thống lọc dầu/tái sinh dầu bôi trơn.
+      </li>
+      <li>
+        Thường xuyên <strong>kiểm định, hiệu chuẩn</strong> các cảm biến áp lực dầu bôi trơn và thử nghiệm định kỳ mạch logic bảo vệ Trip dừng tuabin theo đúng quy phạm kỹ thuật an toàn nhiệt.
+      </li>
+    </ol>
+
+    <div class="callout success">
+      <strong>Nguyên tắc chung:</strong> Ưu tiên tuyệt đối bảo vệ ổ đỡ và trục tuabin. Khi áp lực dầu bôi trơn suy giảm, phải hành động nhanh – đúng quy trình – phối hợp chặt chẽ giữa vận hành và các tổ C&amp;I, điện để đảm bảo an toàn thiết bị.
+    </div>
+  </section>
+
+  <footer>
+    Quy trình xử lý sự cố vận hành – Áp lực dầu bôi trơn tuabin giảm thấp<br>
+    Ngưỡng bảo vệ Trip: ≤ 1,21 bar (có phá hoại chân không)
+  </footer>
+
+</div>
+</body>
+</html>
