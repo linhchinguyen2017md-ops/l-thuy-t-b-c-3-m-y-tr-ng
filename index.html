@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Đào Tạo Máy Trưởng Bậc 3</title>
+    <title>Hệ Thống Ôn Thi Tổng Hợp Bậc 3 - Nhiệt Điện Mông Dương 1</title>
     <style>
         /* Phông nền lưới kỹ thuật (Blueprint/Grid) */
         body {
@@ -22,7 +22,7 @@
         }
         
         #main-wrapper {
-            max-width: 1000px; /* Đã mở rộng để chứa 3 cột */
+            max-width: 1000px;
             width: 100%;
         }
 
@@ -51,9 +51,9 @@
         }
 
         .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
-        .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; }
+        .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px;}
         
-        /* MÀN HÌNH 1: GIAO DIỆN CHỌN THƯ MỤC (BÂY GIỜ LÀ 3 CỘT) */
+        /* MÀN HÌNH 1: GIAO DIỆN CHỌN THƯ MỤC */
         #screen-home {
             display: grid;
             grid-template-columns: 1fr;
@@ -76,7 +76,7 @@
         
         .folder-theory { border-bottom: 8px solid #0056b3; }
         .folder-safety { border-bottom: 8px solid #2e7d32; }
-        .folder-quiz { border-bottom: 8px solid #6a1b9a; } /* Màu tím cho Trắc nghiệm */
+        .folder-quiz { border-bottom: 8px solid #6a1b9a; }
         
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .folder-theory:hover { border-color: #0056b3; }
@@ -117,7 +117,6 @@
         #screen-safety .section-title { color: #2e7d32; }
         #screen-quiz .section-title { color: #6a1b9a; }
 
-        /* Nút quay lại thư mục */
         .back-btn {
             background-color: #e53935;
             color: white;
@@ -154,6 +153,7 @@
             font-weight: 600;
             font-size: 16px;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
         
         #screen-theory .file-link { border-left-color: #0056b3; }
@@ -167,7 +167,7 @@
         }
         .file-link::before { content: "📄"; margin-right: 15px; font-size: 18px; opacity: 0.8; }
 
-        /* MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU CÓ SẴN NÚT BACK */
+        /* MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU */
         #screen-content {
             display: none;
             position: fixed;
@@ -183,7 +183,7 @@
             width: 100%;
             height: 100%;
             border: none;
-            padding-top: 60px; /* Chừa chỗ cho nút Back */
+            padding-top: 60px;
             box-sizing: border-box;
             background-color: white;
         }
@@ -216,27 +216,25 @@
 
 <div id="main-wrapper">
     <div class="header">
+        <!-- Đã cập nhật tiêu đề theo đúng ý anh -->
         <h1>Hệ Thống Ôn Thi Tổng Hợp Bậc 3</h1>
-        <p>Máy trưởng - Nhiệt điện Mông Dương 1</p>
+        <p>Chuyên Đề Máy Nhiệt Điện Mông Dương 1</p>
     </div>
 
     <!-- MÀN HÌNH 1: HIỂN THỊ 3 THƯ MỤC LỚN -->
     <div id="screen-home">
-        <!-- Thư mục Lý thuyết -->
         <div class="folder-card folder-theory" onclick="openFolder('screen-theory')">
             <div class="folder-icon">📚</div>
             <h2 class="folder-title">Lý Thuyết</h2>
             <p class="folder-desc">Cấu tạo, vận hành, xử lý sự cố thiết bị (16 bài)</p>
         </div>
         
-        <!-- Thư mục An toàn -->
         <div class="folder-card folder-safety" onclick="openFolder('screen-safety')">
             <div class="folder-icon">🛡️</div>
             <h2 class="folder-title">An Toàn</h2>
             <p class="folder-desc">Quy định, thủ tục PCT, BPTC an toàn (12 bài)</p>
         </div>
 
-        <!-- Thư mục Trắc nghiệm mới -->
         <div class="folder-card folder-quiz" onclick="openFolder('screen-quiz')">
             <div class="folder-icon">📝</div>
             <h2 class="folder-title">Trắc Nghiệm</h2>
@@ -299,11 +297,7 @@
             <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
         </div>
         <div class="list-container">
-            <!-- Đã thêm file trắc nghiệm mới của anh vào đây -->
             <a class="file-link" onclick="openDoc('tracnghiemtb.html')">Đề thi Trắc nghiệm Tuabin Bậc 3</a>
-            
-            <!-- Sau này anh có bài trắc nghiệm mới thì copy thêm dòng bên dưới để dùng nhé -->
-            <!-- <a class="file-link" onclick="openDoc('TÊN-FILE-MỚI.html')">TÊN HIỂN THỊ BÀI MỚI</a> -->
         </div>
     </div>
 </div>
@@ -316,9 +310,8 @@
 
 <!-- JAVASCRIPT ĐIỀU KHIỂN CHUYỂN TRANG -->
 <script>
-    let currentFolderId = ''; // Ghi nhớ thư mục đang xem
+    let currentFolderId = '';
 
-    // Mở thư mục
     function openFolder(folderId) {
         currentFolderId = folderId;
         document.getElementById('screen-home').style.display = 'none';
@@ -330,7 +323,6 @@
         window.scrollTo(0, 0); 
     }
 
-    // Quay lại trang chủ chọn 3 thư mục
     function goBackToHome() {
         document.getElementById('screen-theory').style.display = 'none';
         document.getElementById('screen-safety').style.display = 'none';
@@ -339,19 +331,17 @@
         document.getElementById('screen-home').style.display = 'grid'; 
     }
 
-    // Mở bài học (Hiện Iframe đè lên toàn màn hình)
     function openDoc(filename) {
         document.getElementById('doc-iframe').src = filename;
         document.getElementById('main-wrapper').style.display = 'none';
         document.getElementById('screen-content').style.display = 'block';
     }
 
-    // Nút Back tắt bài học (Trả về lại thư mục đang xem)
     function closeDoc() {
         document.getElementById('doc-iframe').src = "";
         document.getElementById('screen-content').style.display = 'none';
         document.getElementById('main-wrapper').style.display = 'block';
-        openFolder(currentFolderId); // Tự động mở lại đúng cái thư mục lúc nãy
+        openFolder(currentFolderId);
     }
 </script>
 
