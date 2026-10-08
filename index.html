@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Đào Tạo Máy Trưởng Bậc 3</title>
     <style>
-        /* Phông nền lưới kỹ thuật */
+        /* Phông nền lưới kỹ thuật (Blueprint/Grid) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fa;
@@ -22,7 +22,7 @@
         }
         
         #main-wrapper {
-            max-width: 900px;
+            max-width: 1000px; /* Đã mở rộng để chứa 3 cột */
             width: 100%;
         }
 
@@ -53,20 +53,20 @@
         .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
         .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; }
         
-        /* MÀN HÌNH 1: GIAO DIỆN CHỌN THƯ MỤC */
+        /* MÀN HÌNH 1: GIAO DIỆN CHỌN THƯ MỤC (BÂY GIỜ LÀ 3 CỘT) */
         #screen-home {
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
         }
-        @media (min-width: 600px) {
-            #screen-home { grid-template-columns: 1fr 1fr; }
+        @media (min-width: 768px) {
+            #screen-home { grid-template-columns: 1fr 1fr 1fr; }
         }
 
         .folder-card {
             background-color: #ffffff;
             border-radius: 8px;
-            padding: 50px 20px;
+            padding: 40px 15px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             cursor: pointer;
@@ -76,18 +76,20 @@
         
         .folder-theory { border-bottom: 8px solid #0056b3; }
         .folder-safety { border-bottom: 8px solid #2e7d32; }
+        .folder-quiz { border-bottom: 8px solid #6a1b9a; } /* Màu tím cho Trắc nghiệm */
         
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .folder-theory:hover { border-color: #0056b3; }
         .folder-safety:hover { border-color: #2e7d32; }
+        .folder-quiz:hover { border-color: #6a1b9a; }
 
-        .folder-icon { font-size: 65px; margin-bottom: 20px; }
-        .folder-title { font-size: 24px; font-weight: bold; margin: 0 0 10px 0; color: #1a252f; text-transform: uppercase; }
-        .folder-desc { font-size: 15px; color: #666; margin: 0; }
+        .folder-icon { font-size: 60px; margin-bottom: 20px; }
+        .folder-title { font-size: 22px; font-weight: bold; margin: 0 0 10px 0; color: #1a252f; text-transform: uppercase; }
+        .folder-desc { font-size: 14px; color: #666; margin: 0; }
 
         /* MÀN HÌNH 2: GIAO DIỆN BÊN TRONG THƯ MỤC */
         .list-section {
-            display: none;
+            display: none; 
             background-color: #ffffff;
             padding: 25px;
             border-radius: 8px;
@@ -99,6 +101,7 @@
         
         #screen-theory { border-top-color: #0056b3; }
         #screen-safety { border-top-color: #2e7d32; }
+        #screen-quiz { border-top-color: #6a1b9a; }
 
         .section-header {
             display: flex;
@@ -112,9 +115,11 @@
         .section-title { font-size: 22px; font-weight: bold; margin: 0; text-transform: uppercase; }
         #screen-theory .section-title { color: #0056b3; }
         #screen-safety .section-title { color: #2e7d32; }
+        #screen-quiz .section-title { color: #6a1b9a; }
 
+        /* Nút quay lại thư mục */
         .back-btn {
-            background-color: #546e7a;
+            background-color: #e53935;
             color: white;
             padding: 10px 18px;
             border: none;
@@ -129,7 +134,7 @@
             gap: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .back-btn:hover { background-color: #37474f; }
+        .back-btn:hover { background-color: #c62828; }
 
         .list-container {
             display: flex;
@@ -149,20 +154,20 @@
             font-weight: 600;
             font-size: 16px;
             transition: all 0.2s ease;
-            cursor: pointer;
         }
         
         #screen-theory .file-link { border-left-color: #0056b3; }
         #screen-safety .file-link { border-left-color: #2e7d32; }
+        #screen-quiz .file-link { border-left-color: #6a1b9a; }
         
         .file-link:hover {
             background-color: #e9ecef;
-            border-left-color: #ff8c00; 
+            border-left-color: #ff8c00 !important; 
             transform: translateX(8px);
         }
         .file-link::before { content: "📄"; margin-right: 15px; font-size: 18px; opacity: 0.8; }
 
-        /* MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU CÓ NÚT BACK */
+        /* MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU CÓ SẴN NÚT BACK */
         #screen-content {
             display: none;
             position: fixed;
@@ -215,18 +220,27 @@
         <p>Máy trưởng - Nhiệt điện Mông Dương 1</p>
     </div>
 
-    <!-- MÀN HÌNH 1: HIỂN THỊ 2 THƯ MỤC LỚN -->
+    <!-- MÀN HÌNH 1: HIỂN THỊ 3 THƯ MỤC LỚN -->
     <div id="screen-home">
+        <!-- Thư mục Lý thuyết -->
         <div class="folder-card folder-theory" onclick="openFolder('screen-theory')">
             <div class="folder-icon">📚</div>
-            <h2 class="folder-title">Lý Thuyết Chuyên Môn</h2>
-            <p class="folder-desc">Gồm 16 tài liệu cấu tạo, vận hành và xử lý sự cố thiết bị</p>
+            <h2 class="folder-title">Lý Thuyết</h2>
+            <p class="folder-desc">Cấu tạo, vận hành, xử lý sự cố thiết bị (16 bài)</p>
         </div>
         
+        <!-- Thư mục An toàn -->
         <div class="folder-card folder-safety" onclick="openFolder('screen-safety')">
             <div class="folder-icon">🛡️</div>
-            <h2 class="folder-title">An Toàn Kỹ Thuật</h2>
-            <p class="folder-desc">Gồm 12 tài liệu quy trình, thủ tục PCT và biện pháp an toàn</p>
+            <h2 class="folder-title">An Toàn</h2>
+            <p class="folder-desc">Quy định, thủ tục PCT, BPTC an toàn (12 bài)</p>
+        </div>
+
+        <!-- Thư mục Trắc nghiệm mới -->
+        <div class="folder-card folder-quiz" onclick="openFolder('screen-quiz')">
+            <div class="folder-icon">📝</div>
+            <h2 class="folder-title">Trắc Nghiệm</h2>
+            <p class="folder-desc">Luyện thi trắc nghiệm các chuyên đề tổng hợp</p>
         </div>
     </div>
 
@@ -237,7 +251,6 @@
             <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
         </div>
         <div class="list-container">
-            <!-- Đổi thẻ <a> thành dùng hàm mở iframe -->
             <a class="file-link" onclick="openDoc('Ảnhhưởngchânkhôngbìnhngưng.html')">Ảnh hưởng chân không bình ngưng</a>
             <a class="file-link" onclick="openDoc('aplucnhiet.html')">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
             <a class="file-link" onclick="openDoc('Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html')">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
@@ -272,10 +285,25 @@
             <a class="file-link" onclick="openDoc('attbquay.html')">Quy định về an toàn khi làm việc với thiết bị quay</a>
             <a class="file-link" onclick="openDoc('atthoibui.html')">Quy định về an toàn khi vận hành lò hơi và trong quá trình thổi bụi</a>
             <a class="file-link" onclick="openDoc('attrencao.html')">Quy định về an toàn khi làm việc trên cao</a>
-            <a class="file-link" onclick="openDoc('cachlyvanhanh.html">Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị</a>
+            <a class="file-link" onclick="openDoc('cachlyvanhanh.html')">Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị</a>
             <a class="file-link" onclick="openDoc('chihuytt.html')">Trách nhiệm của người cho phép và người Chỉ huy trực tiếp trong PCT</a>
             <a class="file-link" onclick="openDoc('khonggianhanche.html')">Quy định về an toàn trong không gian hạn chế và làm việc bên trong bao hơi</a>
             <a class="file-link" onclick="openDoc('pct.html')">Thủ tục Cho phép làm việc và bàn giao tại hiện trường theo PCT</a>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 2C: THƯ MỤC TRẮC NGHIỆM -->
+    <div id="screen-quiz" class="list-section">
+        <div class="section-header">
+            <h2 class="section-title">📝 Mục: Trắc Nghiệm</h2>
+            <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
+        </div>
+        <div class="list-container">
+            <!-- Đã thêm file trắc nghiệm mới của anh vào đây -->
+            <a class="file-link" onclick="openDoc('tracnghiemtb.html')">Đề thi Trắc nghiệm Tuabin Bậc 3</a>
+            
+            <!-- Sau này anh có bài trắc nghiệm mới thì copy thêm dòng bên dưới để dùng nhé -->
+            <!-- <a class="file-link" onclick="openDoc('TÊN-FILE-MỚI.html')">TÊN HIỂN THỊ BÀI MỚI</a> -->
         </div>
     </div>
 </div>
@@ -296,15 +324,17 @@
         document.getElementById('screen-home').style.display = 'none';
         document.getElementById('screen-theory').style.display = 'none';
         document.getElementById('screen-safety').style.display = 'none';
+        document.getElementById('screen-quiz').style.display = 'none';
         
         document.getElementById(folderId).style.display = 'block';
         window.scrollTo(0, 0); 
     }
 
-    // Quay lại trang chủ chọn 2 thư mục
+    // Quay lại trang chủ chọn 3 thư mục
     function goBackToHome() {
         document.getElementById('screen-theory').style.display = 'none';
         document.getElementById('screen-safety').style.display = 'none';
+        document.getElementById('screen-quiz').style.display = 'none';
         
         document.getElementById('screen-home').style.display = 'grid'; 
     }
