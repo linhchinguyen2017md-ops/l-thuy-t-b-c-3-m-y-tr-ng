@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Đào Tạo Máy Trưởng Bậc 3</title>
     <style>
-        /* Phông nền lưới kỹ thuật (Blueprint/Grid) */
+        /* Phông nền lưới kỹ thuật */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fa;
@@ -53,102 +53,157 @@
         .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
         .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; }
         
-        /* GIAO DIỆN THƯ MỤC THẢ XUỐNG (ACCORDION) */
-        .folder-group {
-            margin-bottom: 20px;
+        /* MÀN HÌNH 1: GIAO DIỆN CHỌN THƯ MỤC */
+        #screen-home {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        @media (min-width: 600px) {
+            #screen-home { grid-template-columns: 1fr 1fr; }
+        }
+
+        .folder-card {
             background-color: #ffffff;
             border-radius: 8px;
+            padding: 50px 20px;
+            text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border-left: 6px solid transparent;
-        }
-
-        .folder-group.theory-folder { border-left-color: #0056b3; }
-        .folder-group.safety-folder { border-left-color: #2e7d32; }
-
-        /* Tiêu đề thư mục (Click vào để mở) */
-        .folder-header {
-            padding: 20px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             cursor: pointer;
-            background-color: #ffffff;
-            transition: background-color 0.3s;
-        }
-
-        .folder-header:hover {
-            background-color: #f8f9fa;
-        }
-
-        .folder-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-transform: uppercase;
-        }
-
-        .theory-folder .folder-title { color: #0056b3; }
-        .safety-folder .folder-title { color: #2e7d32; }
-
-        /* Nút mũi tên đóng/mở */
-        .toggle-icon {
-            font-size: 18px;
-            color: #666;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
         
-        /* Trạng thái mở thư mục */
-        .folder-group.active .toggle-icon {
-            transform: rotate(180deg);
-        }
+        .folder-theory { border-bottom: 8px solid #0056b3; }
+        .folder-safety { border-bottom: 8px solid #2e7d32; }
+        
+        .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .folder-theory:hover { border-color: #0056b3; }
+        .folder-safety:hover { border-color: #2e7d32; }
 
-        /* Danh sách bài học bên trong (Ẩn mặc định) */
-        .folder-content {
-            display: none; /* Ẩn đi khi chưa click */
-            padding: 0 20px 20px 20px;
-            background-color: #fcfcfc;
-            border-top: 1px solid #eee;
-        }
+        .folder-icon { font-size: 65px; margin-bottom: 20px; }
+        .folder-title { font-size: 24px; font-weight: bold; margin: 0 0 10px 0; color: #1a252f; text-transform: uppercase; }
+        .folder-desc { font-size: 15px; color: #666; margin: 0; }
 
-        .folder-group.active .folder-content {
-            display: block; /* Hiện ra khi có class active */
+        /* MÀN HÌNH 2: GIAO DIỆN BÊN TRONG THƯ MỤC */
+        .list-section {
+            display: none;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-top: 6px solid;
+            animation: fadeIn 0.3s ease-in-out;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        #screen-theory { border-top-color: #0056b3; }
+        #screen-safety { border-top-color: #2e7d32; }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #ccc;
+        }
+        
+        .section-title { font-size: 22px; font-weight: bold; margin: 0; text-transform: uppercase; }
+        #screen-theory .section-title { color: #0056b3; }
+        #screen-safety .section-title { color: #2e7d32; }
+
+        .back-btn {
+            background-color: #546e7a;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .back-btn:hover { background-color: #37474f; }
 
         .list-container {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 12px;
         }
 
-        /* Các thẻ bài học */
         .file-link {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            background-color: #ffffff;
-            border-radius: 4px;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid;
+            border-radius: 6px;
             text-decoration: none;
             color: #2c3e50;
-            font-weight: 500;
-            font-size: 15px;
+            font-weight: 600;
+            font-size: 16px;
             transition: all 0.2s ease;
             cursor: pointer;
-            border: 1px solid #e0e0e0;
-        }
-
-        .file-link:hover {
-            background-color: #f0f4f8;
-            border-color: #bbdefb;
-            transform: translateX(6px);
-            color: #0056b3;
         }
         
-        .file-link::before { content: "📄"; margin-right: 12px; opacity: 0.7; }
+        #screen-theory .file-link { border-left-color: #0056b3; }
+        #screen-safety .file-link { border-left-color: #2e7d32; }
+        
+        .file-link:hover {
+            background-color: #e9ecef;
+            border-left-color: #ff8c00; 
+            transform: translateX(8px);
+        }
+        .file-link::before { content: "📄"; margin-right: 15px; font-size: 18px; opacity: 0.8; }
+
+        /* MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU CÓ NÚT BACK */
+        #screen-content {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            z-index: 1000;
+        }
+
+        #doc-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            padding-top: 60px; /* Chừa chỗ cho nút Back */
+            box-sizing: border-box;
+            background-color: white;
+        }
+
+        #btn-close-doc {
+            position: fixed;
+            top: 12px;
+            left: 20px;
+            background-color: #e53935;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        #btn-close-doc:hover { background-color: #c62828; }
 
     </style>
 </head>
@@ -160,70 +215,113 @@
         <p>Máy trưởng - Nhiệt điện Mông Dương 1</p>
     </div>
 
-    <!-- THƯ MỤC 1: LÝ THUYẾT (Thêm class "active" nếu muốn nó mở sẵn lúc mới vào web) -->
-    <div class="folder-group theory-folder active">
-        <div class="folder-header" onclick="toggleFolder(this)">
-            <div class="folder-title"><span>📚</span> Lý Thuyết Chuyên Môn</div>
-            <div class="toggle-icon">▼</div>
+    <!-- MÀN HÌNH 1: HIỂN THỊ 2 THƯ MỤC LỚN -->
+    <div id="screen-home">
+        <div class="folder-card folder-theory" onclick="openFolder('screen-theory')">
+            <div class="folder-icon">📚</div>
+            <h2 class="folder-title">Lý Thuyết Chuyên Môn</h2>
+            <p class="folder-desc">Gồm 16 tài liệu cấu tạo, vận hành và xử lý sự cố thiết bị</p>
         </div>
         
-        <div class="folder-content">
-            <div class="list-container">
-                <a class="file-link" href="Ảnhhưởngchânkhôngbìnhngưng.html">Ảnh hưởng chân không bình ngưng</a>
-                <a class="file-link" href="aplucnhiet.html">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
-                <a class="file-link" href="Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
-                <a class="file-link" href="bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
-                <a class="file-link" href="CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
-                <a class="file-link" href="CácloạitổnthấttronghệthốngTuabinBìnhngưng.html">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
-                <a class="file-link" href="caoápCấutạotácdụngvàsựcốthườnggặp.html">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
-                <a class="file-link" href="Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
-                <a class="file-link" href="Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
-                <a class="file-link" href="Hyddro.html">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
-                <a class="file-link" href="khởi động lạnh.html">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
-                <a class="file-link" href="Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
-                <a class="file-link" href="RunbackhệthốngTuabinvàBOPliênđộng.html">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
-                <a class="file-link" href="Sựcốáplựcdầubôitrơntuabingiảmthấp.html">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
-                <a class="file-link" href="ThủykíchTuabintáchạinguyênnhânvàxửlý.html">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
-                <a class="file-link" href="Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
-            </div>
+        <div class="folder-card folder-safety" onclick="openFolder('screen-safety')">
+            <div class="folder-icon">🛡️</div>
+            <h2 class="folder-title">An Toàn Kỹ Thuật</h2>
+            <p class="folder-desc">Gồm 12 tài liệu quy trình, thủ tục PCT và biện pháp an toàn</p>
         </div>
     </div>
 
-    <!-- THƯ MỤC 2: AN TOÀN KỸ THUẬT -->
-    <div class="folder-group safety-folder">
-        <div class="folder-header" onclick="toggleFolder(this)">
-            <div class="folder-title"><span>🛡️</span> An Toàn Kỹ Thuật</div>
-            <div class="toggle-icon">▼</div>
+    <!-- MÀN HÌNH 2A: THƯ MỤC LÝ THUYẾT -->
+    <div id="screen-theory" class="list-section">
+        <div class="section-header">
+            <h2 class="section-title">📚 Mục: Lý Thuyết</h2>
+            <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
         </div>
-        
-        <div class="folder-content">
-            <div class="list-container">
-                <a class="file-link" href="atbuongdot.html">Quy định về An toàn khi làm việc bên trong buồng đốt và đường khói</a>
-                <a class="file-link" href="atcongtac.html">Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác</a>
-                <a class="file-link" href="athydro.html">An toàn khi làm việc tại khu vực máy phát làm mát bằng khí hydro</a>
-                <a class="file-link" href="atlan.html">Các qui định về an toàn khi lặn</a>
-                <a class="file-link" href="atongtuanhoan.html">Quy định về an toàn khi làm việc trên đường ống nước tuần hoàn</a>
-                <a class="file-link" href="attbquay.html">Quy định về an toàn khi làm việc với thiết bị quay</a>
-                <a class="file-link" href="atthoibui.html">Quy định về an toàn khi vận hành lò hơi và trong quá trình thổi bụi</a>
-                <a class="file-link" href="attrencao.html">Quy định về an toàn khi làm việc trên cao</a>
-                <a class="file-link" href="cachlyvanhanh.html">Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị</a>
-                <a class="file-link" href="chihuytt.html">Trách nhiệm của người cho phép và người Chỉ huy trực tiếp trong PCT</a>
-                <a class="file-link" href="khonggianhanche.html">Quy định về an toàn trong không gian hạn chế và làm việc bên trong bao hơi</a>
-                <a class="file-link" href="pct.html">Thủ tục Cho phép làm việc và bàn giao tại hiện trường theo PCT</a>
-            </div>
+        <div class="list-container">
+            <!-- Đổi thẻ <a> thành dùng hàm mở iframe -->
+            <a class="file-link" onclick="openDoc('Ảnhhưởngchânkhôngbìnhngưng.html')">Ảnh hưởng chân không bình ngưng</a>
+            <a class="file-link" onclick="openDoc('aplucnhiet.html')">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
+            <a class="file-link" onclick="openDoc('Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html')">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
+            <a class="file-link" onclick="openDoc('bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html')">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
+            <a class="file-link" onclick="openDoc('CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html')">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
+            <a class="file-link" onclick="openDoc('CácloạitổnthấttronghệthốngTuabinBìnhngưng.html')">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
+            <a class="file-link" onclick="openDoc('caoápCấutạotácdụngvàsựcốthườnggặp.html')">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
+            <a class="file-link" onclick="openDoc('Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html')">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
+            <a class="file-link" onclick="openDoc('Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
+            <a class="file-link" onclick="openDoc('Hyddro.html')">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
+            <a class="file-link" onclick="openDoc('khởi động lạnh.html')">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
+            <a class="file-link" onclick="openDoc('Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html')">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
+            <a class="file-link" onclick="openDoc('RunbackhệthốngTuabinvàBOPliênđộng.html')">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
+            <a class="file-link" onclick="openDoc('Sựcốáplựcdầubôitrơntuabingiảmthấp.html')">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
+            <a class="file-link" onclick="openDoc('ThủykíchTuabintáchạinguyênnhânvàxửlý.html')">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
+            <a class="file-link" onclick="openDoc('Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html')">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
         </div>
     </div>
 
+    <!-- MÀN HÌNH 2B: THƯ MỤC AN TOÀN -->
+    <div id="screen-safety" class="list-section">
+        <div class="section-header">
+            <h2 class="section-title">🛡️ Mục: An Toàn</h2>
+            <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
+        </div>
+        <div class="list-container">
+            <a class="file-link" onclick="openDoc('atbuongdot.html')">Quy định về An toàn khi làm việc bên trong buồng đốt và đường khói</a>
+            <a class="file-link" onclick="openDoc('atcongtac.html')">Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác</a>
+            <a class="file-link" onclick="openDoc('athydro.html')">An toàn khi làm việc tại khu vực máy phát làm mát bằng khí hydro</a>
+            <a class="file-link" onclick="openDoc('atlan.html')">Các qui định về an toàn khi lặn</a>
+            <a class="file-link" onclick="openDoc('atongtuanhoan.html')">Quy định về an toàn khi làm việc trên đường ống nước tuần hoàn</a>
+            <a class="file-link" onclick="openDoc('attbquay.html')">Quy định về an toàn khi làm việc với thiết bị quay</a>
+            <a class="file-link" onclick="openDoc('atthoibui.html')">Quy định về an toàn khi vận hành lò hơi và trong quá trình thổi bụi</a>
+            <a class="file-link" onclick="openDoc('attrencao.html')">Quy định về an toàn khi làm việc trên cao</a>
+            <a class="file-link" onclick="openDoc('cachlyvanhanh.html">Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị</a>
+            <a class="file-link" onclick="openDoc('chihuytt.html')">Trách nhiệm của người cho phép và người Chỉ huy trực tiếp trong PCT</a>
+            <a class="file-link" onclick="openDoc('khonggianhanche.html')">Quy định về an toàn trong không gian hạn chế và làm việc bên trong bao hơi</a>
+            <a class="file-link" onclick="openDoc('pct.html')">Thủ tục Cho phép làm việc và bàn giao tại hiện trường theo PCT</a>
+        </div>
+    </div>
 </div>
 
-<!-- JAVASCRIPT ĐIỀU KHIỂN ĐÓNG/MỞ THƯ MỤC -->
+<!-- MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU CÓ SẴN NÚT BACK -->
+<div id="screen-content">
+    <button id="btn-close-doc" onclick="closeDoc()">⬅ QUAY LẠI DANH MỤC</button>
+    <iframe id="doc-iframe" src=""></iframe>
+</div>
+
+<!-- JAVASCRIPT ĐIỀU KHIỂN CHUYỂN TRANG -->
 <script>
-    function toggleFolder(headerElement) {
-        // Lấy thẻ div .folder-group bao bọc bên ngoài
-        const folderGroup = headerElement.parentElement;
+    let currentFolderId = ''; // Ghi nhớ thư mục đang xem
+
+    // Mở thư mục
+    function openFolder(folderId) {
+        currentFolderId = folderId;
+        document.getElementById('screen-home').style.display = 'none';
+        document.getElementById('screen-theory').style.display = 'none';
+        document.getElementById('screen-safety').style.display = 'none';
         
-        // Bật/tắt class 'active' để đóng mở CSS
-        folderGroup.classList.toggle('active');
+        document.getElementById(folderId).style.display = 'block';
+        window.scrollTo(0, 0); 
+    }
+
+    // Quay lại trang chủ chọn 2 thư mục
+    function goBackToHome() {
+        document.getElementById('screen-theory').style.display = 'none';
+        document.getElementById('screen-safety').style.display = 'none';
+        
+        document.getElementById('screen-home').style.display = 'grid'; 
+    }
+
+    // Mở bài học (Hiện Iframe đè lên toàn màn hình)
+    function openDoc(filename) {
+        document.getElementById('doc-iframe').src = filename;
+        document.getElementById('main-wrapper').style.display = 'none';
+        document.getElementById('screen-content').style.display = 'block';
+    }
+
+    // Nút Back tắt bài học (Trả về lại thư mục đang xem)
+    function closeDoc() {
+        document.getElementById('doc-iframe').src = "";
+        document.getElementById('screen-content').style.display = 'none';
+        document.getElementById('main-wrapper').style.display = 'block';
+        openFolder(currentFolderId); // Tự động mở lại đúng cái thư mục lúc nãy
     }
 </script>
 
