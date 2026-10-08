@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</title>
+<style>
+  :root{
+    --primary: #0b5394;
+    --primary-dark: #073b6b;
+    --primary-light: #e8f0fb;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --warning: #f39c12;
+    --warning-light: #fff8e1;
+    --success: #27ae60;
+    --success-light: #e8f8ef;
+    --border: #d0d7de;
+    --bg: #f7f9fc;
+    --text: #1f2328;
+    --muted: #57606a;
+  }
+  *{box-sizing: border-box;}
+  body{
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .container{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+  header{
+    background: linear-gradient(135deg, #7b0d0d 0%, #c0392b 50%, #e74c3c 100%);
+    color: #fff;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 24px rgba(192,57,43,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before{
+    content: "⚠";
+    position: absolute;
+    font-size: 14rem;
+    opacity: 0.08;
+    top: -30px;
+    right: 20px;
+    line-height: 1;
+  }
+  header h1{
+    margin: 0 0 12px;
+    font-size: 1.7rem;
+    line-height: 1.35;
+    position: relative;
+  }
+  header .subtitle{
+    margin: 0;
+    opacity: 0.96;
+    font-size: 1rem;
+    font-style: italic;
+    position: relative;
+  }
+  header .scope{
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    position: relative;
+  }
+  h2{
+    color: var(--primary);
+    border-left: 5px solid var(--primary);
+    padding-left: 14px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+  h3{
+    color: var(--primary-dark);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.14rem;
+  }
+  h4{
+    color: #1a4d80;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 1.02rem;
+  }
+  p{margin: 10px 0;}
+  ul, ol{margin: 8px 0 12px; padding-left: 24px;}
+  li{margin: 6px 0;}
+  code{
+    background: #eef2f7;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    color: #b83280;
+    white-space: nowrap;
+  }
+  .section-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .callout{
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+  }
+  .callout.warning{
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+  }
+  .callout.danger{
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .callout.success{
+    background: var(--success-light);
+    border-left-color: var(--success);
+  }
+  .callout strong{color: var(--primary-dark);}
+  .callout.danger strong{color: var(--accent);}
+  .callout.warning strong{color: #b9770e;}
+  .callout.success strong{color: #1e8449;}
+
+  .params-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .param-box{
+    background: linear-gradient(135deg, #f4f8fd 0%, #e8f0fb 100%);
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+  }
+  .param-box .label{
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .param-box .value{
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-family: "Consolas", monospace;
+  }
+  .param-box.danger{border-left-color: var(--accent); background: linear-gradient(135deg, #fdf3f2 0%, #fdecea 100%); border-color: #f5c6c0;}
+  .param-box.danger .value{color: var(--accent);}
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    font-size: 0.93rem;
+  }
+  thead{
+    background: var(--primary);
+    color: #fff;
+  }
+  th, td{
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even){background: #f4f7fb;}
+  tbody tr:hover{background: #e8f0fb;}
+  th{font-weight: 600; font-size: 0.9rem;}
+  td code{font-size: 0.85em;}
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 6px;
+    color: #fff;
+  }
+  .badge.blue{background: var(--primary);}
+  .badge.red{background: var(--accent);}
+  .badge.green{background: var(--success);}
+  .badge.orange{background: var(--warning);}
+  .badge.gray{background: #6b7280;}
+
+  .phase{
+    background: #fff;
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 26px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .phase-header{
+    padding: 16px 22px;
+    color: #fff;
+    font-size: 1.12rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .phase-header.phase-1{background: linear-gradient(135deg, #0b5394 0%, #1a73c9 100%);}
+  .phase-header.phase-2{background: linear-gradient(135deg, #7b0d0d 0%, #c0392b 100%);}
+  .phase-num{
+    background: rgba(255,255,255,0.25);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .phase-body{
+    padding: 18px 24px 8px;
+  }
+
+  .step{
+    background: #f9fbfd;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border-left: 5px solid var(--primary);
+  }
+  .step-title{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+  .step-num{
+    background: var(--primary);
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .step.danger{border-left-color: var(--accent); background: #fef7f6;}
+  .step.danger .step-num{background: var(--accent);}
+  .step.danger .step-title{color: var(--accent);}
+  .step.warning{border-left-color: var(--warning); background: #fffcf5;}
+  .step.warning .step-num{background: var(--warning);}
+  .step.warning .step-title{color: #b9770e;}
+
+  .emergency-box{
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    color: #fff;
+    padding: 22px 26px;
+    border-radius: 10px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192,57,43,0.3);
+  }
+  .emergency-box h3{
+    color: #fff;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+  }
+  .emergency-box h3::before{
+    content: "⚠";
+    font-size: 1.5rem;
+  }
+  .emergency-box p{margin: 10px 0;}
+  .emergency-box strong{color: #ffe082;}
+
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc h3{
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc ol{
+    margin: 0;
+    padding-left: 22px;
+    columns: 2;
+    column-gap: 30px;
+  }
+  .toc li{
+    margin: 5px 0;
+    break-inside: avoid;
+  }
+  .toc a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .toc a:hover{
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .role-table th:nth-child(1){width: 15%;}
+  .role-table th:nth-child(2){width: 42.5%;}
+  .role-table th:nth-child(3){width: 42.5%;}
+  .role-table td strong{color: var(--primary-dark);}
+
+  .recovery-list{
+    counter-reset: rec;
+    list-style: none;
+    padding-left: 0;
+  }
+  .recovery-list li{
+    counter-increment: rec;
+    position: relative;
+    padding: 14px 18px 14px 60px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .recovery-list li::before{
+    content: counter(rec);
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  @media(max-width: 720px){
+    header h1{font-size: 1.25rem;}
+    header::before{font-size: 8rem; top: 10px;}
+    h2{font-size: 1.15rem;}
+    table{font-size: 0.82rem;}
+    th, td{padding: 9px 10px;}
+    .toc ol{columns: 1;}
+    .phase-body{padding: 14px 16px 6px;}
+    .step{padding: 12px 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout) kết hợp máy phát Diesel sự cố không khởi động và mất hoàn toàn nguồn điện AC – DC</h1>
+    <p class="subtitle">Hiện tượng – Diễn biến – Phân công – Phục hồi</p>
+    <span class="scope">Áp dụng cho Tổ máy nhiệt điện đốt than công suất 500 MW<br>Chuẩn hóa theo tiêu chuẩn ISO 80000</span>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Tổng quan tình trạng thiết bị và thông số định mức</a></li>
+      <li><a href="#s2">Diễn biến và quy trình xử lý sự cố theo trục thời gian</a></li>
+      <li><a href="#s3">Bảng phân công thao tác của các chức danh</a></li>
+      <li><a href="#s4">Quy trình phục hồi hệ thống khi tiếp nhận nguồn cứu hộ</a></li>
+    </ol>
+  </div>
+
+  <!-- I -->
+  <section id="s1">
+    <h2>I. Tổng quan tình trạng thiết bị và thông số định mức theo chuẩn ISO</h2>
+    <div class="section-card">
+      <p>Sự cố mất điện toàn nhà máy (Blackout) kết hợp tình huống máy phát điện Diesel sự cố (EDG) không vào làm việc và hệ thống ắc quy nguồn điện một chiều (DC) cạn kiệt là kịch bản sự cố kỹ thuật nghiêm trọng bậc nhất.</p>
+
+      <p>Khi cả nguồn điện xoay chiều (AC) và nguồn điện một chiều (DC) đều mất, toàn bộ các bơm dầu thủy lực, dầu bôi trơn, dầu chèn, hệ thống khí nén điều khiển và hệ thống đo lường điều khiển phân tán (DCS) đều dừng làm việc hoàn toàn. Hai mối nguy cơ cấp bách đe dọa an toàn tổ máy bao gồm:</p>
+
+      <div class="callout danger">
+        <strong>Nguy cơ cháy nổ buồng máy phát điện:</strong> Mất màng dầu chèn khiến khí Hydro (H₂) áp lực cao (~5,17 bar) rò rỉ ồ ạt qua vành chèn trục ra ngoài gối trục và buồng dầu, tiếp xúc với không khí tạo hỗn hợp nổ.
+      </div>
+
+      <div class="callout warning">
+        <strong>Nguy cơ biến dạng và cong vĩnh viễn trục Rotor Tuabin:</strong> Rotor tuabin quay quán tính giảm tốc trong điều kiện ma sát khô; nhiệt tích tụ lớn trong xilanh cao – trung áp (300 °C – 500 °C) gây cong võng trục do nhiệt.
+      </div>
+
+      <h3>Các thông số giới hạn cần kiểm soát</h3>
+      <div class="params-grid">
+        <div class="param-box">
+          <span class="label">Áp lực khí Hydro trong máy phát</span>
+          <span class="value">~ 5,17 bar</span>
+        </div>
+        <div class="param-box">
+          <span class="label">Áp lực dầu bôi trơn DC</span>
+          <span class="value">≈ 3,2 bar</span>
+        </div>
+        <div class="param-box danger">
+          <span class="label">Ngưỡng bảo vệ áp lực dầu gối trục</span>
+          <span class="value">≥ 1,21 bar</span>
+        </div>
+        <div class="param-box">
+          <span class="label">Áp lực đầu đẩy bơm dầu chèn DC (ESOP)</span>
+          <span class="value">≈ 11 bar</span>
+        </div>
+        <div class="param-box">
+          <span class="label">Chênh áp dầu chèn – Hydro tối thiểu</span>
+          <span class="value">ΔP ≥ 0,41 bar</span>
+        </div>
+        <div class="param-box">
+          <span class="label">Nhiệt độ xilanh cao – trung áp</span>
+          <span class="value">300 °C – 500 °C</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- II -->
+  <section id="s2">
+    <h2>II. Diễn biến và quy trình xử lý sự cố theo trục thời gian</h2>
+
+    <!-- GIAI ĐOẠN 1 -->
+    <div class="phase">
+      <div class="phase-header phase-1">
+        <span class="phase-num">1</span>
+        <span>Mất điện AC toàn nhà máy – Vận hành bảo vệ bằng nguồn DC 220 V từ ắc quy</span>
+      </div>
+      <div class="phase-body">
+        <p>Ngay khi hệ thống mất điện lưới, tuabin trip và máy phát Diesel không tự động hòa vào thanh cái thành công:</p>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">1</span>
+            <span>Kiểm tra bơm dầu sự cố DC</span>
+          </div>
+          <ul>
+            <li>Máy trưởng lệnh Máy phó kiểm tra tại chỗ sự làm việc của bơm dầu bôi trơn DC. Xác nhận bơm đã chạy (áp lực dầu bôi trơn đạt ≈ 3,2 bar, dòng điện định mức ≈ 90 A), <strong>tuyệt đối không để áp lực dầu gối trục tụt dưới ngưỡng bảo vệ 1,21 bar</strong>.</li>
+            <li>Kiểm tra bơm dầu chèn sự cố DC (ESOP) tự động làm việc (áp lực đầu đẩy ≈ 11 bar, dòng điện ≈ 55 A), duy trì chênh áp dầu chèn – Hydro <strong>ΔP ≥ 0,41 bar</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">2</span>
+            <span>Phá hoại chân không bình ngưng cưỡng bức</span>
+          </div>
+          <p>Do mất toàn bộ bơm tuần hoàn, bơm ngưng và bơm chân không, Máy trưởng lệnh Máy phó mở ngay <strong>02 van phá hoại chân không bình ngưng bằng tay tại chỗ</strong>.</p>
+          <div class="callout">
+            <strong>Mục đích:</strong>
+            <ul style="margin-bottom:0;">
+              <li>Tăng lực cản không khí lên các tầng cánh cuối LP để hãm nhanh tốc độ rotor về 0 v/min, rút ngắn thời gian tiêu hao dầu bôi trơn DC.</li>
+              <li>Triệt tiêu chênh áp ngăn dòng hơi/nước ngược vào tuabin.</li>
+            </ul>
+          </div>
+          <p>Kiểm tra xác nhận bằng mắt tại chỗ: các van hơi chính (MSV), van điều chỉnh (CV), cụm van tái nhiệt (RSV, IV) và các van một chiều hơi trích đã đóng kín hoàn toàn.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">3</span>
+            <span>Thao tác hệ thống van xả đọng và hơi chèn</span>
+          </div>
+          <ul>
+            <li>Mở toàn bộ các van xả đọng thân tuabin, xả đọng đường ống hơi chính, hơi tái nhiệt nóng, tái nhiệt lạnh và đường hơi trích để xả kiệt nước đọng và hơi dư thừa.</li>
+            <li>Khi áp suất bình ngưng giảm về áp suất khí quyển (0 kPa hay 0 bar), <strong>lập tức đóng toàn bộ van cấp hơi chèn trục</strong> để tránh không khí ẩm tràn vào làm lạnh cục bộ gây cong trục.</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">4</span>
+            <span>Đưa cơ cấu vần trục bằng tay vào làm việc</span>
+          </div>
+          <p>Khi tốc độ rotor tuabin đã giảm hoàn toàn về 0 v/min, do mất điện AC động cơ quay trục không chạy, Máy phó tiến hành lắp cần vần trục thủ công, định kỳ quay trục <strong>180° (hoặc 90°)</strong> để chống biến dạng nhiệt.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">5</span>
+            <span>Tiết kiệm tối đa dung lượng ắc quy DC</span>
+          </div>
+          <p>Phối hợp Trưởng kíp Điện sa thải các phụ tải chiếu sáng, điều khiển không thiết yếu, bảo toàn năng lượng cho bơm dầu bôi trơn DC và bơm dầu chèn DC.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GIAI ĐOẠN 2 -->
+    <div class="phase">
+      <div class="phase-header phase-2">
+        <span class="phase-num">2</span>
+        <span>Cạn kiệt toàn bộ nguồn điện DC (Mất hoàn toàn AC và DC)</span>
+      </div>
+      <div class="phase-body">
+        <p>Khi nguồn ắc quy DC cạn kiệt, các bơm dầu DC dừng hoạt động hoàn toàn, hệ thống DCS mất điện, toàn bộ quy trình chuyển sang trạng thái thao tác cơ khí thủ công khẩn cấp tại chỗ:</p>
+
+        <div class="step danger">
+          <div class="step-title">
+            <span class="step-num">1</span>
+            <span>Khẩn cấp xả khí Hydro (H₂) trong thân máy phát ra khí quyển</span>
+          </div>
+          <div class="callout danger">
+            <strong>Mối nguy hiểm cao nhất:</strong> Khi bơm dầu chèn DC dừng, màng dầu làm kín vành chèn biến mất. Khí Hydro áp lực cao (~5,17 bar) sẽ thoát ồ ạt qua vành chèn vào gối trục, tiếp xúc không khí gây cháy nổ gian máy phát.
+          </div>
+          <ul>
+            <li><strong>Hành động tức thời:</strong> Máy trưởng phối hợp Trực chính Điện chạy ngay đến cụm van nạp/xả khí máy phát, mở hết cỡ các van xả khí Hydro bằng tay ra ngoài trời (qua đường ống xả an toàn trên mái) để xả áp suất buồng máy phát về 0 bar.</li>
+            <li>Nếu có hệ thống chai CO₂ độc lập (mở tay cơ khí), tiến hành nạp CO₂ trơ hóa thân máy phát. <strong>Cấm phát sinh tia lửa điện, ma sát cơ học quanh đầu trục máy phát.</strong></li>
+          </ul>
+        </div>
+
+        <div class="step danger">
+          <div class="step-title">
+            <span class="step-num">2</span>
+            <span>Ứng phó mài mòn bạc gối trục khi rotor đang quay quán tính</span>
+          </div>
+          <ul>
+            <li>Do bơm DC đã dừng, màng dầu thủy động biến mất. Cổ trục tuabin sẽ cọ sát khô trực tiếp lên lớp hợp kim ba-bít (babbitt) của các bạc lót.</li>
+            <li>Nhờ việc đã phá chân không bình ngưng từ trước, lực cản không khí giúp rotor dừng hẳn về 0 v/min trong thời gian ngắn.</li>
+            <li><strong>Nguyên tắc kỹ thuật:</strong> Hợp kim ba-bít mềm hơn thép trục, chịu nóng chảy/mài mòn để bảo vệ ngõng trục tuabin không bị xước sâu hay nứt gãy.</li>
+          </ul>
+        </div>
+
+        <div class="step warning">
+          <div class="step-title">
+            <span class="step-num">3</span>
+            <span>Quy định về vần trục thủ công khi KHÔNG CÓ DẦU BÔI TRƠN</span>
+          </div>
+          <p>Sau khi rotor đã dừng về 0 v/min, xilanh vẫn ở nhiệt độ cao (300 °C – 500 °C).</p>
+          <div class="emergency-box">
+            <h3>NGUYÊN TẮC TUYỆT ĐỐI</h3>
+            <p><strong>TUYỆT ĐỐI KHÔNG DÙNG ĐÒN BẨY CƯỠNG BỨC ÉP QUAY TRỤC.</strong></p>
+            <p>Do không có áp lực dầu nâng trục (jacking oil) và dầu bôi trơn, trục tì trực tiếp lên bạc lót. Nếu cố tình dùng đòn bẩy dài hoặc tời cơ khí để ép vần trục, cổ trục sẽ bị cày xước hoặc kẹt dính kim loại.</p>
+          </div>
+          <h4>Thao tác kiểm tra</h4>
+          <p>Thử đưa tay vần trục vào lắc nhẹ bằng lực tay bình thường:</p>
+          <ul>
+            <li><span class="badge green">OK</span> <strong>Nếu trục còn quay được bằng lực tay nhẹ nhàng:</strong> Nhích nhẹ trục 180° chậm rãi để đảo vị trí bề mặt trục, sau đó dừng lại.</li>
+            <li><span class="badge red">STOP</span> <strong>Nếu cảm thấy có lực cản cơ khí lớn hoặc trục đã bị mút chặt (kẹt ma sát khô):</strong> DỪNG NGAY LẬP TỨC, tháo cơ cấu đòn bẩy, giữ nguyên trạng thái rotor đứng yên.</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">4</span>
+            <span>Khóa chặn cơ khí toàn bộ nguồn nhiệt và làm mát tự nhiên</span>
+          </div>
+          <ul>
+            <li>Dùng tay quay cơ khí siết chặt ty van các van hơi chính (MSV), van điều chỉnh (CV), cụm van tái nhiệt (RSV, IV) và các van trích hơi để đảm bảo không có hơi nóng lọt vào buồng cánh.</li>
+            <li>Kiểm tra toàn bộ các van xả đọng thân và đường ống hơi mở hoàn toàn để thoát kiệt nhiệt dư.</li>
+            <li>Mở toàn bộ cửa thông gió tự nhiên tầng tuabin, tháo/mở nắp tôn bảo vệ khu vực gối trục để tăng khả năng đối lưu không khí làm nguội gối trục.</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <div class="step-title">
+            <span class="step-num">5</span>
+            <span>Tập trung phương án cứu hộ nguồn điện khẩn cấp từ bên ngoài</span>
+          </div>
+          <p>Báo cáo khẩn cấp Lãnh đạo điều động xe máy phát điện di động để đấu nối cấp nguồn cưỡng bức cho tủ nạp và thanh cái ắc quy DC.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- III -->
+  <section id="s3">
+    <h2>III. Bảng phân công thao tác của các chức danh (chuẩn hóa theo ISO)</h2>
+    <div style="overflow-x:auto;">
+      <table class="role-table">
+        <thead>
+          <tr>
+            <th>Chức danh</th>
+            <th>Giai đoạn 1 (Nguồn ắc quy DC 220 V)</th>
+            <th>Giai đoạn 2 (Cạn sạch nguồn DC &amp; AC)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Máy trưởng</strong></td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                <li>Chỉ huy chung phân xưởng tuabin.</li>
+                <li>Xác nhận tác động Trip tuabin.</li>
+                <li>Lệnh Máy phó kiểm tra bơm dầu bôi trơn DC, bơm dầu chèn DC.</li>
+                <li>Lệnh Máy phó mở 02 van phá chân không bình ngưng.</li>
+                <li>Phối hợp Trưởng kíp Điện giám sát thông số Hydro và phụ tải DC.</li>
+              </ul>
+            </td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                <li>Phối hợp khẩn cấp Trưởng kíp Điện lệnh mở van tay xả sạch khí Hydro máy phát ra ngoài trời.</li>
+                <li>Chỉ đạo phương án cách ly cơ khí nguồn hơi vào tuabin.</li>
+                <li>Báo cáo khẩn cấp Lãnh đạo Nhà máy tình trạng mất hoàn toàn AC/DC, đề nghị cấp xe phát điện di động cứu hộ.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Máy phó</strong></td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                <li>Kiểm tra tại chỗ bơm dầu bôi trơn DC (khởi động tay nếu bơm không tự chạy).</li>
+                <li>Kiểm tra tại chỗ bơm dầu chèn DC (ESOP).</li>
+                <li>Mở trực tiếp 02 van phá chân không bình ngưng tại hiện trường.</li>
+                <li>Mở toàn bộ van xả đọng tuabin, đóng van cấp hơi chèn khi Pk = 0 kPa.</li>
+                <li>Lắp cần vần trục thủ công khi tốc độ về 0 v/min.</li>
+              </ul>
+            </td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                <li>Thực hiện mở van tay xả khí Hydro máy phát theo lệnh.</li>
+                <li>Thử nhích cần vần trục bằng lực tay nhẹ; nếu kẹt ma sát khô thì dừng ngay, tuyệt đối không dùng đòn bẩy ép vần trục.</li>
+                <li>Dùng tay quay cơ khí siết chặt ty các van hơi chính, van điều chỉnh, van tái nhiệt.</li>
+                <li>Mở nắp bảo vệ, tăng cường thông gió làm mát tự nhiên gối trục.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Trực ca Điện</strong></td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                <li>Sa thải các phụ tải DC không quan trọng để duy trì nguồn cho bơm dầu DC.</li>
+                <li>Tập trung xử lý sự cố máy phát Diesel (EDG).</li>
+              </ul>
+            </td>
+            <td>
+              <ul style="margin:0;padding-left:18px;">
+                <li>Trực tiếp thao tác cụm van xả khí Hydro máy phát ra ngoài trời.</li>
+                <li>Chuẩn bị sẵn sàng cáp đấu nối để tiếp nhận nguồn từ xe máy phát điện di động cứu hộ.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- IV -->
+  <section id="s4">
+    <h2>IV. Quy trình phục hồi hệ thống khi tiếp nhận nguồn cứu hộ</h2>
+    <div class="section-card">
+      <ol class="recovery-list">
+        <li>
+          <strong>Khởi động lại bơm dầu bôi trơn DC:</strong> Ngay khi xe máy phát điện di động đấu nối thành công cấp điện lại cho thanh cái DC, lập tức khởi động lại bơm dầu bôi trơn DC để cấp dầu làm mát và tái lập màng dầu bôi trơn cho các gối trục tuabin.
+        </li>
+        <li>
+          <strong>Khởi động bơm dầu nâng trục (Jacking Oil Pump):</strong> Khi có lại nguồn xoay chiều AC, khởi động bơm dầu nâng trục để nâng trục rotor nổi lên khỏi bề mặt bạc lót.
+        </li>
+        <li>
+          <strong>Đưa hệ thống vần trục vào quay trở lại:</strong> Khi màng dầu bôi trơn và áp lực nâng trục đã được thiết lập đầy đủ tại tất cả các gối đỡ, mới tiến hành đưa hệ thống vần trục (bằng tay hoặc bằng động cơ điện) vào quay trục trở lại.
+        </li>
+        <li>
+          <strong>Kiểm tra và đánh giá toàn diện:</strong> Tiến hành kiểm tra độ đảo trục, độ võng rotor, kiểm tra chênh lệch nhiệt độ thân trên/dưới xilanh (&lt; 42 °C). Duy trì vần trục liên tục ít nhất <strong>4 h</strong> và đánh giá toàn diện tình trạng bạc lót trước khi xem xét điều kiện khởi động lại tổ máy.
+        </li>
+      </ol>
+
+      <div class="callout success">
+        <strong>Nguyên tắc chung:</strong> Ưu tiên tuyệt đối an toàn con người và thiết bị. Trong mọi tình huống, phải tuân thủ nghiêm ngặt quy trình, phối hợp chặt chẽ giữa các ca trực và báo cáo kịp thời cho chỉ huy.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Quy trình xử lý sự cố khẩn cấp – Blackout kết hợp EDG failure &amp; mất hoàn toàn AC – DC<br>
+    Áp dụng cho tổ máy nhiệt điện đốt than 500 MW – Chuẩn ISO 80000
+  </footer>
+
+</div>
+</body>
+</html>
