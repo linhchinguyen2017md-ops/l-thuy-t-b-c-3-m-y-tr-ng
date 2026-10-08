@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Thủ tục Cho phép làm việc và Bàn giao tại hiện trường theo PCT và An toàn trong thời gian thực hiện công tác</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f0fe 0%, #d4e4f7 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 40, 100, 0.15);
+            overflow: hidden;
+            border: 1px solid #c5d9ec;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #0b3d6e 0%, #1a5fa0 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.85;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #0b3d6e;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #f0f7ff;
+            border-left: 5px solid #1a5fa0;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #2a4a6b;
+        }
+
+        .intro-box strong {
+            color: #0b3d6e;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #d0e2f5;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #0b3d6e, #1a5fa0);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(26, 95, 160, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0b3d6e;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 30px;
+        }
+
+        .sub-section h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a5fa0;
+            margin-bottom: 14px;
+            padding-left: 4px;
+            border-left: 4px solid #1a5fa0;
+            padding-left: 12px;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fafcfe;
+            border: 1px solid #dce9f5;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 14px;
+            position: relative;
+            padding-left: 52px;
+            transition: all 0.25s ease;
+        }
+
+        .item-list li:hover {
+            border-color: #a8c8e8;
+            box-shadow: 0 4px 16px rgba(26, 95, 160, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 22px;
+            width: 10px;
+            height: 10px;
+            background: #1a5fa0;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(26, 95, 160, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #0b3d6e;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.98rem;
+        }
+
+        .item-list li .item-desc {
+            color: #3a5a7a;
+            font-size: 0.93rem;
+        }
+
+        /* ===== SUB-ITEMS ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 24px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.92rem;
+            color: #3a5a7a;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: auto;
+            height: auto;
+            background: none;
+            color: #1a5fa0;
+            font-size: 0.85rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #0b3d6e;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #d0e2f5;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #0b3d6e, #1a5fa0);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a6b;
+            border-bottom: 1px solid #e8f0f8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #f7fbff;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #eef6fd;
+        }
+
+        .summary-table .stage-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #0b3d6e;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #f0f5fa;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #dce9f5;
+            font-size: 0.85rem;
+            color: #6a8aaa;
+        }
+
+        .report-footer strong {
+            color: #0b3d6e;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { width: 38px; height: 38px; font-size: 1rem; }
+            .item-list li { padding: 14px 16px 14px 44px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.82rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Thủ tục Cho phép làm việc và Bàn giao tại hiện trường theo PCT và An toàn trong thời gian thực hiện công tác</h1>
+        <p class="subtitle">Quy trình phối hợp giữa Đơn vị Quản lý Vận hành (QLVH) và Đơn vị Công tác (ĐVCT)</p>
+        <span class="legal-badge">📋 Điều 6 &amp; Điều 7 – Phiếu Công tác (PCT)</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Thủ tục cho phép làm việc và bàn giao tại hiện trường là
+            <strong>ranh giới pháp lý và kỹ thuật quan trọng nhất</strong> giữa Đơn vị Quản lý Vận hành (QLVH)
+            và Đơn vị Công tác (ĐVCT). Tại hiện trường, <strong>Người cho phép</strong> phải phối hợp trực tiếp
+            cùng <strong>Người chỉ huy trực tiếp (CHTT)</strong> tiến hành kiểm tra, bàn giao theo đúng
+            <strong>02 giai đoạn</strong> quy định. Bên cạnh đó, các biện pháp an toàn trong suốt thời gian
+            thực hiện công tác cũng được quy định chặt chẽ nhằm đảm bảo an toàn tuyệt đối cho người và thiết bị.
+        </div>
+
+        <!-- ===== PHẦN 1: ĐIỀU 6 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2>Thủ tục Cho phép làm việc và Bàn giao tại hiện trường theo PCT</h2>
+            </div>
+
+            <p style="color:#3a5a7a; margin-bottom:20px; font-size:0.95rem;">
+                Thủ tục cho phép làm việc và bàn giao tại hiện trường là ranh giới pháp lý và kỹ thuật quan trọng nhất
+                giữa Đơn vị quản lý vận hành (QLVH) và Đơn vị công tác (ĐVCT). Tại hiện trường, Người cho phép phải
+                phối hợp trực tiếp cùng Người chỉ huy trực tiếp (CHTT) tiến hành kiểm tra, bàn giao theo đúng
+                02 giai đoạn quy định:
+            </p>
+
+            <!-- Giai đoạn 1 -->
+            <div class="sub-section">
+                <h3>1. Kiểm tra an toàn trước khi thực hiện công tác</h3>
+                <p style="color:#3a5a7a; margin-bottom:14px; font-size:0.95rem;">
+                    Người cho phép <strong>trực tiếp dẫn giải và chỉ dẫn cụ thể</strong> cho Người CHTT tại hiện trường:
+                </p>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Chỉ dẫn phạm vi được phép làm việc</span>
+                        <span class="item-desc">
+                            Xác định rõ ràng ranh giới vật lý, vị trí đặt thiết bị cần sửa chữa, bảo dưỡng;
+                            các khu vực xung quanh và giới hạn di chuyển an toàn.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Cảnh báo yếu tố nguy hiểm</span>
+                        <span class="item-desc">
+                            Chỉ dẫn chi tiết các mối nguy hiện hữu và tiềm ẩn:
+                            <ul class="sub-list">
+                                <li>Thiết bị lân cận đang mang điện</li>
+                                <li>Áp lực hơi nóng, đường ống nước nóng</li>
+                                <li>Bồn bể hóa chất, khí độc hại</li>
+                                <li>Không gian hạn chế</li>
+                            </ul>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Kiểm tra hiện trạng biện pháp an toàn</span>
+                        <span class="item-desc">
+                            Đối soát thực tế các biện pháp an toàn đã thực hiện theo PCT:
+                            <ul class="sub-list">
+                                <li>Cắt điện động cơ</li>
+                                <li>Khóa chốt van chặn từ mọi phía</li>
+                                <li>Xả áp suất, làm nguội môi chất</li>
+                                <li>Đặt rào chắn, treo biển cảnh báo <em>"Cấm thao tác! Có người đang làm việc"</em></li>
+                            </ul>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Giai đoạn 2 -->
+            <div class="sub-section">
+                <h3>2. Tiếp nhận hiện trường và cho phép Đơn vị công tác bắt đầu làm việc</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Kiểm tra và ký bàn giao</span>
+                        <span class="item-desc">
+                            Người CHTT trực tiếp kiểm tra, đối chiếu và xác nhận Người cho phép đã thực hiện
+                            đầy đủ, chính xác các biện pháp an toàn theo yêu cầu của PCT. Khi đồng ý tiếp nhận
+                            hiện trường, Người cho phép ghi rõ <strong>ngày, giờ</strong> và ký xác nhận vào PCT
+                            <strong>(ký 02 bản giấy)</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Thực hiện biện pháp an toàn của Đơn vị công tác</span>
+                        <span class="item-desc">
+                            Sau khi có chữ ký của Người cho phép, Người CHTT tiếp quản hiện trường, chỉ huy
+                            làm thêm các biện pháp an toàn phụ trợ thuộc trách nhiệm đơn vị:
+                            <ul class="sub-list">
+                                <li>Chăng dây cảnh báo phụ</li>
+                                <li>Lắp tiếp địa di động</li>
+                                <li>Kiểm tra hệ thống thông gió / chiếu sáng an toàn</li>
+                                <li>Giá đỡ, giàn giáo</li>
+                            </ul>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Phổ biến an toàn &amp; Kiểm tra PTBVCN</span>
+                        <span class="item-desc">
+                            Người CHTT phổ biến cụ thể nội dung công việc, phân công nhiệm vụ, cảnh báo mối nguy,
+                            kiểm tra thể trạng sức khỏe và trang bị phương tiện bảo vệ cá nhân (PTBVCN) chuyên dụng
+                            của toàn thể nhân viên công tác.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Ký nhận nhân viên và Lệnh khởi công</span>
+                        <span class="item-desc">
+                            Toàn bộ Nhân viên tham gia công tác ký xác nhận vào <strong>Mục 3.3</strong> của PCT.
+                            Công việc chỉ chính thức được phép bắt đầu khi Người CHTT ký xác nhận vào
+                            <strong>Mục 2.2</strong> trên cả 02 bản PCT.
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>
+                        <strong>Lưu ý quan trọng:</strong> Công việc <strong>chỉ chính thức được phép bắt đầu</strong>
+                        khi Người CHTT ký xác nhận vào Mục 2.2 trên <strong>cả 02 bản PCT</strong>. Mọi trường hợp
+                        tự ý khởi công khi chưa hoàn tất thủ tục bàn giao đều bị coi là vi phạm nghiêm trọng.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bảng tổng hợp Điều 6 -->
+            <div class="sub-section">
+                <h3>Bảng tổng hợp trách nhiệm theo giai đoạn</h3>
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th style="width:14%;">Giai đoạn</th>
+                            <th style="width:28%;">Nội dung chính</th>
+                            <th style="width:29%;">Người cho phép (QLVH)</th>
+                            <th style="width:29%;">Người CHTT (ĐVCT)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="stage-badge">1</span></td>
+                            <td><strong>Kiểm tra an toàn trước công tác</strong></td>
+                            <td>Dẫn giải, chỉ dẫn phạm vi; cảnh báo nguy hiểm; đối soát biện pháp an toàn theo PCT.</td>
+                            <td>Tiếp nhận thông tin, nắm rõ hiện trường và các mối nguy.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="stage-badge">2</span></td>
+                            <td><strong>Tiếp nhận &amp; cho phép làm việc</strong></td>
+                            <td>Ghi ngày giờ, ký xác nhận PCT (02 bản).</td>
+                            <td>Kiểm tra, ký nhận; làm biện pháp an toàn phụ trợ; phổ biến an toàn; kiểm tra PTBVCN; ký Mục 2.2 &amp; 3.3.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN 2: ĐIỀU 7 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2>Biện pháp an toàn trong thời gian thực hiện công tác</h2>
+            </div>
+
+            <!-- 1. Giám sát an toàn liên tục -->
+            <div class="sub-section">
+                <h3>1. Quy định về Giám sát An toàn liên tục</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Người CHTT</span>
+                        <span class="item-desc">
+                            Có trách nhiệm giám sát an toàn liên tục trong suốt thời gian làm việc đối với nhân viên
+                            công tác tại vị trí phân công; kiểm soát hành vi, ngăn ngừa các vi phạm quy trình kỹ thuật.
+                            Người CHTT chỉ được phép rời khỏi hiện trường khi có người thay thế hợp lệ được bổ nhiệm
+                            và xác nhận.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Người Lãnh đạo công việc (LĐCV)</span>
+                        <span class="item-desc">
+                            Chịu trách nhiệm điều phối và kết hợp an toàn chung khi có nhiều Đơn vị công tác cùng
+                            làm việc trên một khu vực hoặc một công trình.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Người Giám sát an toàn (GSAT) &amp; Người Cảnh giới (CG)</span>
+                        <span class="item-desc">
+                            Thực hiện giám sát chuyên trách theo lĩnh vực được phân công (an toàn điện, cẩu kéo,
+                            không gian hạn chế, cảnh giới giao thông/cộng đồng).
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Cán bộ An toàn Môi trường</span>
+                        <span class="item-desc">
+                            Cán bộ an toàn chuyên trách của Đơn vị công tác và Đơn vị QLVH kiểm tra, kiểm soát
+                            đột xuất và định kỳ việc tuân thủ các quy chuẩn kỹ thuật an toàn tại hiện trường.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2. Nghỉ giải lao giữa ca -->
+            <div class="sub-section">
+                <h3>2. Quy định khi Nghỉ giải lao giữa ca</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-desc">
+                            Khi có hiệu lệnh nghỉ giải lao, tất cả Nhân viên công tác phải dừng làm việc ngay lập tức,
+                            tắt các thiết bị thi công đang dùng (máy hàn, dụng cụ cầm tay), bảo quản vật tư và rút về
+                            khu vực an toàn nghỉ ngơi.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-desc">
+                            Tất cả các biện pháp an toàn (biển báo, rào chắn, chốt khóa van, nắp che chắn tạm) phải
+                            được giữ nguyên trạng thái.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-desc">
+                            Trong thời gian nghỉ, nhân viên vẫn chịu sự giám sát của Người CHTT. Cấm tự ý quay lại
+                            vị trí công tác khi chưa có lệnh.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-desc">
+                            Trước khi cho nhân viên tiếp tục vào làm việc, Người CHTT phải kiểm tra lại hiện trường,
+                            đảm bảo các biện pháp an toàn vẫn còn nguyên vẹn, đầy đủ và đúng quy cách.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 3. Nghỉ hết ngày và bắt đầu ngày tiếp theo -->
+            <div class="sub-section">
+                <h3>3. Quy định Nghỉ hết ngày làm việc và Bắt đầu ngày tiếp theo</h3>
+                <p style="color:#3a5a7a; margin-bottom:12px; font-size:0.93rem;">
+                    Áp dụng đối với các công việc kéo dài nhiều ngày theo tiến độ PCT:
+                </p>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Khi kết thúc ngày làm việc</span>
+                        <span class="item-desc">
+                            Đơn vị công tác thu dọn hiện trường sơ bộ, giữ nguyên toàn bộ các biện pháp an toàn,
+                            bảo đảm máy móc dụng cụ ở trạng thái an toàn tuyệt đối. Bàn giao lại PCT giấy cho
+                            Đơn vị QLVH (nếu có yêu cầu) hoặc xác nhận trên phần mềm điện tử.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Trước khi bắt đầu ngày mới (ít nhất 30 phút)</span>
+                        <span class="item-desc">
+                            Đơn vị QLVH (ca trực vận hành) kiểm tra và khẳng định lại toàn bộ các biện pháp an toàn
+                            thuộc phạm vi QLVH (qua giao trả PCT giấy, điện thoại ghi âm hoặc xác nhận số).
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Bắt đầu ngày làm việc tiếp theo</span>
+                        <span class="item-desc">
+                            Người CHTT phải trực tiếp kiểm tra lại hiện trường và biện pháp an toàn. Chỉ khi đầy đủ
+                            và đúng yêu cầu mới cho phép nhân viên vào làm việc; ký xác nhận vào Mục 3.4
+                            'Cho phép làm việc và kết thúc công tác hàng ngày'.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Trường hợp đặc biệt</span>
+                        <span class="item-desc">
+                            Nếu trong thời gian nghỉ có sự thay đổi phương thức vận hành hoặc kết hợp công tác khác
+                            làm xáo trộn biện pháp an toàn thì PCT hiện tại phải hủy và cấp PCT mới.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 4. Thay đổi nhân sự và thí nghiệm thiết bị -->
+            <div class="sub-section">
+                <h3>4. Quy trình Thay đổi Nhân sự và Thí nghiệm Thiết bị</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Thay đổi Nhân viên công tác</span>
+                        <span class="item-desc">
+                            Do Người CHTT quyết định và chịu trách nhiệm; phải ghi chép đầy đủ vào Mục 3.3 của PCT
+                            (thời gian đến/rút, ký tên) và xin ý kiến chấp thuận của Người cho phép.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Thay đổi Người CHTT</span>
+                        <span class="item-desc">
+                            Phải do cấp có thẩm quyền của Đơn vị công tác ra quyết định bằng văn bản; phải ghi nhận
+                            vào PCT và xin ý kiến thống nhất của Người cấp phiếu.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Thí nghiệm thiết bị</span>
+                        <span class="item-desc">
+                            Mọi công tác thí nghiệm, chạy thử nghiệm thu đơn động/liên động phải được lập và cấp
+                            PCT riêng; bắt buộc phải cử Người LĐCV của Đơn vị QLVH chủ trì điều phối an toàn chung.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Thủ tục Cho phép làm việc và Bàn giao tại hiện trường theo PCT (Điều 6)<br>
+        và Biện pháp an toàn trong thời gian thực hiện công tác (Điều 7)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: An toàn khu vực máy phát làm mát bằng khí Hydro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #dceefb 0%, #b8dcf5 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 70, 140, 0.18);
+            overflow: hidden;
+            border: 1px solid #b0d4ec;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #0a3d6b 0%, #0e7ab8 60%, #17a2d4 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #0a3d6b;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #e8f4fc;
+            border-left: 5px solid #0e7ab8;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #1a4a6b;
+        }
+
+        .intro-box strong {
+            color: #0a3d6b;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #c0ddf0;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #0a3d6b, #0e7ab8);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(14, 122, 184, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0a3d6b;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0e7ab8;
+            margin-bottom: 14px;
+            border-left: 4px solid #0e7ab8;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fafdff;
+            border: 1px solid #d4e8f5;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #2a4a5e;
+        }
+
+        .item-list li:hover {
+            border-color: #8ec4e8;
+            box-shadow: 0 4px 16px rgba(14, 122, 184, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #0e7ab8;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(14, 122, 184, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #0a3d6b;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #2a4a5e;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #0a3d6b;
+        }
+
+        /* ===== EXPLOSION RANGE TABLE ===== */
+        .range-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #c0ddf0;
+            margin-top: 14px;
+        }
+
+        .range-table thead th {
+            background: linear-gradient(135deg, #0a3d6b, #0e7ab8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .range-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a5e;
+            border-bottom: 1px solid #e0eff8;
+            vertical-align: middle;
+        }
+
+        .range-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .range-table tbody tr:nth-child(even) {
+            background: #f5fbff;
+        }
+
+        .range-table tbody tr:hover {
+            background: #eaf5fd;
+        }
+
+        .range-table .mix-badge {
+            display: inline-block;
+            background: #d4ecfa;
+            color: #0a3d6b;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .range-table .limit-badge {
+            display: inline-block;
+            background: #fff2e0;
+            color: #8a4b00;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .range-table .limit-badge.danger {
+            background: #ffe0e0;
+            color: #8a0000;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #0a3d6b;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== RADIUS CARD ===== */
+        .radius-card {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            background: linear-gradient(135deg, #fff2e0, #ffe4c4);
+            border: 2px solid #ffa726;
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-top: 16px;
+        }
+
+        .radius-card .radius-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+        }
+
+        .radius-card .radius-content h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #8a4b00;
+            margin-bottom: 4px;
+        }
+
+        .radius-card .radius-content p {
+            font-size: 0.93rem;
+            color: #6b4a1a;
+            margin: 0;
+        }
+
+        .radius-card .radius-value {
+            display: inline-block;
+            background: #d32f2f;
+            color: #fff;
+            padding: 3px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* ===== PCCC GRID ===== */
+        .pccc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .pccc-card {
+            background: linear-gradient(135deg, #e8f4fc, #d4ecfa);
+            border: 1px solid #a8d4ec;
+            border-radius: 12px;
+            padding: 18px 16px;
+            text-align: center;
+        }
+
+        .pccc-card .pccc-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .pccc-card .pccc-name {
+            font-weight: 700;
+            color: #0a3d6b;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* ===== STEP LIST ===== */
+        .step-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            background: #fafdff;
+            border: 1px solid #d4e8f5;
+            border-radius: 12px;
+            padding: 16px 20px 16px 62px;
+            margin-bottom: 12px;
+            position: relative;
+            font-size: 0.93rem;
+            color: #2a4a5e;
+            counter-increment: step-counter;
+            transition: all 0.25s ease;
+        }
+
+        .step-list li:hover {
+            border-color: #8ec4e8;
+            box-shadow: 0 4px 16px rgba(14, 122, 184, 0.08);
+            transform: translateX(3px);
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0a3d6b, #0e7ab8);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 3px 8px rgba(14, 122, 184, 0.25);
+        }
+
+        .step-list li strong {
+            color: #0a3d6b;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #c0ddf0;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #0a3d6b, #0e7ab8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a5e;
+            border-bottom: 1px solid #e0eff8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #f5fbff;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #eaf5fd;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #d4ecfa;
+            color: #0a3d6b;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #e8f4fc;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #d4e8f5;
+            font-size: 0.85rem;
+            color: #5a8aaa;
+        }
+
+        .report-footer strong {
+            color: #0a3d6b;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .radius-card { flex-direction: column; text-align: center; gap: 12px; }
+            .pccc-grid { grid-template-columns: 1fr; }
+            .step-list li { padding: 14px 16px 14px 54px; }
+            .step-list li::before { left: 12px; top: 14px; width: 28px; height: 28px; font-size: 0.75rem; }
+            .range-table thead th,
+            .range-table tbody td,
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>An toàn khi làm việc tại khu vực máy phát làm mát bằng khí Hydro</h1>
+        <p class="subtitle">Đặc tính cháy nổ – Phạm vi an toàn – Nạp/xả môi chất – Phòng ngừa rò rỉ – PCCC khẩn cấp</p>
+        <span class="legal-badge">💨 Điều 28 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Hydro (H₂) là chất khí <strong>cực kỳ nguy hiểm</strong>,
+            dễ bắt cháy và phát nổ khi tiếp xúc với nguồn nhiệt hoặc oxy/không khí. Khu vực máy phát điện
+            làm mát bằng khí hydro là khu vực có <strong>nguy cơ cháy nổ cao nhất</strong> trong nhà máy.
+            Mọi công tác tại đây phải tuân thủ nghiêm ngặt các quy định từ nhận diện đặc tính nguy hiểm,
+            phạm vi an toàn, quy trình nạp/xả môi chất, phòng ngừa rò rỉ đến xử lý hỏa hoạn khẩn cấp.
+        </div>
+
+        <!-- ===== PHẦN II: KHOẢN 1 ĐIỀU 28 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Đặc tính nguy hiểm cháy nổ của khí Hydro</h2>
+            </div>
+
+            <p style="color:#2a4a5e; margin-bottom:18px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 1 Điều 28 – Quy chuẩn An toàn</em>
+            </p>
+
+            <p style="color:#2a4a5e; margin-bottom:14px; font-size:0.94rem;">
+                Hydro (H₂) là chất khí cực kỳ nguy hiểm, dễ bắt cháy và phát nổ khi tiếp xúc với nguồn nhiệt
+                hoặc oxy/không khí trong dải tỷ lệ sau:
+            </p>
+
+            <table class="range-table">
+                <thead>
+                    <tr>
+                        <th style="width:40%;">Hỗn hợp</th>
+                        <th style="width:60%;">Dải nồng độ bắt cháy, nổ (theo thể tích)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="mix-badge">H₂ + Không khí</span></td>
+                        <td>Chứa H₂ từ <span class="limit-badge">3,3% – 81,5%</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mix-badge">H₂ + Oxy nguyên chất (O₂)</span></td>
+                        <td>Chứa H₂ từ <span class="limit-badge danger">2,63% – 95%</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mix-badge">Hỗn hợp nổ cực mạnh</span></td>
+                        <td>
+                            <strong>67% H₂ + 33% O₂</strong> — hỗn hợp khí nổ lý tưởng, vận tốc nổ cực đại
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="danger-box">
+                <p>
+                    <strong>CẢNH BÁO:</strong> Dải nổ của H₂ với không khí rất rộng
+                    (<strong>3,3% – 81,5%</strong>) và với oxy nguyên chất còn rộng hơn
+                    (<strong>2,63% – 95%</strong>). Hỗn hợp <strong>67% H₂ + 33% O₂</strong> là hỗn hợp nổ
+                    nguy hiểm nhất với vận tốc nổ cực đại — chỉ cần một tia lửa nhỏ cũng gây nổ thảm khốc.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III: KHOẢN 2 & 10 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Quy định về ngọn lửa hở và phạm vi an toàn</h2>
+            </div>
+
+            <p style="color:#2a4a5e; margin-bottom:18px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 2 &amp; Khoản 10 Điều 28 – Quy chuẩn An toàn</em>
+            </p>
+
+            <!-- RADIUS CARD -->
+            <div class="radius-card">
+                <span class="radius-icon">🚫🔥</span>
+                <div class="radius-content">
+                    <h4>Bán kính cấm lửa bắt buộc</h4>
+                    <p>
+                        NGHIÊM CẤM hút thuốc, bật công tắc điện/đèn pin không phòng nổ, hàn hơi, hàn điện,
+                        sử dụng ngọn lửa hở hoặc các công cụ cơ khí phát tia lửa cách máy phát điện và các
+                        khu vực có khí H₂ trong vòng bán kính
+                        <span class="radius-value">10 mét</span>
+                        khi chưa có PCT được duyệt và chưa kiểm tra nồng độ H₂ đạt chuẩn an toàn.
+                    </p>
+                </div>
+            </div>
+
+            <ul class="item-list" style="margin-top:20px;">
+                <li>
+                    <span class="item-title">Hệ thống biển cảnh báo</span>
+                    <span class="item-desc">
+                        Tại gian tuabin, xung quanh khu vực máy phát và thiết bị hệ thống dầu khí
+                        (hệ thống dầu chèn, bồn tách khí) bắt buộc phải treo các biển báo an toàn tiêu chuẩn
+                        trực quan: <strong>"CẤM HÚT THUỐC"</strong> và <strong>"HYDRO – CẤM LỬA"</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGHIÊM CẤM:</strong> Sử dụng đèn pin thường, bật công tắc điện, hàn hơi/hàn điện,
+                    hoặc bất kỳ công cụ nào phát sinh tia lửa trong bán kính
+                    <strong>10 mét</strong> quanh máy phát khi chưa có PCT được duyệt và chưa kiểm tra
+                    nồng độ H₂ đạt chuẩn.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN IV: KHOẢN 3, 4, 5, 6 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">IV</div>
+                <h2>Quy định khi nạp, xả và thay môi chất làm mát</h2>
+            </div>
+
+            <p style="color:#2a4a5e; margin-bottom:18px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 3, 4, 5, 6 Điều 28 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Chạy bộ quay trục (Turning Gear)</span>
+                    <span class="item-desc">
+                        Ở điều kiện bình thường, khi muốn nạp hoặc thổi đuổi H₂ ra khỏi máy phát đang ngừng,
+                        bắt buộc phải <strong>chạy bộ quay trục (Turning Gear)</strong> để quay rô to liên tục,
+                        đảm bảo môi chất khí được lưu thông hòa trộn đều, tránh tích tụ cục bộ.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Tốc độ nạp xả</span>
+                    <span class="item-desc">
+                        Khi nạp H₂ cho máy phát hoặc khi xả đuổi H₂ ra khỏi máy phát cần phải tiến hành
+                        nạp, xả <strong>từ từ</strong> để kiểm soát áp suất và lưu lượng dòng khí.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Quy trình thổi đuổi bằng khí trơ</span>
+                    <span class="item-desc">
+                        Khi thay môi chất làm mát, <strong>tuyệt đối không được nạp trực tiếp H₂</strong> vào
+                        máy phát đang chứa không khí (hoặc ngược lại). Bắt buộc phải dùng
+                        <strong>khí trơ trung gian (CO₂ hoặc N₂)</strong> làm lớp đệm để đẩy hết không khí ra
+                        trước khi nạp H₂; và dùng khí trơ đẩy hết H₂ ra trước khi thổi không khí vào theo đúng
+                        quy trình công nghệ.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm soát độ tinh khiết và nồng độ khí</span>
+                    <span class="item-desc">
+                        Độ sạch của H₂ (độ tinh khiết thường <strong>≥ 98%</strong>), nồng độ O₂ trong thân
+                        máy phát và thân van thủy lực <strong>không được vượt quá giới hạn cho phép</strong>.
+                        Khi máy phát vận hành, nồng độ H₂ ở bất kỳ điểm nào của hệ thống dầu – khí không được
+                        vượt mức quy định.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">NGUYÊN TẮC ĐẶC BIỆT ĐỐI VỚI BỂ DẦU TUABIN</span>
+                    <span class="item-desc">
+                        Trong khoang không khí của bể dầu tuabin,
+                        <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC CÓ KHÍ HYDRO (H₂)</strong> (phải đảm bảo quạt hút khí
+                        bể dầu và bồn chân không tách khí dầu chèn làm việc liên tục, hiệu quả).
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Nguyên tắc khí trơ trung gian:</strong> Không bao giờ nạp trực tiếp H₂ vào máy phát
+                    đang chứa không khí (hoặc ngược lại). Bắt buộc dùng <strong>CO₂ hoặc N₂</strong> làm lớp đệm
+                    trung gian để đẩy hết khí cũ ra trước khi nạp khí mới.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN V: KHOẢN 7, 8, 9 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">V</div>
+                <h2>Phòng ngừa nguy cơ tạo hỗn hợp nổ và rò rỉ khí Hydro</h2>
+            </div>
+
+            <p style="color:#2a4a5e; margin-bottom:18px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 7, 8, 9 Điều 28 – Quy chuẩn An toàn</em>
+            </p>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Đề phòng trường hợp tạo hỗn hợp nổ trong thân máy phát (Khoản 7)</h3>
+                <ul class="item-list">
+                    <li>
+                        Cảnh giác khi <strong>áp lực khí H₂ trong thân máy phát giảm thấp</strong> làm lọt
+                        không khí từ ngoài vào qua bộ chèn trục.
+                    </li>
+                    <li>
+                        Ngăn ngừa khí H₂ bị <strong>nhiễm không khí lẫn trong dầu bôi trơn/dầu chèn</strong>
+                        bốc lên.
+                    </li>
+                    <li>
+                        Trước khi thay môi chất làm mát, <strong>cấm không thổi hết khí trong máy phát
+                        bằng khí trơ đúng thời gian</strong>.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Đề phòng các điểm rò rỉ khí H₂ nguy hiểm (Khoản 8)</h3>
+                <ul class="item-list">
+                    <li>
+                        Rò rỉ qua các <strong>bộ chèn trục về phía H₂</strong> do áp lực chênh lệch dầu – khí
+                        không duy trì đúng chuẩn, dầu lẫn bọt khí do thông thổi kém.
+                    </li>
+                    <li>
+                        <strong>Không khí nhiễm H₂ bốc lên từ đường xả gối trục</strong> do quạt hút khí làm
+                        việc kém hoặc hư hỏng cơ cấu tách khí.
+                    </li>
+                    <li>
+                        <strong>H₂ lọt thẳng vào bể chứa dầu chính</strong> của tuabin.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Giới hạn tổn thất rò rỉ (Khoản 9)</h3>
+                <ul class="item-list">
+                    <li>
+                        Lượng H₂ rò rỉ, tiêu hao tổn thất trong một ngày đêm (24 giờ) phải được
+                        <strong>theo dõi, ghi chép nhật trình</strong> và
+                        <strong>không được vượt quá định mức cho phép</strong> theo quy trình vận hành máy phát
+                        điện của nhà máy.
+                    </li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>
+                        <strong>Lưu ý:</strong> Mọi hiện tượng rò rỉ H₂ dù nhỏ đều phải được phát hiện, ghi chép
+                        và xử lý kịp thời. Tổn thất vượt định mức là dấu hiệu nguy hiểm cần kiểm tra ngay hệ thống
+                        chèn trục, quạt hút khí và bồn tách khí.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN VI: KHOẢN 11 & 12 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">VI</div>
+                <h2>Trang bị PCCC và Quy trình xử lý hỏa hoạn khẩn cấp</h2>
+            </div>
+
+            <p style="color:#2a4a5e; margin-bottom:18px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 11 &amp; 12 Điều 28 – Quy chuẩn An toàn</em>
+            </p>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Trang bị phương tiện cứu hỏa tại chỗ</h3>
+                <p style="color:#2a4a5e; margin-bottom:14px; font-size:0.93rem;">
+                    Khu vực máy phát điện và hệ thống dầu khí bắt buộc phải trang bị thường trực đầy đủ
+                    các phương tiện chữa cháy. Tất cả phương tiện phải <strong>còn nguyên niêm phong,
+                    kiểm định định kỳ</strong> và luôn sẵn sàng hoạt động:
+                </p>
+
+                <div class="pccc-grid">
+                    <div class="pccc-card">
+                        <span class="pccc-icon">🚿</span>
+                        <div class="pccc-name">Vòi cứu hỏa<br>Lăng phun sương</div>
+                    </div>
+                    <div class="pccc-card">
+                        <span class="pccc-icon">🧯</span>
+                        <div class="pccc-name">Bình chữa cháy<br>bột ABC</div>
+                    </div>
+                    <div class="pccc-card">
+                        <span class="pccc-icon">💨</span>
+                        <div class="pccc-name">Bình khí CO₂<br>chữa cháy điện</div>
+                    </div>
+                    <div class="pccc-card">
+                        <span class="pccc-icon">🪣</span>
+                        <div class="pccc-name">Thùng cát<br>chuyên dụng</div>
+                    </div>
+                    <div class="pccc-card">
+                        <span class="pccc-icon">🔧</span>
+                        <div class="pccc-name">Xẻng<br>dụng cụ hỗ trợ</div>
+                    </div>
+                    <div class="pccc-card">
+                        <span class="pccc-icon">🧣</span>
+                        <div class="pccc-name">Chăn chiên / vải<br>amiăng dập lửa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Quy trình 8 bước xử lý khi xảy ra hỏa hoạn trên hệ thống dầu khí máy phát</h3>
+                <p style="color:#2a4a5e; margin-bottom:16px; font-size:0.93rem;">
+                    Khi phát hiện hỏa hoạn, nhân viên vận hành đương ca phải
+                    <strong>kích hoạt ngay quy trình xử lý khẩn cấp</strong>:
+                </p>
+
+                <ul class="step-list">
+                    <li>
+                        <strong>Báo cáo ngay lập tức</strong> cho cấp trên trực tiếp (Trưởng kíp, Trưởng ca)
+                        để chỉ huy phối hợp.
+                    </li>
+                    <li>
+                        <strong>Tăng cường kiểm tra, giám sát</strong> chặt chẽ các thông số vận hành và
+                        hiện trạng thiết bị.
+                    </li>
+                    <li>
+                        <strong>CHỦ ĐỘNG CHỮA CHÁY NGAY TẠI CHỖ</strong> bằng phương tiện sẵn có, tuyệt đối
+                        không được thụ động chờ đợi đội cứu hỏa đến mới tham gia dập lửa.
+                    </li>
+                    <li>
+                        Tìm mọi biện pháp <strong>khoanh vùng, ngăn không cho ngọn lửa lan rộng</strong>
+                        sang các thiết bị lân cận.
+                    </li>
+                    <li>
+                        <strong>Tạm dừng ngay mọi công việc sửa chữa, bảo dưỡng</strong> không liên quan
+                        đến công tác chữa cháy.
+                    </li>
+                    <li>
+                        Yêu cầu toàn bộ những người không có nhiệm vụ
+                        <strong>khẩn trương sơ tán</strong> ra ngoài vùng nguy hiểm.
+                    </li>
+                    <li>
+                        Tùy theo tính chất đám cháy sử dụng <strong>bình bột, khí CO₂ hoặc chăn amiăng</strong>
+                        dập lửa; bảo vệ thiết bị nguyên vẹn.
+                    </li>
+                    <li>
+                        Nếu đám cháy diễn biến xấu đe dọa sự cố nghiêm trọng,
+                        <strong>PHẢI NGỪNG TỔ MÁY KHẨN CẤP VÀ TÌM MỌI CÁCH NHANH CHÓNG ĐUỔI KHÍ H₂
+                        RA KHỎI MÁY PHÁT BẰNG KHÍ TRƠ</strong> để loại trừ hoàn toàn nguy cơ nổ thân máy phát.
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>NGUY HIỂM TỘT ĐỘ:</strong> Nếu đám cháy đe dọa lan đến thân máy phát chứa H₂,
+                        phải <strong>ngừng tổ máy khẩn cấp</strong> và <strong>đuổi H₂ ra bằng khí trơ</strong>
+                        ngay lập tức. Nguy cơ nổ thân máy phát là thảm họa không thể kiểm soát nếu không
+                        loại trừ H₂ kịp thời.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp quy định an toàn khu vực máy phát H₂</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Lĩnh vực</th>
+                        <th style="width:40%;">Yêu cầu bắt buộc</th>
+                        <th style="width:38%;">Hành vi bị cấm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Ngọn lửa hở</span></td>
+                        <td>Chỉ làm việc khi có PCT duyệt và kiểm tra nồng độ H₂ đạt chuẩn.</td>
+                        <td>Hút thuốc, hàn, bật công tắc/đèn pin thường trong bán kính 10m.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Biển cảnh báo</span></td>
+                        <td>Treo "CẤM HÚT THUỐC" và "HYDRO – CẤM LỬA" tại gian tuabin, máy phát, hệ thống dầu khí.</td>
+                        <td>Không treo hoặc tháo dỡ biển cảnh báo khi chưa có lệnh.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Nạp/xả H₂</span></td>
+                        <td>Chạy Turning Gear; nạp/xả từ từ; dùng khí trơ CO₂/N₂ làm đệm trung gian.</td>
+                        <td>Nạp trực tiếp H₂ vào máy phát chứa không khí (hoặc ngược lại).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Chất lượng khí</span></td>
+                        <td>Độ tinh khiết H₂ ≥ 98%; nồng độ O₂ trong thân máy không vượt giới hạn.</td>
+                        <td>Vận hành khi H₂ không đạt độ tinh khiết hoặc O₂ vượt ngưỡng.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Bể dầu tuabin</span></td>
+                        <td>Quạt hút khí + bồn chân không tách khí hoạt động liên tục, hiệu quả.</td>
+                        <td>Để H₂ lọt vào khoang không khí bể dầu tuabin.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Rò rỉ H₂</span></td>
+                        <td>Theo dõi, ghi nhật trình lượng H₂ tổn thất 24h; không vượt định mức.</td>
+                        <td>Bỏ qua hiện tượng rò rỉ; không ghi chép theo dõi.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">PCCC</span></td>
+                        <td>Trang bị đầy đủ vòi cứu hỏa, bình bột ABC, bình CO₂, cát, chăn amiăng.</td>
+                        <td>Sử dụng phương tiện PCCC mất niêm phong, hết hạn kiểm định.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Xử lý hỏa hoạn</span></td>
+                        <td>Thực hiện đúng 8 bước; chủ động chữa cháy tại chỗ; ngừng tổ máy + đuổi H₂ bằng khí trơ khi nguy cấp.</td>
+                        <td>Thụ động chờ đội cứu hỏa; không đuổi H₂ khi đám cháy đe dọa thân máy phát.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – An toàn khi làm việc tại khu vực máy phát làm mát bằng khí Hydro<br>
+        (Điều 28 – Quy chuẩn An toàn)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

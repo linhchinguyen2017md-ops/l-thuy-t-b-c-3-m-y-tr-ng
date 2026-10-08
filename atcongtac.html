@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e6f5ef 0%, #d0e8e0 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 60, 50, 0.15);
+            overflow: hidden;
+            border: 1px solid #b8d9cf;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #0a5c4a 0%, #0e8a6e 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.85;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #0a5c4a;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #e8f7f2;
+            border-left: 5px solid #0e8a6e;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #1a4a3e;
+        }
+
+        .intro-box strong {
+            color: #0a5c4a;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #c8e6dc;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #0a5c4a, #0e8a6e);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(14, 138, 110, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0a5c4a;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0e8a6e;
+            margin-bottom: 14px;
+            border-left: 4px solid #0e8a6e;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fafefc;
+            border: 1px solid #d4ece4;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #2a4a3e;
+        }
+
+        .item-list li:hover {
+            border-color: #8ecdb8;
+            box-shadow: 0 4px 16px rgba(14, 138, 110, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #0e8a6e;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(14, 138, 110, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #0a5c4a;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #2a4a3e;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #0a5c4a;
+        }
+
+        /* ===== SUB-ITEMS ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 24px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #2a4a3e;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: auto;
+            height: auto;
+            background: none;
+            color: #0e8a6e;
+            font-size: 0.85rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #0a5c4a;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== SIGN TABLE ===== */
+        .sign-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #c8e6dc;
+            margin-top: 10px;
+        }
+
+        .sign-table thead th {
+            background: linear-gradient(135deg, #0a5c4a, #0e8a6e);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .sign-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a3e;
+            border-bottom: 1px solid #e0f0ea;
+            vertical-align: top;
+        }
+
+        .sign-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sign-table tbody tr:nth-child(even) {
+            background: #f5fbf8;
+        }
+
+        .sign-table tbody tr:hover {
+            background: #eaf7f2;
+        }
+
+        .sign-table .sign-code {
+            display: inline-block;
+            background: #e0f5ee;
+            color: #0a5c4a;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, #0e8a6e, #ffc107, #0e8a6e);
+            border-radius: 3px;
+            margin: 45px 0 40px;
+            opacity: 0.35;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #eef7f3;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #d4ece4;
+            font-size: 0.85rem;
+            color: #5a8a7a;
+        }
+
+        .report-footer strong {
+            color: #0a5c4a;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .sign-table thead th,
+            .sign-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác</h1>
+        <p class="subtitle">Trang bị bảo hộ – Biển báo, rào chắn – Cách ly an toàn thiết bị</p>
+        <span class="legal-badge">📋 Điều 13, 14 &amp; 15 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Trước khi tiến hành bất kỳ công tác nào, đơn vị công tác và
+            đơn vị quản lý vận hành phải thực hiện đầy đủ các <strong>biện pháp kỹ thuật an toàn</strong>
+            bao gồm: trang bị bảo hộ lao động và dụng cụ an toàn, thiết lập biển báo – rào chắn – tín hiệu
+            cảnh báo, và cách ly an toàn thiết bị. Đây là những bước bắt buộc nhằm loại trừ mọi rủi ro
+            trước khi con người tiếp xúc với thiết bị hoặc khu vực nguy hiểm.
+        </div>
+
+        <!-- ===== ĐIỀU 13 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">Đ13</div>
+                <h2>Trang bị bảo hộ lao động và dụng cụ an toàn</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Trang bị phương tiện bảo vệ cá nhân (PTBVCN)</span>
+                    <span class="item-desc">
+                        Người lao động <strong>bắt buộc phải được trang bị đầy đủ PTBVCN</strong> phù hợp với
+                        từng tính chất công việc đặc thù:
+                        <ul class="sub-list">
+                            <li>Quần áo chống cháy</li>
+                            <li>Găng tay chống cắt</li>
+                            <li>Mặt nạ phòng độc</li>
+                            <li>Ủng hóa chất</li>
+                            <li>Dây an toàn toàn thân</li>
+                        </ul>
+                        Các PTBVCN phải đảm bảo chất lượng, đúng quy chuẩn kỹ thuật nhà nước, dễ bảo quản,
+                        thao tác và <strong>tuyệt đối không gây tác hại thứ cấp</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm định dụng cụ an toàn chuyên dùng</span>
+                    <span class="item-desc">
+                        Các dụng cụ an toàn chuyên dùng phải được kiểm tra quy cách trước khi cấp phát,
+                        định kỳ hiệu chuẩn/thử nghiệm theo đúng quy chuẩn nhà chế tạo và có sổ theo dõi kiểm định:
+                        <ul class="sub-list">
+                            <li>Súng đo khí</li>
+                            <li>Dây đai cứu nạn</li>
+                            <li>Thiết bị thử điện</li>
+                            <li>Đồng hồ áp kế thử nghiệm</li>
+                        </ul>
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm soát hệ thống an toàn công nghệ</span>
+                    <span class="item-desc">
+                        Các trang bị về công nghệ, kỹ thuật an toàn – vệ sinh lao động dùng để phòng ngừa và
+                        hạn chế tai nạn phải luôn được <strong>vận hành, bảo dưỡng định kỳ</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGHIÊM CẤM:</strong> Thi công khi các hệ thống/trang bị an toàn bị
+                    <strong>hỏng hóc hoặc không bảo đảm độ tin cậy</strong>. Mọi hành vi cố ý vi phạm
+                    đều bị xử lý kỷ luật nghiêm khắc theo quy định hiện hành.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== ĐIỀU 14 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">Đ14</div>
+                <h2>Thiết lập biển báo, rào chắn và tín hiệu cảnh báo</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Bố trí ranh giới an toàn tại khu vực nguy hiểm và công tác</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Tại khu vực nguy hiểm</span>
+                        <span class="item-desc">
+                            Phải bố trí hệ thống rào chắn, biển báo, tín hiệu cảnh báo phù hợp.
+                            Biển cảnh báo <strong>"CẤM VÀO"</strong> phải đặt ngay tại lối vào.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Tại khu vực công tác</span>
+                        <span class="item-desc">
+                            Phải làm rào chắn, căng dây cảnh báo quanh vùng làm việc để ngăn người không phận sự
+                            đi vào. Biển báo nguy hiểm phải được đặt ở vị trí thoáng, dễ quan sát từ xa.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Khu vực đường giao thông</span>
+                        <span class="item-desc">
+                            Nếu công tác trên tuyến đường giao thông nội bộ nhà máy, phải đặt tín hiệu cảnh báo,
+                            căng dây, làm rào chắn tạm thời và bố trí người hướng dẫn phân luồng.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Phân định trách nhiệm lập rào chắn và bảo vệ lối thoát hiểm</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Đơn vị Quản lý vận hành (QLVH)</span>
+                        <span class="item-desc">
+                            Thực hiện căng dây cảnh báo, xác lập ranh giới an toàn ban đầu cho Đơn vị công tác
+                            (ĐVCT chỉ được hoạt động trong ranh giới này).
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Đơn vị công tác (ĐVCT)</span>
+                        <span class="item-desc">
+                            Trực tiếp lập thêm rào chắn tạm thời hoặc chăng dây nếu xung quanh khu vực thi công
+                            phát sinh thêm các yếu tố nguy hiểm mới.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Nguyên tắc lối thoát hiểm</span>
+                        <span class="item-desc">
+                            Hệ thống rào chắn tạm thời <strong>tuyệt đối không được chặn hoặc gây cản trở</strong>
+                            lối thoát hiểm khẩn cấp của công nhân khi có sự cố.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Quy định treo biển báo an toàn tiêu chuẩn EVN</h3>
+                <table class="sign-table">
+                    <thead>
+                        <tr>
+                            <th style="width:8%;">TT</th>
+                            <th style="width:42%;">Vị trí treo</th>
+                            <th style="width:50%;">Nội dung biển báo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="sign-code">1</span></td>
+                            <td>Tại các van cách ly, tủ điều khiển tại chỗ (MCC, LCS) của van/động cơ</td>
+                            <td><strong>"CẤM THAO TÁC! CÓ NGƯỜI ĐANG LÀM VIỆC"</strong> – treo ngay tại vị trí thao tác.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="sign-code">2</span></td>
+                            <td>Tại vùng làm việc có yếu tố nguy hiểm xung quanh</td>
+                            <td>Lập rào chắn tạm thời và treo biển <strong>"DỪNG LẠI! NGUY HIỂM CHẾT NGƯỜI"</strong>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="sign-code">3</span></td>
+                            <td>Tại vị trí thi công sau khi hoàn tất an toàn</td>
+                            <td>Treo biển chỉ dẫn <strong>"LÀM VIỆC TẠI ĐÂY!"</strong>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="sign-code">4</span></td>
+                            <td>Các vị trí phân luồng, bảng điều khiển liên quan</td>
+                            <td>Đặt biển cảnh báo <strong>tránh thao tác nhầm</strong>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="danger-box" style="margin-top:22px;">
+                    <p>
+                        <strong>KỶ LUẬT BIỂN BÁO:</strong> Trong suốt thời gian làm việc,
+                        <strong>nghiêm cấm di chuyển, thay đổi hoặc tháo dỡ</strong> rào chắn, biển báo an toàn
+                        khi chưa có lệnh của Người có thẩm quyền.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ĐIỀU 15 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">Đ15</div>
+                <h2>Cách ly an toàn thiết bị</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Nguyên tắc dừng và cô lập thiết bị</h3>
+                <ul class="item-list">
+                    <li>
+                        Thiết bị phải được <strong>dừng vận hành hoàn toàn và cách ly</strong> khỏi dây chuyền
+                        sản xuất trước khi tiến hành công tác.
+                    </li>
+                    <li>
+                        <span class="item-title">Trường hợp sửa chữa thiết bị riêng lẻ thuộc hệ thống đang vận hành</span>
+                        <span class="item-desc">
+                            Bắt buộc phải cô lập triệt để thiết bị đó, xả hết môi chất và hạ nhiệt độ về ngưỡng
+                            an toàn. <strong>Nếu phát hiện rò rỉ môi chất áp suất cao, nhiệt độ cao hoặc độc hại
+                            qua van chặn thì phải dừng toàn bộ hệ thống</strong> mới được phép thi công.
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>CẤM TUYỆT ĐỐI:</strong> Làm việc khi thiết bị chưa được cô lập
+                        (trừ các trường hợp có quy trình xử lý nóng riêng biệt được cấp thẩm quyền duyệt theo PCT).
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Yêu cầu kỹ thuật thực hiện cách ly</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Cô lập từ mọi phía</span>
+                        <span class="item-desc">
+                            Đóng kín các van chặn từ tất cả các phía vào/ra thiết bị. Mở các van xả áp, xả đọng,
+                            xả khí ra khí quyển.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Triệt tiêu nguồn điều khiển</span>
+                        <span class="item-desc">
+                            Cắt toàn bộ nguồn động lực và nguồn điều khiển của các van điện, van khí nén.
+                            <strong>Nghiêm cấm</strong> chỉ cách ly van điện/van khí mà không cắt nguồn điện lực/
+                            nguồn điều khiển đóng mở.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Kiểm tra thực địa</span>
+                        <span class="item-desc">
+                            Nhân viên vận hành phải <strong>trực tiếp đến tận hiện trường</strong> kiểm tra vị trí
+                            thực tế của van (đã ở đúng vị trí đóng/mở cơ khí, đồng hồ chỉ thị đúng trạng thái).
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Nhân sự thao tác</span>
+                        <span class="item-desc">
+                            Do <strong>Nhân viên vận hành đương ca</strong> nắm vững sơ đồ công nghệ thực hiện.
+                            <strong>Nghiêm cấm giao quyền hoặc ủy nhiệm thao tác</strong> cho người của Đơn vị công tác.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Kiểm tra thiết bị sau cách ly và Xác lập vùng làm việc</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Kiểm tra xả áp &amp; hạ nhiệt</span>
+                        <span class="item-desc">
+                            Xác định môi chất đã thoát hoàn toàn ra môi trường qua van xả. Kiểm tra nhiệt độ và
+                            nồng độ khí bằng thiết bị đo chuyên dụng đã kiểm chuẩn:
+                            <ul class="sub-list">
+                                <li>Súng bắn nhiệt</li>
+                                <li>Máy đo khí O₂, CO, H₂S, LEL</li>
+                            </ul>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Quy tắc an toàn áp lực</span>
+                        <span class="item-desc">
+                            <strong>Cấm căn cứ vào đồng hồ chỉ thị</strong> để kết luận thiết bị đã hết áp lực;
+                            nhưng nếu đồng hồ vẫn chỉ có áp lực thì <strong>bắt buộc phải coi như thiết bị vẫn còn
+                            áp lực nguy hiểm</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Xác lập vùng an toàn</span>
+                        <span class="item-desc">
+                            Xác định rõ ràng lối vào/ra, lối trèo lên/xuống; đảm bảo khoảng cách an toàn với các
+                            vật mang điện xung quanh; bố trí mặt bằng thông thoáng, không cản trở lối thoát hiểm.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác<br>
+        (Điều 13 – Trang bị bảo hộ; Điều 14 – Biển báo, rào chắn; Điều 15 – Cách ly an toàn thiết bị)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

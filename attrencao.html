@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Quy định an toàn khi làm việc trên cao</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fff4e0 0%, #ffe6c0 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(150, 80, 0, 0.15);
+            overflow: hidden;
+            border: 1px solid #f0d6a8;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #8a4b00 0%, #d97706 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #fff3cd;
+            color: #8a4b00;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #fff8ec;
+            border-left: 5px solid #d97706;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #6b4a1a;
+        }
+
+        .intro-box strong {
+            color: #8a4b00;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0d6a8;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #8a4b00, #d97706);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #8a4b00;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #c2610a;
+            margin-bottom: 14px;
+            border-left: 4px solid #d97706;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fffdf8;
+            border: 1px solid #f5e3c8;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #4a3a1a;
+        }
+
+        .item-list li:hover {
+            border-color: #e8c88a;
+            box-shadow: 0 4px 16px rgba(217, 119, 6, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #d97706;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #8a4b00;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #4a3a1a;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #8a4b00;
+        }
+
+        /* ===== SUB-ITEMS ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 24px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #4a3a1a;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: auto;
+            height: auto;
+            background: none;
+            color: #d97706;
+            font-size: 0.85rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #8a4b00;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== WEATHER GRID ===== */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #fff4e0, #ffe8c8);
+            border: 1px solid #f0d6a8;
+            border-radius: 12px;
+            padding: 18px 16px;
+            text-align: center;
+        }
+
+        .weather-card .weather-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .weather-card .weather-title {
+            font-weight: 700;
+            color: #8a4b00;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .weather-card .weather-desc {
+            font-size: 0.82rem;
+            color: #6b4a1a;
+            line-height: 1.5;
+        }
+
+        /* ===== TEST TABLE ===== */
+        .test-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #f0d6a8;
+            margin-top: 10px;
+        }
+
+        .test-table thead th {
+            background: linear-gradient(135deg, #8a4b00, #d97706);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+            letter-spacing: 0.3px;
+        }
+
+        .test-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #4a3a1a;
+            border-bottom: 1px solid #f5e3c8;
+            vertical-align: middle;
+        }
+
+        .test-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .test-table tbody tr:nth-child(even) {
+            background: #fffcf5;
+        }
+
+        .test-table tbody tr:hover {
+            background: #fff5e6;
+        }
+
+        .test-table .weight-badge {
+            display: inline-block;
+            background: #ffe8c8;
+            color: #8a4b00;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #f0d6a8;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #8a4b00, #d97706);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #4a3a1a;
+            border-bottom: 1px solid #f5e3c8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #fffcf5;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #fff5e6;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #ffe8c8;
+            color: #8a4b00;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #fff8ec;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #f5e3c8;
+            font-size: 0.85rem;
+            color: #a08050;
+        }
+
+        .report-footer strong {
+            color: #8a4b00;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .weather-grid { grid-template-columns: 1fr; }
+            .test-table thead th,
+            .test-table tbody td,
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Quy định an toàn khi làm việc trên cao</h1>
+        <p class="subtitle">Sức khỏe – Trang bị bảo hộ – Thời tiết – Giàn giáo – Kiểm định dây an toàn</p>
+        <span class="legal-badge">🪜 Điều 19, 20 &amp; 21 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Làm việc trên cao là một trong những công tác có
+            <strong>nguy cơ tai nạn nghiêm trọng nhất</strong> (rơi ngã, va đập, điện giật). Do đó, mọi
+            công tác trên cao đều phải tuân thủ nghiêm ngặt các quy định về <strong>sức khỏe, trang bị
+            bảo hộ, điều kiện thời tiết, giàn giáo và kiểm định dây an toàn</strong>. Báo cáo này tổng hợp
+            đầy đủ các quy định theo từng điều khoản.
+        </div>
+
+        <!-- ===== PHẦN II: ĐIỀU 19 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Điều kiện sức khỏe và trang bị bảo hộ cá nhân</h2>
+            </div>
+
+            <p style="color:#6b4a1a; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 19 – Quy chuẩn An toàn</em>
+            </p>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Điều kiện tiêu chuẩn sức khỏe đối với người làm việc trên cao</h3>
+                <ul class="item-list">
+                    <li>
+                        Bắt buộc phải có <strong>Giấy chứng nhận đủ sức khỏe làm việc trên cao</strong>
+                        do cơ quan y tế có thẩm quyền cấp theo đúng Quy định sức khỏe của Tập đoàn Điện lực Việt Nam.
+                    </li>
+                    <li>
+                        Người đang <strong>ốm đau</strong> hoặc đã sử dụng các <strong>chất kích thích,
+                        đồ uống có cồn</strong> tuyệt đối không được phép làm việc trên cao.
+                    </li>
+                    <li>
+                        <span class="item-title">Đánh giá thể trạng trước ca làm việc</span>
+                        <span class="item-desc">
+                            Người Chỉ huy trực tiếp (CHTT) phải kiểm tra sơ bộ tình trạng sức khỏe, thể lực,
+                            tâm lý của toàn bộ nhân viên; chỉ những người có trạng thái hoàn toàn bình thường
+                            mới được phép làm việc trên cao.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Xử lý khi sức khỏe bất thường</span>
+                        <span class="item-desc">
+                            Trường hợp người đang làm việc trên cao cảm thấy sức khỏe bất thường, phải
+                            <strong>báo ngay cho Người CHTT</strong>. Nếu người lao động không tự trèo xuống được,
+                            Người CHTT phải <strong>kích hoạt phương án cứu nạn</strong> hỗ trợ đưa người xuống
+                            mặt đất an toàn.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Quy cách trang bị bảo hộ cá nhân (PTBVCN)</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Dây an toàn bắt buộc</span>
+                        <span class="item-desc">
+                            Làm việc trên cao <strong>bắt buộc phải đeo dây an toàn</strong> dù thời gian làm việc
+                            rất ngắn (ngoại trừ trường hợp làm việc trên sàn thao tác có lan can bảo vệ kiên cố).
+                            Dây an toàn phải <strong>móc vào vị trí kết cấu chắc chắn ngay phía trên vị trí thao tác</strong>
+                            để giảm thiểu tối đa khoảng cách rơi (giảm động năng rơi tự do). Đảm bảo khoảng không
+                            gian bên dưới không có chướng ngại vật gây va chạm khi xảy ra sự cố rơi.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Trang phục thi công</span>
+                        <span class="item-desc">
+                            Quần áo BHLĐ gọn gàng, tay áo buông và cài cúc; đội mũ bảo hộ có cài quai chắc chắn;
+                            đi giày BHLĐ buộc dây chống trơn trượt; mùa rét phải mặc đủ ấm để đảm bảo độ linh hoạt
+                            của cơ thể.
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>
+                        <strong>Lưu ý:</strong> Dây an toàn phải được móc vào kết cấu chắc chắn
+                        <strong>ngay phía trên</strong> vị trí thao tác – không móc ngang hoặc thấp hơn vị trí
+                        làm việc để tránh ngã lắc ngang khi xảy ra sự cố.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III: ĐIỀU 19 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Điều kiện thời tiết, hành vi cấm và chỉ dẫn bắt buộc</h2>
+            </div>
+
+            <p style="color:#6b4a1a; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 19 – Quy chuẩn An toàn</em>
+            </p>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Điều kiện thời tiết tuyệt đối cấm làm việc trên cao ngoài trời</h3>
+                <p style="color:#6b4a1a; margin-bottom:14px; font-size:0.93rem;">
+                    Nghiêm cấm làm việc trên cao ngoài trời (giàn giáo ngoài trời, ống khói, đài nước, tháp,
+                    trụ/dầm cầu, mái nhà từ 2 tầng trở lên) khi gặp các hình thế thời tiết bất lợi sau:
+                </p>
+
+                <div class="weather-grid">
+                    <div class="weather-card">
+                        <span class="weather-icon">⛈️</span>
+                        <div class="weather-title">Giông bão / Sấm sét</div>
+                        <div class="weather-desc">
+                            Gió giật từ <strong>cấp 5 trở lên</strong>, mưa to tạo thành dòng, hoặc đang có sấm sét
+                        </div>
+                    </div>
+                    <div class="weather-card">
+                        <span class="weather-icon">🌡️</span>
+                        <div class="weather-title">Nắng nóng gay gắt</div>
+                        <div class="weather-desc">
+                            Trên <strong>38°C</strong> mà không có phương tiện che nắng, làm mát cục bộ
+                        </div>
+                    </div>
+                    <div class="weather-card">
+                        <span class="weather-icon">🌙</span>
+                        <div class="weather-title">Thiếu ánh sáng</div>
+                        <div class="weather-desc">
+                            Trời tối hoặc hệ thống chiếu sáng nhân tạo không đảm bảo quan sát rõ ràng
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Các hành vi bị nghiêm cấm tuyệt đối khi làm việc trên cao</h3>
+                <ul class="item-list">
+                    <li>
+                        Sử dụng các <strong>chất kích thích, đồ uống có cồn</strong> trước và trong khi làm việc.
+                    </li>
+                    <li>
+                        Đưa dụng cụ, vật liệu lên cao hoặc từ trên cao hạ xuống bằng cách
+                        <strong>tung, ném</strong>.
+                    </li>
+                    <li>
+                        Cho dụng cụ, vật liệu nặng vào túi quần áo; <strong>mang vác vật tư nặng leo trèo</strong>
+                        cùng với người.
+                    </li>
+                    <li>
+                        <strong>Đùa nghịch, nói chuyện riêng</strong>, làm việc riêng ngoài nhiệm vụ được phân công.
+                    </li>
+                    <li>
+                        Sử dụng <strong>điện thoại di động</strong> trong suốt quá trình leo lên hoặc trèo xuống
+                        thang/giàn giáo.
+                    </li>
+                    <li>
+                        <strong>Leo trèo tùy tiện</strong> trên mép tường, mặt dầm, giàn kết cấu, trèo qua lan can
+                        bảo vệ, leo theo thanh giằng giàn giáo hoặc đu bám vào dây treo thi công.
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>NGHIÊM CẤM TUYỆT ĐỐI:</strong> Sử dụng điện thoại di động khi leo lên/xuống
+                        thang hoặc giàn giáo. Đây là nguyên nhân hàng đầu gây mất tập trung và tai nạn rơi ngã
+                        nghiêm trọng.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Các chỉ dẫn kỹ thuật an toàn bắt buộc</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Quản lý dụng cụ nhẹ</span>
+                        <span class="item-desc">
+                            Chỉ được mang theo người các dụng cụ nhẹ (kìm, cờ lê, tuốc nơ vít, búa nhỏ) và
+                            bắt buộc phải đựng gọn gàng trong <strong>túi đựng đồ nghề chuyên dụng</strong>
+                            có quai đeo hoặc móc khóa cố định.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Vận chuyển vật tư qua puly</span>
+                        <span class="item-desc">
+                            Khi đưa vật liệu, dụng cụ lên cao hoặc hạ xuống đất, phải dùng
+                            <strong>dây kéo trực tiếp hoặc qua puly dẫn hướng chắc chắn</strong>; người ở dưới đất
+                            phải giữ một đầu dây điều hướng và <strong>cấm đứng ngay sát phương thẳng đứng</strong>
+                            dưới vị trí làm việc.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Làm việc trên mái dốc</span>
+                        <span class="item-desc">
+                            Làm việc trên mái tôn, mái trơn dốc phải <strong>lập thang sàn thao tác</strong> và có
+                            <strong>dây cứu sinh cố định</strong> chống trượt ngã; di chuyển lên xuống đúng tuyến
+                            quy định.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN IV: ĐIỀU 20 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">IV</div>
+                <h2>Quy định an toàn khi làm việc trên giàn giáo</h2>
+            </div>
+
+            <p style="color:#6b4a1a; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 20 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Ưu tiên sử dụng giàn giáo</span>
+                    <span class="item-desc">
+                        <strong>Ưu tiên sử dụng hệ giàn giáo kiên cố</strong> thay vì dùng thang khi làm việc
+                        trên cao kéo dài.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Lắp dựng &amp; Nghiệm thu</span>
+                    <span class="item-desc">
+                        Giàn giáo phải được thiết kế, lắp dựng đúng bản vẽ biện pháp thi công; chân cột kê lót
+                        chắc chắn, giằng neo kiên cố vào kết cấu cố định của công trình. Giàn giáo khi lắp dựng
+                        xong <strong>bắt buộc phải lập biên bản nghiệm thu kỹ thuật an toàn</strong> trước khi
+                        đưa vào sử dụng.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Giàn giáo cao trên 6m</span>
+                    <span class="item-desc">
+                        Phải thiết lập <strong>ít nhất 02 sàn công tác</strong> (sàn làm việc bên trên và
+                        sàn an toàn bảo vệ bên dưới). <strong>Cấm làm việc đồng thời trên hai tầng sàn</strong>
+                        cùng một khoang nếu không có sàn che chắn hoặc lưới bảo vệ chống vật rơi ở giữa.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Tải trọng &amp; Lối đi lại</span>
+                    <span class="item-desc">
+                        Cấm để vật liệu trên lối đi của giàn giáo; tuyệt đối không tập trung tải trọng người và
+                        vật tư <strong>vượt quá sức chịu tải thiết kế</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kỷ luật giàn giáo</span>
+                    <span class="item-desc">
+                        Không tự ý <strong>tháo dỡ lan can bảo vệ, tay vịn, thanh giằng</strong> hoặc di dời các
+                        tấm ván lót sàn giàn giáo; lên xuống giàn giáo đúng cầu thang thiết kế.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Giàn giáo di động &amp; An toàn điện</span>
+                    <span class="item-desc">
+                        Giàn giáo di động có bánh xe phải <strong>khóa chốt phanh cố định và chêm bánh xe</strong>
+                        khi vào vị trí thao tác. <strong>Cấm tuyệt đối bố trí giàn giáo bên dưới đường dây
+                        mang điện</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Nguyên tắc 6m:</strong> Giàn giáo cao trên 6m bắt buộc phải có
+                    <strong>02 sàn công tác</strong>. Đây là quy định an toàn bắt buộc, không có ngoại lệ,
+                    nhằm bảo vệ người làm việc bên trên và người đi lại bên dưới.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN V: ĐIỀU 21 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">V</div>
+                <h2>Tiêu chuẩn kỹ thuật và kiểm định dây đeo an toàn</h2>
+            </div>
+
+            <p style="color:#6b4a1a; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 21 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Tự kiểm tra hàng ngày</span>
+                    <span class="item-desc">
+                        Trước mỗi ca làm việc, công nhân phải tự kiểm tra dây an toàn bằng cách
+                        <strong>đeo vào người, móc dây vào vật cố định dưới mặt đất, chụm chân ngả người ra sau</strong>
+                        kiểm tra tình trạng khóa móc, dây đai và đường chỉ may.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Chu kỳ và Thông số thử nghiệm định kỳ</span>
+                    <span class="item-desc">
+                        Dây an toàn phải được thử nghiệm cơ học định kỳ <strong>06 tháng / 01 lần</strong>
+                        bằng cách treo tải trọng tĩnh hoặc dùng thiết bị kéo thử chuyên dụng theo tiêu chuẩn:
+                    </span>
+                </li>
+            </ul>
+
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th style="width:34%;">Loại dây an toàn</th>
+                        <th style="width:20%;">Tải trọng thử tĩnh</th>
+                        <th style="width:16%;">Thời gian thử</th>
+                        <th style="width:30%;">Tiêu chuẩn đánh giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dây an toàn cũ</strong> (đang dùng)</td>
+                        <td><span class="weight-badge">225 kg</span></td>
+                        <td>05 phút</td>
+                        <td>Không rách chỉ, không biến dạng móc khóa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dây an toàn mới</strong> (xuất xưởng/cấp mới)</td>
+                        <td><span class="weight-badge">300 kg</span></td>
+                        <td>05 phút</td>
+                        <td>Khóa móc, đai chịu lực nguyên vẹn 100%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="item-list" style="margin-top:20px;">
+                <li>
+                    <span class="item-title">Dán tem và Ghi sổ theo dõi</span>
+                    <span class="item-desc">
+                        Sau khi thử tải đạt yêu cầu, phải <strong>dán tem đánh dấu đạt chuẩn kiểm định</strong>
+                        và ghi chép vào sổ theo dõi thử dây an toàn. Chỉ những dây có tem kiểm định còn hiệu lực
+                        mới được phép sử dụng tại hiện trường. Dây không đạt yêu cầu phải
+                        <strong>lập biên bản hủy bỏ ngay</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Trách nhiệm pháp lý của Đơn vị công tác</span>
+                    <span class="item-desc">
+                        Đơn vị công tác <strong>chịu hoàn toàn trách nhiệm quản lý dây an toàn</strong>.
+                        Nếu xảy ra sự cố/tai nạn do dây bị đứt, gãy móc khóa hoặc do không thử nghiệm đúng định kỳ,
+                        Đơn vị công tác phải <strong>chịu hoàn toàn trách nhiệm trước pháp luật</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>TRÁCH NHIỆM PHÁP LÝ:</strong> Đơn vị công tác chịu <strong>hoàn toàn trách nhiệm</strong>
+                    trước pháp luật nếu xảy ra tai nạn do dây an toàn bị đứt, gãy móc khóa hoặc không được
+                    thử nghiệm đúng định kỳ 06 tháng/lần.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp quy định an toàn làm việc trên cao</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:20%;">Lĩnh vực</th>
+                        <th style="width:40%;">Yêu cầu bắt buộc</th>
+                        <th style="width:40%;">Hành vi bị cấm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Sức khỏe</span></td>
+                        <td>Có giấy chứng nhận đủ sức khỏe; CHTT kiểm tra thể trạng trước ca.</td>
+                        <td>Ốm đau, sử dụng chất kích thích/cồn làm việc trên cao.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Trang bị</span></td>
+                        <td>Đeo dây an toàn móc phía trên; mũ cài quai; giày chống trơn; quần áo gọn gàng.</td>
+                        <td>Không đeo dây an toàn; mặc quần áo rộng, không cài cúc.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Thời tiết</span></td>
+                        <td>Chỉ làm việc khi thời tiết đảm bảo; đủ ánh sáng quan sát.</td>
+                        <td>Giông bão cấp ≥5, mưa to, sấm sét; nắng &gt;38°C; trời tối.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Hành vi</span></td>
+                        <td>Dụng cụ trong túi chuyên dụng; vận chuyển qua puly; dây cứu sinh trên mái dốc.</td>
+                        <td>Tung/ném dụng cụ; mang vác nặng leo trèo; đùa nghịch; dùng điện thoại khi leo.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Giàn giáo</span></td>
+                        <td>Nghiệm thu trước dùng; &gt;6m có 2 sàn; khóa bánh xe di động; đúng tải trọng.</td>
+                        <td>Tự ý tháo lan can/giằng; để vật liệu lối đi; dựng dưới đường dây điện.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Dây an toàn</span></td>
+                        <td>Tự kiểm tra hàng ngày; thử tải định kỳ 6 tháng; dán tem; ghi sổ theo dõi.</td>
+                        <td>Dùng dây không tem kiểm định; dây đứt/cháy/hư hỏng; không thử định kỳ.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Quy định an toàn khi làm việc trên cao<br>
+        (Điều 19, 20 &amp; 21 – Quy chuẩn An toàn)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

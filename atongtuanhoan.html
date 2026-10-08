@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Quy định an toàn khi làm việc trên đường ống nước tuần hoàn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #c7e6f7 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 60, 120, 0.15);
+            overflow: hidden;
+            border: 1px solid #b8d9ec;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #054b7a 0%, #0a7ab8 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #054b7a;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #e8f4fc;
+            border-left: 5px solid #0a7ab8;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #1a4a6b;
+        }
+
+        .intro-box strong {
+            color: #054b7a;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #c8e3f5;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #054b7a, #0a7ab8);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(10, 122, 184, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #054b7a;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0a7ab8;
+            margin-bottom: 14px;
+            border-left: 4px solid #0a7ab8;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fafdff;
+            border: 1px solid #d4e8f5;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #2a4a5e;
+        }
+
+        .item-list li:hover {
+            border-color: #8ec4e8;
+            box-shadow: 0 4px 16px rgba(10, 122, 184, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #0a7ab8;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(10, 122, 184, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #054b7a;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #2a4a5e;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #054b7a;
+        }
+
+        /* ===== SUB-ITEMS ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 24px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #2a4a5e;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: auto;
+            height: auto;
+            background: none;
+            color: #0a7ab8;
+            font-size: 0.85rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #054b7a;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== GAS TABLE ===== */
+        .gas-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #c8e3f5;
+            margin-top: 10px;
+        }
+
+        .gas-table thead th {
+            background: linear-gradient(135deg, #054b7a, #0a7ab8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+            letter-spacing: 0.3px;
+        }
+
+        .gas-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a5e;
+            border-bottom: 1px solid #e0eff8;
+            vertical-align: middle;
+        }
+
+        .gas-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .gas-table tbody tr:nth-child(even) {
+            background: #f5fbff;
+        }
+
+        .gas-table tbody tr:hover {
+            background: #eaf5fd;
+        }
+
+        .gas-table .gas-symbol {
+            display: inline-block;
+            background: #d4ecfa;
+            color: #054b7a;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        .gas-table .gas-limit {
+            display: inline-block;
+            background: #e8f7e8;
+            color: #1a5c1a;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #c8e3f5;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #054b7a, #0a7ab8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a5e;
+            border-bottom: 1px solid #e0eff8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #f5fbff;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #eaf5fd;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #d4ecfa;
+            color: #054b7a;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, #0a7ab8, #ffc107, #0a7ab8);
+            border-radius: 3px;
+            margin: 45px 0 40px;
+            opacity: 0.35;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #eef7fd;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #d4e8f5;
+            font-size: 0.85rem;
+            color: #5a8aaa;
+        }
+
+        .report-footer strong {
+            color: #054b7a;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .gas-table thead th,
+            .gas-table tbody td,
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Quy định an toàn khi làm việc trên đường ống nước tuần hoàn</h1>
+        <p class="subtitle">Cấp phép – Cô lập – Không gian kín – Kênh hở – Nghiệm thu &amp; Điền đầy hệ thống</p>
+        <span class="legal-badge">💧 Điều 15, 22, 25, 31 &amp; 34 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Công việc trên đường ống nước tuần hoàn, hố van, bình ngưng và
+            kênh xả tiềm ẩn <strong>nhiều mối nguy đặc thù</strong> như ngạt khí, đuối nước, điện giật,
+            thủy kích. Do đó, mọi công tác phải tuân thủ nghiêm ngặt quy trình từ <strong>cấp phép, cô lập
+            hệ thống, thông gió – đo khí, tổ chức nhóm công tác, đến nghiệm thu và điền đầy</strong>.
+            Báo cáo này tổng hợp đầy đủ các quy định theo từng điều khoản.
+        </div>
+
+        <!-- ===== PHẦN II ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Thủ tục cấp phép và cô lập hệ thống đường ống</h2>
+            </div>
+
+            <p style="color:#1a4a6b; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 15, 22 &amp; 31 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Chế độ Phiếu công tác (PCT)</span>
+                    <span class="item-desc">
+                        Công việc sửa chữa, vệ sinh, kiểm tra bên trong đường ống dẫn nước tuần hoàn, hố van,
+                        bình ngưng <strong>bắt buộc phải lập phương án thi công</strong> và thực hiện theo
+                        Phiếu công tác (PCT).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Cắt điện động cơ bơm</span>
+                    <span class="item-desc">
+                        Dừng và cắt điện toàn bộ các bơm cấp nước tuần hoàn (CWP), bơm phụ trợ liên quan;
+                        treo biển <strong>"CẤM ĐÓNG ĐIỆN! CÓ NGƯỜI ĐANG LÀM VIỆC"</strong> tại tủ máy cắt
+                        6kV/0.4kV và khóa cơ khí tủ cấp nguồn (LOTO).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Cô lập van chặn từ mọi phía</span>
+                    <span class="item-desc">
+                        Đóng kín hoàn toàn các van chặn, van bướm đầu vào/đầu ra của hệ thống.
+                        <strong>Bắt buộc phải cắt nguồn điện lực và nguồn điều khiển</strong> của các van điện/
+                        van thủy lực đóng mở; treo biển <strong>"CẤM THAO TÁC! CÓ NGƯỜI ĐANG LÀM VIỆC"</strong>
+                        tại tủ LCS và tay quay van.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Lắp mặt bích chặn (Blind Flange)</span>
+                    <span class="item-desc">
+                        Tại các vị trí tiếp giáp với hệ thống đang có nước chịu áp, phải thực hiện
+                        <strong>lắp mặt bích chặn cô lập</strong> với chiều dày tính toán chịu lực chuẩn xác
+                        và siết chặt liên kết bu-lông đầy đủ.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Xả cạn môi chất và triệt tiêu áp lực</span>
+                    <span class="item-desc">
+                        Mở toàn bộ các van xả đọng đáy và van xả khí đỉnh đường ống. Chỉ được phép
+                        <strong>nới lỏng nắp người chui (manhole)</strong> khi chắc chắn
+                        <strong>áp lực đã về 0</strong> và nước đã xả cạn hoàn toàn.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý:</strong> Việc lắp mặt bích chặn và xả cạn môi chất là bước
+                    <strong>bắt buộc</strong> trước khi cho người vào bên trong đường ống. Tuyệt đối không
+                    nới lỏng manhole khi chưa xác nhận áp lực về 0.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Biện pháp an toàn trong đường ống và hố ga kín</h2>
+            </div>
+
+            <p style="color:#1a4a6b; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 22 &amp; Điều 25 – Quy chuẩn An toàn</em>
+            </p>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Thông gió cưỡng bức và Chống ngạt khí</h3>
+                <ul class="item-list">
+                    <li>
+                        Trước khi cho người vào, phải mở toàn bộ các cửa người chui (manhole) dọc tuyến ống
+                        để <strong>thông gió tự nhiên ít nhất 15–30 phút</strong>.
+                    </li>
+                    <li>
+                        Lắp đặt hệ thống <strong>quạt thổi/quạt hút cấp khí tươi cưỡng bức liên tục</strong>
+                        trong suốt ca làm việc. Vận tốc gió thông gió đạt từ
+                        <strong>0,3 m/s đến 1,5 m/s</strong>.
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>NGHIÊM CẤM:</strong> Đưa máy bơm, máy nổ sử dụng <strong>động cơ đốt trong</strong>
+                        vào bên trong đường ống hoặc hố ga kín – nguy cơ sinh khí độc <strong>CO</strong> gây
+                        ngạt thở chết người.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Đo kiểm môi trường khí đạt chuẩn trước khi vào</h3>
+                <p style="color:#1a4a6b; margin-bottom:14px; font-size:0.93rem;">
+                    Việc đo kiểm phải được thực hiện bằng <strong>máy đo khí đa chỉ tiêu đã hiệu chuẩn định kỳ</strong>
+                    từ bên ngoài trước khi tiếp cận bên trong:
+                </p>
+
+                <table class="gas-table">
+                    <thead>
+                        <tr>
+                            <th style="width:30%;">Chỉ tiêu khí đo lường</th>
+                            <th style="width:20%;">Ký hiệu hóa học</th>
+                            <th style="width:50%;">Ngưỡng tiêu chuẩn cho phép</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Oxy (Dưỡng khí)</td>
+                            <td><span class="gas-symbol">O₂</span></td>
+                            <td><span class="gas-limit">19,5% – 23,5%</span> theo thể tích</td>
+                        </tr>
+                        <tr>
+                            <td>Khí Cacbonic</td>
+                            <td><span class="gas-symbol">CO₂</span></td>
+                            <td>Hàm lượng <span class="gas-limit">≤ 1800 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Khí Cacbon monoxit</td>
+                            <td><span class="gas-symbol">CO</span></td>
+                            <td>Hàm lượng <span class="gas-limit">≤ 40 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Khí Hydro Sunfua</td>
+                            <td><span class="gas-symbol">H₂S</span></td>
+                            <td>Hàm lượng <span class="gas-limit">≤ 15 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Khí dễ cháy / Nổ</td>
+                            <td><span class="gas-symbol">LEL</span></td>
+                            <td><span class="gas-limit">&lt; 10%</span> giới hạn nổ dưới (Lower Explosive Limit)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Tổ chức nhóm công tác và Bố trí người cảnh giới (CG)</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Quân số tối thiểu</span>
+                        <span class="item-desc">
+                            Khi làm việc trong đường ống/hố ga ngầm, nhóm công tác phải có
+                            <strong>ít nhất từ 02 đến 03 người</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Bố trí thường trực cảnh giới</span>
+                        <span class="item-desc">
+                            Bắt buộc phải bố trí Người CHTT hoặc Người Cảnh giới (CG)
+                            <strong>túc trực liên tục bên ngoài</strong> cửa người chui/miệng hố ga.
+                            Người cảnh giới <strong>tuyệt đối không được rời vị trí</strong> khi còn người bên trong.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Liên lạc &amp; Cứu nạn</span>
+                        <span class="item-desc">
+                            Duy trì liên lạc bộ đàm/tín hiệu liên tục <strong>mỗi 15 phút</strong>.
+                            Chuẩn bị sẵn sàng các trang bị cứu hộ khẩn cấp ngay tại cửa chui:
+                            <ul class="sub-list">
+                                <li>Bình tự cứu dưỡng khí</li>
+                                <li>Dây cứu nạn có móc an toàn</li>
+                                <li>Cáng thương y tế</li>
+                                <li>Đèn rọi pin</li>
+                            </ul>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Thời gian luân phiên</span>
+                        <span class="item-desc">
+                            Người làm việc phải có chế độ <strong>giải lao phù hợp</strong> ngoài đường ống.
+                            Trường hợp môi trường ẩm nặng phải hạn chế thời gian làm việc liên tục không quá quy định.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 4 -->
+            <div class="sub-section">
+                <h3>4. An toàn điện chiếu sáng và Dụng cụ thi công</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Cấp điện áp an toàn</span>
+                        <span class="item-desc">
+                            Điện chiếu sáng bên trong đường ống phải dùng đèn pin ắc quy hoặc nguồn điện hạ áp
+                            an toàn <strong>≤ 36 VAC</strong> qua máy biến áp cách ly (MBA đặt ở phía ngoài
+                            đường ống) hoặc <strong>≤ 48 VDC</strong>. Dây dẫn phải là loại bọc cao su chịu lực
+                            2 lớp, không trầy xước.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Thiết bị bảo hộ cá nhân (PTBVCN)</span>
+                        <span class="item-desc">
+                            Mặc quần áo bảo hộ, đội mũ cài quai, đeo ủng cao su chống trơn trượt có mũi lót thép,
+                            găng tay cao su chống nước biển và dây đeo an toàn khi di chuyển qua độ dốc.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN IV ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">IV</div>
+                <h2>An toàn trên tuyến kênh và hố hở nước tuần hoàn</h2>
+            </div>
+
+            <p style="color:#1a4a6b; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Điều 34 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Tiêu chuẩn nhân sự biết bơi</span>
+                    <span class="item-desc">
+                        Chỉ cho phép những người <strong>đã qua sát hạch kỹ năng bơi đạt yêu cầu</strong>
+                        làm việc thường xuyên trên hệ thống kênh xả nước tuần hoàn. Những người
+                        <strong>không biết bơi tuyệt đối không được làm việc dưới nước</strong> hoặc tại các
+                        khu vực ta-luy có nguy cơ trượt ngã xuống lòng kênh.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Tổ chức nhóm công tác trên kênh</span>
+                    <span class="item-desc">
+                        Nhóm công tác phải có <strong>ít nhất 02 người</strong>, trong đó luôn có
+                        <strong>01 người đứng trên bờ vững chắc</strong> để quan sát, cảnh giới và hỗ trợ
+                        ứng cứu kịp thời khi xảy ra sự cố.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Hàng rào an toàn &amp; Phao cứu sinh</span>
+                    <span class="item-desc">
+                        Đoạn kênh xả nước tuần hoàn nằm phía trước ngưỡng tràn (điểm K0) và miệng hố hở phải
+                        lắp đặt <strong>lan can hoặc hàng rào bảo vệ kiên cố</strong>. Bố trí đầy đủ
+                        <strong>phao tròn cứu hộ kèm dây ném</strong> tại vị trí dễ tiếp cận.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Biển cảnh báo dòng nước</span>
+                    <span class="item-desc">
+                        Tại các vị trí nước sâu, dòng chảy xiết, cống xả ngầm phải đặt
+                        <strong>biển báo nguy hiểm cấm lại gần</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGHIÊM CẤM:</strong> Bố trí người <strong>không biết bơi</strong> làm việc dưới nước
+                    hoặc tại khu vực ta-luy có nguy cơ trượt ngã xuống lòng kênh. Đây là nguyên tắc
+                    <strong>an toàn sinh mạng</strong>, không có ngoại lệ.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN V ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">V</div>
+                <h2>Quy trình nghiệm thu, kết thúc công tác và điền đầy hệ thống</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Kiểm tra rút người và dụng cụ</span>
+                    <span class="item-desc">
+                        Trước khi đóng cửa manhole, Người CHTT cùng Người cho phép phải
+                        <strong>trực tiếp soi đèn kiểm tra toàn tuyến ống</strong>. Khẳng định
+                        <strong>100% người, rác thải vệ sinh, dây điện, bóng đèn và vật tư gá lắp</strong>
+                        đã được đưa hết ra ngoài.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Đóng cửa manhole &amp; Tháo mặt bích chặn</span>
+                    <span class="item-desc">
+                        Tiến hành lắp lại <strong>gioăng làm kín mới</strong>, siết đều bulông nắp manhole
+                        theo lực quy định; tháo dỡ các mặt bích chặn cô lập.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Khóa PCT &amp; Điền đầy nước</span>
+                    <span class="item-desc">
+                        Người CHTT và Người cho phép ký hoàn thành <strong>Mục 4 PCT</strong>; mở các van xả khí
+                        đỉnh đường ống, <strong>từ từ mở van đường đi tắt</strong> hoặc mở hé van cấp để
+                        điền đầy nước tuần hoàn từ từ <strong>chống hiện tượng thủy kích (búa nước)</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý quan trọng:</strong> Việc điền đầy nước phải được thực hiện
+                    <strong>từ từ</strong>, mở van hé trước để không khí thoát ra qua van xả khí đỉnh,
+                    tránh hiện tượng <strong>thủy kích (búa nước)</strong> gây vỡ đường ống hoặc hư hỏng
+                    thiết bị.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp khu vực làm việc &amp; biện pháp an toàn chính</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Khu vực / Công tác</th>
+                        <th style="width:38%;">Mối nguy chính</th>
+                        <th style="width:40%;">Biện pháp an toàn bắt buộc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Đường ống kín</span></td>
+                        <td>Ngạt khí (CO, CO₂, H₂S), thiếu Oxy, điện giật, đuối nước, thủy kích.</td>
+                        <td>Lập PCT, cô lập van + LOTO, lắp blind flange, xả cạn áp lực, thông gió cưỡng bức, đo khí đạt chuẩn, CG túc trực, điện ≤ 36 VAC/48 VDC.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Hố ga kín</span></td>
+                        <td>Ngạt khí, không gian hạn chế, ngã, điện giật.</td>
+                        <td>Thông gió tự nhiên 15–30 phút + quạt cưỡng bức; đo khí; nhóm 2–3 người; CG túc trực; trang bị cứu hộ sẵn sàng.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Bình ngưng / Hố van</span></td>
+                        <td>Áp lực nước, ngạt khí, bỏng nhiệt, điện giật.</td>
+                        <td>Lập PCT riêng; cô lập + blind flange; xả áp; thông gió; đo khí; PTBVCN chuyên dụng.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Kênh xả hở</span></td>
+                        <td>Đuối nước, trượt ngã, dòng chảy xiết.</td>
+                        <td>Chỉ người biết bơi; nhóm ≥ 2 người (1 người trên bờ); lan can + phao cứu sinh; biển cảnh báo.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Điền đầy hệ thống</span></td>
+                        <td>Thủy kích (búa nước) gây vỡ ống, hư hỏng thiết bị.</td>
+                        <td>Mở van xả khí đỉnh; mở van cấp từ từ; theo dõi áp lực; ký khóa PCT Mục 4.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Quy định an toàn khi làm việc trên đường ống nước tuần hoàn<br>
+        (Điều 15, 22, 25, 31 &amp; 34 – Quy chuẩn An toàn)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

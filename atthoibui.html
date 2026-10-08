@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: An toàn khi vận hành lò hơi và trong quá trình thổi bụi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe8d6 0%, #ffd4b8 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(180, 70, 10, 0.15);
+            overflow: hidden;
+            border: 1px solid #f0c8a8;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #8a2e00 0%, #d9540a 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #8a2e00;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #fff4ec;
+            border-left: 5px solid #d9540a;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #6b3a1a;
+        }
+
+        .intro-box strong {
+            color: #8a2e00;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0c8a8;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #8a2e00, #d9540a);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(217, 84, 10, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #8a2e00;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #c24a0a;
+            margin-bottom: 14px;
+            border-left: 4px solid #d9540a;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS (NUMBERED) ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fffdfb;
+            border: 1px solid #f5dfc8;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 58px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #5a3a1a;
+        }
+
+        .item-list li:hover {
+            border-color: #e8c088;
+            box-shadow: 0 4px 16px rgba(217, 84, 10, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: attr(data-num);
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #8a2e00, #d9540a);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 3px 8px rgba(217, 84, 10, 0.25);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #8a2e00;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #5a3a1a;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #8a2e00;
+        }
+
+        /* ===== SUB-LIST ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 30px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #5a3a1a;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: attr(data-letter);
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background: #ffe8d6;
+            color: #8a2e00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            box-shadow: none;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #8a2e00;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #f0c8a8;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #8a2e00, #d9540a);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #5a3a1a;
+            border-bottom: 1px solid #f5dfc8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #fffaf5;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #fff4ec;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #ffe8d6;
+            color: #8a2e00;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #fff4ec;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #f5dfc8;
+            font-size: 0.85rem;
+            color: #a06a3a;
+        }
+
+        .report-footer strong {
+            color: #8a2e00;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 50px; }
+            .item-list li::before { left: 12px; top: 14px; width: 26px; height: 26px; font-size: 0.75rem; }
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Quy định an toàn khi vận hành lò hơi &amp; Quy định an toàn trong quá trình thổi bụi</h1>
+        <p class="subtitle">8 quy tắc vận hành lò hơi – 6 quy định an toàn thổi bụi</p>
+        <span class="legal-badge">🔥 Khoản 1 &amp; Khoản 2 Điều 23 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Lò hơi là thiết bị <strong>chịu áp lực cực cao và nhiệt độ lớn</strong>,
+            tiềm ẩn nguy cơ nổ, bỏng nhiệt, ngạt khí và tai nạn cơ học nghiêm trọng. Quá trình thổi bụi bằng hơi
+            nước áp lực cao cũng có nhiều rủi ro đặc thù. Mọi cán bộ công nhân viên Phân xưởng Vận hành phải tuân
+            thủ nghiêm ngặt các quy tắc kỹ thuật an toàn được quy định tại Điều 23.
+        </div>
+
+        <!-- ===== PHẦN II: KHOẢN 1 ĐIỀU 23 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Quy định an toàn khi vận hành lò hơi</h2>
+            </div>
+
+            <p style="color:#5a3a1a; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 1 Điều 23 – Quy chuẩn An toàn</em>
+            </p>
+
+            <p style="color:#5a3a1a; margin-bottom:18px; font-size:0.94rem;">
+                Trong suốt quá trình quản lý, vận hành lò hơi, cán bộ công nhân viên Phân xưởng Vận hành phải
+                tuân thủ nghiêm ngặt <strong>8 quy tắc kỹ thuật an toàn</strong> sau:
+            </p>
+
+            <ul class="item-list">
+                <li data-num="1">
+                    <span class="item-title">Kiểm định thiết bị chịu áp lực</span>
+                    <span class="item-desc">
+                        Tất cả các thiết bị chịu áp lực của lò hơi trước khi đưa vào vận hành phải được
+                        <strong>kiểm định kỹ thuật an toàn đạt yêu cầu</strong> và được kiểm định định kỳ theo
+                        đúng thời hạn pháp luật quy định.
+                    </span>
+                </li>
+                <li data-num="2">
+                    <span class="item-title">Khu vực tường lò đang vận hành</span>
+                    <span class="item-desc">
+                        Những người <strong>không có nhiệm vụ tuyệt đối không được phép đến gần lò</strong>
+                        hoặc đi lại bên cạnh tường lò đang vận hành; nghiêm cấm tự ý tiến hành bất kỳ thao tác nào
+                        liên quan đến vận hành lò khi chưa được phân công.
+                    </span>
+                </li>
+                <li data-num="3">
+                    <span class="item-title">An toàn khi nhóm lò / đốt lò</span>
+                    <span class="item-desc">
+                        Trong thời gian đốt lò hoặc nhóm lò, <strong>CẤM đứng trước các cửa ra, vào lò và cửa
+                        xem lửa</strong>. Khi kiểm tra tình hình ngọn lửa cháy trong buồng đốt, bắt buộc phải đeo
+                        <strong>kính bảo hộ lao động chuyên dụng</strong> chống bức xạ nhiệt và xỉ văng.
+                    </span>
+                </li>
+                <li data-num="4">
+                    <span class="item-title">Thao tác mở cửa kiểm tra và cửa chọc xỉ</span>
+                    <span class="item-desc">
+                        Khi xem xét lò phải giữ khoảng cách an toàn, đứng cách xa van an toàn, cửa phòng nổ,
+                        cửa nhìn lửa, lỗ người chui. Khi có hiện tượng hỗn hợp than cám bốc bay lên thì
+                        <strong>CẤM mở cửa kiểm tra</strong>. Thao tác mở cửa kiểm tra, cửa chọc xỉ phải thực hiện
+                        <strong>từ từ, cẩn thận</strong>; người thao tác phải đứng nép phía sau nắp cửa để phòng
+                        ngừa ngọn lửa/xỉ nóng tạt ra.
+                    </span>
+                </li>
+                <li data-num="5">
+                    <span class="item-title">Kiểm tra thiết bị chịu áp lực</span>
+                    <span class="item-desc">
+                        Trong quá trình lò hoạt động, nhân viên vận hành phải thường xuyên chú ý tuần tra,
+                        lắng nghe âm thanh và quan sát các bộ phận chịu áp lực
+                        (<strong>giàn ống sinh hơi, bộ quá nhiệt, ống góp</strong>) xem có hiện tượng
+                        xì nổ, xì hở môi chất hay không để xử lý kịp thời.
+                    </span>
+                </li>
+                <li data-num="6">
+                    <span class="item-title">Thao tác thông rửa ống thủy sáng (chỉ mức nước)</span>
+                    <span class="item-desc">
+                        Khi thao tác thông rửa ống thủy, nhân viên phải đứng ở <strong>phía bên cạnh của ống
+                        thủy</strong>; khi mở van phải mở <strong>từ từ, êm ái</strong>, tránh làm ống thủy bị
+                        thay đổi nhiệt độ đột ngột (nóng đột ngột hoặc lạnh đột ngột) gây nổ vỡ kính.
+                        <strong>Tuyệt đối không được ghé mắt nhìn sát vào ống thủy</strong>.
+                    </span>
+                </li>
+                <li data-num="7">
+                    <span class="item-title">Xử lý khi lò tắt lửa (MFT)</span>
+                    <span class="item-desc">
+                        Khi lò bị tắt lửa, phải <strong>lập tức ngừng cấp than và nhiên liệu</strong> vào buồng
+                        đốt ngay tức khắc. Chỉ sau khi đã tiến hành <strong>thông gió thổi quét buồng đốt đầy đủ</strong>
+                        theo đúng quy trình công nghệ mới được phép đánh lửa trở lại.
+                    </span>
+                </li>
+                <li data-num="8">
+                    <span class="item-title">Quy định đối với thiết bị đang mang áp lực</span>
+                    <span class="item-desc">
+                        Trong lúc lò đang làm việc, <strong>CẤM tiến hành các công việc</strong> như: hàn, buộc,
+                        xiết ê-cu đối với các thiết bị chịu áp lực. Chỉ cho phép <strong>xiết nóng</strong> những
+                        vị trí mặt bích, chỗ nối chui trong quá trình đốt lò nhưng phải tuân thủ nghiêm ngặt theo
+                        đúng Tiêu chuẩn kỹ thuật Việt Nam (TCVN) về sửa chữa nồi hơi.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGUY HIỂM CHẾT NGƯỜI:</strong> Khi lò bị tắt lửa (MFT), <strong>tuyệt đối không được
+                    đánh lửa trở lại</strong> khi chưa thông gió thổi quét buồng đốt đầy đủ. Hỗn hợp khí cháy
+                    tích tụ có thể gây nổ buồng đốt nghiêm trọng.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III: KHOẢN 2 ĐIỀU 23 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Quy định an toàn trong quá trình thổi bụi lò hơi</h2>
+            </div>
+
+            <p style="color:#5a3a1a; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 2 Điều 23 – Quy chuẩn An toàn</em>
+            </p>
+
+            <p style="color:#5a3a1a; margin-bottom:18px; font-size:0.94rem;">
+                Thổi bụi lò hơi là quy trình làm sạch muội than bám trên bề mặt truyền nhiệt bằng hơi nước áp lực cao.
+                Để đảm bảo an toàn tuyệt đối cho người và thiết bị, bắt buộc tuân thủ
+                <strong>6 quy định</strong> sau:
+            </p>
+
+            <ul class="item-list">
+                <li data-num="1">
+                    <span class="item-title">Kiểm tra đối soát trước khi vận hành thổi bụi</span>
+                    <span class="item-desc">
+                        Trước khi khởi động hệ thống thổi bụi, nhân viên vận hành phải:
+                        <ul class="sub-list">
+                            <li data-letter="a">
+                                Đảm bảo <strong>không có bất kỳ công việc kiểm tra, sửa chữa hoặc hiệu chỉnh</strong>
+                                nào đang được tiến hành tại khu vực lò;
+                            </li>
+                            <li data-letter="b">
+                                Xác định các van xả đọng nhiệt đường ống vòi thổi bụi đang làm việc tốt, đảm bảo
+                                đường ống cấp hơi đã được <strong>sấy nóng đạt nhiệt độ phù hợp</strong>
+                                (chống đọng nước gây thủy kích phá vỡ vòi);
+                            </li>
+                            <li data-letter="c">
+                                Phải đặc biệt chú ý kiểm tra xem có <strong>Phiếu công tác (PCT) hoặc Lệnh công tác
+                                (LCT)</strong> nào đang sửa chữa các máy thổi bụi hay không.
+                            </li>
+                        </ul>
+                    </span>
+                </li>
+                <li data-num="2">
+                    <span class="item-title">Khoảng cách an toàn cơ học và nhiệt độ</span>
+                    <span class="item-desc">
+                        <strong>Tuyệt đối không đưa tay hoặc bộ phận cơ thể</strong> vào các cơ cấu truyền lực
+                        (bánh răng, xích tải, đầu di chuyển, cơ cấu cam đóng mở van) trong khi thiết bị thổi bụi
+                        đang làm việc. <strong>Tuyệt đối không chạm trực tiếp</strong> vào ống dẫn hơi nóng của
+                        bộ thổi bụi.
+                    </span>
+                </li>
+                <li data-num="3">
+                    <span class="item-title">Điều kiện môi chất làm việc</span>
+                    <span class="item-desc">
+                        Khi buồng đốt đang làm việc, <strong>nghiêm cấm vận hành thiết bị thổi bụi</strong> mà
+                        không có môi chất làm việc (hơi nước sấy khô) đi qua vòi để làm mát và thổi sạch.
+                    </span>
+                </li>
+                <li data-num="4">
+                    <span class="item-title">Xử lý sự cố kẹt vòi thổi bụi giữa chừng</span>
+                    <span class="item-desc">
+                        Khi bộ thổi bụi bị ngừng giữa chừng bên trong buồng đốt vì bất kỳ lý do gì
+                        (mất điện, kẹt cơ khí, tụt áp hơi), phải <strong>lập tức thao tác quay tay kéo ngay
+                        vòi thổi bụi ra ngoài buồng đốt</strong> để tránh nhiệt độ cao trong buồng lửa nung cháy
+                        cong vênh vòi thổi bụi.
+                    </span>
+                </li>
+                <li data-num="5">
+                    <span class="item-title">Các trường hợp cấm tiến hành thổi bụi</span>
+                    <span class="item-desc">
+                        Nghiêm cấm tiến hành công tác thổi bụi lò trong <strong>2 trường hợp</strong>:
+                        <ul class="sub-list">
+                            <li data-letter="a">
+                                Khi bộ thổi bụi có <strong>khuyết tật cơ khí, xì hở van</strong> hoặc không đảm bảo
+                                an toàn cho người vận hành;
+                            </li>
+                            <li data-letter="b">
+                                Khi chế độ cháy trong buồng đốt của lò đang <strong>dao động, không ổn định</strong>.
+                            </li>
+                        </ul>
+                    </span>
+                </li>
+                <li data-num="6">
+                    <span class="item-title">Quan sát buồng lửa khi thổi bụi</span>
+                    <span class="item-desc">
+                        Khi vòi thổi bụi đang hoạt động trong lò, <strong>CẤM mở lỗ kiểm tra</strong> để quan sát
+                        tình trạng cháy (áp lực buồng đốt có thể tăng đột biến đẩy ngọn lửa và khí nóng phụt ra
+                        ngoài qua lỗ kiểm tra).
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý quan trọng:</strong> Khi bộ thổi bụi bị kẹt giữa chừng trong buồng đốt, phải
+                    <strong>lập tức kéo vòi ra ngoài bằng tay quay</strong>. Nếu để vòi nằm trong buồng lửa,
+                    nhiệt độ cao sẽ nung cháy, cong vênh vòi thổi bụi, gây hư hỏng nặng thiết bị.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp quy định an toàn lò hơi &amp; thổi bụi</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Lĩnh vực / Giai đoạn</th>
+                        <th style="width:38%;">Yêu cầu bắt buộc</th>
+                        <th style="width:40%;">Hành vi bị cấm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Kiểm định</span></td>
+                        <td>Thiết bị chịu áp lực phải kiểm định an toàn trước vận hành và định kỳ đúng hạn.</td>
+                        <td>Đưa thiết bị chưa kiểm định vào vận hành.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Khu vực lò</span></td>
+                        <td>Chỉ người có nhiệm vụ mới được đến gần tường lò; thao tác theo phân công.</td>
+                        <td>Người không nhiệm vụ đến gần lò; tự ý thao tác vận hành lò.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Nhóm / đốt lò</span></td>
+                        <td>Đeo kính bảo hộ chuyên dụng chống bức xạ nhiệt và xỉ văng khi kiểm tra ngọn lửa.</td>
+                        <td>Đứng trước cửa ra/vào lò, cửa xem lửa khi đốt lò; mở cửa kiểm tra khi than cám bốc bay.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Cửa kiểm tra / chọc xỉ</span></td>
+                        <td>Mở từ từ, cẩn thận; đứng nép phía sau nắp cửa; giữ khoảng cách với van an toàn, cửa phòng nổ.</td>
+                        <td>Mở cửa kiểm tra khi than cám bốc bay; đứng trực diện trước cửa.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Thiết bị chịu áp lực</span></td>
+                        <td>Tuần tra, lắng nghe âm thanh, quan sát giàn ống sinh hơi, bộ quá nhiệt, ống góp.</td>
+                        <td>Hàn, buộc, xiết ê-cu thiết bị chịu áp lực khi lò đang làm việc (trừ xiết nóng theo TCVN).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Ống thủy sáng</span></td>
+                        <td>Đứng bên cạnh ống thủy; mở van từ từ, êm ái; tránh thay đổi nhiệt độ đột ngột.</td>
+                        <td>Ghé mắt nhìn sát vào ống thủy; mở van đột ngột gây nổ vỡ kính.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Lò tắt lửa (MFT)</span></td>
+                        <td>Ngừng cấp than/nhiên liệu ngay; thông gió thổi quét buồng đốt đầy đủ trước khi đánh lửa lại.</td>
+                        <td>Đánh lửa lại khi chưa thông gió thổi quét buồng đốt.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Thổi bụi</span></td>
+                        <td>Kiểm tra đối soát trước; sấy nóng đường ống; có môi chất qua vòi; kéo vòi ra khi kẹt.</td>
+                        <td>Thổi bụi khi có PCT/LCT đang sửa; khi bộ thổi có khuyết tật; khi cháy dao động; mở lỗ kiểm tra khi vòi đang hoạt động.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Quy định an toàn khi vận hành lò hơi (Khoản 1 Điều 23)<br>
+        và Quy định an toàn trong quá trình thổi bụi (Khoản 2 Điều 23)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

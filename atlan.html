@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Các quy định về an toàn khi lặn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #d4f0f7 0%, #b0e0f0 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 80, 120, 0.18);
+            overflow: hidden;
+            border: 1px solid #a8d8ea;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #045a7a 0%, #0a8ab8 55%, #17b8d4 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #045a7a;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #e8f7fc;
+            border-left: 5px solid #0a8ab8;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #1a4a5e;
+        }
+
+        .intro-box strong {
+            color: #045a7a;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #b8e0ee;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #045a7a, #0a8ab8);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(10, 138, 184, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #045a7a;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0a8ab8;
+            margin-bottom: 14px;
+            border-left: 4px solid #0a8ab8;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fafdff;
+            border: 1px solid #d4eaf4;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #2a4a5e;
+        }
+
+        .item-list li:hover {
+            border-color: #8ec8e0;
+            box-shadow: 0 4px 16px rgba(10, 138, 184, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #0a8ab8;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(10, 138, 184, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #045a7a;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #2a4a5e;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #045a7a;
+        }
+
+        /* ===== SUB-LIST ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 30px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #2a4a5e;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: attr(data-letter);
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background: #d4eaf4;
+            color: #045a7a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            box-shadow: none;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #045a7a;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== TEAM GRID ===== */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .team-card {
+            background: linear-gradient(135deg, #e8f7fc, #d4eaf4);
+            border: 1px solid #a8d8ea;
+            border-radius: 14px;
+            padding: 22px 18px;
+            text-align: center;
+            position: relative;
+        }
+
+        .team-card .team-num {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #045a7a, #0a8ab8);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 8px rgba(10, 138, 184, 0.3);
+        }
+
+        .team-card .team-icon {
+            font-size: 2rem;
+            display: block;
+            margin: 12px 0 8px;
+        }
+
+        .team-card .team-name {
+            font-weight: 700;
+            color: #045a7a;
+            font-size: 0.92rem;
+            margin-bottom: 6px;
+        }
+
+        .team-card .team-desc {
+            font-size: 0.82rem;
+            color: #2a4a5e;
+            line-height: 1.5;
+        }
+
+        /* ===== SIGNAL TABLE ===== */
+        .signal-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #a8d8ea;
+            margin-top: 14px;
+        }
+
+        .signal-table thead th {
+            background: linear-gradient(135deg, #045a7a, #0a8ab8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        .signal-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.9rem;
+            color: #2a4a5e;
+            border-bottom: 1px solid #e0f0f8;
+            vertical-align: middle;
+        }
+
+        .signal-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .signal-table tbody tr:nth-child(even) {
+            background: #f5fbfe;
+        }
+
+        .signal-table tbody tr:hover {
+            background: #eaf6fc;
+        }
+
+        .signal-table .signal-badge {
+            display: inline-block;
+            background: #d4eaf4;
+            color: #045a7a;
+            padding: 4px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .signal-table .signal-badge.alert {
+            background: #ffcdd2;
+            color: #8a0000;
+        }
+
+        .signal-table tr.alert-row {
+            background: #fff5f5 !important;
+        }
+
+        .signal-table tr.alert-row:hover {
+            background: #ffebee !important;
+        }
+
+        .signal-table tr.alert-row td {
+            color: #7a1a1a;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #a8d8ea;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #045a7a, #0a8ab8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a5e;
+            border-bottom: 1px solid #e0f0f8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #f5fbfe;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #eaf6fc;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #d4eaf4;
+            color: #045a7a;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #e8f7fc;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #d4eaf4;
+            font-size: 0.85rem;
+            color: #5a8aaa;
+        }
+
+        .report-footer strong {
+            color: #045a7a;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .team-grid { grid-template-columns: 1fr; }
+            .signal-table thead th,
+            .signal-table tbody td,
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.78rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Các quy định về an toàn khi lặn</h1>
+        <p class="subtitle">Thợ lặn &amp; Nhóm lặn – Cô lập khu vực – Thiết bị cấp khí – Tín hiệu – Dừng lặn khẩn cấp</p>
+        <span class="legal-badge">🤿 Quy chuẩn An toàn lặn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Công tác lặn dưới nước tiềm ẩn
+            <strong>nguy cơ đặc biệt nghiêm trọng</strong> như bệnh khí ép (giảm áp), lực hút xoáy của
+            dòng chảy, tai nạn với thiết bị nâng hạ và sự cố hệ thống cấp khí thở. Mọi công tác lặn
+            <strong>bắt buộc phải thực hiện theo PCT</strong>, với nhóm lặn tối thiểu 03 người và tuân thủ
+            nghiêm ngặt quy trình cô lập, kiểm tra thiết bị, quy tắc tín hiệu và chăm sóc sau lặn.
+        </div>
+
+        <!-- ===== PHẦN II ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Yêu cầu đối với thợ lặn và tổ chức nhóm lặn</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Tiêu chuẩn chuyên môn và Sức khỏe đối với Thợ lặn</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Độ tuổi và Chứng chỉ</span>
+                        <span class="item-desc">
+                            Thợ lặn phải đủ <strong>từ 18 tuổi trở lên</strong>, có văn bằng/chứng chỉ chuyên môn
+                            thợ lặn hợp pháp do cơ sở đào tạo có thẩm quyền cấp; được huấn luyện, sát hạch đạt
+                            yêu cầu và được cấp <strong>thẻ an toàn lao động nhóm 3</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Giấy chứng nhận sức khỏe đặc thù</span>
+                        <span class="item-desc">
+                            Bắt buộc phải có Giấy chứng nhận đủ sức khỏe làm việc lặn do cơ sở y tế có chức năng
+                            khám sức khỏe nghề nghiệp cấp (<strong>khám định kỳ tối thiểu 06 tháng / 01 lần</strong>).
+                            Tuyệt đối <strong>cấm bố trí người mắc các bệnh</strong> tim mạch, huyết áp, hô hấp,
+                            tiền đình, thủng màng nhĩ hoặc người đang mệt mỏi, sử dụng rượu bia, chất kích thích
+                            xuống lặn.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Kiểm tra thể trạng trước ca lặn</span>
+                        <span class="item-desc">
+                            Người Chỉ huy trực tiếp (CHTT) phải <strong>kiểm tra trực tiếp thể trạng sức khỏe
+                            và tinh thần</strong> của thợ lặn trước khi cho phép mang trang bị xuống nước.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Thủ tục cấp phép và Cơ cấu Nhóm công tác lặn</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Bắt buộc thực hiện theo Phiếu công tác (PCT)</span>
+                        <span class="item-desc">
+                            Mọi công tác lặn dưới nước phải được lập <strong>Phương án tổ chức thi công &amp;
+                            Biện pháp kỹ thuật an toàn</strong> được cấp thẩm quyền duyệt, cấp PCT theo đúng quy định.
+                        </span>
+                    </li>
+                </ul>
+
+                <p style="color:#2a4a5e; margin:16px 0 8px; font-size:0.93rem;">
+                    <strong>Cơ cấu nhóm lặn tối thiểu 03 người:</strong> Một ca lặn tại hiện trường bắt buộc
+                    phải có tối thiểu 03 người thực hiện các nhiệm vụ chuyên trách độc lập:
+                </p>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <span class="team-num">1</span>
+                        <span class="team-icon">🤿</span>
+                        <div class="team-name">Thợ lặn chính</div>
+                        <div class="team-desc">
+                            Trực tiếp lặn xuống nước thực hiện các thao tác khảo sát, sửa chữa theo nhiệm vụ.
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <span class="team-num">2</span>
+                        <span class="team-icon">🆘</span>
+                        <div class="team-name">Thợ lặn dự phòng</div>
+                        <div class="team-desc">
+                            Mang sẵn sàng toàn bộ trang bị đồ lặn trên bờ hoặc trên sàn thao tác, luôn ở tư thế
+                            sẵn sàng lao xuống ứng cứu khẩn cấp.
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <span class="team-num">3</span>
+                        <span class="team-icon">📡</span>
+                        <div class="team-name">Người cảnh giới / Phục vụ</div>
+                        <div class="team-desc">
+                            Giữ dây rốn tín hiệu, điều tiết áp suất cấp khí thở, duy trì liên lạc vô tuyến,
+                            theo dõi mặt nước và cảnh giới tàu thuyền.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Biện pháp cô lập và thiết lập ranh giới an toàn khu vực lặn</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Cô lập dòng chảy và các thiết bị thủy lực (Ngăn ngừa lực hút cuốn)</h3>
+                <p style="color:#2a4a5e; margin-bottom:14px; font-size:0.93rem;">
+                    Trước khi cho thợ lặn xuống nước tại khu vực công trình thủy công (kênh tuần hoàn,
+                    bể ngầm, cửa lấy nước, buồng bơm):
+                </p>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Dừng và cắt điện động cơ bơm</span>
+                        <span class="item-desc">
+                            Dừng hoạt động và cắt điện các bơm nước tuần hoàn (CWP), bơm lọc nước, máy quay lưới
+                            chắn rác liên quan; treo biển <strong>"CẤM ĐÓNG ĐIỆN! CÓ NGƯỜI ĐANG LÀM VIỆC"</strong>
+                            tại tủ cấp nguồn và khóa cơ khí LOTO.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Đóng van phai và van cách ly</span>
+                        <span class="item-desc">
+                            Hạ kín các van phai chắn nước, đóng chặt van bướm từ mọi phía; cắt nguồn điện lực và
+                            nguồn điều khiển của các van điện/thủy lực. Bắt buộc phải <strong>cân bằng áp lực
+                            nước hoặc triệt tiêu hoàn toàn sự chênh lệch cột nước</strong> để ngăn ngừa tuyệt đối
+                            lực hút xoáy nguy hiểm có thể kéo chặt thợ lặn vào miệng van/lưới lọc.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Treo biển cấm thao tác</span>
+                        <span class="item-desc">
+                            Treo biển cảnh báo cấm thao tác tại tất cả các cơ cấu đóng mở van phai và tời
+                            nâng hạ liên quan.
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>NGUY HIỂM CHẾT NGƯỜI:</strong> Lực hút xoáy từ chênh lệch cột nước hoặc bơm
+                        đang vận hành có thể <strong>kéo chặt thợ lặn vào miệng van/lưới lọc</strong> không thể
+                        thoát ra. Bắt buộc phải cân bằng áp lực hoặc triệt tiêu hoàn toàn chênh lệch cột nước
+                        trước khi cho thợ lặn xuống.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Cảnh giới an toàn mặt nước và thiết bị nâng hạ</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Thả phao &amp; Treo cờ hiệu lặn</span>
+                        <span class="item-desc">
+                            Căng dây, thả phao cảnh báo khoanh vùng bán kính an toàn khu vực lặn.
+                            <strong>Ban ngày</strong> phải treo cờ tín hiệu lặn quốc tế (Cờ hiệu Alpha "A" hình
+                            đuôi én xanh-trắng); <strong>ban đêm</strong> phải bố trí đèn tín hiệu chuyên dùng
+                            để cảnh báo các tàu thuyền, sà lan không đi vào vùng lặn.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Dừng hoạt động thiết bị nâng chuyển trên cao</span>
+                        <span class="item-desc">
+                            <strong>Tuyệt đối cấm vận hành cẩu trục bốc than, cổng trục hoặc cẩu tự hành</strong>
+                            hoạt động trên không gian thẳng đứng phía trên vị trí thợ lặn đang thao tác.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN IV ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">IV</div>
+                <h2>Kiểm tra thiết bị lặn và hệ thống cấp khí thở</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Hệ thống máy nén khí thở</span>
+                    <span class="item-desc">
+                        Máy nén khí cấp cho thợ lặn phải là loại <strong>chuyên dụng cho khí thở y tế/lặn biển</strong>,
+                        có bình tích khí dự phòng và còn hạn kiểm định. Cửa hút khí của máy nén phải đặt ở nơi
+                        thoáng khí, <strong>cách xa ống xả khói động cơ đốt trong</strong>. Khí thở phải qua hệ
+                        thống lọc tách ẩm, tách dầu và tạp chất độc hại.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Mũ lặn, mặt nạ và van thở</span>
+                    <span class="item-desc">
+                        Kiểm tra độ kín khít cơ học của mặt nạ; van cấp khí chính, van xả khí thừa và
+                        <strong>van cấp khí khẩn cấp</strong> phải hoạt động trơn tru, không kẹt dính.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Dây rốn cấp khí (Umbilical Cable)</span>
+                    <span class="item-desc">
+                        Đường ống dẫn khí thở kết hợp dây điện đàm và dây cứu nạn phải
+                        <strong>chịu được áp lực cao</strong>, không nứt vỡ, trầy xước, có đầu kết nối chắc chắn.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Thông tin liên lạc hai chiều</span>
+                    <span class="item-desc">
+                        Kiểm tra thông suốt hệ thống âm thanh điện thoại đàm thoại hai chiều giữa thợ lặn
+                        dưới nước và chỉ huy trên bờ <strong>trước khi rời mặt nước</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý:</strong> Việc kiểm tra toàn bộ thiết bị lặn và hệ thống cấp khí thở phải được
+                    thực hiện <strong>trước mỗi ca lặn</strong>. Bất kỳ thiết bị nào không đạt yêu cầu đều
+                    <strong>tuyệt đối không được đưa vào sử dụng</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN V ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">V</div>
+                <h2>Quy tắc an toàn trong khi thực hiện lặn và quy ước tín hiệu</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Quy tắc lặn xuống, nổi lên và Giảm áp</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Tốc độ di chuyển dưới nước</span>
+                        <span class="item-desc">
+                            Thợ lặn phải xuống và lên theo đúng tốc độ kỹ thuật quy định:
+                            <strong>tốc độ xuống không quá 20 m/phút</strong>,
+                            <strong>tốc độ nổi lên không vượt quá 9 – 10 m/phút</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Tuân thủ chế độ dừng giảm áp</span>
+                        <span class="item-desc">
+                            Phải tuân thủ nghiêm ngặt <strong>bảng giảm áp</strong> tương ứng với độ sâu và thời
+                            gian làm việc dưới nước để đào thải khí nitơ hòa tan trong cơ thể, ngăn ngừa triệt để
+                            <strong>bệnh khí ép nguy hiểm</strong>.
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>NGUY HIỂM:</strong> Không tuân thủ bảng giảm áp có thể dẫn đến
+                        <strong>bệnh khí ép (bệnh giảm áp)</strong> — tình trạng bọt khí nitơ hình thành trong
+                        máu, gây tắc mạch, tổn thương khớp, thần kinh, thậm chí tử vong.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Quy ước tín hiệu giật dây khi mất liên lạc vô tuyến</h3>
+                <p style="color:#2a4a5e; margin-bottom:14px; font-size:0.93rem;">
+                    Khi hệ thống đàm thoại vô tuyến bị gián đoạn, bắt buộc phải sử dụng quy ước giật dây
+                    tín hiệu chuẩn:
+                </p>
+
+                <table class="signal-table">
+                    <thead>
+                        <tr>
+                            <th style="width:24%;">Tín hiệu giật dây</th>
+                            <th style="width:38%;">Ý nghĩa từ Thợ lặn</th>
+                            <th style="width:38%;">Ý nghĩa từ Người phục vụ trên bờ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="signal-badge">Giật 1 lần</span></td>
+                            <td>Mọi sự bình thường / Đã đến đáy</td>
+                            <td>Hỏi thăm tình trạng / Yêu cầu xác nhận</td>
+                        </tr>
+                        <tr>
+                            <td><span class="signal-badge">Giật 2 lần</span></td>
+                            <td>Cho thêm dây khí / Cho hạ thấp xuống</td>
+                            <td>Báo hiệu chuẩn bị hạ thấp</td>
+                        </tr>
+                        <tr>
+                            <td><span class="signal-badge">Giật 3 lần</span></td>
+                            <td>Thu bớt dây / Chuẩn bị nổi lên</td>
+                            <td>Báo hiệu chuẩn bị kéo lên</td>
+                        </tr>
+                        <tr class="alert-row">
+                            <td><span class="signal-badge alert">Giật liên tục (≥ 4 lần)</span></td>
+                            <td><strong>BÁO ĐỘNG NGUY HIỂM! KÉO LÊN NGAY</strong></td>
+                            <td><strong>BÁO ĐỘNG KHẨN CẤP! NỔI LÊN NGAY</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Điều kiện bắt buộc phải dừng lặn khẩn cấp</h3>
+                <p style="color:#2a4a5e; margin-bottom:14px; font-size:0.93rem;">
+                    Phải lập tức ra lệnh cho thợ lặn nổi lên hoặc kéo thợ lặn lên bờ khi gặp các tình huống sau:
+                </p>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Điều kiện khí tượng xấu</span>
+                        <span class="item-desc">
+                            Gió giật từ <strong>cấp 5 trở lên</strong>, sóng lớn, mưa to có giông sét, hoặc
+                            vận tốc dòng chảy ngầm <strong>vượt quá 1,0 m/s</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Hệ thống cấp khí gặp sự cố</span>
+                        <span class="item-desc">
+                            Tụt áp suất bình khí, khí thở có <strong>mùi khét hoặc mùi dầu máy</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Thợ lặn có dấu hiệu bất thường về sức khỏe</span>
+                        <span class="item-desc">
+                            Choáng váng, khó thở, tức ngực, run lạnh hoặc thiết bị lặn bị rò rỉ nước.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN VI ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">VI</div>
+                <h2>Quy định sau khi kết thúc ca lặn và bàn giao</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Chăm sóc phục hồi sức khỏe</span>
+                    <span class="item-desc">
+                        Đưa thợ lặn lên bờ an toàn, tháo trang bị, lau khô người, mặc quần áo ấm và uống nước ấm.
+                        <strong>Theo dõi sức khỏe thợ lặn ít nhất 02 giờ liên tục</strong> sau khi lặn để kịp thời
+                        phát hiện và xử lý các triệu chứng muộn của bệnh giảm áp.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Nhật ký lặn</span>
+                    <span class="item-desc">
+                        Người CHTT và kỹ thuật viên ghi chép đầy đủ vào sổ nhật ký lặn
+                        (<strong>thời gian lặn, độ sâu lớn nhất, chế độ giảm áp, tình trạng sức khỏe thợ lặn,
+                        nội dung công việc hoàn thành</strong>).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Nghiệm thu &amp; Khóa PCT</span>
+                    <span class="item-desc">
+                        Kiểm tra thu hồi toàn bộ thiết bị lặn, dụng cụ thi công dưới nước; Người cho phép và
+                        Người CHTT trực tiếp <strong>ký nghiệm thu và làm thủ tục khóa Phiếu công tác</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý quan trọng:</strong> Việc theo dõi sức khỏe thợ lặn
+                    <strong>ít nhất 02 giờ</strong> sau khi lặn là bắt buộc. Các triệu chứng muộn của bệnh
+                    giảm áp có thể xuất hiện sau nhiều giờ, cần được phát hiện và xử lý kịp thời.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp quy định an toàn khi lặn</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Lĩnh vực</th>
+                        <th style="width:40%;">Yêu cầu bắt buộc</th>
+                        <th style="width:38%;">Hành vi bị cấm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Thợ lặn</span></td>
+                        <td>≥ 18 tuổi; chứng chỉ hợp pháp; thẻ ATLĐ nhóm 3; GCN sức khỏe định kỳ 6 tháng.</td>
+                        <td>Người mắc bệnh tim mạch, huyết áp, hô hấp, tiền đình, thủng màng nhĩ; dùng rượu bia.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Nhóm lặn</span></td>
+                        <td>Tối thiểu 03 người: lặn chính, lặn dự phòng, cảnh giới/phục vụ.</td>
+                        <td>Lặn đơn độc hoặc thiếu người cảnh giới trên bờ.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Cấp phép</span></td>
+                        <td>Lập phương án + biện pháp AT; cấp PCT theo quy định.</td>
+                        <td>Lặn không có PCT được duyệt.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Cô lập</span></td>
+                        <td>Dừng bơm + LOTO; đóng van phai; cân bằng áp lực/triệt tiêu chênh cột nước.</td>
+                        <td>Lặn khi bơm đang chạy hoặc còn chênh lệch cột nước.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Mặt nước</span></td>
+                        <td>Phao + cờ hiệu Alpha ban ngày; đèn tín hiệu ban đêm.</td>
+                        <td>Vận hành cẩu trục/cẩu tự hành trên không gian thẳng đứng vị trí lặn.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Thiết bị</span></td>
+                        <td>Máy nén khí thở chuyên dụng; mặt nạ kín; dây rốn chịu áp; liên lạc 2 chiều.</td>
+                        <td>Dùng máy nén khí thường; thiết bị mất niêm phong; liên lạc không thông suốt.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Tốc độ lặn</span></td>
+                        <td>Xuống ≤ 20 m/phút; nổi lên ≤ 9–10 m/phút; tuân thủ bảng giảm áp.</td>
+                        <td>Lặn/nổi quá nhanh; bỏ qua chế độ dừng giảm áp.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Tín hiệu</span></td>
+                        <td>Tuân thủ quy ước giật dây 1–2–3–liên tục khi mất liên lạc vô tuyến.</td>
+                        <td>Không phản hồi tín hiệu; giật dây sai quy ước.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Dừng khẩn cấp</span></td>
+                        <td>Dừng ngay khi gió ≥ cấp 5, dòng chảy &gt; 1,0 m/s, sự cố khí thở, thợ lặn bất thường.</td>
+                        <td>Tiếp tục lặn khi có điều kiện nguy hiểm.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Sau ca lặn</span></td>
+                        <td>Theo dõi sức khỏe ≥ 02 giờ; ghi nhật ký lặn; nghiệm thu + khóa PCT.</td>
+                        <td>Không theo dõi sức khỏe sau lặn; không ghi chép nhật ký.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Các quy định về an toàn khi lặn<br>
+        (Quy chuẩn An toàn lặn)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Quy định an toàn khi làm việc với thiết bị quay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fde8e8 0%, #f7d4d4 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(120, 20, 20, 0.15);
+            overflow: hidden;
+            border: 1px solid #e8c5c5;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #7a1212 0%, #b82323 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #7a1212;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #fdeaea;
+            border-left: 5px solid #b82323;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #5a1a1a;
+        }
+
+        .intro-box strong {
+            color: #7a1212;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e8c5c5;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #7a1212, #b82323);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(184, 35, 35, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #7a1212;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #b82323;
+            margin-bottom: 14px;
+            border-left: 4px solid #b82323;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fffafa;
+            border: 1px solid #f0d5d5;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #3a2a2a;
+        }
+
+        .item-list li:hover {
+            border-color: #dba8a8;
+            box-shadow: 0 4px 16px rgba(184, 35, 35, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #b82323;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(184, 35, 35, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #7a1212;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #3a2a2a;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #7a1212;
+        }
+
+        /* ===== SUB-ITEMS ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 24px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #3a2a2a;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: auto;
+            height: auto;
+            background: none;
+            color: #b82323;
+            font-size: 0.85rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #7a1212;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== CHECKLIST ===== */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            counter-reset: check-counter;
+        }
+
+        .checklist li {
+            background: #f0f9f4;
+            border: 1px solid #c8e6d4;
+            border-radius: 12px;
+            padding: 16px 20px 16px 66px;
+            margin-bottom: 12px;
+            position: relative;
+            font-size: 0.93rem;
+            color: #1a4a2e;
+            counter-increment: check-counter;
+            transition: all 0.25s ease;
+        }
+
+        .checklist li:hover {
+            border-color: #8ecdb8;
+            box-shadow: 0 4px 16px rgba(14, 138, 110, 0.08);
+            transform: translateX(3px);
+        }
+
+        .checklist li::before {
+            content: '✓';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0a5c4a, #0e8a6e);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 3px 8px rgba(14, 138, 110, 0.3);
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e8c5c5;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #7a1212, #b82323);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #3a2a2a;
+            border-bottom: 1px solid #f0d5d5;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #fff8f8;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #fdeaea;
+        }
+
+        .summary-table .risk-badge {
+            display: inline-block;
+            background: #ffcdd2;
+            color: #7a1212;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #fdf0f0;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #f0d5d5;
+            font-size: 0.85rem;
+            color: #a06060;
+        }
+
+        .report-footer strong {
+            color: #7a1212;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .checklist li { padding-left: 56px; }
+            .checklist li::before { left: 14px; width: 28px; height: 28px; font-size: 0.9rem; }
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Quy định an toàn khi làm việc với thiết bị quay</h1>
+        <p class="subtitle">Nhận diện mối nguy – Cô lập an toàn – Yêu cầu kỹ thuật – Vận hành &amp; Xử lý sự cố – Chạy thử</p>
+        <span class="legal-badge">⚙️ Khoản 1 – 9 – Quy chuẩn An toàn thiết bị quay</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Thiết bị quay tiềm ẩn <strong>rủi ro tai nạn nghiêm trọng</strong>
+            và sự cố thiết bị. Do đó, mọi công tác sửa chữa, bảo dưỡng, đại tu, vận hành và chạy thử đều phải
+            tuân thủ nghiêm ngặt các quy định an toàn từ khâu nhận diện mối nguy, cô lập thiết bị, đến kiểm tra
+            khởi động lại. Báo cáo này tổng hợp đầy đủ các quy định theo từng khoản.
+        </div>
+
+        <!-- ===== KHOẢN 1 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">K1</div>
+                <h2>Nhận diện mối nguy đặc thù khi làm việc với thiết bị quay</h2>
+            </div>
+
+            <p style="color:#5a1a1a; margin-bottom:20px; font-size:0.95rem;">
+                Quá trình làm việc với thiết bị quay tiềm ẩn các <strong>rủi ro tai nạn nghiêm trọng</strong>
+                và sự cố thiết bị gồm:
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Nguy cơ cuốn, kẹp</span>
+                    <span class="item-desc">
+                        Người (quần áo bảo hộ, tóc, tay chân) hoặc vật tư, dụng cụ rơi vào các bộ phận chuyển động
+                        gây tai nạn chấn thương nghiêm trọng hoặc phá hủy thiết bị:
+                        <ul class="sub-list">
+                            <li>Khớp nối, trục quay</li>
+                            <li>Cánh guồng</li>
+                            <li>Dây đai</li>
+                        </ul>
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Nguy cơ va đập, văng bắn</span>
+                    <span class="item-desc">
+                        Các bộ phận cơ khí bị lỏng, gãy vỡ, hoặc dị vật, vật liệu gia công văng bắn với
+                        <strong>động năng lớn</strong> vào người thi công và người có mặt tại khu vực xung quanh.
+                    </span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ===== KHOẢN 2 & 4 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">K2·4</div>
+                <h2>Công tác chuẩn bị và cô lập an toàn trước sửa chữa</h2>
+            </div>
+
+            <p style="color:#5a1a1a; margin-bottom:20px; font-size:0.95rem;">
+                Công tác chuẩn bị sửa chữa, bảo dưỡng hoặc đại tu thiết bị quay chỉ được phép tiến hành sau khi
+                đã đáp ứng <strong>đầy đủ và đồng thời</strong> các điều kiện kỹ thuật an toàn sau:
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Dừng và cắt điện động cơ</span>
+                    <span class="item-desc">
+                        Thiết bị quay phải <strong>dừng hoạt động hoàn toàn</strong>. Đối với thiết bị đưa ra
+                        sửa chữa, đại tu bắt buộc phải <strong>cắt nguồn điện động cơ truyền động</strong> và
+                        các thiết bị điện phụ trợ liên quan.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Khóa an toàn và Treo biển cấm đóng điện</span>
+                    <span class="item-desc">
+                        Treo biển báo cấm thao tác, cấm đóng điện tại khóa điều khiển (LCS tại chỗ, DCS) và
+                        thiết bị đóng cắt nguồn (aptomat, máy cắt tại tủ phân phối/MCC).
+                        Áp dụng khóa an toàn <strong>(Lockout/Tagout – LOTO nếu có)</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Cô lập van công nghệ</span>
+                    <span class="item-desc">
+                        Tất cả các van đầu hút, van đầu đẩy, đường xả, đường tuần hoàn liên quan phải được
+                        <strong>đóng chặt</strong>, đưa về vị trí an toàn cho công việc sửa chữa;
+                        treo biển cảnh báo cấm thao tác van.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Biển báo khu vực</span>
+                    <span class="item-desc">
+                        Tại khu vực công tác phải đặt biển báo <strong>"Khu vực đang làm việc"</strong>
+                        hoặc các biển cảnh báo phù hợp theo quy định.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý:</strong> Các điều kiện trên phải được đáp ứng <strong>đầy đủ và đồng thời</strong>
+                    trước khi tiến hành bất kỳ công tác sửa chữa nào. Thiếu bất kỳ điều kiện nào đều
+                    <strong>không được phép thi công</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== KHOẢN 3 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">K3</div>
+                <h2>Yêu cầu kỹ thuật an toàn đối với thiết bị và khu vực làm việc</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Hàng rào an toàn</span>
+                    <span class="item-desc">
+                        Các thiết bị quay cần phải có hàng rào an toàn với <strong>khoảng cách quy định</strong>
+                        ngăn cách lối đi lại.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Vỏ bảo vệ khớp nối</span>
+                    <span class="item-desc">
+                        Các khớp nối trục, bộ truyền động phải có <strong>vỏ bảo vệ chắc chắn, kiên cố</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Tiếp địa và hộp đấu cáp</span>
+                    <span class="item-desc">
+                        Đối với động cơ điện, bắt buộc phải có <strong>dây tiếp địa bảo vệ nối đất an toàn</strong>;
+                        điểm đấu nối cáp điện vào động cơ phải có hộp bảo vệ chắc chắn, kín nước và chống bụi.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Bôi trơn gối đỡ</span>
+                    <span class="item-desc">
+                        Các gối đỡ trục, ổ bi, ổ bạc phải được <strong>kiểm tra và bôi trơn đầy đủ</strong>
+                        theo quy trình chế tạo.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Mặt bằng &amp; Chiếu sáng</span>
+                    <span class="item-desc">
+                        Nơi làm việc phải được <strong>dọn dẹp vệ sinh sạch sẽ</strong>, không dầu mỡ trơn trượt;
+                        hệ thống ánh sáng phải đầy đủ.
+                    </span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ===== KHOẢN 5, 6, 7 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">K5·6·7</div>
+                <h2>Quy định an toàn trong vận hành và xử lý sự cố</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Tác phong vận hành</span>
+                    <span class="item-desc">
+                        Nhân viên vận hành khi theo dõi thiết bị phải giữ đúng <strong>khoảng cách an toàn</strong>,
+                        tuyệt đối <strong>không tiếp xúc trực tiếp</strong> với các bộ phận của thiết bị đang quay.
+                        Trang bị bảo hộ lao động phải gọn gàng, cài cúc tay áo, cài quai mũ.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm tra độ rung và nhiệt độ</span>
+                    <span class="item-desc">
+                        Việc đo kiểm độ rung, nhiệt độ các gối đỡ phải tuân thủ nghiêm ngặt quy trình vận hành.
+                        Nếu phát hiện <strong>độ rung hoặc nhiệt độ vượt quá trị số tác động bảo vệ</strong> mà
+                        hệ thống bảo vệ tự động không làm việc, Nhân viên vận hành phải
+                        <strong>thao tác ngừng khẩn cấp ngay lập tức</strong> để bảo vệ thiết bị,
+                        đồng thời báo cáo cấp trên chỉ đạo.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Xử lý sự cố cháy thiết bị quay</span>
+                    <span class="item-desc">
+                        Khi phát hiện thiết bị quay bị cháy, phải <strong>lập tức dừng thiết bị và cắt điện
+                        động cơ</strong>. Bắt buộc phải sử dụng <strong>bình chữa cháy khí CO₂</strong> hoặc
+                        <strong>bình bột ABC chuyên dụng</strong> để dập lửa.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGHIÊM CẤM DÙNG CÁT</strong> để chữa cháy thiết bị quay vì cát sẽ lọt vào làm
+                    <strong>kẹt nát gối trục, ổ bi</strong>, gây hư hỏng nghiêm trọng không thể phục hồi.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== KHOẢN 8 & 9 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">K8·9</div>
+                <h2>An toàn khi chạy thử, cân chỉnh và khởi động lại</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. An toàn trong quá trình chạy thử hoặc cân chỉnh (Khoản 8)</h3>
+                <ul class="item-list">
+                    <li>
+                        Trong quá trình chạy thử hoặc cân chỉnh thiết bị quay, bắt buộc phải sử dụng các
+                        <strong>nút ấn ngừng khẩn cấp (Emergency Stop)</strong>.
+                    </li>
+                    <li>
+                        Phải bố trí <strong>01 người tham gia giám sát an toàn chuyên trách</strong> túc trực
+                        tại vị trí nút dừng khẩn cấp; người này có nhiệm vụ
+                        <strong>ấn nút dừng ngay tức thì</strong> khi nhận được tín hiệu cảnh báo hoặc hiệu lệnh
+                        từ Người CHTT.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Điều kiện khởi động lại sau sửa chữa (Khoản 9)</h3>
+                <p style="color:#5a1a1a; margin-bottom:16px; font-size:0.94rem;">
+                    Động cơ chỉ được khởi động trở lại sau khi đã lắp khớp nối hoặc ly hợp, và
+                    <strong>bắt buộc phải thỏa mãn 5 điều kiện tiên quyết</strong>:
+                </p>
+
+                <ul class="checklist">
+                    <li>
+                        Đã lắp đặt hoàn chỉnh các <strong>vỏ chắn bảo vệ</strong> của các bộ phận quay.
+                    </li>
+                    <li>
+                        <strong>Dụng cụ thi công đã được thu dọn sạch sẽ</strong>, tháo dỡ toàn bộ các
+                        gá lắp tạm thời.
+                    </li>
+                    <li>
+                        Toàn bộ các <strong>biển báo an toàn tạm thời đã được tháo dỡ</strong>.
+                    </li>
+                    <li>
+                        Tất cả <strong>nhân sự tham gia sửa chữa đã rút hoàn toàn</strong> ra khỏi khu vực
+                        nguy hiểm.
+                    </li>
+                    <li>
+                        <strong>Cán bộ chịu trách nhiệm</strong> (Trưởng kíp/Trực chính và CHTT) trực tiếp
+                        kiểm tra tất cả quy trình cần thiết, kiểm tra PCT để khẳng định hoàn tất công tác sửa chữa.
+                    </li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>
+                        <strong>Nguyên tắc 5 điều kiện:</strong> Chỉ khi <strong>cả 5 điều kiện</strong> trên
+                        được thỏa mãn đồng thời, động cơ mới được phép khởi động trở lại. Bất kỳ điều kiện nào
+                        chưa đạt đều <strong>tuyệt đối không được khởi động</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp mối nguy &amp; biện pháp kiểm soát</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Mối nguy / Giai đoạn</th>
+                        <th style="width:38%;">Đặc điểm rủi ro</th>
+                        <th style="width:40%;">Biện pháp kiểm soát chính</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="risk-badge">Cuốn / Kẹp</span></td>
+                        <td>Người, quần áo, tóc, vật tư rơi vào khớp nối, trục quay, cánh guồng, dây đai.</td>
+                        <td>Vỏ bảo vệ khớp nối, hàng rào an toàn, tác phong gọn gàng, không tiếp xúc khi đang quay.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="risk-badge">Va đập / Văng bắn</span></td>
+                        <td>Bộ phận cơ khí lỏng, gãy vỡ; dị vật, vật liệu văng với động năng lớn.</td>
+                        <td>Kiểm tra định kỳ, cô lập khi sửa chữa, rào chắn khu vực, không đứng gần khi chạy thử.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="risk-badge">Điện giật</span></td>
+                        <td>Động cơ, cáp điện hở, mất tiếp địa bảo vệ.</td>
+                        <td>Cắt điện + LOTO, treo biển cấm đóng điện, dây tiếp địa bảo vệ, hộp đấu cáp kín.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="risk-badge">Quá nhiệt / Rung</span></td>
+                        <td>Gối đỡ, ổ bi hư hỏng, mất bôi trơn; nhiệt độ, độ rung vượt ngưỡng.</td>
+                        <td>Đo kiểm định kỳ, bôi trơn đầy đủ, ngừng khẩn cấp khi vượt trị số tác động bảo vệ.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="risk-badge">Cháy thiết bị</span></td>
+                        <td>Chập điện, quá tải, ma sát sinh nhiệt.</td>
+                        <td>Dừng máy + cắt điện; dùng bình CO₂ hoặc bột ABC; <strong>cấm dùng cát</strong>.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="risk-badge">Khởi động lại</span></td>
+                        <td>Nhân sự, dụng cụ, biển báo còn trong khu vực nguy hiểm.</td>
+                        <td>Áp dụng nghiêm ngặt 5 điều kiện tiên quyết trước khi khởi động lại động cơ.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Quy định an toàn khi làm việc với thiết bị quay (Khoản 1 – 9)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

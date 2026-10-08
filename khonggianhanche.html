@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: An toàn trong không gian hạn chế và làm việc bên trong bao hơi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ece4f7 0%, #d9cdf0 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(60, 20, 120, 0.15);
+            overflow: hidden;
+            border: 1px solid #d4c4ea;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #3b1a70 0%, #6a3bb8 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #3b1a70;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #f3edfc;
+            border-left: 5px solid #6a3bb8;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #3a2a5a;
+        }
+
+        .intro-box strong {
+            color: #3b1a70;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #d4c4ea;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #3b1a70, #6a3bb8);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(106, 59, 184, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #3b1a70;
+            line-height: 1.4;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #6a3bb8;
+            margin-bottom: 14px;
+            border-left: 4px solid #6a3bb8;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #faf7ff;
+            border: 1px solid #e2d6f2;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #3a2a5a;
+        }
+
+        .item-list li:hover {
+            border-color: #b89ce0;
+            box-shadow: 0 4px 16px rgba(106, 59, 184, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #6a3bb8;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(106, 59, 184, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #3b1a70;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #3a2a5a;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #3b1a70;
+        }
+
+        /* ===== SUB-ITEMS ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 24px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #3a2a5a;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: auto;
+            height: auto;
+            background: none;
+            color: #6a3bb8;
+            font-size: 0.85rem;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #3b1a70;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== GAS TABLE ===== */
+        .gas-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #d4c4ea;
+            margin-top: 10px;
+        }
+
+        .gas-table thead th {
+            background: linear-gradient(135deg, #3b1a70, #6a3bb8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+            letter-spacing: 0.3px;
+        }
+
+        .gas-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #3a2a5a;
+            border-bottom: 1px solid #ece2f7;
+            vertical-align: middle;
+        }
+
+        .gas-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .gas-table tbody tr:nth-child(even) {
+            background: #faf7ff;
+        }
+
+        .gas-table tbody tr:hover {
+            background: #f3edfc;
+        }
+
+        .gas-table .gas-symbol {
+            display: inline-block;
+            background: #e2d6f2;
+            color: #3b1a70;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        .gas-table .gas-limit {
+            display: inline-block;
+            background: #e8f7e8;
+            color: #1a5c1a;
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .gas-table .gas-limit.danger {
+            background: #ffe8e8;
+            color: #8a1a1a;
+        }
+
+        /* ===== TEMP CARD ===== */
+        .temp-card {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            background: linear-gradient(135deg, #f3edfc, #e7dbf7);
+            border: 1px solid #c8b0e8;
+            border-radius: 14px;
+            padding: 22px 28px;
+            margin-top: 16px;
+        }
+
+        .temp-card .temp-icon {
+            font-size: 2.6rem;
+            flex-shrink: 0;
+        }
+
+        .temp-card .temp-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #3b1a70;
+            margin-bottom: 4px;
+        }
+
+        .temp-card .temp-content p {
+            font-size: 0.92rem;
+            color: #4a3a6a;
+            margin: 0;
+        }
+
+        .temp-card .temp-value {
+            display: inline-block;
+            background: #6a3bb8;
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #d4c4ea;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #3b1a70, #6a3bb8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #3a2a5a;
+            border-bottom: 1px solid #ece2f7;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #faf7ff;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #f3edfc;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #e2d6f2;
+            color: #3b1a70;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #f3edfc;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #e2d6f2;
+            font-size: 0.85rem;
+            color: #7a5aaa;
+        }
+
+        .report-footer strong {
+            color: #3b1a70;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .temp-card { flex-direction: column; text-align: center; gap: 12px; }
+            .gas-table thead th,
+            .gas-table tbody td,
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Quy định an toàn trong không gian hạn chế &amp; Biện pháp an toàn khi làm việc bên trong bao hơi</h1>
+        <p class="subtitle">Nhận diện mối nguy – Cô lập – Đo khí – Cứu hộ – Kiểm soát bao hơi</p>
+        <span class="legal-badge">🛢️ Điều 22 &amp; Điều 23 Khoản 5 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Không gian hạn chế và bao hơi là những môi trường làm việc
+            có <strong>nguy cơ chết người cao nhất</strong> do thiếu ôxy, khí độc, cháy nổ, nhiệt độ cao và
+            lối thoát hiểm chật hẹp. Mọi công tác phải tuân thủ nghiêm ngặt quy trình từ
+            <strong>nhận diện mối nguy, cô lập triệt để, đo kiểm khí, bố trí cảnh giới, đến kế hoạch
+            cứu hộ khẩn cấp</strong>. Báo cáo này tổng hợp đầy đủ các quy định theo từng điều khoản.
+        </div>
+
+        <!-- ===== PHẦN II: ĐIỀU 22 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Quy định an toàn trong không gian hạn chế (Điều 22)</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Nhận diện mối nguy đặc thù</h3>
+                <p style="color:#4a3a6a; margin-bottom:14px; font-size:0.93rem;">
+                    Ngoài các mối nguy thông thường từ cơ học và điện (va đập, vật rơi, ngã cao, sạt lở,
+                    ngập nước, điện giật), khi làm việc trong không gian hạn chế tiềm ẩn các
+                    <strong>mối nguy chết người</strong> gồm:
+                </p>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Thiếu ôxy (Asphyxiation)</span>
+                        <span class="item-desc">
+                            Hàm lượng dưỡng khí giảm sâu do quá trình oxy hóa kim loại hoặc khí trơ chiếm chỗ.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Hơi khí độc hại &amp; Cháy nổ</span>
+                        <span class="item-desc">
+                            Tích tụ khí CO, H₂S, NH₃, SOₓ hoặc hỗn hợp khí cháy metan, hydro bốc lên từ
+                            bùn cặn/phản ứng hóa chất.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Yếu tố môi trường vi khí hậu</span>
+                        <span class="item-desc">
+                            Khói bụi, nhiệt độ cao, thiếu ánh sáng tự nhiên, tiếng ồn dội âm vượt ngưỡng cho phép.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Nguy cơ tắc nghẽn lối thoát hiểm</span>
+                        <span class="item-desc">
+                            Cửa người chui chật hẹp, bố trí vật tư thiết bị cản trở quá trình thoát hiểm khi có sự cố.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Các biện pháp kỹ thuật an toàn bắt buộc trước khi vào làm việc</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Cách ly &amp; Cô lập triệt để</span>
+                        <span class="item-desc">
+                            Ngăn chặn hoàn toàn mọi tác động từ bên ngoài (áp lực lưu chất, nhiệt độ cao, điện,
+                            hóa chất) bằng <strong>van chặn khóa cơ khí LOTO</strong> hoặc
+                            <strong>lắp mặt bích chặn mù</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Đo kiểm tra nồng độ khí</span>
+                        <span class="item-desc">
+                            Do <strong>nhân viên được đào tạo chuyên môn</strong> thực hiện, luôn ưu tiên đo từ
+                            bên ngoài qua các lỗ kiểm tra/cửa mở trước khi cho người tiếp cận.
+                            Thiết bị đo khí phải <strong>còn hạn kiểm định</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Kế hoạch cứu hộ khẩn cấp</span>
+                        <span class="item-desc">
+                            Phải <strong>lập và phê duyệt phương án ứng cứu khẩn cấp</strong> trước khi cấp PCT.
+                            Chuẩn bị sẵn bình tự cứu dưỡng khí, dây cứu nạn, cáng thương, đèn pin chiếu sáng
+                            ngay tại cửa vào.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Người Cảnh giới (CG) thường trực</span>
+                        <span class="item-desc">
+                            Bắt buộc cử Người CG <strong>túc trực liên tục tại lối vào</strong>; có sổ theo dõi
+                            ghi chép tên, giờ ra/vào của từng người. Người CG
+                            <strong>tuyệt đối không được rời vị trí</strong> khi còn người bên trong.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Dụng cụ thi công an toàn</span>
+                        <span class="item-desc">
+                            Thiết bị điện cầm tay phải đạt <strong>cấp phòng nổ (Ex)</strong>,
+                            không phát sinh tia lửa điện.
+                        </span>
+                    </li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>
+                        <strong>Nguyên tắc bất di bất dịch:</strong> Không bao giờ cho người vào không gian
+                        hạn chế khi <strong>chưa đo kiểm khí đạt chuẩn</strong> và
+                        <strong>chưa bố trí Người Cảnh giới túc trực</strong> bên ngoài.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="sub-section">
+                <h3>3. Tiêu chuẩn môi trường khí đạt chuẩn cho phép vào làm việc</h3>
+                <p style="color:#4a3a6a; margin-bottom:14px; font-size:0.93rem;">
+                    Môi trường không khí bên trong không gian hạn chế <strong>bắt buộc phải đạt đầy đủ</strong>
+                    các ngưỡng sau:
+                </p>
+
+                <table class="gas-table">
+                    <thead>
+                        <tr>
+                            <th style="width:38%;">Tên chất khí / Chỉ tiêu</th>
+                            <th style="width:18%;">Ký hiệu</th>
+                            <th style="width:44%;">Hàm lượng / Ngưỡng cho phép</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Oxy (Dưỡng khí)</td>
+                            <td><span class="gas-symbol">O₂</span></td>
+                            <td><span class="gas-limit">19,5% – 23,5%</span> theo thể tích</td>
+                        </tr>
+                        <tr>
+                            <td>Carbondioxide</td>
+                            <td><span class="gas-symbol">CO₂</span></td>
+                            <td><span class="gas-limit">≤ 1800 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Carbonmonoxide</td>
+                            <td><span class="gas-symbol">CO</span></td>
+                            <td><span class="gas-limit">≤ 40 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Hydro Sunfua</td>
+                            <td><span class="gas-symbol">H₂S</span></td>
+                            <td><span class="gas-limit">≤ 15 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Amoniac</td>
+                            <td><span class="gas-symbol">NH₃</span></td>
+                            <td><span class="gas-limit">≤ 25 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Nitrogen monoxide</td>
+                            <td><span class="gas-symbol">NO</span></td>
+                            <td><span class="gas-limit">≤ 20 mg/m³</span></td>
+                        </tr>
+                        <tr>
+                            <td>Metan / Khí dễ cháy</td>
+                            <td><span class="gas-symbol">CH₄ / LEL</span></td>
+                            <td>
+                                <span class="gas-limit danger">CH₄ ≤ 2 mg/m³</span>
+                                &nbsp;<small>(LEL &lt; 10%)</small>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4 -->
+            <div class="sub-section">
+                <h3>4. Yêu cầu trong quá trình thực hiện công việc</h3>
+                <ul class="item-list">
+                    <li>
+                        Duy trì <strong>liên lạc bộ đàm/tín hiệu liên tục</strong> giữa người bên trong và
+                        Người CG túc trực bên ngoài.
+                    </li>
+                    <li>
+                        <strong>Đo kiểm định kỳ liên tục</strong> nồng độ khí độc, hàm lượng Oxy và nhiệt độ
+                        môi trường làm việc.
+                    </li>
+                    <li>
+                        <span class="item-title">Hệ thống thông gió cưỡng bức</span>
+                        <span class="item-desc">
+                            Sử dụng <strong>quạt đẩy cấp khí tươi kết hợp quạt hút</strong> lưu thông khí
+                            liên tục trong suốt ca làm việc.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Điện áp chiếu sáng an toàn</span>
+                        <span class="item-desc">
+                            Bắt buộc sử dụng đèn pin ắc quy hoặc nguồn điện hạ áp an toàn
+                            <strong>≤ 36 VAC</strong> qua máy biến áp cách ly (MBA đặt ở phía bên ngoài) hoặc
+                            <strong>≤ 48 VDC</strong>. <strong>Tuyệt đối cấm dùng máy biến áp tự ngẫu để hạ áp</strong>.
+                        </span>
+                    </li>
+                    <li>
+                        Lối thoát hiểm luôn được <strong>dọn dẹp thông thoáng</strong>, sẵn sàng sơ tán.
+                    </li>
+                </ul>
+
+                <div class="danger-box">
+                    <p>
+                        <strong>NGHIÊM CẤM:</strong> Sử dụng <strong>máy biến áp tự ngẫu</strong> để hạ áp
+                        chiếu sáng trong không gian hạn chế. Chỉ được dùng MBA cách ly đặt
+                        <strong>phía ngoài</strong> không gian hạn chế.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III: ĐIỀU 23 KHOẢN 5 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Các biện pháp an toàn khi làm việc bên trong bao hơi (Điều 23 Khoản 5)</h2>
+            </div>
+
+            <p style="color:#4a3a6a; margin-bottom:20px; font-size:0.94rem;">
+                <strong>Bao hơi (Boiler Drum)</strong> là thiết bị áp lực cực cao và nhiệt độ lớn. Khi tiến hành
+                kiểm tra, sửa chữa hoặc vệ sinh bên trong bao hơi, phải tuân thủ nghiêm ngặt các quy định
+                đặc thù sau:
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Chế độ công tác</span>
+                    <span class="item-desc">
+                        Mọi công việc làm việc trong bao hơi <strong>bắt buộc phải được lập phương án thi công</strong>
+                        và thực hiện theo Phiếu công tác (PCT).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm tra cô lập nguồn nhiệt &amp; môi chất</span>
+                    <span class="item-desc">
+                        Trong bất cứ trường hợp nào, trước khi mở nắp bao hơi, Người CHTT phải
+                        <strong>đích thân kiểm tra</strong> các đường hơi chính, đường nước cấp, đường xả đáy,
+                        đường tái tuần hoàn, đường lấy mẫu... đã được đóng van cách ly hoàn toàn ra khỏi bao hơi
+                        và khóa liên động.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Tuân thủ quy chuẩn không gian hạn chế</span>
+                    <span class="item-desc">
+                        Áp dụng đầy đủ quy định tại <strong>Điều 22</strong> (đo nồng độ Oxy, kiểm tra khí độc,
+                        bố trí người cảnh giới thường trực tại cửa manhole, lập kế hoạch cứu nạn).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Giới hạn nhiệt độ cho phép vào làm việc</span>
+                    <span class="item-desc">
+                        Chỉ được chui vào trong bao hơi khi nhiệt độ bên trong
+                        <strong>không vượt quá 40°C</strong> (kiểm tra bằng súng bắn nhiệt độ đã kiểm định).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Quy định mở cửa thông gió</span>
+                    <span class="item-desc">
+                        Bắt buộc phải <strong>mở cả hai cửa người chui (manhole) ở hai đầu bao hơi</strong>
+                        trước khi cho người chui vào để đảm bảo thông gió đối lưu tự nhiên tốt và giải phóng
+                        nhiệt ẩm tồn dư.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Trang phục BHLĐ chuyên dùng</span>
+                    <span class="item-desc">
+                        Người làm việc phải được trang bị quần áo bảo hộ lao động chuyên dùng cho bao hơi,
+                        mũ bảo hộ, găng tay cách nhiệt, đệm lót đầu gối.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm soát chặt chẽ dụng cụ thi công</span>
+                    <span class="item-desc">
+                        Người CHTT phải <strong>lập biên bản kiểm tra, đối soát số lượng dụng cụ, vật tư
+                        thi công mang vào và mang ra</strong> của từng nhân sự sau mỗi ca làm việc.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">NGĂN NGỪA DỊ VẬT LỌT VÀO ỐNG NƯỚC XUỐNG</span>
+                    <span class="item-desc">
+                        Tuyệt đối không để rơi vật tư, dụng cụ, bu lông, que hàn lọt vào các
+                        <strong>ống nước xuống (downcomer)</strong> của bao hơi. Bắt buộc dùng
+                        <strong>nắp chụp cao su hoặc giẻ sạch có dây buộc</strong> để bịt kín miệng các ống
+                        nước xuống trong quá trình thi công.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Kiểm tra lần cuối trước khi đóng nắp</span>
+                    <span class="item-desc">
+                        Khẳng định <strong>100% người, dụng cụ, tạp vật, giẻ lau đã được rút hết</strong>
+                        ra khỏi bao hơi; Người CHTT cùng Người cho phép
+                        <strong>trực tiếp nghiệm thu</strong> trước khi đóng kín nắp hai đầu bao hơi.
+                    </span>
+                </li>
+            </ul>
+
+            <!-- TEMP CARD -->
+            <div class="temp-card">
+                <span class="temp-icon">🌡️</span>
+                <div class="temp-content">
+                    <h4>Giới hạn nhiệt độ bắt buộc khi vào bao hơi</h4>
+                    <p>
+                        Chỉ được chui vào trong bao hơi khi nhiệt độ bên trong
+                        <span class="temp-value">≤ 40°C</span>
+                        — kiểm tra bằng súng bắn nhiệt độ đã kiểm định.
+                    </p>
+                </div>
+            </div>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGUY HIỂM CHẾT NGƯỜI:</strong> Dị vật (bu lông, que hàn, đai ốc) lọt vào
+                    <strong>ống nước xuống (downcomer)</strong> của bao hơi có thể gây tắc nghẽn, dẫn đến
+                    nổ bao hơi khi vận hành trở lại. Bắt buộc phải bịt kín miệng ống bằng
+                    <strong>nắp chụp cao su hoặc giẻ sạch có dây buộc</strong> trong suốt quá trình thi công.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp mối nguy &amp; biện pháp kiểm soát</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Mối nguy / Khu vực</th>
+                        <th style="width:38%;">Đặc điểm rủi ro</th>
+                        <th style="width:40%;">Biện pháp kiểm soát chính</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Thiếu ôxy</span></td>
+                        <td>O₂ giảm sâu do oxy hóa kim loại hoặc khí trơ chiếm chỗ.</td>
+                        <td>Đo O₂ đạt 19,5% – 23,5%; thông gió cưỡng bức liên tục; đo kiểm định kỳ.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Khí độc</span></td>
+                        <td>Tích tụ CO, H₂S, NH₃, SOₓ gây ngạt, bỏng hô hấp.</td>
+                        <td>Đo khí đa chỉ tiêu từ bên ngoài; quạt thổi/hút; mặt nạ phòng độc; CG túc trực.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Cháy nổ</span></td>
+                        <td>Khí metan, hydro bốc lên từ bùn cặn/phản ứng hóa chất.</td>
+                        <td>Đo LEL &lt; 10%; dụng cụ điện phòng nổ Ex; cấm tia lửa; thông gió liên tục.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Tắc lối thoát</span></td>
+                        <td>Cửa manhole chật hẹp, vật tư cản trở thoát hiểm.</td>
+                        <td>Dọn dẹp thông thoáng; kế hoạch cứu hộ; dây cứu nạn, cáng thương sẵn sàng.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Bao hơi</span></td>
+                        <td>Áp lực cực cao, nhiệt độ lớn, môi chất nước/hơi.</td>
+                        <td>Cô lập van + LOTO; mở 2 manhole; nhiệt độ ≤ 40°C; BHLĐ cách nhiệt; kiểm soát dị vật.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Điện chiếu sáng</span></td>
+                        <td>Nguy cơ điện giật, chập cháy trong môi trường ẩm/khí.</td>
+                        <td>Đèn pin ắc quy hoặc ≤ 36 VAC qua MBA cách ly (ngoài) / ≤ 48 VDC; cấm MBA tự ngẫu.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Dị vật ống xuống</span></td>
+                        <td>Bu lông, que hàn rơi vào downcomer gây tắc, nổ bao hơi.</td>
+                        <td>Bịt kín miệng ống bằng nắp cao su/giẻ có dây; kiểm đếm dụng cụ vào/ra từng ca.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Quy định an toàn trong không gian hạn chế (Điều 22)<br>
+        và Biện pháp an toàn khi làm việc bên trong bao hơi (Điều 23 Khoản 5)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

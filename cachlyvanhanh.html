@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: Yêu cầu cách ly an toàn thiết bị và Kiểm tra thiết bị đã cách ly</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #c8dcf7 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(20, 60, 120, 0.15);
+            overflow: hidden;
+            border: 1px solid #c0d5ec;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #0d3a6e 0%, #1e6bb8 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #0d3a6e;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #edf4fc;
+            border-left: 5px solid #1e6bb8;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #2a4a6b;
+        }
+
+        .intro-box strong {
+            color: #0d3a6e;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #c8dcf7;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #0d3a6e, #1e6bb8);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(30, 107, 184, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0d3a6e;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fafcff;
+            border: 1px solid #dce9f7;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 58px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #2a4a6b;
+        }
+
+        .item-list li:hover {
+            border-color: #8eb8e8;
+            box-shadow: 0 4px 16px rgba(30, 107, 184, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: attr(data-num);
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #0d3a6e, #1e6bb8);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 3px 8px rgba(30, 107, 184, 0.25);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #0d3a6e;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #2a4a6b;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #0d3a6e;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #0d3a6e;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== SUB-SECTION ===== */
+        .sub-section {
+            margin-bottom: 28px;
+        }
+
+        .sub-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e6bb8;
+            margin-bottom: 14px;
+            border-left: 4px solid #1e6bb8;
+            padding-left: 12px;
+            line-height: 1.4;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #c8dcf7;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #0d3a6e, #1e6bb8);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #2a4a6b;
+            border-bottom: 1px solid #e4eefb;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #f5f9ff;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #eaf3fd;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #dceafa;
+            color: #0d3a6e;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #edf4fc;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #dce9f7;
+            font-size: 0.85rem;
+            color: #5a7aaa;
+        }
+
+        .report-footer strong {
+            color: #0d3a6e;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 50px; }
+            .item-list li::before { left: 12px; top: 14px; width: 26px; height: 26px; font-size: 0.75rem; }
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Các yêu cầu về việc cách ly an toàn thiết bị &amp; Kiểm tra thiết bị đã cách ly khỏi vận hành</h1>
+        <p class="subtitle">7 yêu cầu cách ly – 5 quy định kiểm tra – Thiết lập vùng làm việc an toàn</p>
+        <span class="legal-badge">⚙️ Khoản 3, 4 &amp; 5 Điều 15 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Cách ly an toàn thiết bị là bước <strong>quan trọng nhất</strong>
+            trước khi tiến hành sửa chữa, bảo dưỡng. Người thực hiện phải tuân thủ nghiêm ngặt
+            <strong>7 yêu cầu cách ly</strong>, <strong>5 quy định kiểm tra thiết bị sau cách ly</strong> và
+            <strong>thiết lập vùng làm việc an toàn</strong> tại hiện trường. Báo cáo này tổng hợp đầy đủ
+            các quy định theo từng khoản của Điều 15.
+        </div>
+
+        <!-- ===== PHẦN II: KHOẢN 3 ĐIỀU 15 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Các yêu cầu khi cách ly thiết bị để sửa chữa</h2>
+            </div>
+
+            <p style="color:#2a4a6b; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 3 Điều 15 – Quy chuẩn An toàn</em>
+            </p>
+
+            <p style="color:#2a4a6b; margin-bottom:18px; font-size:0.94rem;">
+                Khi tiến hành thao tác cách ly thiết bị nhằm phục vụ công tác sửa chữa, bảo dưỡng,
+                <strong>Đơn vị Quản lý vận hành bắt buộc phải tuân thủ nghiêm ngặt 7 yêu cầu kỹ thuật</strong> sau:
+            </p>
+
+            <ul class="item-list">
+                <li data-num="1">
+                    <span class="item-title">Cách ly hoàn toàn từ mọi phía</span>
+                    <span class="item-desc">
+                        Phần thiết bị tiến hành công việc phải được cách ly khỏi hệ thống từ mọi phía bằng cách
+                        đóng các van cách ly (van đầu vào, đầu ra, đường đi tắt bypass), mở các van xả đọng và
+                        xả khí; cắt nguồn lực, nguồn điều khiển các van; các đồng hồ chỉ thị đã chỉ đúng trạng thái.
+                    </span>
+                </li>
+                <li data-num="2">
+                    <span class="item-title">Triệt tiêu nguồn lực và điều khiển van</span>
+                    <span class="item-desc">
+                        <strong>CẤM</strong> cách ly thiết bị để sửa chữa chỉ bằng cách đóng/mở van điện, van khí
+                        mà không cắt nguồn lực, nguồn điều khiển đóng/mở van (phải rút chìa khóa khí, ngắt
+                        aptomat cấp nguồn điều khiển động cơ van).
+                    </span>
+                </li>
+                <li data-num="3">
+                    <span class="item-title">Ngăn chặn triệt để nguồn rò rỉ</span>
+                    <span class="item-desc">
+                        Phải ngăn chặn được những nguồn hơi, khí, hóa chất qua các đường ống, van khác có nguy cơ
+                        gây nguy hiểm cho người làm việc.
+                    </span>
+                </li>
+                <li data-num="4">
+                    <span class="item-title">Kiểm tra trạng thái van thực tế tại chỗ</span>
+                    <span class="item-desc">
+                        Đối với các van sau khi thao tác phải <strong>trực tiếp kiểm tra tại hiện trường</strong>
+                        trạng thái các van phải ở đúng vị trí đóng/mở (vị trí cơ khí thực tế, chốt khóa cơ học).
+                    </span>
+                </li>
+                <li data-num="5">
+                    <span class="item-title">Trách nhiệm người thao tác</span>
+                    <span class="item-desc">
+                        Việc thao tác thiết bị do <strong>Nhân viên vận hành đương ca đảm nhiệm</strong>.
+                        <strong>CẤM ủy nhiệm</strong> việc thao tác cho người của Đơn vị công tác.
+                    </span>
+                </li>
+                <li data-num="6">
+                    <span class="item-title">Nắm vững sơ đồ công nghệ</span>
+                    <span class="item-desc">
+                        Cách ly thiết bị từng phần thuộc hệ thống để làm việc phải giao cho Nhân viên vận hành
+                        <strong>nắm vững sơ đồ và vị trí thực tế</strong> của thiết bị để ngăn ngừa khả năng
+                        nhầm lẫn, gây nguy hiểm cho Đơn vị công tác.
+                    </span>
+                </li>
+                <li data-num="7">
+                    <span class="item-title">Treo biển cảnh báo an toàn</span>
+                    <span class="item-desc">
+                        Người thao tác phải treo biển: <strong>"CẤM THAO TÁC! CÓ NGƯỜI ĐANG LÀM VIỆC"</strong>
+                        ở các van cách ly, tủ điều khiển tại chỗ của van. Chỉ người treo biển hoặc người được
+                        chỉ định thay thế mới được phép tháo dỡ các biển báo này.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGHIÊM CẤM:</strong> Cách ly thiết bị chỉ bằng đóng/mở van điện, van khí mà
+                    <strong>không cắt nguồn lực, nguồn điều khiển</strong>. Đây là nguyên nhân hàng đầu gây
+                    tai nạn chết người do van tự động mở trở lại trong quá trình thi công.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III: KHOẢN 4 ĐIỀU 15 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Kiểm tra thiết bị đã cách ly khỏi vận hành</h2>
+            </div>
+
+            <p style="color:#2a4a6b; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 4 Điều 15 – Quy chuẩn An toàn</em>
+            </p>
+
+            <p style="color:#2a4a6b; margin-bottom:18px; font-size:0.94rem;">
+                Trước khi bàn giao hiện trường cho Đơn vị công tác vào làm việc, công tác kiểm tra thiết bị
+                sau cách ly phải tuân thủ <strong>5 quy định kỹ thuật bắt buộc</strong> sau:
+            </p>
+
+            <ul class="item-list">
+                <li data-num="1">
+                    <span class="item-title">Trách nhiệm kiểm tra an toàn toàn diện</span>
+                    <span class="item-desc">
+                        Người thực hiện thao tác cách ly thiết bị phải tiến hành kiểm tra thiết bị đã được
+                        đảm bảo an toàn: <strong>xả hết áp lực, môi chất, hạ nhiệt độ, đảm bảo thông gió</strong>.
+                    </span>
+                </li>
+                <li data-num="2">
+                    <span class="item-title">Phương pháp xả áp, môi chất và hạ nhiệt</span>
+                    <span class="item-desc">
+                        Việc xả áp lực, môi chất, hạ nhiệt độ bằng cách <strong>mở các van xả đọng và xả khí</strong>.
+                        Trong quá trình mở xả, người thao tác phải xác định môi chất đã thoát hoàn toàn ra ngoài
+                        môi trường.
+                    </span>
+                </li>
+                <li data-num="3">
+                    <span class="item-title">Đo kiểm bằng thiết bị chuyên dùng đã kiểm định</span>
+                    <span class="item-desc">
+                        Kiểm tra nhiệt độ, môi chất khí bằng thiết bị cầm tay chuyên dụng phù hợp như
+                        <strong>súng bắn nhiệt độ, máy đo nồng độ khí</strong>. Những thiết bị chuyên dụng trên
+                        phải được bảo quản, kiểm tra, hiệu chuẩn hoặc kiểm định đảm bảo làm việc tốt.
+                    </span>
+                </li>
+                <li data-num="4">
+                    <span class="item-title">NGUYÊN TẮC CỐT LÕI ĐỐI VỚI ĐỒNG HỒ ÁP LỰC</span>
+                    <span class="item-desc">
+                        <strong>CẤM</strong> căn cứ đồng hồ chỉ thị để xác nhận thiết bị không còn áp lực
+                        (do nguy cơ kẹt kim, nghẹt ống xung); nhưng <strong>nếu đồng hồ chỉ thị có áp lực</strong>
+                        thì bắt buộc phải xem như <strong>thiết bị vẫn còn áp lực</strong>.
+                    </span>
+                </li>
+                <li data-num="5">
+                    <span class="item-title">Trách nhiệm nghiệm thu bàn giao của Người cho phép</span>
+                    <span class="item-desc">
+                        Trước khi cho Đơn vị công tác tiến hành công việc, Người cho phép phải đảm bảo chắc chắn
+                        thiết bị cần sửa chữa <strong>không còn áp lực, môi chất và nhiệt độ đã ở giá trị
+                        cho phép an toàn</strong>.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Nguyên tắc cốt lõi về đồng hồ áp lực:</strong> Không bao giờ tin vào đồng hồ để
+                    kết luận thiết bị đã hết áp lực. Ngược lại, nếu đồng hồ còn chỉ áp lực thì
+                    <strong>bắt buộc phải coi thiết bị vẫn còn áp lực nguy hiểm</strong> và không được thi công.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN IV: KHOẢN 5 ĐIỀU 15 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">IV</div>
+                <h2>Thiết lập vùng làm việc an toàn tại hiện trường</h2>
+            </div>
+
+            <p style="color:#2a4a6b; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 5 Điều 15 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li data-num="1">
+                    <span class="item-title">Thiết lập ranh giới trực quan</span>
+                    <span class="item-desc">
+                        Vùng làm việc của Đơn vị công tác phải được thiết lập, cảnh báo trực quan bằng
+                        <strong>rào chắn tạm thời</strong> hoặc biện pháp phù hợp (dây/băng cảnh báo) và treo biển
+                        <strong>"LÀM VIỆC TẠI ĐÂY!"</strong>.
+                    </span>
+                </li>
+                <li data-num="2">
+                    <span class="item-title">Xác định phạm vi di chuyển</span>
+                    <span class="item-desc">
+                        Xác định rõ ràng ranh giới làm việc bao gồm: <strong>lối vào/ra; lối trèo lên/xuống</strong>
+                        và khu vực thao tác thi công.
+                    </span>
+                </li>
+                <li data-num="3">
+                    <span class="item-title">Khoảng cách an toàn đối với vật mang điện</span>
+                    <span class="item-desc">
+                        Khu vực làm việc <strong>không được ảnh hưởng đến vận hành của các vật mang điện</strong>
+                        (nếu có). Trường hợp có vật mang điện gần khu vực làm việc thì phải có cảnh báo an toàn
+                        về điện hoặc phải <strong>cắt điện vật mang điện</strong> nếu khoảng cách an toàn không
+                        đảm bảo.
+                    </span>
+                </li>
+                <li data-num="4">
+                    <span class="item-title">Đảm bảo lối thoát hiểm</span>
+                    <span class="item-desc">
+                        Việc thiết lập vùng làm việc phải đảm bảo <strong>không gây cản trở hoặc khó khăn</strong>
+                        cho việc thoát nạn của công nhân khi xảy ra tai nạn hoặc sự cố khẩn cấp.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Lưu ý:</strong> Rào chắn và biển báo an toàn phải được duy trì trong suốt thời gian
+                    thi công. <strong>Nghiêm cấm</strong> tự ý di chuyển, thay đổi hoặc tháo dỡ khi chưa có lệnh
+                    của Người có thẩm quyền.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp quy trình cách ly &amp; kiểm tra thiết bị</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Giai đoạn</th>
+                        <th style="width:38%;">Nội dung chính</th>
+                        <th style="width:40%;">Yêu cầu bắt buộc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Cách ly (7 YC)</span></td>
+                        <td>Cách ly hoàn toàn, triệt tiêu nguồn lực, ngăn rò rỉ, kiểm tra van, thao tác, sơ đồ, biển báo.</td>
+                        <td>Đóng van mọi phía + xả đọng/xả khí; cắt nguồn lực &amp; điều khiển; LOTO; kiểm tra thực tế; nhân viên vận hành thao tác; treo biển "CẤM THAO TÁC!".</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Kiểm tra (5 QĐ)</span></td>
+                        <td>Xả áp, hạ nhiệt, đo khí, nguyên tắc đồng hồ áp lực, nghiệm thu bàn giao.</td>
+                        <td>Xả hết áp/môi chất; hạ nhiệt; đo bằng súng nhiệt/máy đo khí đã kiểm định; không tin đồng hồ hết áp; Người cho phép nghiệm thu trước bàn giao.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Vùng làm việc (4 YC)</span></td>
+                        <td>Thiết lập ranh giới, xác định phạm vi, khoảng cách điện, lối thoát hiểm.</td>
+                        <td>Rào chắn + dây/băng cảnh báo + biển "LÀM VIỆC TẠI ĐÂY!"; xác định lối vào/ra &amp; trèo lên/xuống; cảnh báo/cắt điện vật mang điện; không cản trở thoát hiểm.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Nguyên tắc cốt lõi</span></td>
+                        <td>Đồng hồ áp lực – không được tin để kết luận hết áp.</td>
+                        <td><strong>CẤM</strong> căn cứ đồng hồ để xác nhận hết áp lực; nếu đồng hồ còn áp lực → coi như thiết bị còn áp lực nguy hiểm.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Trách nhiệm</span></td>
+                        <td>Người thao tác – Người cho phép – Đơn vị QLVH.</td>
+                        <td>Nhân viên vận hành đương ca thao tác (cấm ủy nhiệm); Người cho phép nghiệm thu an toàn trước bàn giao; Đơn vị QLVH chịu trách nhiệm cách ly.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị đã cách ly khỏi vận hành<br>
+        (Khoản 3, 4 &amp; 5 Điều 15 – Quy chuẩn An toàn)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>

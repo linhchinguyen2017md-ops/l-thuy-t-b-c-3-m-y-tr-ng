@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo: An toàn khi làm việc bên trong buồng đốt và đường khói</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fde4d0 0%, #f9cfb0 100%);
+            color: #1a2b3c;
+            line-height: 1.7;
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        .report-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(170, 60, 10, 0.15);
+            overflow: hidden;
+            border: 1px solid #f0c4a0;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            background: linear-gradient(135deg, #7a2000 0%, #c04000 100%);
+            color: #ffffff;
+            padding: 40px 45px 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+        }
+
+        .report-header .label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header h1 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            line-height: 1.35;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-header .legal-badge {
+            display: inline-block;
+            margin-top: 18px;
+            background: #ffc107;
+            color: #7a2000;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== BODY ===== */
+        .report-body {
+            padding: 40px 45px 50px;
+        }
+
+        /* ===== INTRO ===== */
+        .intro-box {
+            background: #fff2e8;
+            border-left: 5px solid #c04000;
+            padding: 20px 25px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 40px;
+            font-size: 1rem;
+            color: #6b2a00;
+        }
+
+        .intro-box strong {
+            color: #7a2000;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0c4a0;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, #7a2000, #c04000);
+            color: #fff;
+            min-width: 44px;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(192, 64, 0, 0.3);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #7a2000;
+            line-height: 1.4;
+        }
+
+        /* ===== BULLET ITEMS ===== */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background: #fffdfb;
+            border: 1px solid #f5ddc8;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.25s ease;
+            font-size: 0.93rem;
+            color: #5a2a10;
+        }
+
+        .item-list li:hover {
+            border-color: #e8b888;
+            box-shadow: 0 4px 16px rgba(192, 64, 0, 0.08);
+            transform: translateX(3px);
+        }
+
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 21px;
+            width: 10px;
+            height: 10px;
+            background: #c04000;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(192, 64, 0, 0.15);
+        }
+
+        .item-list li .item-title {
+            font-weight: 700;
+            color: #7a2000;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.96rem;
+        }
+
+        .item-list li .item-desc {
+            color: #5a2a10;
+            font-size: 0.92rem;
+        }
+
+        .item-list li strong {
+            color: #7a2000;
+        }
+
+        /* ===== SUB-LIST ===== */
+        .sub-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .sub-list li {
+            background: transparent;
+            border: none;
+            padding: 6px 0 6px 30px;
+            margin-bottom: 2px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #5a2a10;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .sub-list li:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .sub-list li::before {
+            content: attr(data-letter);
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 20px;
+            height: 20px;
+            background: #ffe8d6;
+            color: #7a2000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            box-shadow: none;
+        }
+
+        /* ===== DANGER BOX ===== */
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 1px solid #ef9a9a;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .danger-box::before {
+            content: '⛔';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #d32f2f;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 6px rgba(211, 47, 47, 0.4);
+        }
+
+        .danger-box p {
+            color: #7a1a1a;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .danger-box strong {
+            color: #5a0a0a;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '⚠';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ffc107;
+            color: #7a2000;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(255, 193, 7, 0.4);
+        }
+
+        .highlight-box p {
+            color: #6b5200;
+            font-size: 0.93rem;
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: #4a3900;
+        }
+
+        /* ===== TEMP CARD ===== */
+        .temp-card {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            background: linear-gradient(135deg, #fff2e8, #ffe4d0);
+            border: 1px solid #f0c4a0;
+            border-radius: 14px;
+            padding: 22px 28px;
+            margin-top: 16px;
+        }
+
+        .temp-card .temp-icon {
+            font-size: 2.6rem;
+            flex-shrink: 0;
+        }
+
+        .temp-card .temp-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #7a2000;
+            margin-bottom: 4px;
+        }
+
+        .temp-card .temp-content p {
+            font-size: 0.92rem;
+            color: #5a2a10;
+            margin: 0;
+        }
+
+        .temp-card .temp-value {
+            display: inline-block;
+            background: #c04000;
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* ===== VOLTAGE CARDS ===== */
+        .voltage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .voltage-card {
+            border-radius: 12px;
+            padding: 20px 22px;
+            position: relative;
+        }
+
+        .voltage-card.safe {
+            background: linear-gradient(135deg, #e8f7e8, #d4efd4);
+            border: 1px solid #a8d8a8;
+        }
+
+        .voltage-card.conditional {
+            background: linear-gradient(135deg, #fff2e8, #ffe4d0);
+            border: 1px solid #f0c4a0;
+        }
+
+        .voltage-card .vc-icon {
+            font-size: 1.6rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .voltage-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .voltage-card.safe h4 { color: #1a5c1a; }
+        .voltage-card.conditional h4 { color: #7a2000; }
+
+        .voltage-card p {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .voltage-card.safe p { color: #2a5a2a; }
+        .voltage-card.conditional p { color: #5a2a10; }
+
+        .voltage-card .v-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .voltage-card.safe .v-badge {
+            background: #1a5c1a;
+            color: #fff;
+        }
+
+        .voltage-card.conditional .v-badge {
+            background: #c04000;
+            color: #fff;
+        }
+
+        /* ===== SUMMARY TABLE ===== */
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #f0c4a0;
+            margin-top: 10px;
+        }
+
+        .summary-table thead th {
+            background: linear-gradient(135deg, #7a2000, #c04000);
+            color: #fff;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .summary-table tbody td {
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            color: #5a2a10;
+            border-bottom: 1px solid #f5ddc8;
+            vertical-align: top;
+        }
+
+        .summary-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .summary-table tbody tr:nth-child(even) {
+            background: #fffaf5;
+        }
+
+        .summary-table tbody tr:hover {
+            background: #fff2e8;
+        }
+
+        .summary-table .zone-badge {
+            display: inline-block;
+            background: #ffe8d6;
+            color: #7a2000;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .report-footer {
+            background: #fff2e8;
+            padding: 25px 45px;
+            text-align: center;
+            border-top: 1px solid #f5ddc8;
+            font-size: 0.85rem;
+            color: #a06a3a;
+        }
+
+        .report-footer strong {
+            color: #7a2000;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body { padding: 15px 10px; }
+            .report-header { padding: 28px 22px 25px; }
+            .report-header h1 { font-size: 1.3rem; }
+            .report-body { padding: 25px 20px 35px; }
+            .report-footer { padding: 20px; }
+            .section-header h2 { font-size: 1.05rem; }
+            .section-number { min-width: 38px; height: 38px; font-size: 0.9rem; padding: 0 8px; }
+            .item-list li { padding: 14px 16px 14px 42px; }
+            .item-list li::before { left: 16px; top: 18px; width: 8px; height: 8px; }
+            .temp-card { flex-direction: column; text-align: center; gap: 12px; }
+            .voltage-grid { grid-template-columns: 1fr; }
+            .summary-table thead th,
+            .summary-table tbody td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-container">
+
+    <!-- ===== HEADER ===== -->
+    <header class="report-header">
+        <span class="label">Báo cáo kỹ thuật an toàn</span>
+        <h1>Quy định an toàn khi làm việc bên trong buồng đốt và đường khói</h1>
+        <p class="subtitle">Cấp phép – Cô lập nhiên liệu – Giới hạn nhiệt độ – Chiếu sáng an toàn – Đóng cửa lò</p>
+        <span class="legal-badge">🔥 Khoản 3 &amp; 4 Điều 23 – Quy chuẩn An toàn</span>
+    </header>
+
+    <!-- ===== BODY ===== -->
+    <div class="report-body">
+
+        <!-- INTRO -->
+        <div class="intro-box">
+            <strong>Nguyên tắc chung:</strong> Buồng đốt và đường khói là khu vực có
+            <strong>nhiệt độ cao, khí độc, không gian hạn chế và nguy cơ bỏng nhiệt cực lớn</strong>.
+            Mọi công tác bên trong buồng đốt, khu vực bộ quá nhiệt trung gian, bộ hâm, bao hơi và đường khói
+            đều phải tuân thủ nghiêm ngặt quy trình <strong>cấp phép – cô lập – kiểm tra điều kiện an toàn –
+            chiếu sáng an toàn – nghiệm thu đóng cửa lò</strong>.
+        </div>
+
+        <!-- ===== PHẦN II: KHOẢN 3 & 4 ĐIỀU 23 ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">II</div>
+                <h2>Thủ tục cấp phép và cô lập nguyên nhiên liệu</h2>
+            </div>
+
+            <p style="color:#5a2a10; margin-bottom:20px; font-size:0.94rem;">
+                <em>Áp dụng theo Khoản 3 &amp; 4 Điều 23 – Quy chuẩn An toàn</em>
+            </p>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Chế độ Phiếu công tác (PCT)</span>
+                    <span class="item-desc">
+                        Làm việc bên trong buồng đốt, khu vực bộ quá nhiệt trung gian, bộ hâm, bao hơi và
+                        đường khói <strong>bắt buộc phải lập phương án thi công</strong> và thực hiện theo
+                        Phiếu công tác (PCT).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Tuân thủ quy chuẩn không gian hạn chế</span>
+                    <span class="item-desc">
+                        Áp dụng đồng bộ các yêu cầu an toàn theo <strong>Điều 22</strong> (đo khí, kiểm soát
+                        người ra vào, kế hoạch cứu nạn, thường trực người cảnh giới bên ngoài cửa lò).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Cô lập triệt để mọi nguồn nhiên liệu</span>
+                    <span class="item-desc">
+                        Trước khi vào buồng đốt sau khi lò hơi ngừng, tất cả các van khóa cách ly nhiên liệu
+                        <strong>tự động và bằng tay</strong> (than cám, dầu đốt mồi DO/HFO, khí mồi) phải được
+                        đóng khóa và treo biển báo an toàn
+                        <strong>'CẤM THAO TÁC! CÓ NGƯỜI ĐANG LÀM VIỆC'</strong> tại vị trí thao tác.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Bảo vệ hệ thống khóa liên động</span>
+                    <span class="item-desc">
+                        <strong>Nghiêm cấm đấu tắt</strong> bất kỳ khóa liên động bảo vệ nào có thể gây hư hỏng
+                        thiết bị hoặc gây chấn thương nghiêm trọng đến tính mạng con người.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Rào chắn cảnh báo</span>
+                    <span class="item-desc">
+                        Tại khu vực cửa ra vào buồng đốt phải đặt <strong>rào chắn tạm thời và biển cảnh báo
+                        nguy hiểm</strong> cấm người không có nhiệm vụ đi vào.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGHIÊM CẤM:</strong> Đấu tắt bất kỳ khóa liên động bảo vệ nào. Hành vi này có thể
+                    dẫn đến khởi động lò khi còn người bên trong buồng đốt, gây
+                    <strong>tai nạn chết người</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN III ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">III</div>
+                <h2>Giới hạn nhiệt độ, thông gió và kiểm tra điều kiện an toàn</h2>
+            </div>
+
+            <!-- 1 -->
+            <div class="sub-section">
+                <h3>1. Quy định về Giới hạn Nhiệt độ và Thông gió tự nhiên</h3>
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">Giới hạn nhiệt độ vào làm việc</span>
+                        <span class="item-desc">
+                            Khi nhiệt độ trong buồng đốt, đường khói <strong>trên 60°C</strong> thì
+                            <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC VÀO TRONG</strong> để vệ sinh và kiểm tra.
+                            Bắt buộc phải duy trì quạt hút/quạt thổi làm mát cho đến khi nhiệt độ giảm xuống
+                            <strong>dưới 60°C</strong> mới được tiếp cận.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Mở toàn bộ cửa kiểm tra thông gió</span>
+                        <span class="item-desc">
+                            Trước khi vào làm việc trong đường khói, phải mở tất cả các lỗ người chui (manhole),
+                            cửa xem lửa, lỗ kiểm tra để <strong>thông gió tự nhiên</strong>, thoát hết khí nóng
+                            và khói bụi tồn dư.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">Phòng ngừa bỏng từ vật liệu chịu lửa</span>
+                        <span class="item-desc">
+                            Vật liệu chịu lửa (bê tông chịu nhiệt, gạch chịu lửa) <strong>giữ nhiệt trong thời
+                            gian rất dài</strong> sau khi ngừng lò; do đó khi tiếp cận khu vực này phải luôn đề
+                            phòng bề mặt nóng bức xạ, bắt buộc phải sử dụng <strong>găng tay bảo hộ chịu nhiệt</strong>
+                            khi kiểm tra lò hơi.
+                        </span>
+                    </li>
+                </ul>
+
+                <!-- TEMP CARD -->
+                <div class="temp-card">
+                    <span class="temp-icon">🌡️</span>
+                    <div class="temp-content">
+                        <h4>Giới hạn nhiệt độ bắt buộc trước khi vào buồng đốt</h4>
+                        <p>
+                            Chỉ được chui vào buồng đốt/đường khói khi nhiệt độ
+                            <span class="temp-value">≤ 60°C</span>
+                            — phải duy trì quạt hút/thổi làm mát cho đến khi đạt ngưỡng này.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="sub-section">
+                <h3>2. Kiểm tra xác nhận 3 điều kiện an toàn trước khi vào buồng đốt</h3>
+                <p style="color:#5a2a10; margin-bottom:14px; font-size:0.93rem;">
+                    Nhân viên chỉ được phép chui vào buồng đốt làm việc sau khi
+                    <strong>Người CHTT và Người cho phép đã trực tiếp kiểm tra, xác nhận thỏa mãn đồng thời
+                    3 điều kiện</strong> sau:
+                </p>
+
+                <ul class="item-list">
+                    <li>
+                        <span class="item-title">a) Kiểm tra tình trạng đọng xỉ</span>
+                        <span class="item-desc">
+                            Kiểm tra kỹ lưỡng tình trạng bám dính, treo xỉ ở tường lò, đỉnh buồng đốt và các
+                            chùm giàn ống; nếu phát hiện <strong>xỉ đóng tảng có nguy cơ rơi</strong> thì phải
+                            tổ chức chọc xỉ, gõ rơi an toàn từ bên ngoài trước khi cho người vào.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">b) Kiểm tra điều kiện ánh sáng</span>
+                        <span class="item-desc">
+                            Bố trí hệ thống <strong>chiếu sáng đầy đủ, rõ ràng</strong> khắp không gian làm việc
+                            để công nhân dễ dàng quan sát chướng ngại vật.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="item-title">c) Kiểm tra nồng độ khí và thông gió</span>
+                        <span class="item-desc">
+                            Đo nồng độ Oxy đảm bảo đạt chuẩn từ <strong>19,5% đến 23,5%</strong> theo thể tích,
+                            hàm lượng khí độc <strong>CO ≤ 40 mg/m³</strong>, <strong>H₂S ≤ 15 mg/m³</strong>;
+                            duy trì quạt cấp khí tươi liên tục.
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN IV ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">IV</div>
+                <h2>Yêu cầu kỹ thuật an toàn đối với hệ thống chiếu sáng</h2>
+            </div>
+
+            <p style="color:#5a2a10; margin-bottom:16px; font-size:0.94rem;">
+                Do buồng đốt và đường khói có kết cấu kim loại dẫn điện dày đặc, ẩm ướt và chật hẹp,
+                quy định an toàn điện chiếu sáng được kiểm soát <strong>đặc biệt nghiêm ngặt</strong>:
+            </p>
+
+            <div class="voltage-grid">
+                <div class="voltage-card safe">
+                    <span class="vc-icon">✅</span>
+                    <h4>Cấp điện áp an toàn chuẩn</h4>
+                    <p>
+                        Chỉ được dùng điện áp an toàn<br>
+                        <span class="v-badge">&lt; 36 VAC</span>
+                        qua máy biến áp cách ly (MBA đặt ở <strong>phía bên ngoài</strong> buồng đốt)
+                        <br>hoặc<br>
+                        <span class="v-badge">&lt; 48 VDC</span>
+                        (đèn ắc quy, đèn pin chuyên dụng).
+                    </p>
+                </div>
+                <div class="voltage-card conditional">
+                    <span class="vc-icon">⚡</span>
+                    <h4>Trường hợp bắt buộc dùng 220 VAC</h4>
+                    <p>
+                        Phải thỏa mãn đồng thời <strong>03 điều kiện</strong> an toàn nghiêm ngặt bên dưới.
+                        Chỉ áp dụng khi phục vụ <strong>chiếu sáng cố định</strong> buồng đốt.
+                    </p>
+                </div>
+            </div>
+
+            <ul class="item-list" style="margin-top:20px;">
+                <li>
+                    <span class="item-title">Điều kiện 1 – Dây dẫn cách điện</span>
+                    <span class="item-desc">
+                        Dây dẫn cấp nguồn phải là loại <strong>dây bọc 2 lớp cách điện cao su chịu lực</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Điều kiện 2 – Thiết bị bảo vệ chống giật</span>
+                    <span class="item-desc">
+                        Phải có thiết bị bảo vệ chống giật
+                        (<strong>ELCB / aptomat chống dòng rò có độ nhạy cao</strong>) lắp ở
+                        <strong>đầu nguồn bên ngoài lò</strong>.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Điều kiện 3 – Bảo vệ dây qua cửa vào/ra</span>
+                    <span class="item-desc">
+                        Tại chỗ luồn dây qua các cửa vào/ra buồng đốt, dây dẫn bắt buộc phải được
+                        <strong>luồn bảo vệ trong ống</strong> (ống cao su hoặc ống kim loại lót cách điện)
+                        để ngăn ngừa triệt để nguy cơ mép kim loại sắc nhọn của cửa lò cứa rách vỏ cách điện
+                        gây rò điện nguy hiểm.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="highlight-box">
+                <p>
+                    <strong>Nguyên tắc an toàn điện:</strong> Ưu tiên tuyệt đối điện áp an toàn
+                    <strong>&lt; 36 VAC / &lt; 48 VDC</strong>. Chỉ khi bắt buộc phải dùng 220 VAC cho chiếu
+                    sáng cố định, phải đáp ứng <strong>đồng thời cả 3 điều kiện</strong> trên — thiếu bất kỳ
+                    điều kiện nào đều <strong>không được phép thi công</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== PHẦN V ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">V</div>
+                <h2>Kết thúc công tác và Quy trình đóng cửa lò (Manhole)</h2>
+            </div>
+
+            <ul class="item-list">
+                <li>
+                    <span class="item-title">Kiểm đếm rút người và dụng cụ</span>
+                    <span class="item-desc">
+                        Khi kết thúc công việc trong buồng đốt, đường khói, Người CHTT phải tập hợp đơn vị,
+                        <strong>kiểm đếm 100% quân số</strong>, thu dọn toàn bộ bóng đèn, dây điện, que hàn,
+                        giẻ lau và vật tư thi công mang ra ngoài.
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Nghiệm thu đóng cửa lò</span>
+                    <span class="item-desc">
+                        Chỉ sau khi Người CHTT cùng Người cho phép
+                        <strong>trực tiếp soi đèn kiểm tra lần cuối</strong>, khẳng định chắc chắn toàn bộ người
+                        bên trong đã rút hết ra ngoài và không còn bất kỳ vật lạ nào sót lại, mới được phép
+                        ra lệnh lắp gioăng và đóng siết chặt cửa lò (manhole).
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Khóa PCT</span>
+                    <span class="item-desc">
+                        Hai bên tiến hành <strong>ký xác nhận hoàn thành công tác và khóa Phiếu công tác</strong>
+                        theo đúng quy định trước khi thực hiện các bước thông gió, sấy lò hoặc chuẩn bị khởi động lại.
+                    </span>
+                </li>
+            </ul>
+
+            <div class="danger-box">
+                <p>
+                    <strong>NGUY HIỂM CHẾT NGƯỜI:</strong> Tuyệt đối không đóng cửa lò (manhole) khi chưa
+                    <strong>kiểm đếm đủ 100% quân số</strong> và chưa soi đèn kiểm tra lần cuối. Bất kỳ
+                    dụng cụ, vật tư hoặc người còn sót lại bên trong đều có thể gây tai nạn nghiêm trọng
+                    khi lò khởi động trở lại.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== BẢNG TỔNG HỢP ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-number">📊</div>
+                <h2>Bảng tổng hợp quy định an toàn buồng đốt &amp; đường khói</h2>
+            </div>
+
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%;">Lĩnh vực / Giai đoạn</th>
+                        <th style="width:40%;">Yêu cầu bắt buộc</th>
+                        <th style="width:38%;">Hành vi bị cấm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="zone-badge">Cấp phép</span></td>
+                        <td>Lập PCT cho mọi công tác trong buồng đốt, đường khói, bao hơi.</td>
+                        <td>Vào buồng đốt khi không có PCT.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Cô lập nhiên liệu</span></td>
+                        <td>Đóng khóa van nhiên liệu tự động + bằng tay; treo biển "CẤM THAO TÁC!".</td>
+                        <td>Đấu tắt khóa liên động bảo vệ; để van nhiên liệu không khóa.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Nhiệt độ</span></td>
+                        <td>Duy trì quạt làm mát; chỉ vào khi nhiệt độ ≤ 60°C.</td>
+                        <td>Vào buồng đốt/đường khói khi nhiệt độ &gt; 60°C.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Thông gió</span></td>
+                        <td>Mở toàn bộ manhole, cửa xem lửa, lỗ kiểm tra để thông gió tự nhiên.</td>
+                        <td>Vào làm việc khi chưa thông gió thoát khí nóng, khói bụi.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">3 Điều kiện vào</span></td>
+                        <td>Kiểm tra đọng xỉ; đủ ánh sáng; đo khí O₂/CO/H₂S đạt chuẩn.</td>
+                        <td>Vào khi còn xỉ đóng tảng nguy cơ rơi; thiếu sáng; khí chưa đạt.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Chiếu sáng</span></td>
+                        <td>Ưu tiên &lt; 36 VAC (MBA cách ly ngoài) hoặc &lt; 48 VDC.</td>
+                        <td>Dùng 220 VAC không đủ 3 điều kiện: dây 2 lớp, ELCB, ống luồn bảo vệ.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Bỏng nhiệt</span></td>
+                        <td>Đề phòng bề mặt nóng bức xạ; dùng găng tay chịu nhiệt khi kiểm tra.</td>
+                        <td>Chạm trực tiếp vào vật liệu chịu lửa còn giữ nhiệt.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="zone-badge">Đóng cửa lò</span></td>
+                        <td>Kiểm đếm 100% quân số; soi đèn kiểm tra lần cuối; ký khóa PCT.</td>
+                        <td>Đóng manhole khi chưa kiểm đếm đủ người và dụng cụ.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="report-footer">
+        <strong>Báo cáo tóm tắt – Quy định an toàn khi làm việc bên trong buồng đốt và đường khói<br>
+        (Khoản 3 &amp; 4 Điều 23 – Quy chuẩn An toàn)</strong><br>
+        Tài liệu nội bộ phục vụ công tác huấn luyện an toàn – Không thay thế văn bản pháp quy gốc.
+    </footer>
+
+</div>
+
+</body>
+</html>
