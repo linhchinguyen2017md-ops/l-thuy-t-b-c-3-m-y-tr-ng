@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thi trắc nghiệm – Tuabin, TB phụ, VHDN & QTNV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);
+  min-height:100vh;color:#1a1a2e;
+}
+.wrap{max-width:960px;margin:0 auto;padding:16px}
+
+#startScreen{
+  background:#fff;border-radius:20px;padding:42px 32px;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);margin-top:30px;
+}
+#startScreen h1{font-size:2rem;color:#1e3c72;margin-bottom:12px}
+#startScreen .sub{color:#5a6c8e;font-size:1.05rem;margin-bottom:8px}
+
+.role-select{margin:22px 0 6px;text-align:left}
+.role-select h3{
+  font-size:1.05rem;color:#1e3c72;margin-bottom:14px;text-align:center;
+  font-weight:800;
+}
+.role-select h3 .req{color:#dc2626;font-size:.85rem;font-weight:600;margin-left:4px}
+.role-cards{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  max-width:560px;margin:0 auto;
+}
+.role-card{
+  background:#f8faff;border:3px solid #e2e8f0;border-radius:16px;
+  padding:22px 16px;text-align:center;cursor:pointer;transition:.2s;
+  position:relative;user-select:none;
+}
+.role-card:hover{border-color:#9db4e0;transform:translateY(-3px);box-shadow:0 8px 20px rgba(30,60,114,.15)}
+.role-card.selected{
+  border-color:#16a34a;
+  background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+  box-shadow:0 8px 24px rgba(22,163,74,.25);
+}
+.role-card.selected::after{
+  content:'✓';position:absolute;top:10px;right:12px;
+  width:26px;height:26px;background:#16a34a;color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.95rem;
+}
+.role-icon{font-size:2.2rem;margin-bottom:6px;line-height:1}
+.role-name{font-size:1.12rem;font-weight:800;color:#1e3c72;margin-bottom:5px}
+.role-desc{font-size:.8rem;color:#6b7a99;line-height:1.5}
+
+.info-box{
+  background:#f0f4ff;border-left:5px solid #2a5298;border-radius:12px;
+  padding:18px 22px;text-align:left;margin:22px 0 24px;font-size:.92rem;
+  line-height:1.85;color:#2c3e6b;
+}
+.info-box b{color:#1e3c72}
+.info-box .hl{background:#fff4e0;padding:1px 6px;border-radius:5px;color:#a16207;font-weight:700}
+.info-box .hl2{background:#e3f9e5;padding:1px 6px;border-radius:5px;color:#1a7f37;font-weight:700}
+.btn{
+  border:none;border-radius:12px;padding:14px 40px;font-size:1.05rem;font-weight:700;
+  cursor:pointer;transition:.2s;letter-spacing:.3px;
+}
+.btn:disabled{
+  background:#cbd5e1;color:#94a3b8;cursor:not-allowed;
+  box-shadow:none;transform:none!important;
+}
+.btn-primary{background:linear-gradient(135deg,#2a5298,#1e3c72);color:#fff;box-shadow:0 6px 18px rgba(30,60,114,.4)}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 24px rgba(30,60,114,.5)}
+.btn-danger{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff}
+.btn-danger:hover{transform:translateY(-2px)}
+.btn-ghost{background:#eef2fa;color:#2a5298;border:2px solid #cdd9ee}
+.btn-ghost:hover{background:#dde7f8}
+.btn-home{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.35)}
+.btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,163,74,.5)}
+
+#topbar{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);
+  backdrop-filter:blur(8px);border-radius:0 0 16px 16px;
+  box-shadow:0 4px 20px rgba(0,0,0,.18);padding:12px 20px;margin-bottom:18px;
+  display:none;align-items:center;gap:12px;flex-wrap:wrap;
+}
+#topbar .title{font-weight:800;color:#1e3c72;font-size:.95rem;flex:1;min-width:180px}
+.pill{
+  background:#eef2fa;border-radius:20px;padding:6px 14px;font-size:.85rem;
+  font-weight:700;color:#2a5298;white-space:nowrap;
+}
+.pill.good{background:#e3f9e5;color:#1a7f37}
+.pill.bad{background:#fde8e8;color:#b91c1c}
+.pill.role{background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:#15803d;border:1.5px solid #86efac}
+
+#examArea{display:none;padding-bottom:130px}
+.q-card{
+  background:#fff;border-radius:16px;padding:20px 22px;margin-bottom:16px;
+  box-shadow:0 4px 16px rgba(0,0,0,.12);border-left:6px solid #2a5298;
+  animation:fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.q-card.cat-vhdn{border-left-color:#d97706}
+.q-card.cat-qtnv{border-left-color:#16a34a}
+.q-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.q-num{
+  background:#2a5298;color:#fff;font-weight:800;font-size:.8rem;
+  border-radius:8px;padding:4px 10px;white-space:nowrap;
+}
+.cat-vhdn .q-num{background:#d97706}
+.cat-qtnv .q-num{background:#16a34a}
+.badge{font-size:.72rem;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.badge.easy{background:#e3f9e5;color:#1a7f37}
+.badge.medium{background:#fff4e0;color:#a16207}
+.badge.hard{background:#fde8e8;color:#b91c1c}
+.badge.cat{background:#e8eeff;color:#3b5bb5}
+.badge.cat.vhdn{background:#fff4e0;color:#a16207}
+.badge.cat.qtnv{background:#e3f9e5;color:#1a7f37}
+.badge.multi{background:#f3e8ff;color:#7c3aed}
+.q-text{font-size:1rem;line-height:1.6;color:#1a1a2e;font-weight:600;margin:8px 0 14px;white-space:pre-line}
+
+.opt{
+  display:flex;align-items:flex-start;gap:11px;padding:11px 14px;margin-bottom:9px;
+  border:2px solid #e2e8f0;border-radius:11px;cursor:pointer;transition:.15s;
+  background:#fafbfe;font-size:.93rem;line-height:1.5;
+}
+.opt:hover{border-color:#9db4e0;background:#f2f6ff}
+.opt .mark{
+  width:22px;height:22px;min-width:22px;border-radius:50%;border:2px solid #b9c6dd;
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;
+  font-weight:800;color:#8899b5;background:#fff;margin-top:1px;
+}
+.opt .mark.sq{border-radius:6px}
+.opt.correct{border-color:#22a04a;background:#eafaf0}
+.opt.correct .mark{background:#22a04a;border-color:#22a04a;color:#fff}
+.opt.wrong{border-color:#dc2626;background:#fdecec}
+.opt.wrong .mark{background:#dc2626;border-color:#dc2626;color:#fff}
+.opt.locked{cursor:default}
+.opt.locked:hover{border-color:inherit;background:inherit}
+.opt.correct.locked:hover{border-color:#22a04a;background:#eafaf0}
+.opt.wrong.locked:hover{border-color:#dc2626;background:#fdecec}
+.opt .txt{flex:1;white-space:pre-line}
+
+.explain{
+  margin-top:8px;font-size:.83rem;font-weight:700;padding:7px 12px;
+  border-radius:8px;display:inline-block;
+}
+.explain.ok{background:#e3f9e5;color:#1a7f37}
+.explain.no{background:#fde8e8;color:#b91c1c}
+
+#bottombar{
+  position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.98);
+  backdrop-filter:blur(10px);box-shadow:0 -4px 24px rgba(0,0,0,.2);
+  padding:14px 20px;display:none;justify-content:center;gap:12px;
+  border-radius:20px 20px 0 0;z-index:60;flex-wrap:wrap;align-items:center;
+}
+#bottombar .stat{font-weight:800;color:#1e3c72;font-size:.95rem;display:flex;align-items:center;gap:8px}
+
+#overlay{
+  position:fixed;inset:0;background:rgba(10,20,40,.75);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+}
+#resultBox{
+  background:#fff;border-radius:22px;max-width:640px;width:100%;max-height:88vh;
+  overflow-y:auto;padding:36px 32px;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);animation:pop .3s ease;
+}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+#resultBox h2{font-size:1.5rem;color:#1e3c72;margin-bottom:6px}
+.big-score{
+  font-size:3.4rem;font-weight:900;margin:14px 0 4px;
+  background:linear-gradient(135deg,#2a5298,#1e3c72);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.score-sub{color:#6b7a99;font-size:.92rem;margin-bottom:18px;line-height:1.6}
+.score-sub .sep{color:#cbd5e1;margin:0 4px}
+.res-grid{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.res-item{background:#f4f7ff;border-radius:14px;padding:14px 22px;min-width:110px}
+.res-item .n{font-size:1.6rem;font-weight:900}
+.res-item .l{font-size:.78rem;color:#6b7a99;font-weight:700;margin-top:2px}
+.res-item.ok .n{color:#1a7f37}
+.res-item.no .n{color:#b91c1c}
+.res-item.sk .n{color:#a16207}
+.grade{font-size:1.1rem;font-weight:800;margin-bottom:22px}
+#reviewList{text-align:left;margin-top:10px;border-top:2px dashed #e2e8f0;padding-top:18px}
+#reviewList h3{font-size:1rem;color:#1e3c72;margin-bottom:12px}
+.rev-item{background:#fafbfe;border-radius:10px;padding:12px 14px;margin-bottom:9px;font-size:.86rem;line-height:1.6;border-left:4px solid #dc2626}
+.rev-item .rq{font-weight:700;color:#1a1a2e;margin-bottom:5px}
+.rev-item .ra{color:#1a7f37;font-weight:700}
+.rev-item .rb{color:#b91c1c;font-weight:700}
+@media(max-width:600px){
+  #startScreen{padding:28px 18px}
+  #startScreen h1{font-size:1.45rem}
+  .role-cards{grid-template-columns:1fr;gap:12px}
+  .q-card{padding:16px}
+  .btn{padding:12px 22px;font-size:.9rem}
+  #topbar .title{font-size:.85rem;min-width:auto;flex-basis:100%;order:3}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div id="startScreen">
+    <h1>⚙️ Thi Trắc Nghiệm</h1>
+    <div class="sub"><b>Tuabin – Thiết bị phụ – Văn hóa DN – Quy trình nhiệm vụ</b></div>
+
+    <div class="role-select">
+      <h3>👤 Chọn chức danh để thi <span class="req">(bắt buộc)</span></h3>
+      <div class="role-cards">
+        <div class="role-card" id="role-may-truong" data-role="may-truong" onclick="selectRole('may-truong')">
+          <div class="role-icon">⚙️</div>
+          <div class="role-name">Máy trưởng</div>
+          <div class="role-desc">5 câu QTNV về chức danh Máy trưởng</div>
+        </div>
+        <div class="role-card" id="role-may-pho" data-role="may-pho" onclick="selectRole('may-pho')">
+          <div class="role-icon">🔧</div>
+          <div class="role-name">Máy phó</div>
+          <div class="role-desc">5 câu QTNV về chức danh Máy phó</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      📋 <b>Mỗi đề gồm 60 câu</b> được chọn ngẫu nhiên:<br>
+      • <span class="hl">50 câu</span> chuyên môn Tuabin &amp; Thiết bị phụ (Dễ ~34% · TB ~40% · Khó ~26%)<br>
+      • <span class="hl">5 câu</span> <b>Văn hóa doanh nghiệp</b> EVNGENCO3 / TPC Mông Dương<br>
+      • <span class="hl2">5 câu</span> <b>Quy trình nhiệm vụ</b> của chức danh đã chọn<br>
+      ✅ <b>Phản hồi tức thì:</b> chọn đáp án là biết đúng/sai ngay.<br>
+      ☑️ Câu hỏi <b>nhiều đáp án</b> (MMC) dùng hộp kiểm — chọn đủ mới tính điểm.
+    </div>
+
+    <button id="startBtn" class="btn btn-primary" disabled onclick="startExam()">🚀 Bắt đầu làm bài</button>
+    <div id="startHint" style="margin-top:12px;color:#a16207;font-size:.85rem;font-weight:700">
+      ⚠️ Vui lòng chọn chức danh trước khi bắt đầu
+    </div>
+  </div>
+
+  <div id="topbar">
+    <button class="btn btn-home" style="padding:8px 16px;font-size:.85rem" onclick="goHome()" title="Quay về trang chủ">🏠 Trang chủ</button>
+    <div class="title">⚙️ Tuabin · TB phụ · VHDN · QTNV</div>
+    <div class="pill role" id="pillRole">Chức danh: —</div>
+    <div class="pill" id="pillDone">Đã làm: 0/60</div>
+    <div class="pill good" id="pillRight">✔ Đúng: 0</div>
+    <div class="pill bad" id="pillWrong">✘ Sai: 0</div>
+  </div>
+
+  <div id="examArea"></div>
+</div>
+
+<div id="bottombar">
+  <button class="btn btn-home" style="padding:11px 20px;font-size:.9rem" onclick="goHome()">🏠 Trang chủ</button>
+  <div class="stat" id="barStat">0/60 câu</div>
+  <button class="btn btn-ghost" style="padding:11px 22px;font-size:.9rem" onclick="resetExam()">🔄 Thi lại</button>
+  <button class="btn btn-danger" style="padding:11px 22px;font-size:.9rem" onclick="submitExam()">📤 Nộp bài</button>
+</div>
+
+<div id="overlay">
+  <div id="resultBox">
+    <h2>📊 Kết quả bài thi</h2>
+    <div class="big-score" id="finalScore">0</div>
+    <div class="score-sub" id="finalSub">/ 60 câu đúng</div>
+    <div class="res-grid">
+      <div class="res-item ok"><div class="n" id="cRight">0</div><div class="l">ĐÚNG</div></div>
+      <div class="res-item no"><div class="n" id="cWrong">0</div><div class="l">SAI</div></div>
+      <div class="res-item sk"><div class="n" id="cSkip">0</div><div class="l">BỎ TRỐNG</div></div>
+    </div>
+    <div class="grade" id="gradeTxt"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="closeModal()">👀 Xem lại bài</button>
+      <button class="btn btn-danger" onclick="resetExam()">🔄 Thi lại</button>
+      <button class="btn btn-home" onclick="goHomeFromModal()">🏠 Trang chủ</button>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<script>
+/* ==================================================================
+   NGÂN HÀNG CÂU HỎI
+   Format: [cat, diff(E/M/H), type(MC|MMC), question, answer, opt1, opt2, ...]
+   ================================================================== */
+const CAT = {
+ T:"Tuabin - Lý thuyết chuyên ngành",
+ HC:"Hơi chèn", PM:"Phòng mòn tuabin", B:"Bi làm sạch bình ngưng",
+ Cl:"Clo", DBT:"Dầu bôi trơn", DC:"Dầu chèn", EH:"Dầu EH",
+ KN:"Khí nén", NC:"Nước cấp", NN:"Nước ngưng", LMK:"Nước làm mát kín",
+ LMS:"Nước làm mát Stator máy phát", NTH:"Nước tuần hoàn",
+ SC:"Sự cố chung bơm, quạt"
+};
+
+/* ---------- 50 câu chuyên môn (rút gọn mẫu) ---------- */
+const RAW_MAIN = [
+["T","M","MC","Để nâng công suất cho một tổ máy lò hơi – tuabin và gia tăng hiệu suất chu trình nhiệt, các nhà máy nhiệt điện thường:",3,
+"Sử dụng thông số hơi cận và trên tới hạn kết hợp với tái nhiệt trung gian, nhiệt độ hơi mới và hơi tái nhiệt thường bằng và trên 540°C.",
+"Sử dụng tuabin ngưng hơi, áp suất không quá 170 bar, nhiệt độ không quá 545°C và không sử dụng quá nhiệt trung gian.",
+"Sử dụng tuabin một thân có đối áp hơi thoát và thông số áp suất hơi mới nhỏ hơn 100 bar."],
+
+["T","M","MC","Xu hướng để gia tăng hiệu suất và hiệu quả kinh tế của chu trình nhà máy nhiệt điện hiện nay là:",3,
+"Áp dụng chu trình kết hợp khí – hơi, áp dụng tối đa việc trích hơi từ tuabin để gia nhiệt và hồi nhiệt nước cấp.",
+"Tăng áp suất hơi mới, tăng nhiệt độ hơi mới, áp dụng quá nhiệt trung gian, hạ thấp chân không bình ngưng.",
+"Áp dụng đồng thời các giải pháp nói trên."],
+
+["T","M","MC","Để có công suất đơn vị lớn, hiệu suất cao, tuabin hơi nước được thiết kế với một số đặc điểm chính:",2,
+"Tăng cao thông số áp suất hơi mới và sử dụng các tuabin một tầng hoặc tuabin có ít số tầng cánh.",
+"Tăng cao thông số hơi mới, áp dụng tái nhiệt và sử dụng tuabin nhiều tầng ghép nối tiếp với nhau, áp dụng triệt để trích hơi, gia nhiệt, hồi nhiệt nước cấp.",
+"Sử dụng các tuabin ngưng hơi thuần túy, không có gia nhiệt hồi nhiệt nước cấp, với lò hơi có thông số cao áp."],
+
+["T","M","MC","Một vài nguyên nhân chính thường dẫn đến sự suy giảm hiệu suất tương đối của tuabin hơi trong quá trình vận hành là:",3,
+"Chất lượng hơi nước không đảm bảo, gây hiện tượng cáu bám trên phần truyền dòng, dẫn đến làm tăng ma sát trong các dãy cánh.",
+"Các thông số vận hành như nhiệt độ - áp suất hơi mới thường thấp hơn định mức, áp suất tuyệt đối trong bình ngưng cao hơn chế độ thiết kế.",
+"Cả hai nguyên nhân kể trên."],
+
+["T","H","MC","Trong các tuabin hơi nước hiện đại, hiệu suất trong tương đối lớn nhất sẽ thuộc phần thân.",2,
+"Cao áp.","Trung áp.","Hạ áp."],
+
+["T","H","MC","Tầng cánh điều chỉnh của tuabin hơi thường có đặc điểm đặc trưng như sau:",1,
+"Là tầng cánh có độ phản lực thấp nhất, nhiệt giáng cao nhất, làm việc trong vùng nhiệt độ và áp suất cao nhất.",
+"Tầng cánh có đường kính trung bình, không chịu ảnh hưởng lớn của độ ẩm, không làm việc trong vùng áp suất cao.",
+"Tầng cánh có đường kính đỉnh cánh lớn nhất, chiều dài cánh lớn nhất."],
+
+["T","H","MC","Trong quá trình điều chỉnh lưu lượng hơi mới qua các xupap vào tầng điều chỉnh đầu tiên của tuabin bằng phương pháp tiết lưu thì:",3,
+"Nhiệt độ của hơi mới tăng lên, áp suất của dòng hơi giữ không thay đổi và lưu lượng giảm đi.",
+"Nhiệt độ của hơi mới giữ không đổi, áp suất của dòng hơi giảm đi, lưu lượng của dòng hơi giảm đi.",
+"Năng lượng entanpi của dòng hơi là hằng số, lưu lượng giảm đi."],
+
+["T","E","MC","Tuabin xung lực được hiểu là",1,
+"tuabin mà dòng hơi chỉ giãn nở trong các ống phun (hay trong các dãy cánh bất động), còn động năng của dòng hơi được chuyển hóa thành cơ công trong các dãy cánh động.",
+"tuabin mà dòng hơi không chỉ giãn nở và sinh công trong các ống phun mà còn cả trên dãy cánh động.",
+"tuabin mà dòng hơi chỉ giãn nở trong các dãy cánh động."],
+
+["T","E","MC","Tuabin ngưng hơi sử dụng trong các nhà máy nhiệt điện có công suất lớn thường:",2,
+"Là tuabin ngưng hơi có trích hơi điều chỉnh, số cửa trích từ 3-5.",
+"Sử có từ 5 đến 9 cửa trích hơi cho gia nhiệt và hồi nhiệt nước cấp, tỷ lệ trích hơi có thể đạt đến 40% lượng hơi qua tuabin.",
+"Là tuabin đối áp, có số cửa trích từ 1-3."],
+
+["T","E","MC","Trong các bộ chèn đầu trục của tuabin hơi, môi chất chèn hơi nước có tác dụng chính là:",3,
+"Hạn chế lực dọc trục trong tuabin và bổ sung thêm lưu lượng hơi cho bình khử khí.",
+"Gia nhiệt cho các bình gia nhiệt cao áp, hạ áp và cải thiện hiệu suất của lò hơi.",
+"Không cho hơi nước có thông số cao và năng lượng lớn từ phần truyền dòng trong tuabin ra ngoài môi trường hoặc không cho không khí từ môi trường lọt vào bình ngưng."],
+
+["T","H","MC","Để xác định được trạng thái trong vùng hơi ẩm hay các thông số nhiệt động học của dòng hơi sau tầng cánh cuối cùng nằm trong vùng hơi ẩm, chúng ta cần xác định được thông số nhiệt động sau",2,
+"Áp suất và nhiệt độ sau tầng cánh cuối cùng của tuabin.",
+"Áp suất hoặc nhiệt độ sau tầng cánh cuối cùng của tuabin và độ khô của hơi.",
+"Áp suất hoặc nhiệt độ sau tầng cánh cuối cùng của tuabin"],
+
+["T","H","MC","Khi nâng cao thông số nhiệt độ hơi mới lên trên 535 0C và áp suất hơi mới đầu vào tuabin đến giá trị cận và trên tới hạn (> 165 bar) thì:",1,
+"Việc áp dụng bộ tái nhiệt hay quá nhiệt trung gian hơi nước là yêu cầu bắt buộc đối với chu trình nhiệt tuabin ngưng hơi để cải thiện hiệu suất chu trình.",
+"Nên sử dụng tuabin ngưng hơi một thân và không có quá nhiệt trung gian.",
+"Việc áp dụng bộ tái nhiệt hay quá nhiệt trung gian hơi nước là không cần thiết."],
+
+["T","H","MC","Đối với các tuabin ngưng hơi công suất lớn sử dụng trong các nhà máy điện hiện đại, chiều và lưu lượng dòng hơi đi trong các phần cao - trung - hạ áp thường có đặc điểm:",3,
+"Đi theo một chiều cố định mà không đảo chiều, nằm trong một thân tuabin để giảm bớt tổn thất thủy lực của dòng hơi từ đầu vào đến đầu ra.",
+"Đi thành một dòng mà không chia tách, không đảo chiều, tăng cường trích hơi để gia nhiệt và hồi nhiệt nước cấp càng nhiều càng tốt.",
+"Đi theo chiều đối xứng (hay ngược nhau) và với lưu lượng tương đồng nhau nhằm hạn chế tối đa lực dọc trục và nâng cao tối đa công suất giới hạn của các tầng cánh cuối."],
+
+["T","H","MC","Để hạn chế dòng rò của hơi nước tại đỉnh cánh - chân cánh giữa phần tĩnh và phần động hay trong các bộ chèn của tuabin hơi, người ta thực hiện:",2,
+"Dùng dãy cánh hay profil của tuabin có hiệu suất cao, áp dụng độ phản lực lớn trên các tầng cánh.",
+"Tiết lưu nhiều cấp đối với dòng hơi rò trên các bộ chèn để triệt tiêu áp suất, bằng cách cho dòng hơi đi qua các khe hẹp của răng (râu) chèn đặt ngắt quãng.",
+"Sử dụng tuabin có ít tầng cánh và độ phản lực lớn trên mỗi tầng cánh."],
+
+["T","H","MC","Một trong các giải pháp chính để nâng cao hiệu suất nhiệt của thiết bị tuabin hơi trong các nhà máy nhiệt điện, người ta áp dụng?",1,
+"Gia nhiệt tối đa cho nước cấp từ việc trích hơi trên phần truyền dòng của tuabin. Lượng hơi trích này có thể đạt đến 40% lượng hơi mới đưa vào tuabin.",
+"Tăng cường tối đa lưu lượng hơi đi qua toàn bộ các tầng cánh tuabin mà không trích hơi cho các bình gia nhiệt.",
+"Nâng cao áp suất bình khử khí để tăng cường mức độ gia nhiệt cho nước cấp."],
+
+["T","H","MC","Tại các chế độ phụ tải thấp dưới 50%, áp suất tuyệt đối trong bình ngưng xuống thấp hơn chế độ định mức khá nhiều, nhưng suất tiêu hao hơi của tuabin vẫn cao là vì:",3,
+"Hiệu suất trong tương đối của tuabin hơi giảm xuống quá nhiều so với chế độ định mức.",
+"Hiệu suất của máy phát điện giảm quá nhiều so với chế độ thiết kế.",
+"Tại các chế độ này các thông số nhiệt độ và áp suất hơi mới đầu vào tuabin thường thấp hơn chế độ định mức khá nhiều, dẫn đến các tổn thất trong phần truyền dòng của tuabin tăng, làm giảm nhiệt giáng hữu ích trong toàn bộ tuabin."],
+
+["T","H","MC","Tổn thất năng lượng đứng thứ nhất và thứ hai trong nhà máy nhiệt điện than sử dụng tuabin hơi nước được xếp theo thứ tự như sau:",1,
+"Thứ nhất: Tổn thất trong bình ngưng do truyền nhiệt từ nước ngưng cho nước tuần hoàn; Thứ hai: Tổn thất nhiệt từ khói thải ra môi trường.",
+"Thứ nhất: Tổn thất nhiệt từ khói thải ra môi trường; Thứ hai: Tổn thất do thành phần các bon không cháy hết trong tro xỉ.",
+"Thứ nhất: Tổn thất nhiệt từ khói thải ra môi trường; Thứ hai: Tổn thất trong bình ngưng."],
+
+["T","H","MC","Nếu cho rằng lượng nhiệt của dòng hơi dẫn vào tuabin là 100% thì lượng nhiệt chiếm tỷ lệ lớn nhất sẽ là:",2,
+"Lượng nhiệt cấp trở lại lò hơi.",
+"Lượng nhiệt tổn thất trong bình ngưng, hay lượng nhiệt truyền cho nước tuần hoàn qua bình ngưng.",
+"Lượng nhiệt dùng để sản xuất điện năng."],
+
+["T","H","MC","Để đảm bảo hiệu suất cao cho các tầng cánh cuối cùng thân hạ áp của tuabin, thì độ khô (x) của hơi trước khi vào bình ngưng thường phải:",3,
+"> 14% và ≤ 86%.","≤ 14%.","≥ 90%."],
+
+["T","H","MC","Nhiệm vụ chủ yếu của công tác vận hành thiết bị tuabin là:",3,
+"Duy trì thiết bị với độ tin cậy cao và hiệu quả kinh tế tối đa.",
+"Đáp ứng yêu cầu về điện năng hoặc nhiệt năng cho các hộ tiêu thụ một cách liên tục, an toàn.",
+"Đồng thời cả a và b."],
+
+["T","H","MC","Để tạo chân không trong bình ngưng, các công việc chính phải thực hiện gồm:",3,
+"Đưa hệ thống hơi chèn trục tuabin vào làm việc.",
+"Khởi động bơm chân không hoặc ejectơ khởi động.",
+"Kết hợp đồng thời cả a và b."],
+
+["T","H","MC","Sự cố thủy kích tuabin hơi được xem là nguy hiểm nhất trong khi vận hành. Đây là hiện tượng:",2,
+"Hay quá trình chuyển hóa từ nước thành hơi nước trong các dàn ống sinh hơi của lò hơi.",
+"Nước đột ngột xâm nhập hoặc xuất hiện trong phần chuyền dòng của tuabin dưới nhiều nguyên nhân khác nhau.",
+"Ngưng tụ hơi nước thành nước trên bề mặt ống đồng."],
+
+["T","H","MC","Thông số rung động trên các gối trục tuabin là yêu cầu bắt buộc phải giám sát, và không cho phép vượt quá giá trị quy định vì?",1,
+"Qua phân tích các đại lượng của rung động, có thể xác định chính xác nguyên nhân để từ đó có biện pháp phù hợp để khắc phục hoặc hạn chế chúng.",
+"Nó đặc trưng cho hiệu suất chuyển đổi năng lượng của dây chuyền thiết bị công nghệ.",
+"Nó đặc trưng cho bội số tuần hoàn trong bình ngưng của tuabin."],
+
+["T","H","MC","Khi tuabin không quay hay đứng yên, tuyệt đối không cấp hơi chèn trục tuabin là vì?",1,
+"Có thể làm cong trục tuabin, biến dạng các răng chèn, gây ra sự giãn nở không đều trong thân tuabin.",
+"Dòng hơi chèn trục sẽ làm tuabin quay, gây nguy hiểm cho tuabin và máy phát điện.",
+"Làm xuất hiện thủy kích gây nguy hiểm cho hệ thống thiết bị tuabin hơi."],
+
+["T","H","MC","Sau khi bị sự cố thủy kích tuabin, tuyệt đối không được khởi động lại tuabin trong vòng 24 giờ. Thông thường, việc khởi động tuabin chỉ nên tiến hành khi hiệu nhiệt độ giữa phần trên và phần dưới của xi lanh nên nhỏ hơn giá trị",1,
+"40°C và độ đảo trục < 0,038mm.","40-80°C và độ đảo trục < 0,038mm.",">80°C và độ đảo trục < 0,038mm."],
+
+["T","H","MC","Khi vận hành, không được để nhiệt độ hơi mới hay hơi chính cao so với quy định của nhà sản xuất trong khi giữ nguyên áp suất hơi mới bởi vì sẽ làm:",1,
+"Tính cơ học của kim loại bị giảm đi, tính giòn tăng dẫn đến thân tuabin bị biến dạng, sự bắt nối phần tĩnh và phần động có thể bị lỏng.",
+"Tăng tiêu hao điện năng cho bơm cấp của lò hơi.",
+"Tăng độ ẩm của hơi trong các tầng cánh cuối sau tuabin."],
+
+["T","H","MC","Khi vận hành, không được để nhiệt độ hơi mới hay hơi chính thấp so với quy định của nhà sản xuất trong khi giữ nguyên áp suất hơi mới bởi vì sẽ làm:",2,
+"Tăng tiêu hao điện năng cho bơm cấp và bơm ngưng của lò hơi.",
+"Giảm hiệu suất trong của tuabin, làm tăng độ ẩm của hơi trong các tầng cánh cuối sau tuabin, gây rỗ mặt cánh hoặc xuất hiện tượng thủy kích tại các tầng cánh cuối.",
+"Tăng độ khô của hơi trong các tầng cánh cuối sau tuabin."],
+
+["T","H","MC","Trong quá trình sấy xilanh hay stator để khởi động tuabin công suất lớn (thường trên 300MW) thì hiệu số chênh lệch nhiệt độ giữa vách trên và vách dưới của xi lanh thuộc phần cao áp, trung áp cao nằm trong khoảng giá trị dưới đây phải dừng và cấm khởi động tuabin.",3,
+"~ 0°C.","< 50°C.","> 50°C."],
+
+["T","H","MC","Trong quá trình vận hành, hệ thống điều khiển tuabin làm việc không bình thường dẫn đến mất khả năng điều khiển tải và tốc độ tuabin, hư hỏng các sen sơ đo tốc độ thì?",2,
+"Giữ ổn định tải cùng tốc độ tuabin và tìm nguyên nhân hư hỏng, khắc phục.",
+"Tiến hành ngừng tuabin mà không phá hoại chân không.",
+"Tiến hành ngừng tuabin có phá hoại chân không."],
+
+["T","H","MC","Sau khi bị sự cố thủy kích tuabin, tuyệt đối không được khởi động lại tuabin trong vòng 24 giờ.",1,
+"Đúng, theo quy định an toàn vận hành.","Không đúng, có thể khởi động lại sau 12 giờ.","Không đúng, có thể khởi động lại ngay nếu đã khắc phục xong."],
+
+["T","M","MC","Khi tuabin đang vận hành mà bị thủy kích trong phần truyền hơi hoặc trong các phần truyền hơi chính của tuabin và hư hỏng tất cả các tín hiệu đo lường và bảo vệ tuabin thì?",3,
+"Phải ngừng tuabin mà không cần phá hoại chân không.",
+"Đóng van stop để dừng cấp hơi vào tuabin, để tuabin quay bình thường.",
+"Phải ngừng tuabin có phá hoại chân không."],
+
+["T","M","MC","Khi vận hành tuabin, gặp trường hợp sau sẽ phải ngừng tuabin có phá hoại chân không?",2,
+"Chất lượng hơi, dầu không đáp ứng được tiêu chuẩn.",
+"Khi sự cố mất nước tuần hoàn mà không thể khôi phục được nguồn nước tuần hoàn.",
+"Cảnh báo áp lực thấp của hệ thống hơi chèn."],
+
+["T","M","MC","Sự mất cân bằng động trong hệ tuabin – máy phát là một trong những nguyên nhân gây ra hiện tượng rung động trên các gối đỡ. Để khắc phục triệt để hiện tượng mất cân bằng động này phải:",1,
+"Tiến hành cân bằng động hệ tuabin - máy phát.",
+"Kiểm soát nhiệt độ, áp lực dầu bôi trơn từ các gối đỡ.",
+"Tăng nhanh tốc độ tuabin để vượt qua sự rung động trên các gối đỡ."],
+
+/* Hơi chèn */
+["HC","E","MC","Nhiệm vụ của hệ thống hơi chèn trục tuabin",1,
+"Hệ thống hơi chèn trục tuabin có nhiệm vụ: ngăn hơi rò từ bên trong Tuabin ra ngoài ở phần tuabin cao áp và trung áp đồng thời ngăn không cho không khí từ ngoài lọt vào bên trong Tuabin hạ áp.",
+"Hệ thống hơi chèn trục tuabin có nhiệm vụ: ngăn hơi rò từ bên trong Tuabin ra ngoài ở phần tuabin cao áp đồng thời ngăn không cho không khí từ ngoài lọt vào bên trong Tuabin hạ áp.",
+"Hệ thống hơi chèn trục tuabin có nhiệm vụ: ngăn hơi rò từ bên trong Tuabin ra ngoài ở phần tuabin cao áp và trung áp đồng thời ngăn không cho không khí từ ngoài lọt vào bên trong Tuabin hạ áp và máy phát.",
+"Hệ thống hơi chèn trục tuabin có nhiệm vụ: ngăn hơi rò từ bên trong Tuabin ra ngoài ở phần tuabin cao áp đồng thời ngăn không cho không khí từ ngoài lọt vào bên trong Tuabin trung áp và hạ áp."],
+
+["HC","M","MC","Nhiệt độ nước ngưng vào bình ngưng hơi chèn theo thiết kế ở tải định mức",3,
+"40.7°C","41.7°C","42.7°C","43.7°C"],
+
+["HC","E","MC","Nhiệt độ nước ngưng vào bình ngưng hơi chèn theo sơ đồ cân bằng nhiệt ở tải định mức",4,
+"40 °C","40.4 °C","39 °C","39.5 °C"],
+
+["HC","M","MC","Nhiệt độ khi đầu ra quạt hút bình ngưng hơi chèn theo thiết kế ở tải định mức",1,
+"65.6°C","67.6°C","66°C","66.6°C"],
+
+["HC","M","MC","Năng suất trao đổi nhiệt bình ngưng hơi chèn theo thiết kế ở tải định mức",1,
+"52.14m³/h","52m³/h","53.14m³/h","51m³/h"],
+
+["HC","E","MC","Giá trị tác động van an toàn ống góp hơi chèn",3,
+"1,75bar","1,65bar","1,7bar","2,7bar"],
+
+["HC","E","MC","Giá trị cảnh báo áp lực hơi chèn thấp",2,
+"<0.136 bar","<0.137 Bar","<0.135 bar","<0.138 bar"],
+
+["HC","E","MC","Giá trị cảnh báo áp lực hơi chèn cao",1,
+">0.41 bar",">0.45bar",">0.42 bar",">0.5bar"],
+
+["HC","M","MC","Trong quá trình vận hành bình thường các chức danh Máy trưởng, Máy phó phải luôn kiểm tra đảm bảo thông số hơi chèn",2,
+"Duy trì từ 0.1 – 0.34bar, nhiệt độ hơi chèn phần cao, trung áp 300°C, phần hạ áp 250°C.",
+"Duy trì từ 0.21 – 0.34bar, nhiệt độ hơi chèn phần cao, trung áp 300°C, phần hạ áp 150°C.",
+"Duy trì từ 0.21 – 0.45bar, nhiệt độ hơi chèn phần cao, trung áp 400°C, phần hạ áp 250°C.",
+"Duy trì từ 0.21 – 0.34bar, nhiệt độ hơi chèn phần cao, trung áp 320°C, phần hạ áp 200°C."],
+
+["HC","E","MC","Áp lực hơi chèn trong quá trình vận hành được điều chỉnh ở bao nhiêu Bar",3,
+"0.26bar","0.27bar","0.28bar","0.25bar"],
+
+["HC","E","MC","Nhiệt độ hơi chèn tuabin cao, trung áp trong quá trình vận hành bình thường bao nhiêu là đúng",1,
+"cao áp/ hạ áp: 300/150ºC","cao áp/ hạ áp: 330/160ºC","cao áp/ hạ áp: 310/150ºC","cao áp/ hạ áp: 280/155ºC"],
+
+["HC","E","MC","Hơi cấp cho hệ thống hơi chèn được lấy từ 3 nguồn chính gồm",3,
+"Từ ống góp hơi tự dùng","Nguồn tự chèn lấy hơi rò từ tuabin cao áp – trung áp","Nguồn rút hơi rò từ ty van MSV, CV, BDV, BVV","Cả 3 phương án trên"],
+
+/* Phòng mòn */
+["PM","E","MC","Nhận định nào sau đây là đúng nhất về Chức năng của hệ thống phòng mòn bản thể tuabin?",2,
+"Duy trì độ ẩm để tránh ăn mòn tuabin trong quá trình tuabin vận hành.",
+"Duy trì độ ẩm để tránh ăn mòn tuabin trong quá trình dừng tuabin dài ngày.",
+"Tránh ăn mòn tuabin trong quá trình tháo để sửa chữa.",
+"Duy trì độ ẩm bình ngưng để tránh ăn mòn các tầng cánh cuối tuabin khi dừng dài ngày."],
+
+["PM","E","MC","Hệ thống phòng mòn tuabin bao gồm?",4,
+"Máy sấy cấp khí nóng vào tuabin cao, trung và hạ áp",
+"Máy hút ẩm hút không khí ẩm tại tuabin hạ áp và bình ngưng",
+"Máy hút ẩm hút không khí ẩm tại bình ngưng",
+"Máy sấy cấp khí nóng vào tuabin cao, trung áp và máy hút ẩm hút không khí ẩm từ tuabin hạ áp"],
+
+["PM","M","MC","Độ ẩm mà máy hút ẩm có thể đáp ứng khi đưa hệ thống phòng mòn tuabin vào làm việc là?",2,
+"<40%","<30%","> 30%","<35%"],
+
+["PM","H","MC","Môi chất đang được sử dụng trong máy hút ẩm để phòng mòn tuabin là?",3,
+"R407C","R32","R22","R410A"],
+
+["PM","M","MC","Bộ gia nhiệt tự động của máy sấy để phòng mòn tuabin vào làm việc khi nhiệt độ gió giảm bao nhiêu độ so với nhiệt độ cài đặt?",1,
+"< 2,5°C","< 5°C","< 7,5°C","< 10°C"],
+
+["PM","H","MC","Nghiêm cấm đưa máy hút ẩm vào làm việc để phòng mòn tuabin khi nhiệt độ không khí bao nhiêu?",1,
+"< 5°C","< 7°C","< 10°C","< 15°C"],
+
+["PM","E","MC","Gió nóng từ máy sấy được cấp vào tuabin tại các điểm nào?",2,
+"Sau van điều chỉnh hơi chính và sau cụm van tái nhiệt",
+"Trước van 1 chiều cửa trích BGN #8 và cửa trích BGN #6",
+"Trước van 1 chiều cửa trích BGN #7 và cửa trích BGN #5",
+"Cửa người chui tuabin hạ áp A, B"],
+
+["PM","E","MC","Máy hút ẩm hệ thống phòng mòn tuabin hoạt động an toàn trong dải nhiệt độ môi trường?",1,
+"từ 5°C đến 40°C","từ 7°C đến 45°C","từ 10°C đến 40°C","từ 15°C đến 50°C"],
+
+["PM","H","MC","Màn hình của máy hút ẩm phòng mòn tuabin hiển thị “E1” là lỗi gì?",1,
+"Lỗi sensor ẩm","Lỗi sensor xả tuyết","Bảo vệ điện áp thấp","Bảo vệ điện áp cao"],
+
+["PM","H","MC","Màn hình của máy hút ẩm phòng mòn tuabin hiển thị “E5” là lỗi gì?",1,
+"Bảo vệ ngược pha, mất pha","Lỗi sensor ẩm","Lỗi sensor xả tuyết","Bảo vệ điện áp cao"],
+
+/* Bi làm sạch */
+["B","E","MC","Nội dung nào sau đây là đúng nhất về chức năng nhiệm vụ hệ thống làm sạch bình ngưng?",1,
+"Hệ thống làm sạch các đường ống bình ngưng nhằm duy trì khả năng truyền nhiệt tốt nhất, đảm bảo môi trường chân không trong bình ngưng.",
+"Hệ thống làm sạch các đường ống tuần hoàn nhằm duy trì khả năng truyền nhiệt tốt nhất.",
+"Hệ thống làm sạch các đường ống bình ngưng nhằm duy trì khả năng truyền nhiệt tốt nhất, đảm bảo môi trường chân không trong bình ngưng, luân chuyển các bi cao su xuyên suốt các tấm trao đổi nhiệt.",
+"Hệ thống làm sạch các đường ống bình ngưng nhằm duy trì khả năng truyền nhiệt tốt nhất, đảm bảo môi trường chân không hộp nước tuần hoàn."],
+
+["B","E","MC","Chất lỏng được xử lý trong hệ thống làm sạch bình ngưng?",3,
+"Nước dịch vụ","Nước khử khoáng","Nước biển","Nước ngưng"],
+
+["B","M","MC","Đường kính bộ thu bi đầu ra hộp nước tuần hoàn?",4,
+"DN 1665","DN 1660","DN 1655","DN 1650"],
+
+["B","M","MC","Tổng số ống trao đổi nhiệt mỗi bình ngưng",1,
+"39304","39404","39504","39604"],
+
+["B","M","MC","Vật liệu ống trao đổi nhiệt bình ngưng?",3,
+"Ống đồng","Hastenlloy","Titanium","Inox"],
+
+["B","E","MC","Số lượng bi cần thiết cho mỗi nhánh bình ngưng theo quy định?",1,
+"500 viên","450 viên","550 viên","600 viên"],
+
+["B","E","MC","Quá trình rửa ngược bình thường diễn ra khi chênh áp qua lưới lọc bi vượt quá",2,
+"35 mbar","30 mbar","40 mbar","45 mbar"],
+
+["B","E","MC","Quá trình rửa ngược khẩn cấp diễn ra khi chênh áp qua lưới lọc bi vượt quá",3,
+"50 mbar","55 mbar","60 mbar","65 mbar"],
+
+["B","E","MC","Hệ thống bi làm sạch bình ngưng nhà máy NĐMD bao nhiêu bộ chia bi",2,
+"4","8","6","10"],
+
+["B","M","MC","Áp suất hoạt động bộ lọc bi?",1,
+"2.1 bar","2.2 bar","2.3 bar","2.4 bar"],
+
+["B","M","MC","Đường kính bi làm sạch bình ngưng?",2,
+"25mm RB","26mm RB","24mm RB","27mm RB"],
+
+["B","M","MC","Bi làm sạch bình ngưng sẽ bị loại nếu kích thước nhỏ hơn?",3,
+"20mm RB","18mm RB","15mm RB","13mm RB"],
+
+/* Clo */
+["Cl","E","MC","Nhiệm vụ của hệ thống Clo",2,
+"để duy trì độ pH của nước biển; để ức chế sự phát triển của tảo và sự tăng trưởng của sinh vật biển trong hệ thống làm mát.",
+"để ức chế sự phát triển của tảo và sự tăng trưởng của sinh vật biển trong hệ thống làm mát nhằm đảm bảo sự làm việc an toàn tin cậy và nâng cao tuổi thọ cho hệ thống và các thiết bị thuộc hệ thống nước tuần hoàn, bình ngưng",
+"để làm sạch nước biển; để ức chế sự phát triển của tảo và sự tăng trưởng của sinh vật biển.",
+"để duy trì độ mặn của nước biển; để ức chế sự phát triển của tảo."],
+
+["Cl","E","MC","Thứ tự nào sau đây là đúng theo chiều môi chất Clo",2,
+"Bình Clo → Bộ lọc khí → Bộ hóa hơi → Van điều chỉnh áp suất → Bộ điều chỉnh chân không → Bộ định lượng Clo",
+"Bình Clo → Bộ hóa hơi → Bộ lọc khí → Van điều chỉnh áp suất → Bộ điều chỉnh chân không → Bộ định lượng Clo",
+"Bình Clo → Bộ hóa hơi → Bộ lọc khí → Bộ điều chỉnh chân không → Van điều chỉnh áp suất → Bộ định lượng Clo",
+"Bình Clo → Bộ định lượng Clo → Bộ lọc khí → Van điều chỉnh áp suất → Bộ điều chỉnh chân không → Bộ hóa hơi"],
+
+["Cl","E","MC","Thứ tự nào sau đây là đúng theo chiều môi chất là nước biển",1,
+"Nước biển → Bộ lọc tự làm sạch → Bộ bơm tăng áp → Ejector → Kênh đầu hút bơm tuần hoàn",
+"Nước biển → Bộ lọc tự làm sạch → Bộ bơm tăng áp → Ejector → Kênh đầu đẩy bơm tuần hoàn",
+"Nước biển → Ejector → Bộ bơm tăng áp → Bộ lọc tự làm sạch → Kênh đầu hút bơm tuần hoàn",
+"Nước biển → Bộ lọc tự làm sạch → Ejector → Bộ bơm tăng áp → Kênh đầu hút bơm tuần hoàn"],
+
+["Cl","E","MC","Nhà máy NĐMD có bao nhiêu nhánh Clo",3,
+"3","4","5","6"],
+
+["Cl","E","MC","Lưu lượng thiết kế của bơm tăng áp Clo",1,
+"75m³/h","85m³/h","95m³/h","65m³/h"],
+
+["Cl","E","MC","Lưu lượng thiết kế của bơm tuần hoàn NaOH nhà máy NĐMD",2,
+"40m³/h","50m³/h","60m³/h","70m³/h"],
+
+["Cl","E","MC","Lưu lượng thiết kế của bơm cấp NaOH nhà máy NĐMD",3,
+"7m³/h","8m³/h","9m³/h","10m³/h"],
+
+["Cl","H","MC","Giá trị cảnh báo phân tích clo dư Cao tại tủ điều khiển",3,
+"0,1 ppm","0,3 ppm","0,5 ppm","0,7 ppm"],
+
+["Cl","H","MC","Giá trị cảnh báo phân tích clo dư Cao Cao tại tủ điều khiển",4,
+"0,1 ppm","0,3 ppm","0,5 ppm","0,7 ppm"],
+
+["Cl","M","MC","Giá trị cảnh báo áp suất cao màng an toàn bình giảm áp",2,
+"274 psig","374 psig","384 psig","364 psig"],
+
+["Cl","H","MC","Liên động chạy quạt hút và bơm tuần hoàn NaOH khi:",2,
+"Cảnh báo mức khí clo trong không khí cao (0,25 ppm)","Cảnh báo mức khí clo trong không khí cao (0,5 ppm)","Cảnh báo mức khí clo trong không khí cao (0,75 ppm)","Cảnh báo mức khí clo trong không khí cao (1 ppm)"],
+
+/* Dầu bôi trơn */
+["DBT","H","MC","Nhiệt độ dầu thấp nhất trong bể trước khi khởi động tuabin",4,
+"22 oC","23 oC","24 oC","21 oC"],
+
+["DBT","E","MC","Giá trị nào sau đây là đúng về áp lực bơm dầu bôi trơn chính",1,
+"5.786 bar","5.984 bar","5.678 bar","5.458 bar"],
+
+["DBT","E","MC","Nội dung nào sau đây là đúng về mô tả kiểu bơm dầu bôi trơn chính",2,
+"ly tâm, nhúng chìm","trục đứng, nhúng chìm","trục vít, nhúng chìm","bơm cánh nâng, nhúng chìm"],
+
+["DBT","H","MC","Lưu lượng bơm dầu sự cố",2,
+"230 m3/hr","232 m3/hr","231 m3/hr","234 m3/hr"],
+
+["DBT","H","MC","Nhiệt độ dầu đầu vào / đầu ra bộ trao đổi nhiệt dầu bôi trơn Nhà máy nhiệt điện Mông Dương",1,
+"70 0C/46 0C","75 0C/46 0C","70 0C/42 0C","80 0C/46 0C"],
+
+["DBT","E","MC","Giá trị áp lực chân không bể dầu bôi trơn thấp",1,
+"3 mbar","4 mbar","5 mbar","6 mbar"],
+
+["DBT","E","MC","Giá trị nhiệt độ dầu xả các gối cao",3,
+"85 ℃","86 ℃","88 ℃","90 ℃"],
+
+["DBT","E","MC","Giá trị nhiệt độ dầu bôi trơn tuabin vào các gối khi tốc độ vượt 3000 v/p",1,
+"duy trì từ 43oC đến 52oC","duy trì từ 42oC đến 52oC","duy trì từ 43oC đến 50oC","duy trì từ 40oC đến 52oC"],
+
+["DBT","E","MC","Giá trị bảo vệ tuabin khi áp lực dầu bôi trơn ống góp thấp thấp",2,
+"1,2 bar","1,21 bar","1,22 bar","1,23 bar"],
+
+["DBT","E","MC","Giá trị áp lực chạy bơm dầu sự cố khi áp lực dầu thấp",1,
+"0.69 bar","0.79 bar","0.65 bar","0.7 bar"],
+
+/* Dầu chèn */
+["DC","E","MC","Bơm dầu chèn chính là kiểu bơm nào",2,
+"Ly tâm","Trục vít","Trục đứng","Cánh nâng"],
+
+["DC","E","MC","Bơm chân không dầu chèn là bơm nào?",1,
+"Ly tâm lệch trục","Trục vít","Trục đứng","Cánh nâng"],
+
+["DC","E","MC","Nội dung nào là đúng về chức năng của hệ thống dầu chèn",2,
+"Cấp dầu vào chèn Hydro để ngăn ngừa sự lọt không khí từ bên ngoài vào trong máy phát.",
+"Cấp dầu vào chèn Hydro để ngăn ngừa sự lọt khí Hydro từ bên trong Máy phát điện ra ngoài khí quyển.",
+"Cấp dầu vào chèn Hydro để ngăn ngừa sự lọt khí Nito từ bên trong Máy phát điện ra ngoài khí quyển.",
+"Cấp dầu vào chèn Hydro để ngăn ngừa sự lọt khí Hydro từ bên trong Máy phát điện ra ngoài khí quyển qua khe hở hai đầu trục."],
+
+["DC","H","MC","Giá trị áp lực đầu đẩy bơm dầu chèn theo thiết kế",3,
+"12 Bar","11 Bar","9.8 Bar","10.8 Bar"],
+
+["DC","M","MC","Giá trị cảnh báo áp lực đầu đẩy bơm dầu chèn thấp",1,
+"8.5 Bar","9.5 Bar","10.5 Bar","11.5 Bar"],
+
+["DC","H","MC","Giá trị cảnh báo chênh áp dầu chèn và hydro thấp",2,
+"0.35 Bar","0.41 Bar","0.5 Bar","0.55 Bar"],
+
+["DC","E","MC","Giá trị cảnh báo chênh áp phin lọc đầu vào gối máy phát cao",3,
+"0.69 Bar","0.59 Bar","0.49 Bar","0.39 Bar"],
+
+["DC","E","MC","Giá trị áp lực liên động bơm dầu chèn sự cố",2,
+"8.5Bar","8 Bar","7.5 Bar","7 Bar"],
+
+/* EH */
+["EH","E","MC","Thể tích bể dầu thủy lực",1,
+"1,514 m3","1,525 m3","1,6 m3","1,414 m3"],
+
+["EH","E","MC","Thông số áp lực / công suất bơm dầu thủy lực nhà máy NĐMD",2,
+"165 bar/ 35kW","165 bar/ 30 kW","168 bar/ 30kW","168 bar/ 35 kW"],
+
+["EH","E","MC","Giá trị nhiệt độ dầu cấm khởi động hệ thống dầu thủy lực nhà máy NĐMD là bao nhiêu",4,
+"20 ºC","19 ºC","21 ºC","18 ºC"],
+
+["EH","E","MC","Giá trị tác động của van an toàn đầu đẩy bơm dầu thủy lực là bao nhiêu",1,
+"198 bar","199 bar","197 bar","196 bar"],
+
+["EH","E","MC","Giá trị cảnh báo mức bể dầu thủy lực tuabin cao là bao nhiêu",2,
+"700 mm","703 mm","706 mm","709 mm"],
+
+["EH","E","MC","Dải nhiệt độ làm việc tốt nhất cho dầu thủy lực của nhà máy NĐMD là bao nhiêu",3,
+"từ 35 đến 45ºC","từ 32 đến 43ºC","từ 35 đến 43ºC","từ 30 đến 40ºC"],
+
+["EH","E","MC","Giá trị bảo vệ tuabin khi mức dầu thủy lực thấp là bao nhiêu",2,
+"383mm","282mm","182mm","252mm"],
+
+/* Khí nén */
+["KN","E","MC","Chức năng của hệ thống máy nén khí Nhà máy Nhiệt điện Mông Dương",3,
+"Hệ thống khí nén bao gồm có 3 máy nén khí, 4 bộ sấy khí.",
+"Hệ thống khí nén bao gồm có 4 máy nén khí, 2 bộ sấy khí.",
+"Hệ thống khí nén bao gồm có 3 máy nén khí, 2 bộ sấy khí có chức năng cung cấp khí áp lực cho hệ thống khí đo lường và khí phục vụ của nhà máy",
+"Hệ thống khí nén bao gồm có 2 máy nén khí, 2 bộ sấy khí."],
+
+["KN","E","MC","Công suất thiết kế 01 máy nén khí nhà máy nhiệt điện Mông Dương",4,
+"65.1 Nm3/phút","95.1 Nm3/phút","85.1 Nm3/phút","75.1 Nm3/phút"],
+
+["KN","E","MC","Thể tích bình chứa khí nén dịch vụ",2,
+"22 m3","23 m3","26 m3","27 m3"],
+
+["KN","E","MC","Thể tích bình chứa khí nén điều khiển",4,
+"22 m3","23 m3","26 m3","27 m3"],
+
+["KN","E","MC","Áp suất bộ inter cooler ở điều kiện mang tải là bao nhiêu",2,
+"0.9 – 1.7 bar","1.8 – 2.6 bar","2,7 – 3,5 bar","3.6 – 4.4 bar"],
+
+["KN","E","MC","Giá trị cảnh báo cao nhiệt độ dầu bôi trơn máy nén khí",3,
+"40°C","45°C","50°C","55°C"],
+
+["KN","E","MC","Giá trị cảnh báo cao nhiệt độ nước làm mát kín đầu ra máy nén khí",2,
+"55°C","65°C","75°C","85°C"],
+
+["KN","E","MC","Giá trị cảnh báo nhiệt độ cuộn dây động cơ máy nén khí",3,
+"140°C","150°C","160°C","170°C"],
+
+/* Nước cấp */
+["NC","E","MC","Nhiệm vụ của hệ thống nước cấp",2,
+"Hệ thống nước cấp nhận nước ngưng được gia nhiệt từ bình khử khí. Các bơm cấp vận chuyển nước cấp đi qua các bình gia nhiệt hạ áp.",
+"Hệ thống nước cấp nhận nước ngưng được gia nhiệt từ bình khử khí. Các bơm cấp vận chuyển nước cấp đi qua các bình gia nhiệt cao áp để gia nhiệt cho nước cấp nhằm nâng cao hiệu suất chu trình nhiệt, sau đó được rẽ thành hai đường đưa sang 2 lò; qua cụm các van điều chỉnh, bộ hâm và vào hai bao hơi.",
+"Hệ thống nước cấp nhận nước ngưng được gia nhiệt từ bình gia nhiệt hạ áp.",
+"Hệ thống nước cấp nhận nước ngưng được gia nhiệt từ bình khử khí, đưa sang lần lượt từng lò."],
+
+["NC","E","MC","Bơm tăng áp bơm cấp là bơm?",1,
+"Bơm tăng áp là bơm ly tâm 1 tầng cánh, thân kiểu nằm ngang, tầng cánh đơn, một đầu hút.",
+"Bơm tăng áp là bơm ly tâm 1 tầng cánh, thân kiểu nằm ngang, tầng cánh kép, một đầu hút.",
+"Bơm tăng áp là bơm ly tâm 1 tầng cánh, thân kiểu nằm dọc, tầng cánh đơn, một đầu hút.",
+"Bơm tăng áp là trục vít 1 tầng cánh, thân kiểu nằm ngang."],
+
+["NC","E","MC","Tốc độ thiết kế của bơm tăng áp bơm cấp của Nhà máy nhiệt điện Mông Dương",2,
+"1480 v/p","1490 v/p","1500 v/p","1510 v/p"],
+
+["NC","M","MC","Tốc độ thiết kế của bơm cấp của Nhà máy nhiệt điện Mông Dương",4,
+"5020 v/p","5080 v/p","5040 v/p","5060 v/p"],
+
+["NC","E","MC","Lưu lượng tối thiểu của bơm cấp Nhà máy nhiệt điện Mông Dương",2,
+"365m3/h","375m3/h","385m3/h","395m3/h"],
+
+["NC","M","MC","Dòng điện định mức của tổ hợp bơm cấp Nhà máy nhiệt điện Mông Dương",1,
+"731,2A","745,2A","761,2A","711,2A"],
+
+["NC","E","MC","Công suất thiết kế Bình khử khí Nhà máy nhiệt điện Mông Dương",1,
+"1835 tấn/h","1735 tấn/h","1635 tấn/h","1935 tấn/h"],
+
+/* Nước ngưng */
+["NN","E","MC","Bơm ngưng là loại bơm nào?",1,
+"Bơm ly tâm trục đứng","Bơm ly tâm trục ngang","Bơm hướng trục trục đứng","Bơm hướng trục trục ngang"],
+
+["NN","M","MC","Số tầng cánh của bơm ngưng là bao nhiêu?",4,
+"4","5","6","7"],
+
+["NN","E","MC","Lưu lượng thiết kế của bơm ngưng là bao nhiêu?",1,
+"810 m3/h","850 m3/h","910 m3/h","950 m3/h"],
+
+["NN","E","MC","Lưu lượng tối thiểu qua bơm ngưng là bao nhiêu?",2,
+"234 m3/h","324 m3/h","432 m3/h","350 m3/h"],
+
+["NN","E","MC","Bơm ngưng được thiết kế với số vòng quay là bao nhiêu?",2,
+"1480 v/ph","1485 v/ph","1487 v/ph","1500 v/ph"],
+
+["NN","E","MC","Công suất thiết kế của bơm ngưng là bao nhiêu?",3,
+"810 KW","950 KW","980 KW","890 KW"],
+
+["NN","E","MC","Mức nước bình ngưng H là?",3,
+"850 mm","870 mm","950 mm","970 mm"],
+
+["NN","E","MC","Mức nước bình ngưng HH là?",4,
+"1070 mm","1150 mm","1270 mm","1450 mm"],
+
+["NN","E","MC","Bảo vệ trip bơm ngưng do nhiệt độ gối cao là?",3,
+"85°C","95°C","100°C","105°C"],
+
+["NN","M","MC","Cảnh báo chênh áp phin lọc đầu hút bơm ngưng cao là?",3,
+"0,1 bar","0,15 bar","0,2 bar","0,3 bar"],
+
+/* LMK */
+["LMK","E","MC","Lưu lượng thiết kế bơm làm mát kín Nhà máy nhiệt điện Mông Dương",2,
+"4100 m3/h","4000 m3/h","4200 m3/h","4100 m3/h"],
+
+["LMK","E","MC","Cột áp thiết kế bơm làm mát kín Nhà máy nhiệt điện Mông Dương",3,
+"55mH20","60mH20","50mH20","45mH20"],
+
+["LMK","E","MC","Dòng điện định mức của bơm làm mát kín Nhà máy nhiệt điện Mông Dương",3,
+"56A","55A","55.9A","55.5A"],
+
+["LMK","E","MC","Thể tích bình áp lực nước làm mát kín Nhà máy nhiệt điện Mông Dương",1,
+"30.5 m3","30 m3","40 m3","32.5 m3"],
+
+["LMK","E","MC","Nhiệt độ nước làm mát kín đầu ra bộ trao đổi nhiệt theo thiết kế Nhà máy nhiệt điện Mông Dương",4,
+"38°C","35°C","36°C","37°C"],
+
+["LMK","E","MC","Giá trị bảo vệ nhiệt độ gối trục động cơ bơm làm mát kín (cả hai gối)",1,
+"105 °C","100 °C","110 °C","115 °C"],
+
+["LMK","E","MC","Giá trị bảo vệ nhiệt độ gối trục bơm làm mát kín (cả hai gối)",2,
+"90 °C","95 °C","100 °C","105 °C"],
+
+["LMK","E","MC","Giá trị liên động bơm dự phòng làm việc khi áp lực đầu đẩy bơm làm mát kín xuống dưới?",2,
+"5 bar","4.6 bar","4 bar","4.5 bar"],
+
+/* LMS */
+["LMS","E","MC","Nguồn nước cấp cho hệ thống nước làm mát stator máy phát là?",1,
+"Nước khử khoáng","Nước dịch vụ","Nước ngưng","Nước cấp"],
+
+["LMS","E","MC","Độ dẫn điện nước làm mát là?",2,
+"≤ 0,1µS/cm","0,1 - 0,3µS/cm","0,3 - 0,5µS/cm","≥ 0,5µS/cm"],
+
+["LMS","E","MC","Thể tích bể chứa nước làm mát stator?",1,
+"3,1 m3","4,1 m3","5,1 m3","6,1 m3"],
+
+["LMS","E","MC","Giá trị áp lực đầu đẩy bơm nước làm mát stator máy phát?",3,
+"6,38 bar","8,37 bar","7,38 bar","8,73 bar"],
+
+["LMS","E","MC","Lưu lượng của bơm nước làm mát stator máy phát?",1,
+"98,5 m3/h","58,5 m3/h","78,5 m3/h","88,5 m3/h"],
+
+["LMS","E","MC","Giá trị nhiệt độ nước làm mát stator đầu vào máy phát",3,
+"19÷32ºC","32÷40ºC","40÷46ºC","46÷50ºC"],
+
+["LMS","E","MC","Giá trị cảnh báo mức nước bể dự trữ nước làm mát Stator máy phát thấp (mức 0 = 2/3 ống thủy)",1,
+"-102mm","-92mm","-112mm","-82mm"],
+
+["LMS","E","MC","Giá trị cảnh báo mức nước bể dự trữ nước làm mát Stator máy phát cao (mức 0 = 2/3 ống thủy)",3,
+"+112mm","+92mm","+102mm","+82mm"],
+
+["LMS","M","MC","Giá trị bảo vệ Trip bơm nước làm mát stator máy phát do độ dẫn nước làm mát là?",4,
+"0,5 μs/cm","5,5 μs/cm","0,9 μs/cm","9,9 μs/cm"],
+
+["LMS","E","MC","Giá trị bảo vệ Trip bơm nước làm mát stator máy phát do nhiệt độ nước làm mát ra khỏi máy phát cao?",1,
+"83,2ºC","63,5ºC","50,5ºC","45ºC"],
+
+/* Nước tuần hoàn */
+["NTH","E","MC","Số lượng bơm tuần hoàn NĐMD?",3,
+"2","3","4","5"],
+
+["NTH","E","MC","Số lượng bơm tuần hoàn phục vụ cho mấy tổ máy?",2,
+"1","2","3","4"],
+
+["NTH","E","MC","Nước tuần hoàn đi vào bình ngưng phải đi qua các thiết bị nào?",1,
+"Cánh phai → Tấm chắn thưa → Tấm chắn mau → Lưới chắn rác kiểu quay → Bơm tuần hoàn → van thủy lực đầu đẩy → Bình ngưng gian máy",
+"Cánh phai → Tấm chắn mau → Lưới chắn rác kiểu quay → Bơm tuần hoàn → van thủy lực đầu đẩy → Bình ngưng gian máy",
+"Cánh phai → Tấm chắn thưa → Lưới chắn rác kiểu quay → Bơm tuần hoàn → van thủy lực đầu đẩy → Bình ngưng gian máy",
+"Cánh phai → Tấm chắn thưa → Tấm chắn mau → Bơm tuần hoàn → van thủy lực đầu đẩy → Bình ngưng gian máy"],
+
+["NTH","E","MC","Bơm tuần hoàn là kiểu nào?",1,
+"cánh nâng","Hướng trục, đơn tầng, trục đứng","Ly tâm, đa tầng, trục đứng","Ly tâm, đơn tầng, trục ngang"],
+
+["NTH","E","MC","Bơm tuần hoàn vận hành với cấp tốc độ?",1,
+"275 v/ph","375 v/ph","475 v/ph","575 v/ph"],
+
+["NTH","E","MC","Các tấm chắn thưa và mau được đặt nghiêng bao nhiêu độ?",3,
+"45 độ","75 độ","85 độ","90 độ"],
+
+["NTH","E","MC","Lưu lượng của bơm rửa lưới là?",3,
+"100 m3/h","125 m3/h","140 m3/h","150 m3/h"],
+
+["NTH","E","MC","Chiều cao cột áp của bơm rửa lưới là?",2,
+"15 m","25 m","35 m","20 m"],
+
+["NTH","E","MC","Bơm rửa lưới là loại bơm gì?",1,
+"Bơm ly tâm, trục ngang","Bơm ly tâm, trục đứng","Bơm hướng trục, trục ngang","Bơm hướng trục, trục đứng"],
+
+["NTH","E","MC","Bảo vệ trip bơm tuần hoàn do nhiệt độ stator cao là?",4,
+"120 °C","130 °C","135 °C","140 °C"],
+
+["NTH","E","MC","Bảo vệ trip bơm tuần hoàn do nhiệt độ gối dưới động cơ cao là?",4,
+"80 °C","85 °C","90 °C","95 °C"],
+
+["NTH","E","MC","Bảo vệ trip bơm tuần hoàn do nhiệt độ gối chặn là?",3,
+"85 °C","99 °C","111 °C","121 °C"],
+
+["NTH","E","MC","Lưu lượng định mức thiết kế của 1 bơm tuần hoàn bao nhiêu?",2,
+"36000 m3/h","36500 m3/h","39000 m3/h","43000 m3/h"],
+
+["NTH","M","MC","Trong quá trình vận hành bình thường, người vận hành điều chỉnh áp lực nước tuần hoàn bằng gì?",3,
+"Van thủy lực đầu đẩy bơm tuần hoàn.","Van điện nước tuần hoàn đầu vào bình ngưng.","Van điện nước tuần hoàn đầu ra bình ngưng.","Điều chỉnh biến tần động cơ."],
+
+/* SC */
+["SC","E","MC","Một trong số các nguyên nhân khiến bơm không khởi động được? (1)",1,
+"Hư hỏng phần cấp điện, động cơ","Không thiết lập nước điền đầy thân bơm","Không thiết lập nước làm mát gối bơm, động cơ","Không thiết lập đường nước chèn"],
+
+["SC","E","MC","Một trong số các nguyên nhân khiến bơm không khởi động được? (2)",2,
+"Không thiết lập nước điền đầy thân bơm","Hư hỏng bộ khởi động","Không thiết lập nước làm mát gối bơm, động cơ","Không thiết lập đường nước chèn"],
+
+["SC","E","MC","Một trong số các nguyên nhân khiến bơm không khởi động được? (3)",3,
+"Không thiết lập nước điền đầy thân bơm","Không thiết lập nước làm mát gối bơm, động cơ","Bơm bị kẹt cơ khí","Không thiết lập đường nước chèn"],
+
+["SC","E","MC","Một trong số các nguyên nhân khiến bơm làm việc kém? (1)",1,
+"Hư hỏng nguồn cấp điện hoặc động cơ dẫn động","Thiếu nước làm mát gối","Bơm bị rung","Bơm bị di"],
+
+["SC","E","MC","Một trong số các nguyên nhân khiến bơm làm việc kém? (2)",1,
+"Chiều quay không đúng","Thiếu nước làm mát gối","Bơm bị rung","Bơm bị di"],
+
+["SC","E","MC","Một trong số các nguyên nhân khiến bơm làm việc kém? (3)",1,
+"Van đầu hút, đầu đẩy không mở hoàn toàn","Thiếu nước làm mát gối","Bơm bị rung","Bơm bị di"],
+
+["SC","E","MC","Nguyên nhân khiến bơm quay ngược khi dừng?",2,
+"Áp lực hệ thống quá cao","Van 1 chiều, van đầu đẩy không đóng hoặc đóng không kín","Áp lực hệ thống thấp đột ngột","Bơm hỏng"],
+
+["SC","E","MC","Một trong số các trường hợp phải dừng khẩn cấp bơm là? (1)",3,
+"Bơm bị mất lưu lượng","Bơm bị mất áp lực","Khi có khói bốc ra từ gối động cơ","Bơm bị quay ngược"],
+
+["SC","E","MC","Một trong số các trường hợp phải dừng khẩn cấp bơm là? (2)",4,
+"Bơm bị mất lưu lượng","Bơm bị mất áp lực","Bơm bị quay ngược","Rung lớn ở gối đỡ hoặc đứt, lỏng bulong bệ đỡ bơm, động cơ"],
+
+["SC","E","MC","Một trong số các trường hợp phải dừng khẩn cấp bơm là? (3)",3,
+"Bơm bị mất lưu lượng","Bơm bị mất áp lực","Khi có tiếng va chạm trong thân bơm và xuất hiện rung lớn","Bơm bị quay ngược"],
+
+["SC","E","MC","Một trong số các trường hợp phải dừng khẩn cấp bơm là? (4)",4,
+"Bơm bị mất lưu lượng","Bơm bị mất áp lực","Bơm bị quay ngược","Khi có người bị tai nạn quấn vào thiết bị quay của bơm đang làm việc"],
+
+/* Tuabin khởi động / dừng */
+["T","M","MC","Hiệu suất tuabin thiết kế ở chế độ định mức (RO) là?",4,
+"33%","39,12%","43%","46,33%"],
+
+["T","E","MC","Van điều chỉnh phun giảm ôn hơi thoát tự động mở khi nhiệt độ hơi thoát tuabin tăng đến?",2,
+"65°C","79°C","89°C","98°C"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do áp lực dầu bôi trơn thấp?",2,
+"1,12 bar","1,21 bar","1,31 bar","1,46 bar"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do mức bể dầu bôi trơn thấp?",1,
+"≤ 406 mm","≤ 456 mm","≤ 506 mm","≤ 476 mm"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do áp lực dầu thủy lực thấp?",1,
+"110 bar","121 bar","131 bar","151 bar"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do mức bể dầu thủy lực thấp?",3,
+"≤ 252 mm","≤ 254 mm","≤ 282 mm","≤ 296 mm"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do nhiệt độ hơi thoát tuabin hạ áp cao?",1,
+"107,2°C","129°C","102,7°C","79°C"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do nhiệt độ hơi chính cao?",4,
+"482,2°C","510°C","520°C","565°C"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do mất chân không bình ngưng khi tốc độ tuabin ≥ 300 vòng/phút?",3,
+"0,129 bar","0,167 bar","0,229 bar","0,292 bar"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do độ di trục tuabin vượt quá giá trị cho phép là?",1,
+"≥ 0,89mm; ≤ -0,89mm","≥ 0,831 mm; ≤ -0,831mm","≥ 15,52 mm; ≤ -8,31mm","≤ -14,12mm; ≥ 46,3mm"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do vượt tốc tuabin mức 1?",2,
+"3100 vòng/phút","3300 vòng/phút","3315 vòng/phút","3350 vòng/phút"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do vượt tốc tuabin mức 2?",3,
+"3100 vòng/phút","3300 vòng/phút","3315 vòng/phút","3350 vòng/phút"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do nhiệt độ gối chặn tăng cao?",1,
+"105ºC","121ºC","127ºC","99ºC"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do nhiệt độ gối đỡ 1~3 tăng cao?",3,
+"105ºC","121ºC","127ºC","99ºC"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do nhiệt độ gối đỡ 4~6 tăng cao?",2,
+"105ºC","121ºC","127ºC","99ºC"],
+
+["T","E","MC","Giá trị bảo vệ Trip tuabin do nhiệt độ kim loại tầng cánh cuối tuabin hạ áp tăng cao?",3,
+"107,2°C","254°C","260°C","482,2°C"],
+
+["T","E","MC","Khởi động tuabin từ trạng thái lạnh khi tuabin đã dừng thời gian bao lâu?",3,
+"dưới 10 tiếng","từ 10 tiếng đến 72 tiếng","Trên 72 tiếng","trên 10 ngày"],
+
+["T","E","MC","Khởi động tuabin từ trạng thái ấm khi tuabin đã dừng thời gian bao lâu?",2,
+"dưới 10 tiếng","từ 10 tiếng đến 72 tiếng","Trên 72 tiếng","trên 10 ngày"],
+
+["T","E","MC","Khởi động tuabin từ trạng thái nóng khi tuabin đã dừng thời gian bao lâu?",1,
+"dưới 10 tiếng","từ 10 tiếng đến 72 tiếng","Trên 72 tiếng","trên 10 ngày"],
+
+["T","M","MC","Quá trình tạo chân không bình ngưng được coi là đạt khi chân không?",3,
+"≤ 0,0711 bar","≤ 0,084 bar","≤ 0,1 bar","≤ 0,12 bar"],
+
+["T","M","MC","Thực hiện sấy rotor tuabin bằng việc cấp hơi qua van nào?",1,
+"HSPV","BVV","HSBV","BDV"],
+
+["T","M","MC","Quá trình dừng bình thường thì duy trì bộ vần trục làm việc tới khi nhiệt độ kim loại vỏ Tuabin giảm xuống bao nhiêu?",1,
+"150ºC","200ºC","250ºC","300ºC"]
+];
+
+/* ==================== NGÂN HÀNG VHDN ==================== */
+const RAW_VHDN = [
+["VHDN","M","MMC","Những đáp án nào sau đây nhận định đúng về \"Tầm nhìn và sứ mệnh\" của EVNGENCO3?",[2,3],
+"Tổng Công ty Phát điện 3 là một trong những Đơn vị hàng đầu trong phát triển nguồn điện tại Việt Nam.",
+"Tổng Công ty Phát điện 3 là một trong những Đơn vị hàng đầu trong lĩnh vực năng lượng đầu tư phát triển nguồn điện tại Việt Nam và khu vực.",
+"Tổng Công ty Phát điện 3 luôn đảm bảo sản xuất điện an toàn, liên tục, kinh tế, đầu tư nguồn điện hiệu quả - góp phần giữ vững an ninh năng lượng của Hệ thống điện Quốc gia.",
+"Tổng Công ty Phát điện 3 là một trong những Đơn vị hàng đầu trong lĩnh vực năng lượng của Việt Nam."],
+
+["VHDN","M","MC","Trang phục đối với lực lượng lao động trực tiếp trong Công ty Nhiệt điện Mông Dương?",2,
+"Mặc quần áo bảo hộ lao động, đi giày bảo hộ lao động, đội mũ bảo hộ lao động.",
+"Mặc quần áo bảo hộ lao động, đi giày bảo hộ lao động, đội mũ bảo hộ lao động và các thiết bị bảo hộ lao động được cấp khi ra công trường.",
+"Mặc quần áo bảo hộ lao động, đi giày thể thao hoặc dép có quai hậu, đội mũ bảo hộ lao động.",
+"Mặc quần áo gọn gàng, lịch sự, đi giày hoặc dép có quai hậu."],
+
+["VHDN","M","MC","Giá trị cốt lõi \"Tận tâm - Trí tuệ\" trong xây dựng VHDN của EVNGENCO3 có ý nghĩa như thế nào?",1,
+"Cán bộ công nhân viên EVNGENCO3 luôn cố gắng thể hiện thái độ nghiêm túc và tinh thần trách nhiệm cao đối với công việc, hết lòng phục vụ khách hàng, vì lợi ích của nhà đầu tư và người lao động; luôn vận dụng tri thức, trí tuệ để hành động với hiệu quả cao nhất.",
+"Cán bộ công nhân viên EVNGENCO3 chỉ cần làm tốt các công việc của mình, không cần quan tâm đến việc phục vụ khách hàng.",
+"Cán bộ công nhân viên EVNGENCO3 luôn cố gắng thể hiện tinh thần trách nhiệm cao đối với công việc.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MC","Thái độ nghiêm túc và tinh thần trách nhiệm cao đối với công việc, hết lòng phục vụ khách hàng, vì lợi ích của nhà đầu tư và người lao động; luôn vận dụng tri thức, trí tuệ để hành động với hiệu quả cao nhất là ý nghĩa của giá trị cốt lõi nào sau đây?",2,
+"Hợp tác - Chia sẻ.","Tận tâm - Trí tuệ.","Sáng tạo - Hiệu quả.","Chất lượng - Tín nhiệm."],
+
+["VHDN","M","MC","Trong xây dựng VHDN, EVNGENCO3 xác định giá trị cốt lõi \"Sáng tạo - Hiệu quả\" có ý nghĩa như thế nào?",3,
+"Là giá trị phong cách phục vụ.","Là Tinh thần chủ đạo mà EVNGENCO3 mong muốn đạt được.","Là đòn bẩy cho sự phát triển.","Là nguyện vọng mà EVNGENCO3 mong muốn đạt được."],
+
+["VHDN","M","MC","\"Giá trị cốt lõi\" trong xây dựng VHDN của EVNGENCO3 gồm mấy tiêu chí:",2,
+"1","4","3","2"],
+
+["VHDN","M","MC","Câu nào sau đây nói về quy tắc ứng xử đối với các đơn vị trong Công ty Nhiệt điện Mông Dương?",4,
+"Phân giao chức năng và nhiệm vụ cụ thể, rõ ràng cho từng Phòng và Phân xưởng.",
+"Khuyến khích và tạo điều kiện tốt nhất để các Phòng và Phân xưởng phát triển thành các bộ phận tham mưu giỏi, đắc lực cho lãnh đạo Công ty.",
+"Xây dựng và duy trì môi trường làm việc bình đẳng, tôn trọng và công bằng.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MC","Lễ phục đối với nữ khi tham dự các cuộc hội nghị, hội họp và các lễ ký kết hợp tác là:",4,
+"Trang phục tự chọn, gọn gàng, lịch sự.","Áo dài truyền thống.","Comple nữ.","Mùa đông: Comple nữ; Mùa hè: áo dài truyền thống."],
+
+["VHDN","M","MC","Câu nào sau đây đúng về quy tắc ứng xử đối với cá nhân từng CBCNV trong Công ty Nhiệt điện Mông Dương?",4,
+"Tuân thủ pháp luật, nội quy, quy định của Công ty và đạo đức nghề nghiệp khi làm việc. Trung thực, tận tâm, trách nhiệm cao khi thực hiện công việc được giao.",
+"Không ngừng học tập nâng cao trình độ chuyên môn, nghiệp vụ để nắm bắt tri thức và sử dụng công nghệ mới. Khi giải quyết công việc qua mọi hình thức phải thể hiện thái độ giao tiếp chuyên nghiệp, khiêm nhường, lịch sự.",
+"Giữ gìn, bảo vệ uy tín của Công ty. Giữ gìn cảnh quan môi trường, đảm bảo nơi làm việc gọn gàng, sạch sẽ.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MC","\"Giá trị cốt lõi\" trong xây dựng VHDN của EVNGENCO3 gồm những tiêu chí nào?",3,
+"Tận tâm - Trí tuệ.","Chất lượng - Tín nhiệm, Hợp tác - chia sẻ.","Chất lượng - Tín nhiệm, Tận tâm - Trí tuệ, Hợp tác - Chia sẻ, Sáng tạo - Hiệu quả.","Sáng tạo - Hiệu quả."],
+
+["VHDN","M","MC","Tiêu chí \"ứng xử nội bộ\" trong xây dựng VHDN của EVNGENCO3 được thể hiện như thế nào?",3,
+"Hợp tác cùng phát triển.","Vì một cộng đồng phát triển.","Trên thuận, dưới hòa, tôn trọng lẫn nhau.","Vì sự phát triển bền vững."],
+
+["VHDN","M","MMC","Quy tắc ứng xử của CBCNV với Lãnh đạo trong Công ty NĐ Mông Dương được thực thi như thế nào?",[1,2],
+"Giữ thái độ nghiêm túc, lịch sự, tôn trọng khi giao tiếp với Lãnh đạo. Chấp hành nghiêm túc các ý kiến chỉ đạo, hướng dẫn và thực hiện mọi nhiệm vụ được phân công. Trung thực, thẳng thắn, thiện chí trong mọi báo cáo, đề xuất với Lãnh đạo.",
+"Tôn trọng ý kiến của Lãnh đạo. Khi thực hiện quyết định của Lãnh đạo, nếu phát hiện quyết định đó trái pháp luật thì phải báo cáo ngay với người ra quyết định.",
+"Tôn trọng ý kiến của Lãnh đạo. Khi phát hiện quyết định đó trái pháp luật thì không cần báo cáo và coi như mình không biết.",
+"Luôn lấy lòng Lãnh đạo để đạt được mục đích của mình."],
+
+["VHDN","M","MC","Khẩu hiệu của TPC MÔNG DƯƠNG là gì?",2,
+"Sáng tạo - Hiệu quả.","Chất lượng - Tin cậy - Hiệu quả.","Vì sự phát triển bền vững.","Vì một cộng đồng phát triển."],
+
+["VHDN","M","MC","Quy tắc ứng xử nội bộ của CBCNV trong Công ty Nhiệt điện Mông Dương được thực thi như thế nào?",4,
+"Chân thành và hợp tác khi giải quyết công việc. Đồng cảm và sẵn sàng chia sẻ khó khăn với đồng nghiệp.",
+"Cùng đồng nghiệp xây dựng môi trường làm việc thân thiện. Luôn niềm nở chào hỏi đồng nghiệp.",
+"Luôn tôn trọng, bảo vệ uy tín, danh dự của đồng nghiệp. Biết lắng nghe ý kiến góp ý của đồng nghiệp.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MC","Quy tắc ứng xử đối với đồng nghiệp cùng phòng, phân xưởng khi được giao giải quyết một công việc?",1,
+"Phải chủ động phối hợp, hỗ trợ đồng nghiệp để cùng thực hiện tốt mọi nhiệm vụ được giao.",
+"Né tránh, đùn đẩy công việc cho đồng nghiệp.",
+"Từ chối sự phối hợp với đồng nghiệp.",
+"Chỉ làm việc với đồng nghiệp mà mình thích."],
+
+["VHDN","M","MC","Trong công việc được giao, khi bất đồng quan điểm với đồng nghiệp của mình trong cùng phòng/phân xưởng, bạn sẽ làm gì?",2,
+"Lôi kéo bè cánh về phe nhóm của mình.",
+"Báo cáo trực tiếp với người quản lý giao việc để người quản lý quyết định.",
+"Gây khó khăn, cản trở cho đồng nghiệp.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MC","Quy tắc ứng xử của CBCNV đối với các đồng nghiệp khác phòng/phân xưởng trong giải quyết công việc?",3,
+"Chỉ phối hợp với các đồng nghiệp cùng phòng/phân xưởng.",
+"Có thái độ gây khó khăn, thiếu hợp tác khi giải quyết và phối hợp công việc.",
+"Sẵn sàng, nhanh chóng phối hợp công việc một cách hiệu quả nhất. Không có thái độ gây khó khăn, cản trở, thiếu hợp tác. Khi phát hiện đồng nghiệp khác có hành động thiếu hợp tác, kịp thời báo cáo Lãnh đạo của các bên liên quan.",
+"Sẵn sàng phối hợp công việc một cách hiệu quả nhất."],
+
+["VHDN","M","MC","Trong điều hành và thực thi công việc, CBCNV trong Công ty Nhiệt điện Mông Dương cần thực hiện như thế nào?",4,
+"Tất cả CBCNV phải tuân thủ, chấp hành nghiêm chỉnh đầy đủ đường lối, chủ trương của Đảng và chính sách, pháp luật của Nhà nước, nội quy, quy định của Công ty.",
+"Người đứng đầu và cấp phó của người đứng đầu được giao phụ trách công việc, bộ phận có thẩm quyền quản lý và sử dụng cán bộ có trách nhiệm đôn đốc, kiểm tra việc thực hiện nhiệm vụ.",
+"Khi thực hiện nhiệm vụ, giải quyết công việc, phải phối hợp với cá nhân bộ phận liên quan khác để hoàn thành công việc có hiệu quả.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MC","Ngày Bác Hồ về thăm ngành Điện (Ngày truyền thống ngành Điện lực Việt Nam) là ngày nào?",2,
+"10/21/1954","12/21/1954","12/22/1954","12/26/1954"],
+
+["VHDN","M","MMC","Thái độ của CBCNV Công ty Nhiệt điện Mông Dương trong điều hành và thực thi công việc là?",[1,2],
+"Luôn có thái độ cầu thị, thẳng thắn, chân thành tham gia đóng góp trong công việc. Có ý thức trách nhiệm trong công tác, thường xuyên học tập nâng cao trình độ.",
+"Chấp hành sự điều động, phân công công tác của Lãnh đạo. Không được trốn tránh đùn đẩy trách nhiệm khi thực hiện nhiệm vụ, giải quyết công việc.",
+"Chỉ có thái độ niềm nở, tôn trọng với Lãnh đạo, còn đối với đồng nghiệp thì không cần.",
+"Trốn tránh đùn đẩy trách nhiệm khi thực hiện nhiệm vụ, giải quyết công việc."],
+
+["VHDN","M","MC","Có mấy nghi thức giao tiếp qua điện thoại trong Công ty Nhiệt điện Mông Dương?",3,
+"1","4","2","3"],
+
+["VHDN","M","MC","Nhiệm vụ của CBCNV Công ty Nhiệt điện Mông Dương trong việc sử dụng tài sản của Công ty?",1,
+"Không sử dụng các tài sản trong phòng vào mục đích cá nhân. Đối với các tài sản giao riêng cho từng cá nhân phải được sử dụng hiệu quả, tiết kiệm, tránh lãng phí.",
+"Mọi CBCNV phải có trách nhiệm bảo quản, giữ gìn và sử dụng đúng mục đích, tiết kiệm tránh lãng phí các tài sản, phương tiện chung tại phòng làm việc.",
+"Được sử dụng các tài sản trong phòng vào mục đích cá nhân.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MMC","Nhiệm vụ của CBCNV Công ty Nhiệt điện Mông Dương trong việc bảo quản tài sản?",[1,2],
+"CBCNV phải có trách nhiệm bảo quản, giữ gìn và sử dụng đúng mục đích, tiết kiệm tránh lãng phí các tài sản, phương tiện chung tại phòng làm việc.",
+"Không được mang tài sản, phương tiện ra khỏi phòng làm việc nếu chưa được cấp có thẩm quyền cho phép. Các nghi ngờ về vi phạm sử dụng tài sản phải lập tức báo cáo ngay cho Lãnh đạo.",
+"CBCNV được phép sử dụng thoải mái các phương tiện chung tại phòng làm việc.",
+"Tất cả các đáp án trên."],
+
+["VHDN","M","MMC","Nghi thức giao tiếp qua điện thoại trong Công ty Nhiệt điện Mông Dương là những nghi thức nào?",[1,2],
+"Khi nghe.","Khi gọi.","Nhắn tin.","Tất cả các đáp án trên."],
+
+["VHDN","M","MC","Nghi thức giao tiếp điện thoại khi gọi cần chuẩn bị những gì?",2,
+"Trả lời tự nhiên, không cần chuẩn bị.",
+"Chuẩn bị nội dung cần trao đổi; Khi có người cầm máy, phải có lời chào, xưng tên, chức danh, bộ phận làm việc và đề nghị gặp người cần gặp. Trao đổi nội dung ngắn gọn, rõ ràng cụ thể. Tác phong nói chuyện từ tốn, âm lượng vừa phải; Kết thúc trao đổi phải có lời cảm ơn, lời chào.",
+"Chuẩn bị nội dung cần trao đổi; Phải có lời chào, xưng tên, chức danh, bộ phận làm việc khi có người cầm máy.",
+"Chuẩn bị nội dung cần trao đổi; Phải có lời chào, xưng tên, chức danh, bộ phận làm việc; Trao đổi nội dung ngắn gọn, rõ ràng cụ thể."],
+
+["VHDN","M","MC","\"Khẩu hiệu\" EVN trong tài liệu Văn hóa là gì?",1,
+"EVN thắp sáng niềm tin.","EVN giữ vững niềm tin.","EVN tỏa sáng niềm tin.","EVN vì sự phát triển bền vững."],
+
+["VHDN","M","MMC","Theo quy định, đơn vị của bạn có phải ban hành tài liệu Văn hóa doanh nghiệp (VHDN)/Bộ quy tắc ứng xử (QTƯX) để áp dụng trong đơn vị không?",[2,3],
+"Không cần ban hành.","Áp dụng VHDN của EVNGENCO 3 và ban hành QTƯX.","Ban hành VHDN và QTƯX.","Chỉ ban hành QTƯX."],
+
+["VHDN","M","MC","Quy định Văn hóa doanh nghiệp của EVNGENCO3, CBCNV khi nhận điện thoại, ý nào sau đây là đúng?",1,
+"Khi nhận điện thoại, đầu tiên phải giới thiệu: Tên hoặc bộ phận/đơn vị + xin nghe.",
+"Khi nhận điện thoại, đầu tiên phải hỏi xem người gọi đến là ai, ở bộ phận/đơn vị nào.",
+"Khi nhận điện thoại, thì nói Alo sau đó nghe người gọi đến.",
+"Tất cả các câu trên."],
+
+["VHDN","M","MC","Quy định Văn hóa doanh nghiệp của EVNGENCO 3, giao tiếp qua thư điện tử như thế nào là đúng?",4,
+"Mở đầu một email cần phải có lời chào: Kính gửi + tên người được gửi hoặc bộ phận được gửi. Nội dung email rõ ràng, dễ hiểu, hạn chế viết sai chính tả.",
+"Trình bày email theo kiểu chữ dễ đọc, khoảng cách các dòng hợp lý, in đậm hoặc dưới những nội dung quan trọng.",
+"Sử dụng dòng tiêu đề để trích yếu nội dung của email, phần trình bày trích yếu này phải ngắn gọn và phù hợp với nội dung cần truyền tải.",
+"Tất cả các câu trên."]
+];
+
+/* ==================== NGÂN HÀNG QTNV – MÁY TRƯỞNG ==================== */
+const QTNV_MAY_TRUONG = [
+["QTNV - Máy trưởng","E","MC","Trường hợp những Máy trưởng đã chuyển sang công tác khác hoặc bị đình chỉ do sự cố chủ quan, trước khi bố trí trở lại làm Máy trưởng thì phải:",4,
+"Qua thời gian tìm hiểu để nắm tình hình thực tế sản xuất không dưới 3 ngày, nếu thời gian ngừng công tác Máy trưởng từ 2 đến 3 tháng.",
+"Qua thời gian thực tập ít nhất 7 ngày nếu đã ngừng công tác trên 3 tháng.",
+"Phải qua kiểm tra sát hạch lại trình độ chuyên môn đạt yêu cầu khi gây ra sự cố chủ quan thuộc trách nhiệm của Máy trưởng.",
+"Cả 3 đáp án trên."],
+
+["QTNV - Máy trưởng","E","MC","Máy trưởng nhà máy Nhiệt điện Mông Dương là gì?",1,
+"Người chỉ huy vận hành, bảo đảm vận hành an toàn, tin cậy các thiết bị chính và phụ của Tua bin và các thiết bị công nghệ được phân giao trong ca vận hành.",
+"Người bảo đảm vận hành an toàn, tin cậy các thiết bị chính và phụ của Tua bin và các thiết bị công nghệ được phân giao trong ca vận hành.",
+"Người chỉ huy vận hành, bảo đảm vận hành an toàn, các thiết bị chính và phụ của Tua bin.",
+"Người chỉ huy vận hành, bảo đảm vận hành tin cậy các thiết bị chính và phụ của Tua bin."],
+
+["QTNV - Máy trưởng","E","MC","Yêu cầu về sức khỏe, chuyên môn của Máy trưởng?",1,
+"Máy trưởng phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy trưởng. Người đó phải qua kỳ kiểm tra công nhận chức danh Máy trưởng do Giám đốc Quyết định công nhận chức danh.",
+"Máy trưởng phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy trưởng. Người đó phải qua kỳ kiểm tra công nhận chức danh do Quản đốc phân xưởng quyết định.",
+"Máy trưởng phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy trưởng. Người đó phải qua kỳ kiểm tra công nhận chức danh do Phó quản đốc quyết định.",
+"Cả 3 đáp án trên."],
+
+["QTNV - Máy trưởng","E","MC","Máy trưởng trong quan hệ hành chính và kỹ thuật như thế nào?",1,
+"Máy trưởng dưới quyền của Quản đốc phân xưởng, trực tiếp là Phó Quản đốc phân xưởng và trong ca vận hành chịu sự điều hành của Trưởng kíp lò máy, Trưởng ca nhà máy.",
+"Máy trưởng dưới quyền của Quản đốc phân xưởng, trực tiếp là Kỹ thuật viên phân xưởng và trong ca vận hành chịu sự điều hành của Trưởng kíp lò máy, Trưởng ca nhà máy.",
+"Máy trưởng dưới quyền của Quản đốc phân xưởng, trực tiếp là Phó Quản đốc phân xưởng và trong ca vận hành chịu sự điều hành của Trưởng kíp lò máy, Trưởng ca nhà máy, Kỹ thuật viên phân xưởng.",
+"Cả 3 đáp án trên đều sai."],
+
+["QTNV - Máy trưởng","E","MC","Trong quan hệ công tác kỹ thuật, Máy trưởng cần?",2,
+"Máy trưởng thực hiện trực tiếp các mệnh lệnh của Trưởng ca. Trong trường hợp Máy trưởng nhận lệnh thao tác từ người khác thì trước khi thao tác phải báo cáo lại cho Trưởng ca biết.",
+"Máy trưởng thực hiện trực tiếp các mệnh lệnh của Trưởng kíp. Trong trường hợp Máy trưởng nhận lệnh thao tác từ Kĩ thuật viên, Trưởng ca thì trước khi thao tác phải báo cáo lại cho Trưởng kíp biết.",
+"Máy trưởng thực hiện trực tiếp các mệnh lệnh của Trưởng ca. Trong trường hợp Máy trưởng nhận lệnh thao tác từ kĩ thuật viên thì trước khi thao tác phải báo cáo lại cho Trưởng ca biết.",
+"Máy trưởng thực hiện trực tiếp các mệnh lệnh của Kỹ thuật viên. Trong trường hợp Máy trưởng nhận lệnh thao tác từ người khác thì trước khi thao tác phải báo cáo lại cho Kỹ thuật viên biết."],
+
+["QTNV - Máy trưởng","E","MC","Máy trưởng phải nắm chắc các nội dung nào sau đây?",4,
+"Sơ đồ nhiệt chi tiết của tổ máy; Cấu tạo, nguyên lý làm việc và sơ đồ công nghệ các thiết bị chính, phụ của các thiết bị Tuabin trong dây chuyền và tình trạng thực tế vận hành thiết bị đó.",
+"Vị trí thực tế, tính năng tác dụng, thông số kỹ thuật và phương pháp vận hành thao tác các thiết bị thuộc phạm vi quản lý. Phương pháp khởi động, ngừng, điều chỉnh thông số bảo đảm chế độ vận hành ổn định của các thiết bị.",
+"Quy phạm quản lý kỹ thuật vận hành các nhà máy điện; Quy phạm kỹ thuật an toàn; Các quy trình vận hành.",
+"Cả 3 đáp án trên."],
+
+["QTNV - Máy trưởng","E","MC","Nội dung nào sau đây là chính xác nhất đối với quy định khi nhận ca của Máy trưởng?",2,
+"Máy trưởng có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút. Đọc kỹ sổ nhật ký vận hành của ca trước để nắm chắc tình hình làm việc.",
+"Máy trưởng có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút để nắm bắt tình hình vận hành của những ca trước. Đọc kỹ sổ nhật ký vận hành, nghe và hỏi thêm Máy trưởng của ca trước để nắm chắc tình hình làm việc, những khiếm khuyết hoặc tình trạng không bình thường của thiết bị.",
+"Máy trưởng có mặt trước khi nhận ca 30 phút. Đọc kỹ sổ nhật ký vận hành, nghe và hỏi thêm Máy trưởng của ca trước để nắm chắc tình hình làm việc.",
+"Máy trưởng có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút, nghe và hỏi thêm Máy trưởng của ca trước để nắm chắc tình hình làm việc."],
+
+["QTNV - Máy trưởng","E","MC","Nội dung nào sau đây là không chính xác đối với quy định khi nhận ca của Máy trưởng?",3,
+"Sau khi nắm chắc toàn bộ thông tin cần thiết người nhận ca phải ký vào sổ giao nhận ca.",
+"Máy trưởng có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút.",
+"Sau khi nắm chắc toàn bộ thông tin cần thiết người giao ca phải ký vào sổ giao nhận ca. Sau khi nhận ca, Máy trưởng báo cáo cho Trưởng kíp biết về tình hình các thiết bị của tuabin.",
+"Đọc kỹ sổ nhật ký vận hành, nghe và hỏi thêm Máy trưởng của ca trước để nắm chắc tình hình làm việc, những khiếm khuyết hoặc tình trạng không bình thường của thiết bị."],
+
+["QTNV - Máy trưởng","E","MC","Nội dung nào sau đây là chính xác nhất đối với quy định khi giao ca của Máy trưởng?",4,
+"Sau khi giao ca, Máy trưởng phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị.",
+"Trước khi giao ca, Máy trưởng phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị. Khi giao ca phải thông báo cho ca sau biết về tình hình làm việc của tuabin trong ca.",
+"Trước khi giao ca, Máy trưởng phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành tình trạng không bình thường của thiết bị. Khi giao ca phải thông báo cho ca sau biết về tình hình làm việc của tuabin trong ca, những mệnh lệnh mới của cấp trên.",
+"Trước khi giao ca, Máy trưởng phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị. Khi giao ca phải thông báo cho ca sau biết về tình hình làm việc của tuabin trong ca, những mệnh lệnh mới của cấp trên và những lưu ý cần thiết khác."],
+
+["QTNV - Máy trưởng","E","MC","Nội dung nào sau đây là chính xác nhất đối với quy định khi giao ca của Máy trưởng (tiếp)?",2,
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và ký bàn giao và rời khỏi vị trí sản xuất.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và chỉ khi người nhận ca ký vào sổ nhật ký vận hành thì người giao ca mới được ký bàn giao và rời khỏi vị trí sản xuất. Nếu không có người đến nhận ca, Máy trưởng không được phép rời khỏi vị trí sản xuất, khi đó phải báo cho Lãnh đạo phân xưởng điều người thay thế.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó. Nếu không có người đến nhận ca, Máy trưởng được phép rời khỏi vị trí sản xuất.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp. Nếu không có người đến nhận ca, Máy trưởng không được phép rời khỏi vị trí sản xuất, khi đó phải báo cho Trưởng ca điều người thay thế."],
+
+["QTNV - Máy trưởng","H","MC","Nội dung nào sau đây là chính xác nhất đối với nhiệm vụ của Máy trưởng?",2,
+"Trực tiếp chỉ huy các chức danh vận hành của mình theo sự điều hành của Trưởng ca, thực hiện theo các quy trình, quy phạm để hoàn thành nhiệm vụ sản xuất được giao. Đảm bảo vận hành, khai thác các thiết bị trong dây chuyền thuộc phạm vi quản lý một cách an toàn và hiệu quả.",
+"Trực tiếp chỉ huy các chức danh vận hành của mình theo sự điều hành của Trưởng kíp, thực hiện theo các quy trình, quy phạm để hoàn thành nhiệm vụ sản xuất được giao. Đảm bảo vận hành, khai thác các thiết bị trong dây chuyền thuộc phạm vi quản lý một cách an toàn và hiệu quả.",
+"Trực tiếp chỉ huy các chức danh vận hành của mình theo sự điều hành của kĩ thuật viên, thực hiện theo các quy trình, quy phạm để hoàn thành nhiệm vụ sản xuất được giao.",
+"Trực tiếp chỉ huy các chức danh vận hành của mình theo sự điều hành của Phó Quản đốc, thực hiện theo các quy trình, quy phạm để hoàn thành nhiệm vụ sản xuất được giao."],
+
+["QTNV - Máy trưởng","H","MC","Nội dung nào sau đây là chính xác nhất đối với quy chế giao nhận ca của Máy trưởng?",1,
+"Tất cả các Máy trưởng làm việc theo chế độ 3 ca 5 kíp hoặc 3 ca 4 kíp… và phải đi theo đúng lịch ca đã được Giám đốc nhà máy duyệt. Trong những trường hợp đặc biệt nếu được sự đồng ý của Chánh, Phó quản đốc Phân xưởng nhân viên vận hành có thể đổi ca cho nhau.",
+"Tất cả các Máy trưởng làm việc theo chế độ 3 ca 5 kíp hoặc 3 ca 4 kíp… và phải đi theo đúng lịch ca đã được Quản đốc duyệt.",
+"Tất cả các Máy trưởng làm việc theo chế độ 3 ca 5 kíp hoặc 3 ca 4 kíp… và phải đi theo đúng lịch ca đã được Giám đốc nhà máy duyệt. Trong những trường hợp đặc biệt nếu được sự đồng ý của Trưởng ca có thể đổi ca cho nhau.",
+"Tất cả các Máy trưởng làm việc theo chế độ 3 ca 5 kíp hoặc 3 ca 4 kíp… và phải đi theo đúng lịch ca đã được Giám đốc nhà máy duyệt. Trong những trường hợp đặc biệt nếu được sự đồng ý của Trưởng kíp, kĩ thuật viên có thể đổi ca cho nhau."],
+
+["QTNV - Máy trưởng","H","MC","Nội dung nào sau đấy là đúng về trách nhiệm của Máy trưởng?",4,
+"Thực hiện tốt tất cả những nhiệm vụ và quyền hạn trong quy trình này và quyền hạn có trong nội quy khác của phân xưởng; chấp hành những quy định trong công tác bảo hộ lao động và kỷ luật lao động do phân xưởng đề ra.",
+"Máy trưởng phải chịu trách nhiệm về sự làm việc an toàn, liên tục của tuabin và thiết bị phụ trong phạm vi mình được giao.",
+"Máy trưởng phải chịu trách nhiệm về những trường hợp ngừng, hỏng thiết bị, tai nạn lao động và cháy nổ, mất mát thiết bị do lỗi của mình.",
+"Cả 3 phương án trên."],
+
+["QTNV - Máy trưởng","H","MC","Nội dung nào sau đây là đúng về quyền hạn của Máy trưởng?",2,
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Kĩ thuật viên và phải chịu trách nhiệm về hành động của mình.",
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người hoặc sự an toàn của thiết bị. Máy trưởng có quyền lập luận, giải thích. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Trưởng ca phải chịu trách nhiệm về hành động của mình.",
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Phó quản đốc và phải chịu trách nhiệm.",
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Quản đốc và phải chịu trách nhiệm."],
+
+["QTNV - Máy trưởng","M","MC","Nội dung nào sau đây là đúng về quan hệ của Máy trưởng với cấp trên cấp dưới và các bên liên quan?",1,
+"Máy trưởng chịu sự điều hành trực tiếp và thực hiện những mệnh lệnh về hành chính, kỹ thuật của Trưởng kíp. Khi nhận lệnh trực tiếp của Quản đốc, phó Quản đốc thì Máy trưởng phải thông qua và phải được Trưởng kíp, Trưởng ca đồng ý trước khi thực hiện.",
+"Máy trưởng chịu sự điều hành trực tiếp của Trưởng kíp. Khi nhận lệnh trực tiếp của Quản đốc, phó Quản đốc thì Máy trưởng phải thông qua và phải được Trưởng kíp đồng ý trước khi thực hiện.",
+"Máy trưởng chịu sự điều hành gián tiếp của Trưởng kíp. Khi nhận lệnh trực tiếp của Quản đốc, phó Quản đốc thì Máy trưởng phải thông qua và phải được Trưởng kíp, Trưởng ca đồng ý trước khi thực hiện.",
+"Cả 3 phương án đều đúng."],
+
+["QTNV - Máy trưởng","M","MC","Nội dung nào sau đây là đúng về quyền hạn của Máy trưởng (báo cáo)?",1,
+"Có quyền báo cáo bằng văn bản lên Quản đốc, Phó Quản đốc những sự việc và kiến nghị về tình trạng kỹ thuật của thiết bị hoặc về tổ chức của ca vận hành.",
+"Chỉ có quyền báo cáo bằng văn bản lên Trưởng ca những sự việc và kiến nghị về tình trạng kỹ thuật của thiết bị.",
+"Chỉ có quyền báo cáo bằng văn bản lên Trưởng kíp những sự việc và kiến nghị về tình trạng kỹ thuật của thiết bị.",
+"Cả 3 phương án đều sai."],
+
+["QTNV - Máy trưởng","M","MC","Nội dung nào sau đây là sai trong quyền hạn của Máy trưởng?",4,
+"Có quyền đề nghị với Trưởng kíp, Phó Quản đốc, Quản đốc phân xưởng về việc đình chỉ nhân viên dưới quyền và đưa ra khỏi vị trí làm việc khi có dấu hiệu vi phạm quy trình vận hành.",
+"Yêu cầu những người lạ mặt, những người không có phận sự ra khỏi khu vực đặt thiết bị và phạm vi của phân xưởng.",
+"Máy trưởng trong ca được trực tiếp chỉ huy mọi công việc vận hành và xử lý mọi trường hợp không bình thường trong hệ thống các thiết bị thuộc quyền quản lý vận hành.",
+"Cả 3 phương án đều đúng."],
+
+["QTNV - Máy trưởng","M","MC","Nội dung nào sau đây là sai trong quy định về trách nhiệm của Máy trưởng?",3,
+"Chịu trách nhiệm trong việc bảo quản, sử dụng đúng mục đích và duy trì độ sẵn sàng của các trang thiết bị an toàn và phòng chống cháy nổ.",
+"Thực hiện tốt tất cả những nhiệm vụ và quyền hạn trong quy trình này và quyền hạn có trong nội quy khác của phân xưởng.",
+"Máy trưởng phải chịu trách nhiệm về sự làm việc an toàn, liên tục của Lò hơi và Tuabin và thiết bị phụ trong phạm vi mình được giao.",
+"Máy trưởng phải chịu hình thức kỷ luật về hành chính hay bị truy tố trước pháp luật tùy theo mức độ và tính chất của các vi phạm do mình gây ra."],
+
+["QTNV - Máy trưởng","M","MC","Nội dung nào sau đây là sai trong quy định chung của QTNV - Máy trưởng?",4,
+"Máy trưởng nhà máy Nhiệt điện Mông Dương là công nhân vận hành thuộc Phân xưởng Vận hành, là người trợ giúp Trưởng kíp điều khiển, vận hành tuabin.",
+"Máy trưởng do Giám đốc nhà máy hoặc Phó Giám đốc nhà máy bổ nhiệm hoặc bãi miễn theo đề nghị của Quản đốc Phân xưởng thông qua Trưởng phòng Tổ chức của nhà máy.",
+"Trong quan hệ công tác kỹ thuật, Máy trưởng thực hiện trực tiếp các mệnh lệnh của Trưởng Kíp. Trong trường hợp Máy trưởng nhận lệnh thao tác từ Trưởng ca thì trước khi thao tác phải báo cáo lại cho Trưởng kíp biết.",
+"Máy trưởng phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy trưởng. Người đó phải qua kỳ kiểm tra công nhận chức danh Máy trưởng do Quản đốc Quyết định công nhận chức danh."],
+
+["QTNV - Máy trưởng","M","MC","Nội dung nào sau đây là sai trong quy định khi giao ca của Máy trưởng?",3,
+"Nếu không có người đến nhận ca, Máy trưởng không được phép rời khỏi vị trí sản xuất, khi đó phải báo cho Lãnh đạo phân xưởng điều người thay thế.",
+"Trước khi giao ca, Máy trưởng phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị.",
+"Cấm giao ca trong thời gian xảy ra sự cố hoặc đang thao tác thay đổi phương thức vận hành các thiết bị. Chỉ được phép giao nhận ca khi được sự đồng ý của Phó quản đốc.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và chỉ khi người nhận ca ký vào sổ nhật ký vận hành thì người giao ca mới được ký bàn giao và rời khỏi vị trí sản xuất."]
+];
+
+/* ==================== NGÂN HÀNG QTNV – MÁY PHÓ ==================== */
+const QTNV_MAY_PHO = [
+["QTNV - Máy phó","E","MC","Trường hợp những Máy phó đã chuyển sang công tác khác hoặc bị đình chỉ do sự cố chủ quan, trước khi bố trí trở lại làm Máy phó thì phải:",4,
+"Qua thời gian tìm hiểu để nắm tình hình thực tế sản xuất không dưới 3 ngày, nếu thời gian ngừng công tác Máy phó từ 2 đến 3 tháng.",
+"Qua thời gian thực tập ít nhất 7 ngày nếu đã ngừng công tác trên 3 tháng.",
+"Phải qua kiểm tra sát hạch lại trình độ chuyên môn đạt yêu cầu khi gây ra sự cố chủ quan thuộc trách nhiệm của Máy phó.",
+"Cả 3 đáp án trên."],
+
+["QTNV - Máy phó","E","MC","Máy phó nhà máy Nhiệt điện Mông Dương là gì?",1,
+"Công nhân vận hành thuộc Phân xưởng Vận hành, là người trợ giúp Máy trưởng điều khiển, vận hành tuabin và các thiết bị khác liên quan đến tuabin.",
+"Công nhân vận hành thuộc Phân xưởng Vận hành, là người trợ giúp Máy trưởng, Trưởng kíp điều khiển, vận hành tuabin và các thiết bị khác liên quan đến tuabin.",
+"Công nhân vận hành thuộc Phân xưởng Vận hành, là người trợ giúp Máy trưởng, Trưởng kíp, Trưởng ca điều khiển, vận hành tuabin.",
+"Công nhân vận hành thuộc Phân xưởng Vận hành, là người trợ giúp Máy trưởng, Trưởng kíp, Trưởng ca, Kỹ thuật viên phụ trách điều khiển, vận hành tuabin."],
+
+["QTNV - Máy phó","E","MC","Yêu cầu về sức khỏe, chuyên môn của Máy phó?",1,
+"Máy phó phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy phó. Người đó phải qua kỳ kiểm tra công nhận chức danh Máy phó do Giám đốc Quyết định công nhận chức danh.",
+"Máy phó phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy phó. Người đó phải qua kỳ kiểm tra công nhận chức danh do Quản đốc phân xưởng quyết định.",
+"Máy phó phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy phó. Người đó phải qua kỳ kiểm tra công nhận chức danh do Phó quản đốc quyết định.",
+"Cả 3 đáp án trên."],
+
+["QTNV - Máy phó","E","MC","Máy phó trong quan hệ hành chính và kỹ thuật như thế nào?",1,
+"Máy phó dưới quyền của Quản đốc phân xưởng, trực tiếp là Phó Quản đốc phân xưởng và trong ca vận hành chịu sự điều hành của Máy trưởng, Trưởng kíp lò máy, Trưởng ca nhà máy.",
+"Máy phó dưới quyền của Quản đốc phân xưởng, trực tiếp là Kỹ thuật viên phân xưởng và trong ca vận hành chịu sự điều hành của Máy trưởng, Trưởng kíp lò máy, Trưởng ca nhà máy.",
+"Máy phó dưới quyền của Quản đốc phân xưởng, trực tiếp là Phó Quản đốc phân xưởng và trong ca vận hành chịu sự điều hành của Máy trưởng, Trưởng kíp lò máy, Trưởng ca nhà máy, Kỹ thuật viên phân xưởng.",
+"Cả 3 đáp án trên đều sai."],
+
+["QTNV - Máy phó","E","MC","Trong quan hệ công tác kỹ thuật, Máy phó cần?",2,
+"Máy phó thực hiện trực tiếp các mệnh lệnh của Trưởng kíp. Trong trường hợp Máy phó nhận lệnh thao tác từ người khác thì trước khi thao tác phải báo cáo lại cho Trưởng kíp biết.",
+"Máy phó thực hiện trực tiếp các mệnh lệnh của Máy trưởng. Trong trường hợp Máy phó nhận lệnh thao tác từ Trưởng kíp, Trưởng ca thì trước khi thao tác phải báo cáo lại cho Máy trưởng biết.",
+"Máy phó thực hiện trực tiếp các mệnh lệnh của Trưởng ca. Trong trường hợp Máy phó nhận lệnh thao tác từ Trưởng kíp thì trước khi thao tác phải báo cáo lại cho Trưởng ca biết.",
+"Máy phó thực hiện trực tiếp các mệnh lệnh của Kỹ thuật viên. Trong trường hợp Máy phó nhận lệnh thao tác từ người khác thì trước khi thao tác phải báo cáo lại cho Kỹ thuật viên biết."],
+
+["QTNV - Máy phó","E","MC","Máy phó phải nắm chắc các nội dung nào sau đây?",4,
+"Sơ đồ nhiệt chi tiết của tổ máy; Cấu tạo, nguyên lý làm việc và sơ đồ công nghệ các thiết bị chính, phụ của các thiết bị Tuabin trong dây chuyền và tình trạng thực tế vận hành thiết bị đó.",
+"Vị trí thực tế, tính năng tác dụng, thông số kỹ thuật và phương pháp vận hành thao tác các thiết bị thuộc phạm vi quản lý.",
+"Quy phạm quản lý kỹ thuật vận hành các nhà máy điện; Quy phạm kỹ thuật an toàn; Các quy trình vận hành.",
+"Cả 3 đáp án trên."],
+
+["QTNV - Máy phó","E","MC","Nội dung nào sau đây là chính xác nhất đối với quy định khi nhận ca của Máy phó?",2,
+"Máy phó có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút. Đọc kỹ sổ nhật ký vận hành của ca trước để nắm chắc tình hình làm việc.",
+"Máy phó có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút để nắm bắt tình hình vận hành của những ca trước. Đọc kỹ sổ nhật ký vận hành, nghe và hỏi thêm Máy phó của ca trước để nắm chắc tình hình làm việc, những khiếm khuyết hoặc tình trạng không bình thường của thiết bị.",
+"Máy phó có mặt trước khi nhận ca 30 phút. Đọc kỹ sổ nhật ký vận hành, nghe và hỏi thêm Máy phó của ca trước để nắm chắc tình hình làm việc.",
+"Máy phó có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút, nghe và hỏi thêm Máy phó của ca trước để nắm chắc tình hình làm việc."],
+
+["QTNV - Máy phó","E","MC","Nội dung nào sau đây là không chính xác đối với quy định khi nhận ca của Máy phó?",3,
+"Sau khi nắm chắc toàn bộ thông tin cần thiết người nhận ca phải ký vào sổ giao nhận ca.",
+"Máy phó có nhiệm vụ chuẩn bị tốt về tinh thần và sức khoẻ và cần có mặt trước khi nhận ca 30 phút.",
+"Sau khi nắm chắc toàn bộ thông tin cần thiết người giao ca phải ký vào sổ giao nhận ca. Sau khi nhận ca, Máy phó báo cáo cho Máy trưởng biết về tình hình các thiết bị của tuabin.",
+"Đọc kỹ sổ nhật ký vận hành, nghe và hỏi thêm Máy phó của ca trước để nắm chắc tình hình làm việc, những khiếm khuyết hoặc tình trạng không bình thường của thiết bị."],
+
+["QTNV - Máy phó","E","MC","Nội dung nào sau đây là chính xác nhất đối với quy định khi giao ca của Máy phó?",4,
+"Sau khi giao ca, Máy phó phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị.",
+"Trước khi giao ca, Máy phó phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị. Khi giao ca phải thông báo cho ca sau biết về tình hình làm việc của tuabin trong ca.",
+"Trước khi giao ca, Máy phó phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành tình trạng không bình thường của thiết bị.",
+"Trước khi giao ca, Máy phó phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị. Khi giao ca phải thông báo cho ca sau biết về tình hình làm việc của tuabin trong ca, những mệnh lệnh mới của cấp trên và những lưu ý cần thiết khác."],
+
+["QTNV - Máy phó","E","MC","Nội dung nào sau đây là chính xác nhất đối với quy định khi giao ca của Máy phó (tiếp)?",2,
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và ký bàn giao và rời khỏi vị trí sản xuất.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và chỉ khi người nhận ca ký vào sổ nhật ký vận hành thì người giao ca mới được ký bàn giao và rời khỏi vị trí sản xuất. Nếu không có người đến nhận ca, Máy phó không được phép rời khỏi vị trí sản xuất, khi đó phải báo cho Lãnh đạo phân xưởng điều người thay thế.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp. Nếu không có người đến nhận ca, Máy phó được phép rời khỏi vị trí sản xuất.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp. Nếu không có người đến nhận ca, Máy phó không được phép rời khỏi vị trí sản xuất, khi đó phải báo cho Máy trưởng điều người thay thế."],
+
+["QTNV - Máy phó","H","MC","Nội dung nào sau đây là chính xác nhất đối với quy định trong thời gian trực ca của Máy phó?",2,
+"Khi đi kiểm tra các thiết bị Máy phó phải báo cho Máy trưởng biết chỗ mình sẽ đến để tiện liên lạc khi cần thiết. Những thao tác chuyển đổi phương thức phải được thực hiện nghiêm túc theo phiếu thao tác, quy trình vận hành và mệnh lệnh của Trưởng ca.",
+"Khi đi kiểm tra các thiết bị Máy phó phải báo cho Máy trưởng biết chỗ mình sẽ đến để tiện liên lạc khi cần thiết. Những thao tác chuyển đổi phương thức phải được thực hiện nghiêm túc theo phiếu thao tác, quy trình vận hành và mệnh lệnh của Máy trưởng.",
+"Máy phó là người gián tiếp hỗ trợ Máy trưởng xử lý sự cố phần tuabin xảy ra trong ca.",
+"Máy phó là người trực tiếp hỗ trợ Máy trưởng xử lý sự cố phần tuabin xảy ra trong ca. Trong thời gian sự cố xảy ra Máy phó phải có mặt tại phòng điều khiển trung tâm để xử lý."],
+
+["QTNV - Máy phó","H","MC","Trong trường hợp có tai nạn lao động xảy ra trong ca thuộc phạm vi thiết bị mà mình quản lý, Máy phó phải làm gì?",1,
+"Trong trường hợp có tai nạn lao động xảy ra trong ca thuộc phạm vi thiết bị mà mình quản lý, phải kịp thời tổ chức sơ cứu nạn nhân giao lại cho Y tế, sau đó báo cáo ngay cho Máy trưởng, Trưởng kíp, Trưởng ca và đơn vị người bị nạn biết.",
+"Trong trường hợp có tai nạn lao động xảy ra trong ca thuộc phạm vi thiết bị mà mình quản lý, Máy phó báo cáo ngay cho Máy trưởng, Trưởng kíp, Trưởng ca và đơn vị người bị nạn biết sau đó phải kịp thời tổ chức sơ cứu nạn nhân.",
+"Trong trường hợp có tai nạn lao động xảy ra trong ca thuộc phạm vi thiết bị mà mình quản lý, Máy phó báo cáo ngay cho Máy trưởng, Trưởng kíp, Trưởng ca và đơn vị người bị nạn biết sau đó quay lại vị trí đang thực hiện thao tác làm việc.",
+"Trong trường hợp có tai nạn lao động xảy ra trong ca, phải kịp thời tổ chức sơ cứu nạn nhân giao lại cho Y tế, sau đó báo cáo ngay cho Phòng y tế và đơn vị người bị nạn biết."],
+
+["QTNV - Máy phó","H","MC","Nội dung nào sau đấy là đúng về trách nhiệm của Máy phó?",4,
+"Thực hiện tốt tất cả những nhiệm vụ và quyền hạn trong quy trình này và quyền hạn có trong nội quy khác của phân xưởng; chấp hành những quy định trong công tác bảo hộ lao động và kỷ luật lao động do phân xưởng đề ra.",
+"Máy phó phải chịu trách nhiệm về sự làm việc an toàn, liên tục của tuabin và thiết bị phụ trong phạm vi mình được giao.",
+"Máy phó phải chịu trách nhiệm về những trường hợp ngừng, hỏng thiết bị, tai nạn lao động và cháy nổ, mất mát thiết bị do lỗi của mình.",
+"Cả 3 phương án trên."],
+
+["QTNV - Máy phó","H","MC","Nội dung nào sau đây là đúng về quyền hạn của Máy phó?",2,
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Trưởng ca và phải chịu trách nhiệm về hành động của mình.",
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người hoặc sự an toàn của thiết bị. Máy phó có quyền lập luận, giải thích. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Trưởng kíp phải chịu trách nhiệm về hành động của mình.",
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Phó quản đốc.",
+"Có quyền không thực hiện mệnh lệnh của cấp trên nếu thấy mệnh lệnh đó đe doạ đến tính mạng con người. Nếu người ra lệnh vẫn yêu cầu thực hiện thì báo cáo với Quản đốc."],
+
+["QTNV - Máy phó","M","MC","Nội dung nào sau đây là đúng về quan hệ của Máy phó với cấp trên cấp dưới và các bên liên quan?",1,
+"Máy phó chịu sự điều hành trực tiếp và thực hiện những mệnh lệnh về hành chính, kỹ thuật của Máy trưởng. Khi nhận lệnh trực tiếp của Quản đốc, phó Quản đốc thì Máy phó phải thông qua và phải được Máy trưởng, Trưởng kíp đồng ý trước khi thực hiện.",
+"Máy phó chịu sự điều hành trực tiếp của Trưởng kíp. Khi nhận lệnh trực tiếp của Quản đốc, phó Quản đốc thì Máy phó phải thông qua và phải được Trưởng kíp đồng ý trước khi thực hiện.",
+"Máy phó chịu sự điều hành gián tiếp của Máy trưởng. Khi nhận lệnh trực tiếp của Quản đốc, phó Quản đốc thì Máy phó phải thông qua và phải được Máy trưởng, Trưởng kíp đồng ý trước khi thực hiện.",
+"Cả 3 phương án đều đúng."],
+
+["QTNV - Máy phó","M","MC","Nội dung nào sau đây là đúng về quyền hạn của Máy phó (báo cáo)?",1,
+"Có quyền báo cáo bằng văn bản lên Quản đốc, Phó Quản đốc những sự việc và kiến nghị về tình trạng kỹ thuật của thiết bị hoặc về tổ chức của ca vận hành.",
+"Chỉ có quyền báo cáo bằng văn bản lên Trưởng ca những sự việc và kiến nghị về tình trạng kỹ thuật của thiết bị.",
+"Chỉ có quyền báo cáo bằng văn bản lên Trưởng kíp những sự việc và kiến nghị về tình trạng kỹ thuật của thiết bị.",
+"Cả 3 phương án đều sai."],
+
+["QTNV - Máy phó","M","MC","Nội dung nào sau đây là sai trong quy định thời gian trực ca của Máy phó?",1,
+"Máy phó có quyền cho phép người không có nhiệm vụ vào vị trí sản xuất, nếu là khách tham quan đến vị trí vận hành phải được hướng dẫn và trang bị an toàn.",
+"Không cho người không có nhiệm vụ vào vị trí sản xuất, nếu không có lệnh của lãnh đạo cấp trên, nếu là khách tham quan đến vị trí vận hành phải được hướng dẫn và trang bị an toàn.",
+"Những thao tác chuyển đổi phương thức phải được thực hiện nghiêm túc theo phiếu thao tác, quy trình vận hành và mệnh lệnh của Máy trưởng.",
+"Máy phó phải báo cáo không chậm trễ những sự cố xảy ra trong phạm vi mình quản lý cho Máy trưởng biết ngay sau khi thực hiện các biện pháp xử lý cấp bách."],
+
+["QTNV - Máy phó","M","MC","Nội dung nào sau đây là sai trong quy định về trách nhiệm của Máy phó?",3,
+"Chịu trách nhiệm trong việc bảo quản, sử dụng đúng mục đích và duy trì độ sẵn sàng của các trang thiết bị an toàn và phòng chống cháy nổ.",
+"Thực hiện tốt tất cả những nhiệm vụ và quyền hạn trong quy trình này và quyền hạn có trong nội quy khác của phân xưởng.",
+"Máy phó phải chịu trách nhiệm về sự làm việc an toàn, liên tục của Lò hơi và Tuabin và thiết bị phụ trong phạm vi mình được giao.",
+"Máy phó phải chịu hình thức kỷ luật về hành chính hay bị truy tố trước pháp luật tùy theo mức độ và tính chất của các vi phạm do mình gây ra."],
+
+["QTNV - Máy phó","M","MC","Nội dung nào sau đây là sai trong quy định chung của QTNV - Máy phó?",4,
+"Máy phó nhà máy Nhiệt điện Mông Dương là công nhân vận hành thuộc Phân xưởng Vận hành, là người trợ giúp Máy trưởng điều khiển, vận hành tuabin.",
+"Máy phó do Giám đốc nhà máy hoặc Phó Giám đốc nhà máy bổ nhiệm hoặc bãi miễn theo đề nghị của Quản đốc Phân xưởng thông qua Trưởng phòng Tổ chức của nhà máy.",
+"Trong quan hệ công tác kỹ thuật, Máy phó thực hiện trực tiếp các mệnh lệnh của Máy trưởng. Trong trường hợp Máy phó nhận lệnh thao tác từ Trưởng kíp, Trưởng ca thì trước khi thao tác phải báo cáo lại cho Máy trưởng biết.",
+"Máy phó phải là người có sức khỏe, có trình độ kỹ thuật được đào tạo theo chương trình đào tạo Máy phó. Người đó phải qua kỳ kiểm tra công nhận chức danh Máy phó do Quản đốc Quyết định công nhận chức danh."],
+
+["QTNV - Máy phó","M","MC","Nội dung nào sau đây là sai trong quy định khi giao ca của Máy phó?",3,
+"Nếu không có người đến nhận ca, Máy phó không được phép rời khỏi vị trí sản xuất, khi đó phải báo cho Lãnh đạo phân xưởng điều người thay thế.",
+"Trước khi giao ca, Máy phó phải ghi đầy đủ, rõ ràng vào sổ nhật ký vận hành về phương thức vận hành, tình trạng không bình thường của thiết bị.",
+"Cấm giao ca trong thời gian xảy ra sự cố hoặc đang thao tác thay đổi phương thức vận hành các thiết bị. Chỉ được phép giao nhận ca khi được sự đồng ý của Phó quản đốc.",
+"Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và chỉ khi người nhận ca ký vào sổ nhật ký vận hành thì người giao ca mới được ký bàn giao và rời khỏi vị trí sản xuất."]
+];
+
+/* ==================== TIỀN XỬ LÝ ==================== */
+function mapRaw(raw){
+  return raw.map(r=>{
+    const [cat,diff,type,q,ans,...opts] = r;
+    const options = opts.filter(o => o !== undefined && o !== null && String(o).trim() !== "");
+    let correct;
+    if (type === "MMC") correct = Array.isArray(ans) ? ans.map(x=>x-1) : [ans-1];
+    else correct = [ans-1];
+    return { cat, diff, type, q, correct, options };
+  });
+}
+
+const POOL_MAIN = mapRaw(RAW_MAIN);
+const POOL_VHDN = mapRaw(RAW_VHDN);
+const POOL_QTNV_MAY_TRUONG = mapRaw(QTNV_MAY_TRUONG);
+const POOL_QTNV_MAY_PHO = mapRaw(QTNV_MAY_PHO);
+
+const DIFF_LABEL = { E:"Dễ", M:"Trung bình", H:"Khó" };
+const ROLE_LABEL = { 'may-truong': 'Máy trưởng', 'may-pho': 'Máy phó' };
+
+let exam = [];
+let state = [];
+let submitted = false;
+let selectedRole = null;
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* ==================== CHỌN CHỨC DANH ==================== */
+function selectRole(role){
+  selectedRole = role;
+  document.querySelectorAll('.role-card').forEach(el=>{
+    el.classList.toggle('selected', el.dataset.role === role);
+  });
+  const btn = document.getElementById('startBtn');
+  const hint = document.getElementById('startHint');
+  btn.disabled = false;
+  hint.style.display = 'none';
+}
+
+/* ==================== TẠO ĐỀ ==================== */
+const N_MAIN = 50;
+const N_VHDN = 5;
+const N_QTNV = 5;
+
+function pickByDifficulty(pool, total, ratio){
+  const pools = {E:[],M:[],H:[]};
+  pool.forEach(q=>{ (pools[q.diff]||pools.M).push(q); });
+  Object.values(pools).forEach(shuffle);
+
+  const keys = ["E","M","H"];
+  const counts = {};
+  keys.forEach(k => counts[k] = Math.min(Math.round(total*ratio[k]), pools[k].length));
+
+  let sum = keys.reduce((s,k)=>s+counts[k],0);
+  let i=0;
+  while(sum < total && i < 5000){
+    const k = keys[i % 3];
+    if(counts[k] < pools[k].length){ counts[k]++; sum++; }
+    i++;
+  }
+  i=0;
+  while(sum > total && i < 5000){
+    const k = keys[i % 3];
+    if(counts[k] > 0){ counts[k]--; sum--; }
+    i++;
+  }
+  let picked = [];
+  keys.forEach(k => picked = picked.concat(pools[k].slice(0, counts[k])));
+  return picked;
+}
+
+function buildExam(role){
+  // 50 câu chuyên môn
+  const mainPicked = pickByDifficulty(POOL_MAIN, N_MAIN, {E:0.34, M:0.40, H:0.26});
+  shuffle(mainPicked);
+
+  // 5 câu VHDN
+  const vhdnPicked = shuffle([...POOL_VHDN]).slice(0, N_VHDN);
+
+  // 5 câu QTNV: chỉ lấy từ pool của đúng chức danh đã chọn
+  const qtnvPool = role === 'may-truong' ? POOL_QTNV_MAY_TRUONG : POOL_QTNV_MAY_PHO;
+  const qtnvPicked = shuffle([...qtnvPool]).slice(0, N_QTNV);
+
+  return [...mainPicked, ...vhdnPicked, ...qtnvPicked];
+}
+
+function startExam(){
+  if(!selectedRole){
+    alert('⚠️ Vui lòng chọn chức danh (Máy trưởng hoặc Máy phó) trước khi bắt đầu!');
+    return;
+  }
+  exam = buildExam(selectedRole);
+  state = exam.map(()=>({answered:false, selected:null, correct:false}));
+  submitted = false;
+
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('topbar').style.display = 'flex';
+  document.getElementById('bottombar').style.display = 'flex';
+  document.getElementById('examArea').style.display = 'block';
+  document.getElementById('overlay').style.display = 'none';
+
+  // Cập nhật pill chức danh
+  document.getElementById('pillRole').textContent = `Chức danh: ${ROLE_LABEL[selectedRole]}`;
+
+  renderExam();
+  updateStats();
+  window.scrollTo(0,0);
+}
+
+function catClass(cat){
+  if(cat === 'VHDN') return 'cat-vhdn';
+  if(cat && cat.startsWith('QTNV')) return 'cat-qtnv';
+  return '';
+}
+
+function catLabel(cat){
+  if(cat === 'VHDN') return 'Văn hóa doanh nghiệp';
+  if(cat && cat.startsWith('QTNV')) return cat.replace(/^QTNV\s*-\s*/,'QTNV: ');
+  return cat;
+}
+
+function catBadgeClass(cat){
+  if(cat === 'VHDN') return 'cat vhdn';
+  if(cat && cat.startsWith('QTNV')) return 'cat qtnv';
+  return 'cat';
+}
+
+function renderExam(){
+  const area = document.getElementById('examArea');
+  let html = '';
+
+  exam.forEach((q, idx)=>{
+    const diffCls = q.diff === 'E' ? 'easy' : q.diff === 'M' ? 'medium' : 'hard';
+    html += `<div class="q-card ${catClass(q.cat)}" id="card-${idx}">
+      <div class="q-head">
+        <span class="q-num">Câu ${idx+1}</span>
+        <span class="badge ${catBadgeClass(q.cat)}">${catLabel(q.cat)}</span>
+        <span class="badge ${diffCls}">${DIFF_LABEL[q.diff]}</span>
+        ${q.type==='MMC' ? '<span class="badge multi">Nhiều đáp án</span>' : ''}
+      </div>
+      <div class="q-text">${escapeHtml(q.q)}</div>`;
+
+    q.options.forEach((opt, oi)=>{
+      const letter = String.fromCharCode(65+oi);
+      const markCls = q.type === 'MMC' ? 'mark sq' : 'mark';
+      html += `<div class="opt" id="opt-${idx}-${oi}" onclick="chooseOption(${idx},${oi})">
+        <div class="${markCls}">${q.type==='MMC'?'':' '}</div>
+        <div class="txt"><b>${letter}.</b> ${escapeHtml(opt)}</div>
+      </div>`;
+    });
+
+    html += `<div id="exp-${idx}"></div></div>`;
+  });
+
+  area.innerHTML = html;
+}
+
+function escapeHtml(s){
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+function chooseOption(qIdx, oIdx){
+  if(submitted) return;
+  const q = exam[qIdx];
+  const st = state[qIdx];
+
+  if(q.type === 'MC'){
+    if(st.answered) return;
+    st.answered = true;
+    st.selected = oIdx;
+    const isCorrect = q.correct.includes(oIdx);
+    st.correct = isCorrect;
+
+    const correctOpt = q.correct[0];
+    const elChosen = document.getElementById(`opt-${qIdx}-${oIdx}`);
+    const elCorrect = document.getElementById(`opt-${qIdx}-${correctOpt}`);
+
+    if(isCorrect){
+      elChosen.classList.add('correct');
+      elChosen.querySelector('.mark').textContent = '✓';
+    }else{
+      elChosen.classList.add('wrong');
+      elChosen.querySelector('.mark').textContent = '✕';
+      elCorrect.classList.add('correct');
+      elCorrect.querySelector('.mark').textContent = '✓';
+    }
+
+    q.options.forEach((_,i)=>{
+      const el = document.getElementById(`opt-${qIdx}-${i}`);
+      el.classList.add('locked');
+      el.onclick = null;
+    });
+
+    const exp = document.getElementById(`exp-${qIdx}`);
+    exp.innerHTML = isCorrect
+      ? '<span class="explain ok">✔ Chính xác!</span>'
+      : '<span class="explain no">✘ Sai — đáp án đúng đã được đánh dấu xanh.</span>';
+
+  } else {
+    if(!st.selected) st.selected = new Set();
+    const set = st.selected;
+
+    if(set.has(oIdx)){
+      set.delete(oIdx);
+      const el = document.getElementById(`opt-${qIdx}-${oIdx}`);
+      el.classList.remove('correct','wrong');
+      el.querySelector('.mark').textContent = '';
+    }else{
+      set.add(oIdx);
+      const el = document.getElementById(`opt-${qIdx}-${oIdx}`);
+      const isRight = q.correct.includes(oIdx);
+      el.classList.add(isRight ? 'correct' : 'wrong');
+      el.querySelector('.mark').textContent = isRight ? '✓' : '✕';
+    }
+
+    const sel = [...set].sort().join(',');
+    const cor = [...q.correct].sort().join(',');
+    st.correct = (sel === cor);
+    st.answered = set.size > 0;
+
+    const exp = document.getElementById(`exp-${qIdx}`);
+    if(st.correct){
+      exp.innerHTML = '<span class="explain ok">✔ Đúng hoàn toàn!</span>';
+    }else{
+      exp.innerHTML = '<span class="explain no">Đang chọn — cần chọn đủ các đáp án đúng.</span>';
+    }
+  }
+
+  updateStats();
+}
+
+function updateStats(){
+  let done=0, right=0, wrong=0;
+  state.forEach((st)=>{
+    if(st.answered){
+      done++;
+      if(st.correct) right++; else wrong++;
+    }
+  });
+  document.getElementById('pillDone').textContent  = `Đã làm: ${done}/${exam.length}`;
+  document.getElementById('pillRight').textContent = `✔ Đúng: ${right}`;
+  document.getElementById('pillWrong').textContent = `✘ Sai: ${wrong}`;
+  document.getElementById('barStat').textContent   = `${done}/${exam.length} câu`;
+}
+
+function submitExam(){
+  if(submitted) { document.getElementById('overlay').style.display='flex'; return; }
+  submitted = true;
+
+  let right=0, wrong=0, skip=0;
+  let rMain=0, rVhdn=0, rQtnv=0;
+  let tMain=0, tVhdn=0, tQtnv=0;
+
+  exam.forEach((q,i)=>{
+    const st = state[i];
+    const isVhdn = q.cat === 'VHDN';
+    const isQtnv = q.cat && q.cat.startsWith('QTNV');
+    if(isVhdn) tVhdn++;
+    else if(isQtnv) tQtnv++;
+    else tMain++;
+
+    if(!st.answered){ skip++; return; }
+    if(st.correct){
+      right++;
+      if(isVhdn) rVhdn++;
+      else if(isQtnv) rQtnv++;
+      else rMain++;
+    } else wrong++;
+  });
+
+  const pct = Math.round(right / exam.length * 100);
+
+  document.getElementById('finalScore').textContent = right;
+  document.getElementById('finalSub').innerHTML =
+    `/ ${exam.length} câu đúng  (${pct}%)<br>
+     Chuyên môn: ${rMain}/${tMain} <span class="sep">·</span>
+     VHDN: ${rVhdn}/${tVhdn} <span class="sep">·</span>
+     QTNV <b>${ROLE_LABEL[selectedRole]}</b>: ${rQtnv}/${tQtnv}`;
+  document.getElementById('cRight').textContent = right;
+  document.getElementById('cWrong').textContent = wrong;
+  document.getElementById('cSkip').textContent  = skip;
+
+  let grade = '';
+  if(pct >= 90) grade = '🏆 Xuất sắc!';
+  else if(pct >= 80) grade = '🎉 Giỏi!';
+  else if(pct >= 70) grade = '👍 Khá!';
+  else if(pct >= 50) grade = '📖 Trung bình — cần ôn thêm.';
+  else grade = '⚠️ Yếu — hãy ôn tập lại nhé!';
+  document.getElementById('gradeTxt').textContent = grade;
+
+  revealAll();
+
+  const rev = document.getElementById('reviewList');
+  let html = '';
+  const wrongItems = [];
+  exam.forEach((q,i)=>{
+    const st = state[i];
+    if(!st.answered || !st.correct) wrongItems.push({q, st, i});
+  });
+
+  if(wrongItems.length === 0){
+    html = '<h3>🎯 Bạn đã trả lời đúng tất cả các câu!</h3>';
+  }else{
+    html = `<h3>📝 Chi tiết ${wrongItems.length} câu cần xem lại</h3>`;
+    wrongItems.forEach(({q,st,i})=>{
+      const correctLetters = q.correct.map(x=>String.fromCharCode(65+x)).join(', ');
+      const chosenLetters = st.answered
+        ? (q.type==='MC'
+            ? String.fromCharCode(65+st.selected)
+            : [...st.selected].sort().map(x=>String.fromCharCode(65+x)).join(', '))
+        : '— bỏ trống —';
+      html += `<div class="rev-item">
+        <div class="rq">Câu ${i+1} [${catLabel(q.cat)}] — ${escapeHtml(q.q)}</div>
+        <div>Bạn chọn: <span class="rb">${chosenLetters}</span></div>
+        <div>Đáp án đúng: <span class="ra">${correctLetters}</span></div>
+      </div>`;
+    });
+  }
+  rev.innerHTML = html;
+
+  updateStats();
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+function revealAll(){
+  exam.forEach((q,i)=>{
+    q.options.forEach((_,oi)=>{
+      const el = document.getElementById(`opt-${i}-${oi}`);
+      el.classList.add('locked');
+      el.onclick = null;
+      const isRight = q.correct.includes(oi);
+      if(isRight && !el.classList.contains('correct')){
+        el.classList.add('correct');
+        el.querySelector('.mark').textContent = '✓';
+      }
+    });
+  });
+}
+
+function closeModal(){
+  document.getElementById('overlay').style.display = 'none';
+}
+
+function resetExam(){
+  document.getElementById('overlay').style.display = 'none';
+  startExam();
+}
+
+function goHome(){
+  const answered = state.filter(s => s && s.answered).length;
+  if(answered > 0 && !submitted){
+    const ok = confirm(
+      '⚠️ Bạn đang làm dở bài thi.\n\n' +
+      'Nếu quay về Trang chủ, toàn bộ kết quả sẽ bị xóa và bạn phải làm lại từ đầu.\n\n' +
+      'Bạn có chắc muốn quay về Trang chủ không?'
+    );
+    if(!ok) return;
+  } else if(submitted){
+    const ok = confirm(
+      '🏠 Quay về Trang chủ?\n\n' +
+      'Bài thi hiện tại sẽ kết thúc. Bạn có thể bắt đầu đề mới sau khi quay về.\n\n' +
+      'Tiếp tục?'
+    );
+    if(!ok) return;
+  }
+
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('examArea').style.display = 'none';
+  document.getElementById('topbar').style.display = 'none';
+  document.getElementById('bottombar').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+
+  exam = [];
+  state = [];
+  submitted = false;
+  document.getElementById('examArea').innerHTML = '';
+
+  // Giữ nguyên chức danh đã chọn để người dùng đỡ phải chọn lại
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goHomeFromModal(){
+  closeModal();
+  goHome();
+}
+
+window.addEventListener('beforeunload', function(e){
+  if(submitted) return;
+  if(state.filter(s => s && s.answered).length > 0){
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+</script>
+</body>
+</html>
