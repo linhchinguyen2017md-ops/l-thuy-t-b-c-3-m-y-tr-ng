@@ -3,124 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh mục tài liệu Lý thuyết bậc 3 - Máy trưởng</title>
+    <title>Danh mục Tài liệu - Máy trường 3</title>
     <style>
-        /* Phông nền lưới kỹ thuật (Blueprint/Grid) */
+        /* Cài đặt CSS cơ bản */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7fa;
-            background-image: 
-                linear-gradient(rgba(0, 86, 179, 0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 86, 179, 0.07) 1px, transparent 1px);
-            background-size: 25px 25px;
-            color: #333;
-            line-height: 1.6;
+            background-color: #f6f8fa;
+            color: #24292e;
             margin: 0;
-            padding: 30px 20px;
-            display: flex;
-            justify-content: center;
+            padding: 20px;
         }
-        
-        #menu-container {
-            max-width: 900px;
-            width: 100%;
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-
-        /* Tiêu đề mang phong cách bảng điều khiển công nghiệp */
-        .header {
+        h1 {
             text-align: center;
-            margin-bottom: 35px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #004d99 0%, #0073e6 100%);
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0, 86, 179, 0.2);
-            border-bottom: 5px solid #ff8c00; 
-            position: relative;
-            overflow: hidden;
+            color: #0366d6;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #586069;
+            margin-bottom: 30px;
         }
         
-        .header::after {
-            content: "⚙️";
-            font-size: 140px;
-            position: absolute;
-            right: -25px;
-            top: -40px;
-            opacity: 0.15;
-            transform: rotate(20deg);
+        /* Thanh tìm kiếm */
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.2s;
+        }
+        .search-box:focus {
+            border-color: #0366d6;
+            outline: none;
         }
 
-        .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
-        .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; }
-        
-        .list-container {
-            display: flex;
-            flex-direction: column;
+        /* Lưới danh sách file */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 15px;
         }
-        
-        /* Các thẻ bài học dùng thẻ <a> mặc định */
-        .file-link {
+
+        /* Thẻ tài liệu */
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            text-decoration: none;
+            color: #24292e;
             display: flex;
             align-items: center;
-            padding: 16px 20px;
-            background-color: #ffffff;
-            border-left: 6px solid #0056b3;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #1a252f;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #0366d6;
+        }
+        .card-icon {
+            font-size: 20px;
+            margin-right: 12px;
+            color: #0366d6;
+        }
+        .card-title {
+            font-size: 14px;
             font-weight: 600;
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
-            transition: all 0.25s ease;
-        }
-        
-        .file-link:hover {
-            background-color: #fdfdfd;
-            border-left-color: #ff8c00; 
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-        
-        .file-link::before {
-            content: "📄";
-            margin-right: 15px;
-            font-size: 18px;
-            opacity: 0.8;
+            line-height: 1.4;
+            word-break: break-word;
         }
     </style>
 </head>
 <body>
 
-<div id="menu-container">
-    <div class="header">
-        <h1>Hệ Thống Đào Tạo Lý Thuyết</h1>
-        <p>Cấp bậc: Máy trưởng - Nhiệt điện Mông Dương 1</p>
+    <div class="container">
+        <h1>📚 Danh mục Tài liệu</h1>
+        <p class="subtitle">Hệ thống tài liệu Tuabin - Máy trường 3</p>
+        
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Tìm kiếm tài liệu theo tên...">
+        
+        <div class="grid-container" id="fileList">
+            <!-- Các liên kết sẽ được đưa vào đây -->
+            
+            <a href="Ảnhhưởngchấnkhôngbìnhhưng.html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Ảnh hưởng chấn không bình hưng</span>
+            </a>
+
+            <a href="Ảnhhưởngchấnkhôngbìnhhưngcủatuabin.html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Ảnh hưởng chấn không bình hưng của tuabin</span>
+            </a>
+
+            <a href="Ảnhhưởngcủalướichắnđiệntừ... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Ảnh hưởng của lưới chắn điện từ...</span>
+            </a>
+
+            <a href="CácbáovệchínhchủTuabin vàlệnhđộngsaukhiTrip... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Các bảo vệ chính chủ Tuabin và lệnh động sau khi Trip...</span>
+            </a>
+
+            <a href="Cácloạitổnthất tronghệthốngTuabinBìnhhưng.html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Các loại tổn thất trong hệ thống Tuabin Bình hưng</span>
+            </a>
+
+            <a href="Cấutạobìnhhưngvàxửlýsựcmức nướcgiảmnh.html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Cấu tạo bình hưng và xử lý sự cố mức nước giảm nhanh</span>
+            </a>
+
+            <a href="Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Quy trình xử lý khẩn cấp mất điện toàn nhà máy (Blackout)</span>
+            </a>
+
+            <a href="Runback hệthốngTuabin vàBOPliênđộng.html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Runback hệ thống Tuabin và BOP liên động</span>
+            </a>
+
+            <a href="Sựcốplướcbảovệtruyềntải... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Sự cố phía lưới bảo vệ truyền tải...</span>
+            </a>
+
+            <a href="Thủychíchtuabin... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Thủy chích tuabin...</span>
+            </a>
+
+            <a href="Tínhhiệuchỉnhbảovệbơmcấpvàxửlýsựcố... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Tính hiệu chỉnh bảo vệ bơm cấp và xử lý sự cố...</span>
+            </a>
+
+            <a href="bìnhkhíkh... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Bình khí...</span>
+            </a>
+
+            <a href="caoápcấutạotácđộng... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Cao áp cấu tạo tác động...</span>
+            </a>
+
+            <a href="hiệntượngbiếnphụ... .html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Hiện tượng biến phụ...</span>
+            </a>
+
+            <a href="khởiđộnglạnh.html" class="card">
+                <span class="card-icon">📄</span>
+                <span class="card-title">Khởi động lạnh</span>
+            </a>
+            
+            <!-- Thêm các file khác nếu có -->
+        </div>
     </div>
 
-    <div class="list-container">
-        <!-- Đã sửa chuẩn xác 100% từng chữ cái bị hụt của anh -->
-        <a class="file-link" href="Ảnhhưởngchânkhôngbìnhngưng.html">Ảnh hưởng chân không bình ngưng</a>
-        <a class="file-link" href="Ảnhhưởngcủaáplựcnhiệtđộchânkhôngbìnhngưngcủatuabin.html">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
-        <a class="file-link" href="Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
-        <a class="file-link" href="bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
-        <a class="file-link" href="CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
-        <a class="file-link" href="CácloạitổnthấttronghệthốngTuabinBìnhngưng.html">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
-        <a class="file-link" href="caoápCấutạotácdụngvàsựcốthườnggặp.html">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
-        <a class="file-link" href="Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
-        <a class="file-link" href="Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
-        
-        <!-- Bài hiện tượng chênh áp dầu chèn đã được sửa đúng y chang file tải lên -->
-        <a class="file-link" href="hiệntượngbiệnphápchênhápdầuchènHyddrodaodộng.html">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
-        
-        <a class="file-link" href="khởi động lạnh.html">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
-        <a class="file-link" href="Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
-        <a class="file-link" href="RunbackhệthốngTuabinvàBOPliênđộng.html">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
-        <a class="file-link" href="Sựcốáplựcdầubôitrơntuabingiảmthấp.html">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
-        <a class="file-link" href="ThủykíchTuabintáchạinguyênnhânvàxửlý.html">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
-        <a class="file-link" href="Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
-    </div>
-</div>
+    <script>
+        // Đoạn mã JavaScript để tạo tính năng tìm kiếm
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            
+            cards.forEach(function(card) {
+                let title = card.querySelector('.card-title').textContent.toLowerCase();
+                if (title.includes(filter)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
