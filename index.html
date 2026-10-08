@@ -53,58 +53,102 @@
         .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
         .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; }
         
-        /* Cụm Tiêu đề của từng mục (Lý thuyết / An toàn) */
-        .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 25px 0 15px 0;
-            padding: 12px 20px;
+        /* GIAO DIỆN THƯ MỤC THẢ XUỐNG (ACCORDION) */
+        .folder-group {
+            margin-bottom: 20px;
             background-color: #ffffff;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border-left: 6px solid transparent;
         }
 
-        .theory-title { color: #0056b3; border-left: 6px solid #0056b3; }
-        .safety-title { color: #2e7d32; border-left: 6px solid #2e7d32; }
+        .folder-group.theory-folder { border-left-color: #0056b3; }
+        .folder-group.safety-folder { border-left-color: #2e7d32; }
+
+        /* Tiêu đề thư mục (Click vào để mở) */
+        .folder-header {
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            background-color: #ffffff;
+            transition: background-color 0.3s;
+        }
+
+        .folder-header:hover {
+            background-color: #f8f9fa;
+        }
+
+        .folder-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-transform: uppercase;
+        }
+
+        .theory-folder .folder-title { color: #0056b3; }
+        .safety-folder .folder-title { color: #2e7d32; }
+
+        /* Nút mũi tên đóng/mở */
+        .toggle-icon {
+            font-size: 18px;
+            color: #666;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Trạng thái mở thư mục */
+        .folder-group.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Danh sách bài học bên trong (Ẩn mặc định) */
+        .folder-content {
+            display: none; /* Ẩn đi khi chưa click */
+            padding: 0 20px 20px 20px;
+            background-color: #fcfcfc;
+            border-top: 1px solid #eee;
+        }
+
+        .folder-group.active .folder-content {
+            display: block; /* Hiện ra khi có class active */
+        }
 
         .list-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
+            margin-top: 15px;
         }
 
         /* Các thẻ bài học */
         .file-link {
             display: flex;
             align-items: center;
-            padding: 14px 20px;
+            padding: 12px 15px;
             background-color: #ffffff;
-            border-left: 5px solid;
-            border-radius: 6px;
+            border-radius: 4px;
             text-decoration: none;
             color: #2c3e50;
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 500;
+            font-size: 15px;
             transition: all 0.2s ease;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border: 1px solid #e0e0e0;
         }
-        
-        .theory-link { border-left-color: #0056b3; }
-        .safety-link { border-left-color: #2e7d32; }
 
         .file-link:hover {
-            background-color: #f8f9fa;
-            border-left-color: #ff8c00; 
+            background-color: #f0f4f8;
+            border-color: #bbdefb;
             transform: translateX(6px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            color: #0056b3;
         }
         
-        .file-link::before { content: "📄"; margin-right: 15px; font-size: 18px; opacity: 0.8; }
+        .file-link::before { content: "📄"; margin-right: 12px; opacity: 0.7; }
 
     </style>
 </head>
@@ -116,45 +160,72 @@
         <p>Máy trưởng - Nhiệt điện Mông Dương 1</p>
     </div>
 
-    <!-- KHU VỰC 1: LÝ THUYẾT -->
-    <h2 class="section-title theory-title">📚 Lý Thuyết Chuyên Môn</h2>
-    <div class="list-container">
-        <a class="file-link theory-link" href="Ảnhhưởngchânkhôngbìnhngưng.html">Ảnh hưởng chân không bình ngưng</a>
-        <a class="file-link theory-link" href="aplucnhiet.html">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
-        <a class="file-link theory-link" href="Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
-        <a class="file-link theory-link" href="bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
-        <a class="file-link theory-link" href="CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
-        <a class="file-link theory-link" href="CácloạitổnthấttronghệthốngTuabinBìnhngưng.html">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
-        <a class="file-link theory-link" href="caoápCấutạotácdụngvàsựcốthườnggặp.html">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
-        <a class="file-link theory-link" href="Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
-        <a class="file-link theory-link" href="Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
-        <a class="file-link theory-link" href="Hyddro.html">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
-        <a class="file-link theory-link" href="khởi động lạnh.html">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
-        <a class="file-link theory-link" href="Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
-        <a class="file-link theory-link" href="RunbackhệthốngTuabinvàBOPliênđộng.html">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
-        <a class="file-link theory-link" href="Sựcốáplựcdầubôitrơntuabingiảmthấp.html">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
-        <a class="file-link theory-link" href="ThủykíchTuabintáchạinguyênnhânvàxửlý.html">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
-        <a class="file-link theory-link" href="Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
+    <!-- THƯ MỤC 1: LÝ THUYẾT (Thêm class "active" nếu muốn nó mở sẵn lúc mới vào web) -->
+    <div class="folder-group theory-folder active">
+        <div class="folder-header" onclick="toggleFolder(this)">
+            <div class="folder-title"><span>📚</span> Lý Thuyết Chuyên Môn</div>
+            <div class="toggle-icon">▼</div>
+        </div>
+        
+        <div class="folder-content">
+            <div class="list-container">
+                <a class="file-link" href="Ảnhhưởngchânkhôngbìnhngưng.html">Ảnh hưởng chân không bình ngưng</a>
+                <a class="file-link" href="aplucnhiet.html">Ảnh hưởng của áp lực, nhiệt độ hơi mới và chân không bình ngưng đến quá trình vận hành và hiệu suất của tuabin</a>
+                <a class="file-link" href="Ảnhhưởngcủanhiệtđộhơichínhtớithiếtbịvàhiệusuấttuabin.html">Ảnh hưởng của nhiệt độ hơi chính tới thiết bị và hiệu suất tuabin</a>
+                <a class="file-link" href="bìnhkhửkhíxửlýsựcốmứcnướcgiảmnhanh.html">Tác dụng bình khử khí - Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</a>
+                <a class="file-link" href="CácbảovệchínhcủaTuabinvàliênđộngsaukhiTrip.html">Các bảo vệ chính của Tuabin và liên động sau khi Trip</a>
+                <a class="file-link" href="CácloạitổnthấttronghệthốngTuabinBìnhngưng.html">Các loại tổn thất trong hệ thống Tuabin - Bình ngưng</a>
+                <a class="file-link" href="caoápCấutạotácdụngvàsựcốthườnggặp.html">Hệ thống bình gia nhiệt cao áp - Cấu tạo, tác dụng và sự cố thường gặp</a>
+                <a class="file-link" href="Cấutạobìnhngưngvàxửlýsựcốmứcnướcgiảmnhanh.html">Cấu tạo, tác dụng bình ngưng và xử lý sự cố mức nước giảm nhanh</a>
+                <a class="file-link" href="Chấtlượnghơinướcvàchỉtiêumôitrườngchutrìnhtuabin.html">Chất lượng hơi nước và chỉ tiêu môi trường chu trình tuabin</a>
+                <a class="file-link" href="Hyddro.html">Hiện tượng, nguyên nhân, biện pháp xử lý sự chênh áp dầu chèn - Hydro dao động</a>
+                <a class="file-link" href="khởi động lạnh.html">Các bước chuẩn bị, kiểm tra và trình tự khởi động Tuabin từ trạng thái lạnh tới đầy tải</a>
+                <a class="file-link" href="Quytrìnhxửlýkhẩncấpmấtđiệntoànnhàmáy(Blackout).html">Quy trình xử lý sự cố khẩn cấp mất điện toàn nhà máy (Blackout)</a>
+                <a class="file-link" href="RunbackhệthốngTuabinvàBOPliênđộng.html">Các trường hợp Runback của hệ thống Tuabin và BOP - Tín hiệu liên động</a>
+                <a class="file-link" href="Sựcốáplựcdầubôitrơntuabingiảmthấp.html">Sự cố áp lực dầu bôi trơn tuabin giảm thấp</a>
+                <a class="file-link" href="ThủykíchTuabintáchạinguyênnhânvàxửlý.html">Thủy kích Tuabin - Khái niệm, tác hại, nguyên nhân và xử lý</a>
+                <a class="file-link" href="Tínhiệucảnhbáobảovệbơmcấpvàxửlýsựcốrungkhitổmáy540MW.html">Tín hiệu cảnh báo - bảo vệ bơm cấp và xử lý sự cố rung khi tổ máy 540 MW</a>
+            </div>
+        </div>
     </div>
 
-    <!-- KHU VỰC 2: AN TOÀN -->
-    <h2 class="section-title safety-title">🛡️ An Toàn Kỹ Thuật</h2>
-    <div class="list-container">
-        <!-- Đã sửa href khớp 100% với tên file ngắn gọn anh vừa đổi -->
-        <a class="file-link safety-link" href="atbuongdot.html">Quy định về An toàn khi làm việc bên trong buồng đốt và đường khói</a>
-        <a class="file-link safety-link" href="atcongtac.html">Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác</a>
-        <a class="file-link safety-link" href="athydro.html">An toàn khi làm việc tại khu vực máy phát làm mát bằng khí hydro</a>
-        <a class="file-link safety-link" href="atlan.html">Các qui định về an toàn khi lặn</a>
-        <a class="file-link safety-link" href="atongtuanhoan.html">Quy định về an toàn khi làm việc trên đường ống nước tuần hoàn</a>
-        <a class="file-link safety-link" href="attbquay.html">Quy định về an toàn khi làm việc với thiết bị quay</a>
-        <a class="file-link safety-link" href="atthoibui.html">Quy định về an toàn khi vận hành lò hơi và trong quá trình thổi bụi</a>
-        <a class="file-link safety-link" href="attrencao.html">Quy định về an toàn khi làm việc trên cao</a>
-        <a class="file-link safety-link" href="cachlyvanhanh.html">Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị</a>
-        <a class="file-link safety-link" href="chihuytt.html">Trách nhiệm của người cho phép và người Chỉ huy trực tiếp trong PCT</a>
-        <a class="file-link safety-link" href="khonggianhanche.html">Quy định về an toàn trong không gian hạn chế và làm việc bên trong bao hơi</a>
-        <a class="file-link safety-link" href="pct.html">Thủ tục Cho phép làm việc và bàn giao tại hiện trường theo PCT</a>
+    <!-- THƯ MỤC 2: AN TOÀN KỸ THUẬT -->
+    <div class="folder-group safety-folder">
+        <div class="folder-header" onclick="toggleFolder(this)">
+            <div class="folder-title"><span>🛡️</span> An Toàn Kỹ Thuật</div>
+            <div class="toggle-icon">▼</div>
+        </div>
+        
+        <div class="folder-content">
+            <div class="list-container">
+                <a class="file-link" href="atbuongdot.html">Quy định về An toàn khi làm việc bên trong buồng đốt và đường khói</a>
+                <a class="file-link" href="atcongtac.html">Biện pháp kỹ thuật về an toàn trước khi thực hiện công tác</a>
+                <a class="file-link" href="athydro.html">An toàn khi làm việc tại khu vực máy phát làm mát bằng khí hydro</a>
+                <a class="file-link" href="atlan.html">Các qui định về an toàn khi lặn</a>
+                <a class="file-link" href="atongtuanhoan.html">Quy định về an toàn khi làm việc trên đường ống nước tuần hoàn</a>
+                <a class="file-link" href="attbquay.html">Quy định về an toàn khi làm việc với thiết bị quay</a>
+                <a class="file-link" href="atthoibui.html">Quy định về an toàn khi vận hành lò hơi và trong quá trình thổi bụi</a>
+                <a class="file-link" href="attrencao.html">Quy định về an toàn khi làm việc trên cao</a>
+                <a class="file-link" href="cachlyvanhanh.html">Các yêu cầu về việc cách ly an toàn thiết bị và Kiểm tra thiết bị</a>
+                <a class="file-link" href="chihuytt.html">Trách nhiệm của người cho phép và người Chỉ huy trực tiếp trong PCT</a>
+                <a class="file-link" href="khonggianhanche.html">Quy định về an toàn trong không gian hạn chế và làm việc bên trong bao hơi</a>
+                <a class="file-link" href="pct.html">Thủ tục Cho phép làm việc và bàn giao tại hiện trường theo PCT</a>
+            </div>
+        </div>
     </div>
+
 </div>
+
+<!-- JAVASCRIPT ĐIỀU KHIỂN ĐÓNG/MỞ THƯ MỤC -->
+<script>
+    function toggleFolder(headerElement) {
+        // Lấy thẻ div .folder-group bao bọc bên ngoài
+        const folderGroup = headerElement.parentElement;
+        
+        // Bật/tắt class 'active' để đóng mở CSS
+        folderGroup.classList.toggle('active');
+    }
+</script>
 
 </body>
 </html>
