@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy trình khởi động Tuabin từ trạng thái lạnh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #d9534f;
+            margin-top: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #0275d8;
+            margin-top: 20px;
+        }
+        ul {
+            margin-top: 5px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            color: #333;
+        }
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .step {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #495057;
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Quy trình khởi động Tuabin từ trạng thái lạnh tới đầy tải</h1>
+    <p><em>(Trích xuất từ Quy trình vận hành Tuabin - Công ty Nhiệt điện Mông Dương)</em></p>
+
+    <h2>1. Công tác Chuẩn bị và Kiểm tra trước khi khởi động (Mục 6.1)</h2>
+
+    <h3>a. Thí nghiệm trước khi khởi động</h3>
+    <ul>
+        <li><strong>Điều kiện chung:</strong> Mọi công việc sửa chữa, bảo dưỡng phải kết thúc, phiếu công tác đã khóa. Thiết bị an toàn, vệ sinh, chiếu sáng và thông tin liên lạc phải đầy đủ. Chỉ nhân viên vận hành mới được vào hiện trường. Các thí nghiệm quan trọng cần có sự giám sát an toàn và phê duyệt của Giám đốc/Phó Giám đốc kỹ thuật.</li>
+        <li><strong>Các hạng mục thí nghiệm:</strong> Thí nghiệm đóng/mở các van (MSV, CV, CRV, BVV, van bypass hạ áp), thí nghiệm đường truyền ETS, hiệu chỉnh van chính, thí nghiệm bảo vệ liên động hệ thống dầu bôi trơn, dầu EH, động cơ văn trục, bảo vệ độ rung, chân không thấp, di trục, mất nước làm mát máy phát, TRIP bằng tay/tại chỗ, van 1 chiều cửa trích, bảo vệ chống thủy kích, hệ thống nước/dầu/hydro máy phát, Bypass.</li>
+    </ul>
+
+    <h3>b. Công việc chuẩn bị và kiểm tra</h3>
+    <ul>
+        <li>Xác nhận công việc lắp đặt, sửa chữa đã xong, phiếu công tác đã khóa, vị trí công tác sạch sẽ.</li>
+        <li>Kiểm tra hệ thống dầu bôi trơn, dầu thủy lực, mức dầu và chất lượng dầu.</li>
+        <li>Kiểm tra thiết bị C&I, hệ thống DCS sẵn sàng làm việc. Đóng điện các thiết bị chính, phụ và C&I.</li>
+        <li>Liên hệ bên điện đưa hệ thống một chiều, điện tự dùng, UPS vào làm việc. Máy phát DIEZEN ở trạng thái dự phòng.</li>
+        <li>Chuẩn bị công cụ, đồng hồ đo, phiếu thí nghiệm, sổ sách. Tiếp địa thiết bị diện, kiểm tra chiều quay động cơ, bu lông liên kết, tín hiệu trên tủ điều khiển.</li>
+        <li>Bổ sung dầu bôi trơn, mở bôi trơn đầy đủ, bảo vệ chắc chắn.</li>
+        <li>Bên hóa chuẩn bị nước khử khoáng đầy đủ. Kiểm tra các van điện, van khí đóng mở bình thường.</li>
+        <li>Kiểm tra mức dầu, bộ làm mát dầu, bơm dầu, hệ thống dầu bôi trơn, dầu chèn, dầu EH ở trạng thái dự phòng tốt, không rò rỉ.</li>
+        <li>Kiểm tra động cơ văn trục, đảm bảo vận hành liên tục 4h trở lên trước khi khởi động tổ máy.</li>
+        <li>Kiểm tra tác động van điều chỉnh và van hơi chính cao, trung áp không kẹt, đang đóng kín.</li>
+        <li>Kiểm tra hệ thống bảo vệ, điều chỉnh tính năng làm việc, hệ thống dầu EH.</li>
+        <li>Kiểm tra bình ngưng, bơm nước ngưng, hệ thống nước hạ áp, bình gia nhiệt cao áp, bình khử khí, bơm cấp, hệ thống nước làm mát máy phát, nước tuần hoàn, nước làm mát phụ, kín đều ở trạng thái dự phòng tốt.</li>
+        <li>Kiểm tra các van ở trạng thái chính xác và bình thường.</li>
+    </ul>
+
+    <h3>c. Các trường hợp cấm khởi động Tuabin</h3>
+    <ul>
+        <li>Hỏng bộ đo tốc độ, van MSV/CV/RSV/IV không đóng, thông số chính hiển thị lỗi, bơm dầu bôi trơn/một chiều lỗi, chất lượng hơi/dầu không đạt, lỗi quay trục, cọ sát, điều khiển tuabin lỗi, độ lệch tâm rô to > 0,038mm, chênh lệch nhiệt độ vỏ > 50°C.</li>
+    </ul>
+
+    <h3>d. Trình tự khởi động các hệ thống phụ của tuabin</h3>
+    <ul>
+        <li>Khởi động hệ thống nước tuần hoàn, nước làm mát phụ.</li>
+        <li>Liên hệ bên hóa khởi động hệ thống điều chế nước khử khoáng.</li>
+        <li>Bổ sung nước ngưng cho bình ngưng, bình nước bổ sung nước làm mát kín. Khởi động hệ thống nước làm mát kín, máy nén khí.</li>
+        <li>Khởi động hệ thống dầu bôi trơn Tuabin (Nhiệt độ dầu vào gối 10-40°C, áp lực dầu đông góp 1,79~2 bar). Đưa hệ thống dầu chèn vào làm việc. Áp suất dầu bạc chèn >= 0,41 bar. Áp lực ống góp dầu đẩy bơm dầu chèn >= 8 bar. Áp lực Hydro 5,03 bar <= P_H2 <= 5,45 bar.</li>
+        <li>Đưa văn trục vào làm việc. Nhiệt độ dầu bôi trơn nằm trong khoảng 15-32°C. Vận hành văn trục ít nhất 4 tiếng trước khi khởi động lại máy. Nếu dừng trục ở trạng thái nóng, duy trì dầu vào các gối đỡ. Kiểm tra độ lệch tâm rô to (bình thường +0,038 mm).</li>
+        <li>Khởi động hệ thống nước làm mát Stator máy phát.</li>
+        <li>Khởi động hệ thống dầu điều chỉnh (EH) (Nhiệt độ dầu 29,4~49°C, Áp lực dầu 151,7~165,5 bar).</li>
+        <li>Liên hệ bên lò cho khởi động lò phụ, đưa hệ thống hơi tự dùng vào làm việc.</li>
+        <li>Kiểm tra bổ sung nước cho bình ngưng đạt 300mm trở lên, đưa hệ thống nước ngưng vào làm việc, cấp nước cho bình khử khí.</li>
+        <li>Khởi động hệ thống nước cấp, chạy bơm tuần hoàn nước cấp để gia nhiệt nước cấp, khử khí sơ bộ, liên hệ bên hóa cấp Amoniac, Hydrazin. Chạy bơm cấp cấp nước lên lò.</li>
+        <li>Tiến hành tạo chân không bình ngưng: Ống góp hơi tự dùng đảm bảo thông số vận hành (áp lực 15 bar, nhiệt độ 350°C). Ấn "Master reset" Tuabin. Đưa hệ thống hơi chèn trục vào làm việc (áp lực hơi chèn khoảng 0,21 ~ 0,34 bar, nhiệt độ hơi chèn 150~200°C). Khởi động 01 bơm chân không. Giám sát các van xả đọng đường hơi chính, tái nóng, tái lạnh. Chân không bình ngưng < 0,1 bar (thông thường 0,05~0,084 bar).</li>
+    </ul>
+
+    <hr>
+
+    <h2>2. Trình tự khởi động Tuabin từ trạng thái lạnh (Mục 6.2.1)</h2>
+    <p><em>(Tuabin ngừng làm việc hơn 72 giờ)</em></p>
+
+    <div class="step">Bước 1: Reset tuabin</div>
+    <ul>
+        <li>Chọn <code>"MASTER RESET"</code> trên TCS.</li>
+        <li>Đưa toàn bộ các van xả của đường ống hơi chính, đường ống hơi tái nóng, tái lạnh, xả tuabin, xả cửa trích về AUTO.</li>
+    </ul>
+
+    <div class="step">Bước 2: Sấy Rô to (Rotor Prewarm)</div>
+    <ul>
+        <li>Kiểm tra Rotor Prewarm, nhiệt độ kim loại roto, trạng thái các van xả trước khi sấy để Auto. Kiểm tra các van MSV, RSV, CV, IV đóng hoàn toàn.</li>
+        <li>Lựa chọn Control => <code>"Rotor Prewarm Sys"</code>.</li>
+        <li>Mở RSDV, kiểm tra áp lực ống góp hơi tự dùng 2 đạt 15 bar. Mở từ từ van tay cấp hơi, sấy đường ống >= 15 phút. Đóng van RSDV.</li>
+        <li>Mở van MOV-HSPV, chọn sấy HSPV ON. Setpoint AOV-HSPV 2%.</li>
+        <li>Tăng dần độ mở van AOV-HSPV (max: 73%) đến khi áp lực đạt 3,8-4,83 bar. Giữ sấy, khống chế tăng nhiệt độ kim loại <= 50°C/h.</li>
+        <li>Điều chỉnh đóng van AOV-HSPV về 0%, đóng van MOV-HSPV, chọn Rotor warming OFF. Van BVV tự động mở ra. Kết thúc quá trình sấy, mở toàn bộ van xả nhóm A, B, C đưa về AUTO.</li>
+    </ul>
+
+    <div class="step">Bước 3: Sấy ngực van điều chỉnh (Chest Prewarm)</div>
+    <ul>
+        <li><em>(Kết thúc khi chênh nhiệt độ bên trong và ngoài van điều chỉnh < 42°C).</em></li>
+        <li>Reset turbin. Lựa chọn Control > Chest Prewarm > Chest warming trên TCS.</li>
+        <li>Chọn Chest Warming ON.</li>
+        <li>Setpoint độ mở van MSV2 lên 10% (van S4 tự động mở), giám sát độ tăng nhiệt độ trước sau van CV.</li>
+        <li>Tăng dần độ mở van MSV2 lên 15%, 20%. Giữ sấy ở 20%.</li>
+        <li>Kiểm tra chênh lệch nhiệt độ kim loại trong ngoài van. Kiểm tra các van BVV, BDV, S4 mở; SV2, SV4, SD1, SD2 đóng mở trong quá trình sấy.</li>
+        <li>Khi hoàn thành, Setpoint độ mở van MSV2 về 0%. Lựa chọn Chest Warming OFF. Van MSV2 đóng hoàn toàn. Mở toàn bộ các van xả.</li>
+    </ul>
+
+    <div class="step">Bước 4: Kiểm tra mở các van xả nhóm A, B, C đưa về Auto</div>
+    <ul>
+        <li><strong>Nhóm A:</strong> xả đường hơi chính, trước/sau van stop, van điều chỉnh.</li>
+        <li><strong>Nhóm B:</strong> xả đường hơi tái nhiệt lạnh/nóng, sau cụm CRV, vỏ tuabin HP, IP, hơi trích.</li>
+        <li><strong>Nhóm C:</strong> xả đường trích áp lực thấp.</li>
+    </ul>
+
+    <div class="step">Bước 5: Chuyển hơi chính sang hơi tự dùng</div>
+    <ul>
+        <li>Kiểm tra áp lực hơi chính p > 80 bar, nhiệt độ > 400°C.</li>
+        <li>Máy phó tới van điện cấp hơi từ lò phụ sang ống góp hơi tự dùng.</li>
+        <li>Máy trường để chế độ Auto van điều chỉnh áp lực hơi chính sang hơi tự dùng.</li>
+        <li>Máy phó đóng dần van điện cấp hơi từ lò phụ.</li>
+        <li>Máy trường theo dõi độ mở van cấp, áp lực, nhiệt độ ống góp.</li>
+    </ul>
+
+    <div class="step">Bước 6: Xung động tuabin</div>
+    <ul>
+        <li><strong>Kiểm tra các điều kiện tại màn hình "START PERMISSIVES":</strong>
+            <ul>
+                <li>Áp lực hơi chính khoảng 80 bar; Nhiệt độ hơi chính 296 < T < 400°C; Độ quá nhiệt hơi chính > 75°C.</li>
+                <li>Nhiệt độ hơi tái nóng 232°C < T < 400°C; Lưu lượng hơi mới lớn hơn 20% lưu lượng hơi ở tải định mức của 1 lò.</li>
+                <li>Tuabin đã được Reset; Tuabin đã được văn trục (>4 giờ); Điểm đặt tốc độ tuabin < 0.</li>
+                <li>Hệ thống ATS không có cảnh báo; Nhiệt độ ống góp hơi chèn 148,9°C < T < 398,9°C.</li>
+                <li>Độ lệch tâm rô to khi văn trục: Nor < 0,06 mm; Nhiệt độ dầu bôi trơn khi văn trục > 26,7°C.</li>
+                <li>Không tín hiệu Trip do Chênh lệch giãn nở tuabin; Các van xả mở và hoạt động tốt; Rô to đã được sấy nóng.</li>
+            </ul>
+        </li>
+        <li>Giám sát chất lượng hơi vào tuabin.</li>
+        <li><strong>Tại màn hình "UNIT CONTROL" và "START UP" trên TCS:</strong>
+            <ul>
+                <li>Chọn Auto Mode, Reverse Flow Mode, Load Control Mode -> Local, Ref Hold Off, Rapid Unload Off.</li>
+                <li>Reset Tuabin: Chọn Master reset.</li>
+                <li>Phối hợp bên điện kiểm tra, reset rơ le 86GA, 86GB. Reset hệ thống ETD tại màn hình điều khiển "ETD TESTS".</li>
+            </ul>
+        </li>
+        <li>Chọn SEMI-AUTO. Chọn tốc độ tăng tốc là 100 v/p. Đặt mốc 800 RPM. Theo dõi van EV1, EV2 tự động đóng, van IV tự động điều chỉnh độ mở. Kiểm tra văn trục tự động tách ra. Tốc độ đạt 800 v/p giữ sấy 30 phút.</li>
+        <li>Đặt mốc 2500 RPM tốc độ tăng (100 v/p). Tốc độ đạt 2250 v/p kiểm tra RFV, BVV tự động mở 71,3% để cho khoảng 39 t/h hơi đi qua làm mát tuabin HP. Tốc độ đạt 2500 v/p tiến hành giữ sấy trong vòng 45 phút. (Nhiệt độ ống chuyển tiếp hơi từ IP sang LP phải đạt >= 93°C).</li>
+        <li>Đưa các bình gia nhiệt hạ áp vào làm việc. Khi IV flow đạt 20% thì BDV tự động đóng HSPV tự động mở.</li>
+        <li>Đặt mốc 3000 RPM (LOW): Tốc độ tuabin đạt 3000 v/p, giữ sấy 5 phút; kiểm tra, điều chỉnh nhiệt độ dầu bôi trơn nằm trong khoảng từ 43~ 49°C.</li>
+        <li>Phối hợp bên điện chuẩn bị hòa đồng bộ tổ máy trong vòng 10 phút.</li>
+    </ul>
+
+    <div class="step">Bước 7: Hòa đồng bộ tổ máy và tăng tải</div>
+    <ul>
+        <li><strong>Kiểm tra trước khi hòa đồng bộ:</strong> Tốc độ tuabin 3000 RPM (> đạt 95%); Áp lực hơi chính 82 bar; Nhiệt độ hơi chính 450°C; Nhiệt độ hơi tái nóng 400°C; Kiểm tra điều kiện hòa đồng bộ Auto.</li>
+        <li><strong>Khởi động kích từ trên màn hình synch:</strong> Exciter AVR Control: chọn Auto; Exciter Start/stop control: chọn Start; Reset Tuabin: Chọn "MASTER RESET".</li>
+        <li><strong>Hòa đồng bộ tuabin:</strong> Người vận hành chuyển khóa Auto trên bảng điều khiển; Kiểm tra tự động đồng bộ; Kiểm tra máy cắt đầu cực đóng; Kiểm tra tải sau khi hòa đồng bộ.</li>
+        <li>Kiểm tra nhiệt độ hơi thoát tuabin xuống bình ngưng (sau khi hòa đồng bộ nhiệt độ hơi thoát ổn định tiến hành đóng van tay đi tắt phun giảm ôn hơi thoát).</li>
+    </ul>
+
+    <h4>Tăng tải tổ máy:</h4>
+    <ul>
+        <li>Kiểm tra tải tổ máy sau khi hòa đồng bộ phải >= 5%.</li>
+        <li>Đặt tải lên ngay 25%, tốc độ tăng tải 3%/phút.</li>
+        <li>Kiểm tra nhiệt độ ống chuyển tiếp hơi từ IP sang LP phải đạt >= 177°C.</li>
+        <li>Kiểm tra lưu lượng qua IV > 50% chuyển chế độ dòng thuận (chọn forward flow).</li>
+        <li>Kiểm tra van BVV đóng khi chuyển sang chế độ dòng thuận. Kết thúc quá trình chuyển đổi các van xả nhóm A tự động đóng.</li>
+        <li>Đóng các van xả đọng nhóm B khi tải đạt 15%.</li>
+        <li>Tải tổ máy đạt 25% (135MW).</li>
+        <li>Tiếp tục tăng tải để van Bypass cao áp, hạ áp đóng hết.</li>
+        <li>Chuyển sang chế độ điều khiển phần cung để điều chỉnh tăng tải tuabin (chế độ UMC).</li>
+        <li>Kiểm tra chênh lệch giá trị áp lực < 3 bar chuyển Auto và UMC.</li>
+        <li>Chuyển chế độ FA -> PA. Kiểm tra hoàn thành chế độ PA.</li>
+        <li>Tại màn hình MASTER CONTROL chuyển tuabin sang chế độ Auto.</li>
+        <li>Đặt tốc độ tăng tải lên 10%/ phút.</li>
+        <li>Sau khi chuyển, ta thực hiện tăng/giảm tải theo lò hơi.</li>
+        <li>Đưa các bình gia nhiệt cao áp vào làm việc.</li>
+        <li>Khi tải tổ máy đạt 30%RO (162MW), kiểm tra đóng các van xả nhóm C.</li>
+        <li>Khi áp lực hơi tái nhiệt lạnh >= 30 bar, chuyển nguồn hơi tự dùng từ hơi chính sang lấy ở tái lạnh.</li>
+        <li>Khi tải tổ máy đạt 70% kiểm tra khả năng tự chèn của tuabin, để tuabin tự chèn.</li>
+        <li>Tải tổ máy đạt 100%, kết thúc quá trình khởi động tuabin từ trạng thái lạnh đến đầy tải.</li>
+    </ul>
+
+    <div class="note">
+        <strong>Chú ý:</strong> Trong quá trình tăng tải ứng suất tuabin cao, trung áp tăng cao, phải tiến hành giữ tải tuabin cho tới khi ứng suất giảm, mới được tiếp tục tăng tải.
+    </div>
+
+</body>
+</html>

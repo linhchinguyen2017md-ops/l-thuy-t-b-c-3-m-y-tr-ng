@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống bình gia nhiệt cao áp – Cấu tạo, tác dụng và sự cố thường gặp</title>
+<style>
+  :root{
+    --primary: #0b5394;
+    --primary-dark: #073b6b;
+    --primary-light: #e8f0fb;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --warning: #f39c12;
+    --warning-light: #fff8e1;
+    --success: #27ae60;
+    --success-light: #e8f8ef;
+    --border: #d0d7de;
+    --bg: #f7f9fc;
+    --text: #1f2328;
+    --muted: #57606a;
+  }
+  *{box-sizing: border-box;}
+  body{
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .container{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+  header{
+    background: linear-gradient(135deg, #0b5394 0%, #1a73c9 50%, #2196f3 100%);
+    color: #fff;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 24px rgba(11,83,148,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before{
+    content: "🔥";
+    position: absolute;
+    font-size: 12rem;
+    opacity: 0.07;
+    top: -20px;
+    right: 20px;
+    line-height: 1;
+  }
+  header h1{
+    margin: 0 0 12px;
+    font-size: 1.7rem;
+    line-height: 1.35;
+    position: relative;
+  }
+  header .subtitle{
+    margin: 0;
+    opacity: 0.96;
+    font-size: 1rem;
+    font-style: italic;
+    position: relative;
+  }
+  header .scope{
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    position: relative;
+  }
+  h2{
+    color: var(--primary);
+    border-left: 5px solid var(--primary);
+    padding-left: 14px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+  h3{
+    color: var(--primary-dark);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.14rem;
+  }
+  h4{
+    color: #1a4d80;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 1.02rem;
+  }
+  p{margin: 10px 0;}
+  ul, ol{margin: 8px 0 12px; padding-left: 24px;}
+  li{margin: 6px 0;}
+  code{
+    background: #eef2f7;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    color: #b83280;
+    white-space: nowrap;
+  }
+  .section-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .callout{
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+  }
+  .callout.warning{
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+  }
+  .callout.danger{
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .callout.success{
+    background: var(--success-light);
+    border-left-color: var(--success);
+  }
+  .callout strong{color: var(--primary-dark);}
+  .callout.danger strong{color: var(--accent);}
+  .callout.warning strong{color: #b9770e;}
+  .callout.success strong{color: #1e8449;}
+
+  .params-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .param-box{
+    background: linear-gradient(135deg, #f4f8fd 0%, #e8f0fb 100%);
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+  }
+  .param-box .label{
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .param-box .value{
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-family: "Consolas", monospace;
+  }
+  .param-box.accent{
+    background: linear-gradient(135deg, #fff5f3 0%, #fdecea 100%);
+    border-color: #f5c6c0;
+    border-left-color: var(--accent);
+  }
+  .param-box.accent .value{color: var(--accent);}
+  .param-box.warning{
+    background: linear-gradient(135deg, #fffcf0 0%, #fff8e1 100%);
+    border-color: #f5dfa0;
+    border-left-color: var(--warning);
+  }
+  .param-box.warning .value{color: #b9770e;}
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    font-size: 0.93rem;
+  }
+  thead{
+    background: var(--primary);
+    color: #fff;
+  }
+  th, td{
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even){background: #f4f7fb;}
+  tbody tr:hover{background: #e8f0fb;}
+  th{font-weight: 600; font-size: 0.9rem;}
+  td code{font-size: 0.85em;}
+  .data-table th:nth-child(1){width: 22%;}
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 6px;
+    color: #fff;
+  }
+  .badge.blue{background: var(--primary);}
+  .badge.red{background: var(--accent);}
+  .badge.green{background: var(--success);}
+  .badge.orange{background: var(--warning);}
+  .badge.gray{background: #6b7280;}
+
+  .structure-item{
+    display: flex;
+    gap: 16px;
+    padding: 16px 18px;
+    background: #f9fbfd;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    border-left: 5px solid var(--primary);
+  }
+  .structure-num{
+    background: var(--primary);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+  .structure-content{flex: 1;}
+  .structure-content .title{
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .fault-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .fault-header{
+    background: linear-gradient(135deg, #0b5394 0%, #1a73c9 100%);
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .fault-num{
+    background: rgba(255,255,255,0.25);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 0.95rem;
+  }
+  .fault-body{
+    padding: 16px 22px;
+  }
+  .fault-block{
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+  }
+  .fault-block.recognize{
+    background: #fff8e1;
+    border-left: 4px solid var(--warning);
+  }
+  .fault-block.cause{
+    background: #fdecea;
+    border-left: 4px solid var(--accent);
+  }
+  .fault-block.action{
+    background: #e8f8ef;
+    border-left: 4px solid var(--success);
+  }
+  .fault-block .label{
+    font-weight: 700;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .fault-block.recognize .label{color: #b9770e;}
+  .fault-block.cause .label{color: var(--accent);}
+  .fault-block.action .label{color: #1e8449;}
+
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc h3{
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc ol{
+    margin: 0;
+    padding-left: 22px;
+    columns: 2;
+    column-gap: 30px;
+  }
+  .toc li{
+    margin: 5px 0;
+    break-inside: avoid;
+  }
+  .toc a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .toc a:hover{
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .mandatory-list{
+    counter-reset: mand;
+    list-style: none;
+    padding-left: 0;
+  }
+  .mandatory-list li{
+    counter-increment: mand;
+    position: relative;
+    padding: 14px 18px 14px 60px;
+    background: #fef7f6;
+    border: 1px solid #f5c6c0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .mandatory-list li::before{
+    content: counter(mand);
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .emergency-box{
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    color: #fff;
+    padding: 22px 26px;
+    border-radius: 10px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192,57,43,0.3);
+  }
+  .emergency-box h3{
+    color: #fff;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+  }
+  .emergency-box h3::before{
+    content: "★";
+    font-size: 1.5rem;
+  }
+  .emergency-box p{margin: 10px 0;}
+  .emergency-box strong{color: #ffe082;}
+
+  .flow-diagram{
+    background: #f4f8fd;
+    border: 1px solid #c9dcf0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 18px 0;
+    text-align: center;
+    font-family: "Consolas", monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    overflow-x: auto;
+  }
+  .flow-diagram .arrow{
+    color: var(--accent);
+    margin: 0 8px;
+    font-size: 1.2rem;
+  }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  @media(max-width: 720px){
+    header h1{font-size: 1.25rem;}
+    header::before{font-size: 7rem; top: 10px;}
+    h2{font-size: 1.15rem;}
+    table{font-size: 0.82rem;}
+    th, td{padding: 9px 10px;}
+    .toc ol{columns: 1;}
+    .fault-body{padding: 12px 14px;}
+    .structure-item{padding: 12px 14px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Cấu tạo, tác dụng và các sự cố thường gặp của bình gia nhiệt cao áp</h1>
+    <p class="subtitle">Tài liệu ôn tập cốt lõi – Hệ thống BGN cao áp</p>
+    <span class="scope">BGN số 6, 7, 8 – Nhà máy Nhiệt điện Mông Dương 1<br>Tóm tắt cô đọng – Dễ học – Dễ nhớ</span>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Các thông số vận hành cốt lõi</a></li>
+      <li><a href="#s2">Cấu tạo thiết bị (5 điểm cốt lõi)</a></li>
+      <li><a href="#s3">Tác dụng trong chu trình nhiệt</a></li>
+      <li><a href="#s4">5 sự cố vận hành thường gặp &amp; cách xử lý</a></li>
+      <li><a href="#s5">5 trường hợp bắt buộc tách bình gia nhiệt</a></li>
+    </ol>
+  </div>
+
+  <!-- I -->
+  <section id="s1">
+    <h2>I. Các thông số vận hành cốt lõi (cần nhớ)</h2>
+    <div class="section-card">
+      <div class="params-grid">
+        <div class="param-box">
+          <span class="label">Vị trí lắp đặt</span>
+          <span class="value">Cốt sàn +23m Gian Khử khí</span>
+        </div>
+        <div class="param-box">
+          <span class="label">Lưu lượng nước cấp qua bình</span>
+          <span class="value">1.690,23 t/h</span>
+        </div>
+        <div class="param-box">
+          <span class="label">Nhiệt độ nước cấp được gia nhiệt</span>
+          <span class="value">183,7 °C → 290,8 °C</span>
+        </div>
+      </div>
+
+      <h3>Đường dồn nước đọng (tự chảy dồn cấp)</h3>
+      <div class="flow-diagram">
+        BGN 8 <span class="arrow">→</span> BGN 7 <span class="arrow">→</span> BGN 6 <span class="arrow">→</span> Bình khử khí
+        <div style="font-size:0.85rem;font-weight:400;color:var(--muted);margin-top:8px;">
+          (có đường xả đọng khẩn cấp về bình ngưng)
+        </div>
+      </div>
+
+      <h3>Thông số vận hành chi tiết</h3>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Thông số vận hành</th>
+              <th>BGN số 6</th>
+              <th>BGN số 7</th>
+              <th>BGN số 8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nguồn hơi trích gia nhiệt</strong></td>
+              <td>Cửa trích #3 (IP)</td>
+              <td>Cửa trích #2 (CRH – Tái lạnh)</td>
+              <td>Cửa trích #1 (HP)</td>
+            </tr>
+            <tr>
+              <td><strong>Áp suất hơi vận hành</strong></td>
+              <td><span class="badge blue">18,06 bar</span></td>
+              <td><span class="badge blue">43,76 bar</span></td>
+              <td><span class="badge blue">73,56 bar</span></td>
+            </tr>
+            <tr>
+              <td><strong>Nhiệt độ hơi vào</strong></td>
+              <td>422,6 °C</td>
+              <td>343,1 °C</td>
+              <td>419,1 °C</td>
+            </tr>
+            <tr>
+              <td><strong>Nhiệt độ nước cấp Vào → Ra</strong></td>
+              <td>183,7 °C → 208,9 °C</td>
+              <td>208,9 °C → 254,7 °C</td>
+              <td>254,7 °C → 290,8 °C</td>
+            </tr>
+            <tr>
+              <td><strong>Áp suất đặt van AT (Vỏ / Ống)</strong></td>
+              <td>25 / 305 kg/cm²</td>
+              <td>53 / 305 kg/cm²</td>
+              <td>91 / 305 kg/cm²</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- II -->
+  <section id="s2">
+    <h2>II. Cấu tạo thiết bị (5 điểm cốt lõi)</h2>
+
+    <div class="structure-item">
+      <div class="structure-num">1</div>
+      <div class="structure-content">
+        <div class="title">Kết cấu &amp; Chiều môi chất</div>
+        <p>Bình trao đổi nhiệt bề mặt kiểu <strong>vỏ – chùm ống (Shell &amp; Tube)</strong>, bố trí nằm ngang. Nước cấp áp lực cao đi <strong>trong ống</strong> – Hơi trích gia nhiệt đi <strong>ngoài ống</strong> (phía vỏ).</p>
+      </div>
+    </div>
+
+    <div class="structure-item">
+      <div class="structure-num">2</div>
+      <div class="structure-content">
+        <div class="title">Chùm ống &amp; Đầu chỏm cầu</div>
+        <p>Ống trao đổi nhiệt dạng <strong>chữ U</strong>, được liên kết làm kín vào mặt sàng bằng phương pháp <strong>núc thủy lực</strong>. Chỏm cầu có cửa người chui (<em>manhole</em>) bắt bu-lông phục vụ kiểm tra, thử áp và nút ống.</p>
+      </div>
+    </div>
+
+    <div class="structure-item">
+      <div class="structure-num">3</div>
+      <div class="structure-content">
+        <div class="title">Ba phân vùng truyền nhiệt trong 1 thân bình</div>
+        <ul style="margin-bottom:0;">
+          <li><strong>Vùng giảm quá nhiệt (Desuperheating):</strong> Hạ nhiệt độ hơi trích quá nhiệt xuống sát nhiệt độ bão hòa.</li>
+          <li><strong>Vùng ngưng hơi (Condensing):</strong> Khu vực lớn nhất, hơi ngưng tụ tỏa ẩn nhiệt lớn đun nóng nước cấp.</li>
+          <li><strong>Vùng làm mát nước đọng (Drain cooling):</strong> Hạ nhiệt nước ngưng đáy bình trước khi dồn về bình cấp sau để tránh tổn thất nhiệt.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="structure-item">
+      <div class="structure-num">4</div>
+      <div class="structure-content">
+        <div class="title">Cơ cấu bảo vệ &amp; Giãn nở nhiệt</div>
+        <ul style="margin-bottom:0;">
+          <li>Có <strong>tấm chống va đập</strong> bằng thép không gỉ gắn trước vòi phun hơi trích và cửa nước đọng vào để chống xói mòn ống.</li>
+          <li>Gồm <strong>01 gối đỡ cố định</strong> (phía chỏm cầu) và <strong>01 gối đỡ di động con lăn</strong> (phía thân) cho phép bình tự do giãn nở nhiệt.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="structure-item">
+      <div class="structure-num">5</div>
+      <div class="structure-content">
+        <div class="title">Hệ thống van cách ly &amp; Bypass</div>
+        <p style="margin-bottom:0;">Có van chặn đầu vào/ra nước cấp và cụm <strong>van bypass 100% lưu lượng nước cấp</strong> khi cần cô lập bình; van xả đọng khẩn cấp tự động mở về bình ngưng khi mức nước dâng cao.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- III -->
+  <section id="s3">
+    <h2>III. Tác dụng trong chu trình nhiệt (2 ý chính)</h2>
+    <div class="section-card">
+      <div class="callout success">
+        <strong>1. Nâng cao hiệu suất nhiệt chu trình Rankine:</strong> Gia nhiệt hồi nhiệt cho nước cấp từ ~180 °C lên 290,8 °C bằng các nguồn hơi trích tuabin, giúp <strong>tiết kiệm than đốt lò hơi</strong> và <strong>giảm nhiệt lượng bị dòng nước tuần hoàn làm mát thải bỏ</strong> ở bình ngưng.
+      </div>
+      <div class="callout">
+        <strong>2. Bảo vệ lò hơi, triệt tiêu sốc nhiệt:</strong> Cấp nước vào lò đạt gần nhiệt độ bão hòa trong bao hơi, giảm thiểu chênh lệch nhiệt độ vách kim loại, <strong>ngăn ngừa nứt nẻ</strong> và bảo vệ an toàn cho bao hơi, dàn ống sinh hơi.
+      </div>
+    </div>
+  </section>
+
+  <!-- IV -->
+  <section id="s4">
+    <h2>IV. 5 sự cố vận hành thường gặp &amp; cách xử lý</h2>
+    <p style="color:var(--muted);font-style:italic;">Học theo cặp: Nhận biết – Nguyên nhân – Hành động</p>
+
+    <!-- Fault 1 -->
+    <div class="fault-card">
+      <div class="fault-header">
+        <span class="fault-num">1</span>
+        <span>Rò rỉ, bục vỡ ống trao đổi nhiệt</span>
+      </div>
+      <div class="fault-body">
+        <div class="fault-block recognize">
+          <span class="label">🔍 Nhận biết</span>
+          Mức nước đọng tăng vọt; van xả đọng mở 100% không giữ được mức; cảnh báo mức High / High-High; chênh lệch nhiệt độ hơi – nước cấp tăng.
+        </div>
+        <div class="fault-block cause">
+          <span class="label">⚠ Nguyên nhân</span>
+          Bề mặt ống mài mòn cơ học lâu ngày; ăn mòn hóa học do chất lượng nước xấu; khuyết tật mối hàn núc ống.
+        </div>
+        <div class="fault-block action">
+          <span class="label">✓ Hành động</span>
+          <ul style="margin:6px 0 0;">
+            <li>Bảo vệ tác động (hoặc thao tác tay khẩn cấp): Đóng van hơi trích + van 1 chiều; mở bypass 100% nước cấp; đóng van vào/ra nước cấp cô lập bình.</li>
+            <li>Báo Trưởng ca xin lệnh giảm tải tổ máy tương ứng. Mở manhole thử áp lực và đóng nút ống (plugging) bị thủng.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fault 2 -->
+    <div class="fault-card">
+      <div class="fault-header">
+        <span class="fault-num">2</span>
+        <span>Thủy kích (nước va) trong bình và đường ống</span>
+      </div>
+      <div class="fault-body">
+        <div class="fault-block recognize">
+          <span class="label">🔍 Nhận biết</span>
+          Tiếng gõ kim loại va đập mạnh; rung giật dữ dội tại đường hơi trích, thân bình hoặc đường xả dồn đọng.
+        </div>
+        <div class="fault-block cause">
+          <span class="label">⚠ Nguyên nhân</span>
+          Mở nạp hơi trích quá nhanh khi khởi động; không sấy nóng và xả kiệt nước đọng; mức nước đáy bình quá thấp làm hơi lọt vào đường dồn đọng gây va đập.
+        </div>
+        <div class="fault-block action">
+          <span class="label">✓ Hành động</span>
+          <ul style="margin:6px 0 0;">
+            <li>Mở hết van xả đọng đường hơi trích và thân bình; giảm hoặc đóng van hơi trích. Nếu rung giật không giải trừ được phải tách bình ra.</li>
+            <li><strong>Quy tắc khởi động:</strong> Khống chế tốc độ tăng nhiệt độ không quá <strong>56 °C/giờ</strong>; hé mở van dồn đọng ~5% sấy ấm đường ống trước khi chuyển AUTO.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fault 3 -->
+    <div class="fault-card">
+      <div class="fault-header">
+        <span class="fault-num">3</span>
+        <span>Mức nước đọng dâng cao (do hỏng/kẹt van xả đọng)</span>
+      </div>
+      <div class="fault-body">
+        <div class="fault-block recognize">
+          <span class="label">🔍 Nhận biết</span>
+          Mức nước bình tăng cao dần, DCS báo động, nhưng lưu lượng nước cấp bình thường (không có hiện tượng bục ống).
+        </div>
+        <div class="fault-block cause">
+          <span class="label">⚠ Nguyên nhân</span>
+          Kẹt cơ khí ty van xả đọng; hỏng bộ định vị (<em>positioner</em>); mất khí nén hoặc đứt tín hiệu điều khiển.
+        </div>
+        <div class="fault-block action">
+          <span class="label">✓ Hành động</span>
+          Chuyển van xả đọng sang Manual trên DCS để mở lớn; cử người tại chỗ gõ giải kẹt hoặc mở van bypass van xả đọng / mở xả khẩn cấp về bình ngưng.
+        </div>
+      </div>
+    </div>
+
+    <!-- Fault 4 -->
+    <div class="fault-card">
+      <div class="fault-header">
+        <span class="fault-num">4</span>
+        <span>Kẹt con lăn chân giá đỡ trượt</span>
+      </div>
+      <div class="fault-body">
+        <div class="fault-block recognize">
+          <span class="label">🔍 Nhận biết</span>
+          Thân bình cong vênh cục bộ; con lăn bị kênh, xô lệch khỏi ray trượt; tạo ứng suất uốn lên cổ mối hàn ống nối bên ngoài.
+        </div>
+        <div class="fault-block cause">
+          <span class="label">⚠ Nguyên nhân</span>
+          Bám dính bụi bẩn than xỉ; khô mỡ bôi trơn; bề mặt ray trượt bị rỉ sét.
+        </div>
+        <div class="fault-block action">
+          <span class="label">✓ Hành động</span>
+          Khi bình đạt nhiệt độ làm việc, trực phụ phải kiểm tra tại chỗ xem con lăn có tự do giãn nở và không bị kênh; định kỳ bôi mỡ chịu nhiệt trong các kỳ bảo dưỡng/tiểu tu.
+        </div>
+      </div>
+    </div>
+
+    <!-- Fault 5 -->
+    <div class="fault-card">
+      <div class="fault-header">
+        <span class="fault-num">5</span>
+        <span>Xì hở mặt bích, xì van an toàn hoặc nứt kim loại</span>
+      </div>
+      <div class="fault-body">
+        <div class="fault-block recognize">
+          <span class="label">🔍 Nhận biết</span>
+          Nghe tiếng xì rít lớn; hơi nóng hoặc nước rò rỉ tại các mặt bích, manhole hoặc van an toàn.
+        </div>
+        <div class="fault-block cause">
+          <span class="label">⚠ Nguyên nhân</span>
+          Giãn nở nhiệt không đều gây dão bu-lông; gioăng đệm lão hóa; van an toàn nhảy xong đóng lại bị kẹt xỉ.
+        </div>
+        <div class="fault-block action">
+          <span class="label">✓ Hành động</span>
+          Nếu xì hở lớn hoặc van an toàn mất chức năng, <strong>phải giảm tải và tách bình gia nhiệt ra xử lý ngay</strong> để đảm bảo an toàn.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V -->
+  <section id="s5">
+    <h2>V. 5 trường hợp bắt buộc phải tách bình gia nhiệt cao áp ra khỏi vận hành</h2>
+    <p style="color:var(--muted);font-style:italic;">Phần câu hỏi trọng tâm thường gặp trong đề thi bậc/vấn đáp</p>
+
+    <ol class="mandatory-list">
+      <li>Khi thấy rõ ràng có <strong>rò rỉ (bục thủng) của hệ thống ống trao đổi nhiệt</strong> trong bình gia nhiệt.</li>
+      <li>Khi có <strong>thủy kích</strong> trong thân bình, đường hơi trích hoặc đường xả đọng mà không thể khắc phục được.</li>
+      <li>Khi bị <strong>xì hơi lớn ở các mặt bích</strong> đường ống hơi.</li>
+      <li>Khi xuất hiện các <strong>vết nứt</strong> trên thân bình gia nhiệt, trên đường ống nước cấp, đường hơi, đường nước đọng.</li>
+      <li>Khi các <strong>bảo vệ của bình mất khả năng làm việc</strong>, kể cả các van an toàn.</li>
+    </ol>
+
+    <div class="emergency-box">
+      <h3>QUY TẮC QUY TRÌNH CỐT TỬ</h3>
+      <ul style="margin:10px 0 0;padding-left:22px;">
+        <li><strong>NGHIÊM CẤM</strong> vận hành bình gia nhiệt cao áp khi không có bộ chỉ thị mức hoặc mất bảo vệ mức.</li>
+        <li>Khi tách một hoặc vài bình gia nhiệt cao áp, <strong>bắt buộc phải giảm phụ tải tổ máy tương ứng</strong> theo chỉ dẫn của nhà chế tạo.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Tài liệu ôn tập cốt lõi – Hệ thống bình gia nhiệt cao áp BGN 6, 7, 8<br>
+    Nhà máy Nhiệt điện Mông Dương 1
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tác dụng bình khử khí – Tại sao phải khử khí và xử lý sự cố mức nước giảm nhanh</title>
+<style>
+  :root{
+    --primary: #0b5394;
+    --primary-dark: #073b6b;
+    --primary-light: #e8f0fb;
+    --accent: #c0392b;
+    --accent-light: #fdecea;
+    --warning: #f39c12;
+    --warning-light: #fff8e1;
+    --success: #27ae60;
+    --success-light: #e8f8ef;
+    --purple: #7d3c98;
+    --purple-light: #f4ecf7;
+    --border: #d0d7de;
+    --bg: #f7f9fc;
+    --text: #1f2328;
+    --muted: #57606a;
+  }
+  *{box-sizing: border-box;}
+  body{
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  .container{
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+  header{
+    background: linear-gradient(135deg, #0b5394 0%, #1a73c9 50%, #2196f3 100%);
+    color: #fff;
+    padding: 38px 28px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 24px rgba(11,83,148,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before{
+    content: "💧";
+    position: absolute;
+    font-size: 12rem;
+    opacity: 0.08;
+    top: -10px;
+    right: 20px;
+    line-height: 1;
+  }
+  header h1{
+    margin: 0 0 12px;
+    font-size: 1.65rem;
+    line-height: 1.35;
+    position: relative;
+  }
+  header .subtitle{
+    margin: 0;
+    opacity: 0.96;
+    font-size: 1rem;
+    font-style: italic;
+    position: relative;
+  }
+  header .specs{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+    position: relative;
+  }
+  header .spec-badge{
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    font-family: "Consolas", monospace;
+  }
+  header .spec-badge .val{
+    color: #ffe082;
+    font-weight: 700;
+  }
+  h2{
+    color: var(--primary);
+    border-left: 5px solid var(--primary);
+    padding-left: 14px;
+    margin-top: 42px;
+    margin-bottom: 16px;
+    font-size: 1.35rem;
+  }
+  h3{
+    color: var(--primary-dark);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.14rem;
+  }
+  h4{
+    color: #1a4d80;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 1.02rem;
+  }
+  p{margin: 10px 0;}
+  ul, ol{margin: 8px 0 12px; padding-left: 24px;}
+  li{margin: 6px 0;}
+  code{
+    background: #eef2f7;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 0.9em;
+    color: #b83280;
+    white-space: nowrap;
+  }
+  .section-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .callout{
+    background: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+  }
+  .callout.warning{
+    background: var(--warning-light);
+    border-left-color: var(--warning);
+  }
+  .callout.danger{
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+  .callout.success{
+    background: var(--success-light);
+    border-left-color: var(--success);
+  }
+  .callout strong{color: var(--primary-dark);}
+  .callout.danger strong{color: var(--accent);}
+  .callout.warning strong{color: #b9770e;}
+  .callout.success strong{color: #1e8449;}
+
+  .params-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .param-box{
+    background: linear-gradient(135deg, #f4f8fd 0%, #e8f0fb 100%);
+    border: 1px solid #c9dcf0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+  }
+  .param-box .label{
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .param-box .value{
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-family: "Consolas", monospace;
+  }
+  .param-box.danger{
+    background: linear-gradient(135deg, #fdf3f2 0%, #fdecea 100%);
+    border-color: #f5c6c0;
+    border-left-color: var(--accent);
+  }
+  .param-box.danger .value{color: var(--accent);}
+  .param-box.success{
+    background: linear-gradient(135deg, #f0faf4 0%, #e8f8ef 100%);
+    border-color: #b7e4c7;
+    border-left-color: var(--success);
+  }
+  .param-box.success .value{color: #1e8449;}
+
+  .badge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 6px;
+    color: #fff;
+  }
+  .badge.blue{background: var(--primary);}
+  .badge.red{background: var(--accent);}
+  .badge.green{background: var(--success);}
+  .badge.orange{background: var(--warning);}
+
+  /* Function cards */
+  .function-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+    display: flex;
+  }
+  .function-num{
+    background: linear-gradient(135deg, #0b5394 0%, #1a73c9 100%);
+    color: #fff;
+    min-width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .function-body{
+    padding: 16px 22px;
+    flex: 1;
+  }
+  .function-body .title{
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+    font-size: 1.08rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .function-body .icon{
+    font-size: 1.25rem;
+  }
+
+  /* Reason cards */
+  .reason-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px 16px 66px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+    border-left: 5px solid var(--accent);
+  }
+  .reason-card::before{
+    content: "!";
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .reason-card .title{
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 1.04rem;
+  }
+
+  /* Symptom list */
+  .symptom-list{
+    list-style: none;
+    padding-left: 0;
+  }
+  .symptom-list li{
+    position: relative;
+    padding: 12px 18px 12px 54px;
+    background: #fff8e1;
+    border: 1px solid #f5dfa0;
+    border-left: 5px solid var(--warning);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .symptom-list li::before{
+    content: "🔔";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.15rem;
+  }
+
+  /* Cause list */
+  .cause-list{
+    list-style: none;
+    padding-left: 0;
+    counter-reset: cause;
+  }
+  .cause-list li{
+    counter-increment: cause;
+    position: relative;
+    padding: 12px 18px 12px 54px;
+    background: #fdecea;
+    border: 1px solid #f5c6c0;
+    border-left: 5px solid var(--accent);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .cause-list li::before{
+    content: counter(cause);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.88rem;
+  }
+
+  /* Action steps */
+  .action-step{
+    background: #f9fbfd;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    border-left: 5px solid var(--success);
+    display: flex;
+    gap: 16px;
+  }
+  .action-num{
+    background: var(--success);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+  .action-content{flex: 1;}
+  .action-content .title{
+    font-weight: 700;
+    color: #1e8449;
+    margin-bottom: 6px;
+    font-size: 1.04rem;
+  }
+
+  /* Level scale SVG container */
+  .chart-card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .chart-card h4{
+    margin-top: 0;
+    color: var(--primary-dark);
+    font-size: 1.05rem;
+  }
+  .chart-card svg{width: 100%; height: auto; display: block;}
+  .chart-legend{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    margin-top: 14px;
+    font-size: 0.88rem;
+  }
+  .chart-legend .item{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chart-legend .swatch{
+    width: 20px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .chart-note{
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  .emergency-box{
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    color: #fff;
+    padding: 22px 26px;
+    border-radius: 10px;
+    margin: 22px 0;
+    box-shadow: 0 6px 20px rgba(192,57,43,0.3);
+  }
+  .emergency-box h3{
+    color: #fff;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+  }
+  .emergency-box h3::before{
+    content: "⚠";
+    font-size: 1.5rem;
+  }
+  .emergency-box p{margin: 10px 0;}
+  .emergency-box strong{color: #ffe082;}
+  .emergency-box ul{margin: 10px 0 0; padding-left: 22px;}
+
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc h3{
+    margin-top: 0;
+    color: var(--primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .toc ol{
+    margin: 0;
+    padding-left: 22px;
+  }
+  .toc li{margin: 6px 0;}
+  .toc a{
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .toc a:hover{
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  footer{
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  @media(max-width: 720px){
+    header h1{font-size: 1.22rem;}
+    header::before{font-size: 7rem; top: 10px;}
+    h2{font-size: 1.15rem;}
+    .function-card{flex-direction: column;}
+    .function-num{min-width: auto; padding: 10px 0; font-size: 1.4rem;}
+    .action-step{padding: 12px 14px; gap: 12px;}
+    .action-num{width: 32px; height: 32px; font-size: 0.9rem;}
+    .reason-card, .cause-list li, .symptom-list li{padding-left: 50px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Tác dụng của bình khử khí – Tại sao phải khử khí – Xử lý sự cố mức nước giảm nhanh</h1>
+    <p class="subtitle">Hệ thống bình khử khí và bể chứa nước cấp trong nhà máy nhiệt điện</p>
+    <div class="specs">
+      <span class="spec-badge">Độ hòa tan O₂ thiết kế: <span class="val">≤ 7 ppb</span></span>
+      <span class="spec-badge">Bảo vệ mức thấp – thấp: <span class="val">−1 825 mm</span></span>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Mục lục</h3>
+    <ol>
+      <li><a href="#s1">Tác dụng của bình khử khí (4 vai trò)</a></li>
+      <li><a href="#s2">Tại sao phải khử khí? (3 lý do cốt lõi)</a></li>
+      <li><a href="#s3">Xử lý sự cố mức nước bình khử khí giảm nhanh</a></li>
+    </ol>
+  </div>
+
+  <!-- I -->
+  <section id="s1">
+    <h2>1. Tác dụng của bình khử khí</h2>
+
+    <div class="function-card">
+      <div class="function-num">1</div>
+      <div class="function-body">
+        <div class="title"><span class="icon">🌬</span> Tách và loại bỏ khí không ngưng</div>
+        <p>Loại bỏ hoàn toàn <strong>oxy (O₂)</strong>, <strong>cacbonic (CO₂)</strong> và các khí không ngưng khác hòa tan trong nước cấp bằng phương pháp <strong>nhiệt</strong> (gia nhiệt trực tiếp bằng hơi nước lên nhiệt độ bão hòa, giải phóng khí theo định luật <strong>Henry – Dalton</strong>).</p>
+      </div>
+    </div>
+
+    <div class="function-card">
+      <div class="function-num">2</div>
+      <div class="function-body">
+        <div class="title"><span class="icon">🔥</span> Gia nhiệt sơ bộ nước cấp</div>
+        <p>Đóng vai trò như một <strong>bình gia nhiệt kiểu hỗn hợp</strong>, nâng nhiệt độ dòng nước ngưng lên nhiệt độ bão hòa tương ứng với áp suất làm việc của bình khử khí, góp phần gia tăng hiệu suất chu trình nhiệt Rankine.</p>
+      </div>
+    </div>
+
+    <div class="function-card">
+      <div class="function-num">3</div>
+      <div class="function-body">
+        <div class="title"><span class="icon">🛢</span> Dự trữ nguồn nước cấp cho tổ máy</div>
+        <p>Bể chứa nước cấp (<em>Feedwater Storage Tank</em>) bên dưới có dung tích dự trữ lớn, duy trì ổn định lưu lượng cấp nước lên lò hơi và tiếp nhận nguồn xả dồn đọng tuần tự từ cụm bình gia nhiệt cao áp (<strong>BGN 6, 7, 8</strong>) dồn về.</p>
+      </div>
+    </div>
+
+    <div class="function-card">
+      <div class="function-num">4</div>
+      <div class="function-body">
+        <div class="title"><span class="icon">⬆</span> Tạo cột áp tĩnh chống xâm thực bơm</div>
+        <p>Nhờ được lắp đặt tại <strong>cao trình cao</strong> (cốt sàn trên cùng), bể nước cấp tạo ra cột áp thủy tĩnh ổn định tại cửa hút của bơm tăng áp nước cấp, ngăn ngừa hiện tượng tụt áp, bốc hơi và <strong>xâm thực (cavitation)</strong> đầu hút bơm cấp.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- II -->
+  <section id="s2">
+    <h2>2. Tại sao phải khử khí?</h2>
+
+    <div class="reason-card">
+      <div class="title">Chống ăn mòn điện hóa kim loại</div>
+      <p>Trong nước cấp chưa khử khí luôn hòa tan O₂ và CO₂. Dưới điều kiện nhiệt độ và áp suất rất cao của lò hơi, oxy hòa tan và axit cacbonic (H₂CO₃) sẽ phản ứng oxy hóa mãnh liệt làm <strong>mỏng thành ống</strong>, gây <strong>rỗ bề mặt (pitting)</strong> trên bao hơi, ống góp, dàn ống sinh hơi và bộ hâm nước, dẫn đến <strong>bục vỡ nổ ống</strong> sự cố.</p>
+    </div>
+
+    <div class="reason-card">
+      <div class="title">Đảm bảo tiêu chuẩn hóa chất lượng nước cấp</div>
+      <p>Giữ nồng độ oxy hòa tan sau bình khử khí luôn đạt giá trị tiêu chuẩn vận hành nghiêm ngặt (<code>≤ 7 ppb</code>) để bảo vệ toàn diện hệ số an toàn kim loại bề mặt truyền nhiệt.</p>
+    </div>
+
+    <div class="reason-card">
+      <div class="title">Duy trì hiệu quả trao đổi nhiệt</div>
+      <p>Các chất khí không ngưng nếu không được triệt tiêu sẽ bám thành <strong>màng khí cách nhiệt</strong> trên bề mặt các ống sinh hơi lò hơi, làm suy giảm hệ số truyền nhiệt đối lưu và làm giảm đáng kể hiệu suất lò hơi.</p>
+    </div>
+
+    <div class="callout success">
+      <strong>Tóm tắt:</strong> Khử khí giúp bảo vệ kim loại khỏi ăn mòn, duy trì chất lượng nước cấp theo tiêu chuẩn (&le; 7 ppb O₂), và đảm bảo hiệu quả truyền nhiệt tối ưu cho lò hơi – ba yếu tố then chốt cho an toàn và hiệu suất tổ máy.
+    </div>
+  </section>
+
+  <!-- III -->
+  <section id="s3">
+    <h2>3. Xử lý sự cố mức nước bình khử khí giảm nhanh</h2>
+
+    <!-- SCALE CHART -->
+    <div class="chart-card">
+      <h4>Thang mức nước bình khử khí và các ngưỡng cảnh báo – bảo vệ</h4>
+      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Thang mức nước bình khử khí và các ngưỡng cảnh báo">
+        <defs>
+          <linearGradient id="normalZone" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#27ae60" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#27ae60" stop-opacity="0.05"/>
+          </linearGradient>
+          <linearGradient id="lowZone" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f39c12" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#f39c12" stop-opacity="0.05"/>
+          </linearGradient>
+          <linearGradient id="tripZone" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#c0392b" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#c0392b" stop-opacity="0.08"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Vùng mức nước (bar ngang) -->
+        <!-- Bình thường: 0 đến -800 mm -->
+        <rect x="200" y="60" width="600" height="70" fill="url(#normalZone)"/>
+        <!-- Vùng Low: -800 đến -1400 -->
+        <rect x="200" y="130" width="600" height="70" fill="url(#lowZone)"/>
+        <!-- Vùng Low-Low: -1400 đến -1825 -->
+        <rect x="200" y="200" width="600" height="70" fill="url(#tripZone)"/>
+        <!-- Vùng Trip: dưới -1825 -->
+        <rect x="200" y="270" width="600" height="50" fill="url(#tripZone)"/>
+
+        <!-- Nhãn vùng -->
+        <g font-family="Segoe UI, Arial" font-size="13" font-weight="700">
+          <text x="220" y="100" fill="#1e8449">BÌNH THƯỜNG</text>
+          <text x="220" y="170" fill="#b9770e">CẢNH BÁO LOW</text>
+          <text x="220" y="240" fill="#c0392b">CẢNH BÁO LOW – LOW</text>
+          <text x="220" y="302" fill="#7b0d0d">VÙNG BẢO VỆ TRIP</text>
+        </g>
+
+        <!-- Đường mốc (bar dọc + nhãn mm) -->
+        <g font-family="Consolas, monospace" font-size="12" fill="#1f2328">
+          <!-- Mốc 0 mm -->
+          <line x1="200" y1="60" x2="800" y2="60" stroke="#57606a" stroke-width="1.5"/>
+          <text x="810" y="64" font-weight="700">0 mm</text>
+
+          <!-- Mốc -800 mm -->
+          <line x1="200" y1="130" x2="800" y2="130" stroke="#f39c12" stroke-width="2" stroke-dasharray="5,4"/>
+          <text x="810" y="134" fill="#b9770e" font-weight="700">−800 mm</text>
+
+          <!-- Mốc -1400 mm -->
+          <line x1="200" y1="200" x2="800" y2="200" stroke="#e67e22" stroke-width="2" stroke-dasharray="5,4"/>
+          <text x="810" y="204" fill="#a04000" font-weight="700">−1 400 mm</text>
+
+          <!-- Mốc -1825 mm -->
+          <line x1="200" y1="270" x2="800" y2="270" stroke="#c0392b" stroke-width="3" stroke-dasharray="6,4"/>
+          <text x="810" y="274" fill="#c0392b" font-weight="700">−1 825 mm</text>
+        </g>
+
+        <!-- Mũi tên chỉ xuống mức nguy hiểm -->
+        <defs>
+          <marker id="arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto">
+            <path d="M0,0 L4,8 L8,0 Z" fill="#c0392b"/>
+          </marker>
+        </defs>
+        <line x1="140" y1="90" x2="140" y2="290" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrowDown)"/>
+        <text x="132" y="180" font-family="Segoe UI, Arial" font-size="12" fill="#c0392b" font-weight="700" text-anchor="middle" transform="rotate(-90, 132, 180)">MỨC NƯỚC GIẢM</text>
+
+        <!-- Chú thích hành động bên phải các vùng -->
+        <g font-family="Segoe UI, Arial" font-size="11" fill="#1f2328">
+          <text x="220" y="116" fill="#1e8449" font-style="italic">Duy trì ổn định</text>
+          <text x="220" y="186" fill="#b9770e" font-style="italic">Cần tăng cấp nước ngưng, kiểm tra van điều khiển</text>
+          <text x="220" y="256" fill="#c0392b" font-style="italic">Khẩn cấp: khởi động bơm dự phòng, xả tràn, giảm tải</text>
+          <text x="220" y="310" fill="#7b0d0d" font-style="italic" font-weight="700">Trip bơm cấp nước – bảo vệ tổ máy</text>
+        </g>
+
+        <!-- Đường tim mức nước tham chiếu -->
+        <line x1="200" y1="95" x2="800" y2="95" stroke="#27ae60" stroke-width="3"/>
+        <text x="180" y="98" font-family="Consolas, monospace" font-size="11" fill="#1e8449" font-weight="700" text-anchor="end">Mức chuẩn</text>
+      </svg>
+
+      <div class="chart-legend">
+        <span class="item"><span class="swatch" style="background:#27ae60;opacity:0.4;"></span> Bình thường</span>
+        <span class="item"><span class="swatch" style="background:#f39c12;opacity:0.4;"></span> Cảnh báo Low</span>
+        <span class="item"><span class="swatch" style="background:#e67e22;opacity:0.5;"></span> Cảnh báo Low–Low</span>
+        <span class="item"><span class="swatch" style="background:#c0392b;opacity:0.55;"></span> Vùng bảo vệ Trip</span>
+      </div>
+      <p class="chart-note">
+        Khi mức nước chạm ngưỡng <strong>−1 825 mm</strong>, bảo vệ tác động <strong>Trip bơm cấp nước</strong> để tránh xâm thực phá hủy bơm.
+      </p>
+    </div>
+
+    <!-- DẤU HIỆU -->
+    <h3>Dấu hiệu nhận biết</h3>
+    <ul class="symptom-list">
+      <li>Mức nước trên màn hình <strong>DCS</strong> và ống thủy tại chỗ tụt dốc liên tục.</li>
+      <li>Có cảnh báo chuông/đèn: Mức nước khử khí <strong>Thấp (Low Alarm)</strong> hoặc <strong>Thấp – Thấp (Low-Low Alarm)</strong>.</li>
+      <li>Nguy cơ tác động bảo vệ: Ngưỡng bảo vệ <strong>Trip bơm cấp nước</strong> tác động khi mức nước đạt <code>−1 825 mm</code>.</li>
+    </ul>
+
+    <!-- NGUYÊN NHÂN -->
+    <h3>Nguyên nhân cốt lõi</h3>
+    <ol class="cause-list">
+      <li>Bơm ngưng đang chạy bị <strong>trip</strong> mà bơm dự phòng không liên động vào làm việc.</li>
+      <li>Van điều khiển mức nước khử khí bị <strong>kẹt đóng</strong> hoặc lỗi tín hiệu điều khiển.</li>
+      <li>Van xả tràn (overflow) <strong>mở nhầm/kẹt mở</strong>; rò rỉ van xả đáy bể nước cấp.</li>
+      <li><strong>Nổ vỡ ống dàn sinh hơi</strong>, vỡ bộ hâm hoặc bục vỡ đường nước cấp chính lên lò.</li>
+      <li>Mất nước dồn đọng từ các <strong>bình gia nhiệt cao áp</strong> dồn về.</li>
+    </ol>
+
+    <!-- TRÌNH TỰ THAO TÁC -->
+    <h3>Trình tự thao tác xử lý của nhân viên vận hành</h3>
+
+    <div class="action-step">
+      <div class="action-num">1</div>
+      <div class="action-content">
+        <div class="title">Khôi phục nguồn cấp nước ngưng</div>
+        <ul>
+          <li>Kiểm tra trạng thái làm việc của <strong>bơm nước ngưng</strong>; nếu bơm bị trip thì ngay lập tức khởi động bằng tay <strong>bơm ngưng dự phòng</strong>.</li>
+          <li>Chuyển van điều chỉnh mức nước khử khí sang chế độ <strong>Manual</strong> trên DCS để mở lớn bù nước.</li>
+          <li>Nếu van điều chỉnh bị kẹt, lệnh máy phó/trực phụ tại chỗ <strong>mở van bypass</strong> cấp nước vào bình và cô lập van lỗi.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="action-num">2</div>
+      <div class="action-content">
+        <div class="title">Loại trừ các điểm thất thoát xả nước</div>
+        <ul>
+          <li>Kiểm tra <strong>van xả tràn</strong> của bình khử khí; nếu van tự mở khi mức không cao thì lập tức đóng lại hoặc đóng van tay cô lập đường xả tràn.</li>
+          <li>Kiểm tra các <strong>van xả đáy bể nước cấp</strong>, van xả cặn bảo đảm không bị lậu mở ra rãnh thoát.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="action-num">3</div>
+      <div class="action-content">
+        <div class="title">Phối hợp phía lò hơi &amp; Kiểm tra rò rỉ</div>
+        <ul>
+          <li>Liên hệ <strong>Lò trưởng</strong> kiểm tra tương quan <strong>lưu lượng nước cấp</strong> và <strong>lưu lượng hơi chính</strong>.</li>
+          <li>Nếu nổ vỡ ống lò hơi nghiêm trọng làm mất nước không thể khống chế, phải tiến hành <strong>dừng lò khẩn cấp (MFT)</strong> theo quy trình.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="action-step">
+      <div class="action-num">4</div>
+      <div class="action-content">
+        <div class="title">Bảo vệ tổ bơm cấp nước</div>
+        <ul>
+          <li>Theo dõi <strong>áp lực đầu hút</strong> và <strong>lưu lượng bơm cấp</strong>.</li>
+          <li>Nếu mức nước bể khử khí tiếp tục tụt sâu đe dọa giá trị bảo vệ (<code>−1 825 mm</code>), báo cáo xin lệnh Trưởng ca <strong>chủ động giảm tải tổ máy</strong> hoặc <strong>dừng bơm cấp</strong> để bảo vệ không bị xâm thực phá hỏng thiết bị.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="emergency-box">
+      <h3>NGƯỠNG BẢO VỆ NGHIÊM TRỌNG</h3>
+      <p>Khi mức nước bình khử khí đạt <strong>−1 825 mm</strong>:</p>
+      <ul>
+        <li><strong>BẢO VỆ TRIP BƠM CẤP NƯỚC</strong> tác động tự động.</li>
+        <li>Mục đích: <strong>ngăn ngừa xâm thực (cavitation)</strong> phá hủy cánh bơm và thân bơm cấp.</li>
+        <li>Vận hành viên <strong>tuyệt đối không được cưỡng bức</strong> chạy bơm cấp khi mức nước đã tụt dưới ngưỡng bảo vệ.</li>
+      </ul>
+    </div>
+
+    <div class="callout success">
+      <strong>Nguyên tắc chung:</strong> Khi mức nước bình khử khí giảm nhanh, phải hành động theo đúng thứ tự: <strong>khôi phục nguồn cấp → loại trừ thất thoát → phối hợp lò hơi → bảo vệ bơm cấp</strong>. Ưu tiên tuyệt đối an toàn cho bơm cấp nước và toàn vẹn thiết bị lò hơi.
+    </div>
+  </section>
+
+  <footer>
+    Tài liệu vận hành – Bình khử khí và hệ thống nước cấp<br>
+    Độ hòa tan O₂ thiết kế ≤ 7 ppb | Bảo vệ mức thấp–thấp: −1 825 mm
+  </footer>
+
+</div>
+</body>
+</html>
