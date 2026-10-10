@@ -73,8 +73,79 @@ body{
 .btn-danger:hover{transform:translateY(-2px)}
 .btn-ghost{background:#eef2fa;color:#2a5298;border:2px solid #cdd9ee}
 .btn-ghost:hover{background:#dde7f8}
-.btn-home{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.35)}
+.btn-home{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,.35);position:relative;z-index:1}
 .btn-home:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,163,74,.5)}
+/* Nút home trong modal luôn nổi trên overlay */
+#resultBox .btn-home{position:relative;z-index:10}
+
+/* ============ LỊCH SỬ THI ============ */
+#historySection{
+  margin-top:26px;padding:20px 22px;border-radius:14px;
+  background:#f8faff;border:2px solid #e2e8f0;text-align:left;
+}
+#historySection h3{
+  font-size:1rem;color:#1e3c72;margin-bottom:6px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+#historySection h3 .cnt{
+  background:#e8eeff;color:#3b5bb5;font-size:.72rem;font-weight:700;
+  padding:3px 10px;border-radius:99px;
+}
+#historySection .hint{
+  font-size:.8rem;color:#6b7a99;margin-bottom:14px;
+}
+.hist-empty{
+  text-align:center;padding:20px 10px;color:#8899b5;font-size:.88rem;
+  font-style:italic;
+}
+.hist-item{
+  display:flex;align-items:center;gap:12px;padding:11px 14px;
+  background:#fff;border-radius:11px;margin-bottom:8px;
+  border-left:5px solid #94a3b8;
+  transition:.15s;
+}
+.hist-item:hover{transform:translateX(3px);box-shadow:0 4px 12px rgba(30,60,114,.1)}
+.hist-item.pass{border-left-color:#16a34a;}
+.hist-item.fail{border-left-color:#dc2626;}
+.hist-rank{
+  flex:0 0 32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,#2a5298,#1e3c72);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:.82rem;
+}
+.hist-item.pass .hist-rank{background:linear-gradient(135deg,#16a34a,#15803d);}
+.hist-item.fail .hist-rank{background:linear-gradient(135deg,#dc2626,#991b1b);}
+.hist-body{flex:1;min-width:0;}
+.hist-line1{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  font-size:.85rem;font-weight:700;color:#1e3c72;margin-bottom:3px;
+}
+.hist-line1 .role-tag{
+  background:#e8eeff;color:#3b5bb5;font-size:.7rem;
+  padding:2px 8px;border-radius:99px;font-weight:800;
+}
+.hist-line1 .score{
+  font-size:1rem;color:#2a5298;
+}
+.hist-item.pass .hist-line1 .score{color:#16a34a;}
+.hist-item.fail .hist-line1 .score{color:#dc2626;}
+.hist-line2{
+  display:flex;flex-wrap:wrap;gap:12px;
+  font-size:.76rem;color:#6b7a99;font-weight:600;
+}
+.hist-line2 .cat-detail{
+  display:inline-flex;gap:4px;
+}
+.hist-line2 b{color:#41526b;}
+.hist-time{
+  font-size:.72rem;color:#94a3b8;font-weight:600;
+  white-space:nowrap;text-align:right;
+}
+#clearHistBtn{
+  background:none;border:none;color:#dc2626;font-size:.78rem;
+  font-weight:700;cursor:pointer;padding:4px 10px;border-radius:6px;
+  font-family:inherit;transition:.15s;
+}
+#clearHistBtn:hover{background:#fee;}
 
 #topbar{
   position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);
@@ -186,6 +257,153 @@ body{
 .rev-item .rq{font-weight:700;color:#1a1a2e;margin-bottom:5px}
 .rev-item .ra{color:#1a7f37;font-weight:700}
 .rev-item .rb{color:#b91c1c;font-weight:700}
+
+/* ============ MASCOT ============ */
+.mascot-wrap{
+  position:fixed;right:20px;bottom:100px;z-index:80;
+  display:flex;flex-direction:column;align-items:center;
+  pointer-events:none;user-select:none;
+}
+.mascot-bubble{
+  background:#fff;border:2px solid #cdd9ee;
+  padding:7px 13px;border-radius:12px;font-size:.8rem;font-weight:700;
+  color:#1e3c72;white-space:nowrap;margin-bottom:8px;
+  opacity:0;transform:translateY(8px) scale(.85);
+  transition:.28s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 6px 18px rgba(30,60,114,.18);
+  position:relative;
+}
+.mascot-bubble.show{opacity:1;transform:translateY(0) scale(1);}
+.mascot-bubble::after{
+  content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:12px;height:12px;background:#fff;
+  border-right:2px solid #cdd9ee;border-bottom:2px solid #cdd9ee;
+}
+.mascot-bubble.happy{background:#e3f9e5;border-color:#86efac;color:#15803d;}
+.mascot-bubble.happy::after{background:#e3f9e5;border-color:#86efac;}
+.mascot-bubble.sad{background:#fde8e8;border-color:#fca5a5;color:#991b1b;}
+.mascot-bubble.sad::after{background:#fde8e8;border-color:#fca5a5;}
+
+.mascot-stage{
+  position:relative;width:120px;height:150px;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.mascot-shadow{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:70px;height:11px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(0,0,0,.35),transparent 70%);
+  transition:.3s;
+}
+.mascot{
+  position:relative;width:110px;height:145px;
+  transform-origin:50% 96%;
+  animation:mascotIdle 2.6s ease-in-out infinite;
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.25));
+}
+@keyframes mascotIdle{
+  0%,100%{transform:translateY(0) rotate(-2deg);}
+  50%{transform:translateY(-5px) rotate(2deg);}
+}
+.mascot svg{width:100%;height:100%;display:block;overflow:visible;}
+.mascot .mouth{opacity:0;transition:.2s;}
+.mascot.idle .mouth.smile{opacity:1;}
+.mascot.correct .mouth.big-smile{opacity:1;}
+.mascot.wrong .mouth.frown{opacity:1;}
+.mascot .eye-open{opacity:1;transition:.2s;}
+.mascot .eye-sad{opacity:0;}
+.mascot.wrong .eye-open{opacity:0;}
+.mascot.wrong .eye-sad{opacity:1;}
+.mascot .arm-left,.mascot .arm-right{transform-origin:50% 8%;transition:transform .32s ease;}
+.mascot.correct .arm-left{transform:rotate(-120deg);}
+.mascot.correct .arm-right{transform:rotate(120deg);}
+.mascot.wrong .arm-left{transform:rotate(20deg);}
+.mascot.wrong .arm-right{transform:rotate(-20deg);}
+.mascot .leg-left,.mascot .leg-right{transform-origin:50% 0;transition:transform .3s;}
+
+/* Nhảy tung hoa */
+.mascot.correct{
+  animation:mascotJump 1s cubic-bezier(.28,.84,.42,1) 1;
+}
+@keyframes mascotJump{
+  0%   {transform:translateY(0) rotate(0) scale(1);}
+  15%  {transform:translateY(4px) rotate(0) scale(1.05,.94);}
+  32%  {transform:translateY(-42px) rotate(-10deg) scale(.94,1.08);}
+  52%  {transform:translateY(-60px) rotate(10deg) scale(1);}
+  70%  {transform:translateY(-34px) rotate(-6deg) scale(1.03,.97);}
+  86%  {transform:translateY(-8px) rotate(4deg) scale(1.05,.95);}
+  100% {transform:translateY(0) rotate(0) scale(1);}
+}
+.mascot.correct + .mascot-shadow{
+  animation:shadowPulse 1s ease-out 1;
+}
+@keyframes shadowPulse{
+  0%{transform:translateX(-50%) scale(1);opacity:.9;}
+  45%{transform:translateX(-50%) scale(.55);opacity:.35;}
+  100%{transform:translateX(-50%) scale(1);opacity:.9;}
+}
+/* Buồn ủ rũ */
+.mascot.wrong{
+  animation:mascotSlump .85s cubic-bezier(.34,1.56,.64,1) 1 forwards;
+}
+@keyframes mascotSlump{
+  0%  {transform:translateY(0) rotate(0);}
+  22% {transform:translateY(-7px) rotate(-3deg);}
+  52% {transform:translateY(5px) rotate(5deg);}
+  78% {transform:translateY(9px) rotate(-2deg);}
+  100%{transform:translateY(8px) rotate(0);}
+}
+.mascot.wrong .leg-left{transform:rotate(-8deg);}
+.mascot.wrong .leg-right{transform:rotate(8deg);}
+/* Nhảy múa vui vẻ khi đứng chờ */
+.mascot.dance{
+  animation:mascotDance 1.2s ease-in-out 3;
+}
+@keyframes mascotDance{
+  0%  {transform:translateY(0) rotate(0) scale(1);}
+  20% {transform:translateY(-6px) rotate(-7deg) scale(1.03,.97);}
+  40% {transform:translateY(2px) rotate(7deg) scale(.98,1.02);}
+  60% {transform:translateY(-6px) rotate(-5deg) scale(1.03,.97);}
+  80% {transform:translateY(2px) rotate(5deg) scale(.98,1.02);}
+  100%{transform:translateY(0) rotate(0) scale(1);}
+}
+/* Nước mắt */
+.tear{
+  position:absolute;width:8px;height:12px;
+  background:#5eb3ff;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity:0;pointer-events:none;
+  box-shadow:inset -2px -2px 0 rgba(255,255,255,.6);
+}
+.tear::after{
+  content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;
+  border-bottom:5px solid #5eb3ff;
+}
+.mascot.wrong .tear{animation:tearFall 1.2s ease-in infinite;}
+@keyframes tearFall{
+  0%{opacity:0;transform:translateY(0);}
+  15%{opacity:1;}
+  100%{opacity:0;transform:translateY(36px);}
+}
+/* Confetti */
+.confetti-layer{
+  position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:5;
+}
+.confetti-piece{
+  position:absolute;top:35%;left:50%;
+  width:8px;height:12px;border-radius:2px;opacity:0;
+  animation:confettiFly 1.25s cubic-bezier(.15,.7,.35,1) forwards;
+}
+@keyframes confettiFly{
+  0%   {transform:translate(-50%,-50%) rotate(0) scale(.4);opacity:1;}
+  60%  {opacity:1;}
+  100% {transform:translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rot)) scale(1);opacity:0;}
+}
+.confetti-piece.round{border-radius:50%;width:7px;height:7px;}
+.confetti-piece.star{
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  width:11px;height:11px;border-radius:0;
+}
+
 @media(max-width:600px){
   #startScreen{padding:28px 18px}
   #startScreen h1{font-size:1.45rem}
@@ -193,6 +411,12 @@ body{
   .q-card{padding:16px}
   .btn{padding:12px 22px;font-size:.9rem}
   #topbar .title{font-size:.85rem;min-width:auto;flex-basis:100%;order:3}
+  .mascot-wrap{right:8px;bottom:88px;}
+  .mascot-stage{width:88px;height:112px;}
+  .mascot{width:82px;height:108px;}
+  .mascot-bubble{font-size:.72rem;padding:5px 10px;}
+  .hist-item{padding:9px 11px;}
+  .hist-line2{font-size:.72rem;gap:8px;}
 }
 </style>
 </head>
@@ -232,6 +456,19 @@ body{
     <button id="startBtn" class="btn btn-primary" disabled onclick="startExam()">🚀 Bắt đầu làm bài</button>
     <div id="startHint" style="margin-top:12px;color:#a16207;font-size:.85rem;font-weight:700">
       ⚠️ Vui lòng chọn chức danh trước khi bắt đầu
+    </div>
+
+    <!-- ============ LỊCH SỬ THI ============ -->
+    <div id="historySection">
+      <h3>
+        🏆 Lịch sử thi (10 lần gần nhất)
+        <span class="cnt" id="histCnt">0 / 10</span>
+      </h3>
+      <div class="hint">Kết quả được lưu tự động sau mỗi lần nộp bài.</div>
+      <div id="historyList"></div>
+      <div style="text-align:right;margin-top:10px">
+        <button id="clearHistBtn" onclick="clearHistory()">🗑 Xoá toàn bộ lịch sử</button>
+      </div>
     </div>
   </div>
 
@@ -274,10 +511,74 @@ body{
   </div>
 </div>
 
+<!-- ============ MASCOT ============ -->
+<div class="mascot-wrap" id="mascotWrap">
+  <div class="mascot-bubble" id="mascotBubble">Cố lên nhé!</div>
+  <div class="mascot-stage">
+    <div class="confetti-layer" id="confettiLayer"></div>
+    <div class="mascot-shadow"></div>
+    <div class="mascot idle" id="mascotEl">
+      <svg viewBox="0 0 140 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="leg-left">
+          <rect x="52" y="140" width="13" height="30" rx="4" fill="#4a5568"/>
+          <rect x="46" y="162" width="26" height="15" rx="5" fill="#1a202c"/>
+        </g>
+        <g class="leg-right">
+          <rect x="75" y="140" width="13" height="30" rx="4" fill="#4a5568"/>
+          <rect x="68" y="162" width="26" height="15" rx="5" fill="#1a202c"/>
+        </g>
+        <rect x="42" y="86" width="56" height="58" rx="16" fill="#f6ad55"/>
+        <rect x="42" y="86" width="56" height="58" rx="16" fill="none" stroke="#dd6b20" stroke-width="3"/>
+        <rect x="42" y="104" width="56" height="6" fill="#fef3c7"/>
+        <rect x="42" y="126" width="56" height="6" fill="#fef3c7"/>
+        <line x1="70" y1="90" x2="70" y2="142" stroke="#dd6b20" stroke-width="2" stroke-linecap="round"/>
+        <g class="arm-left">
+          <rect x="26" y="92" width="17" height="42" rx="8.5" fill="#f6ad55" stroke="#dd6b20" stroke-width="2.5"/>
+          <circle cx="34.5" cy="136" r="8.5" fill="#ffd9b3" stroke="#dd6b20" stroke-width="2"/>
+        </g>
+        <g class="arm-right">
+          <rect x="97" y="92" width="17" height="42" rx="8.5" fill="#f6ad55" stroke="#dd6b20" stroke-width="2.5"/>
+          <circle cx="105.5" cy="136" r="8.5" fill="#ffd9b3" stroke="#dd6b20" stroke-width="2"/>
+        </g>
+        <rect x="63" y="76" width="14" height="12" fill="#ffd9b3"/>
+        <circle cx="70" cy="52" r="38" fill="#ffd9b3" stroke="#f0b380" stroke-width="2"/>
+        <circle cx="34" cy="56" r="8" fill="#ffd9b3" stroke="#f0b380" stroke-width="2"/>
+        <circle cx="106" cy="56" r="8" fill="#ffd9b3" stroke="#f0b380" stroke-width="2"/>
+        <path d="M26 44 Q26 8 70 8 Q114 8 114 44 L114 48 L26 48 Z" fill="#f6e05e" stroke="#d69e2e" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="22" y="44" width="96" height="9" rx="4.5" fill="#ecc94b" stroke="#d69e2e" stroke-width="2"/>
+        <rect x="65" y="8" width="10" height="36" fill="#ecc94b" opacity=".55"/>
+        <circle cx="56" cy="56" r="8.5" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/>
+        <circle cx="84" cy="56" r="8.5" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/>
+        <g class="eye-open">
+          <circle cx="56" cy="57" r="4" fill="#1a202c"/>
+          <circle cx="84" cy="57" r="4" fill="#1a202c"/>
+          <circle cx="54.5" cy="55" r="1.4" fill="#fff"/>
+          <circle cx="82.5" cy="55" r="1.4" fill="#fff"/>
+        </g>
+        <g class="eye-sad" stroke="#1a202c" stroke-width="3" fill="none" stroke-linecap="round">
+          <path d="M50 58 Q56 53 62 58"/>
+          <path d="M78 58 Q84 53 90 58"/>
+        </g>
+        <circle cx="44" cy="70" r="5.5" fill="#fc8181" opacity=".55"/>
+        <circle cx="96" cy="70" r="5.5" fill="#fc8181" opacity=".55"/>
+        <path class="mouth smile" d="M60 72 Q70 80 80 72"
+              stroke="#1a202c" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+        <path class="mouth big-smile" d="M56 70 Q70 90 84 70 Q70 80 56 70 Z"
+              fill="#e53e3e" stroke="#1a202c" stroke-width="2.5" stroke-linejoin="round"/>
+        <path class="mouth big-smile" d="M60 74 Q70 78 80 74"
+              fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        <path class="mouth frown" d="M60 80 Q70 72 80 80"
+              stroke="#1a202c" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="tear" style="top:56%;left:32%;"></div>
+      <div class="tear" style="top:56%;left:62%;animation-delay:.25s;"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ==================================================================
    NGÂN HÀNG CÂU HỎI
-   Format: [cat, diff(E/M/H), type(MC|MMC), question, answer, opt1, opt2, ...]
    ================================================================== */
 const CAT = {
  T:"Tuabin - Lý thuyết chuyên ngành",
@@ -288,7 +589,7 @@ const CAT = {
  SC:"Sự cố chung bơm, quạt"
 };
 
-/* ---------- 50 câu chuyên môn (rút gọn mẫu) ---------- */
+/* ---------- 50 câu chuyên môn ---------- */
 const RAW_MAIN = [
 ["T","M","MC","Để nâng công suất cho một tổ máy lò hơi – tuabin và gia tăng hiệu suất chu trình nhiệt, các nhà máy nhiệt điện thường:",3,
 "Sử dụng thông số hơi cận và trên tới hạn kết hợp với tái nhiệt trung gian, nhiệt độ hơi mới và hơi tái nhiệt thường bằng và trên 540°C.",
@@ -1124,7 +1425,7 @@ const RAW_VHDN = [
 "Tất cả các câu trên."]
 ];
 
-/* ==================== NGÂN HÀNG QTNV – MÁY TRƯỞNG ==================== */
+/* ==================== QTNV – MÁY TRƯỞNG ==================== */
 const QTNV_MAY_TRUONG = [
 ["QTNV - Máy trưởng","E","MC","Trường hợp những Máy trưởng đã chuyển sang công tác khác hoặc bị đình chỉ do sự cố chủ quan, trước khi bố trí trở lại làm Máy trưởng thì phải:",4,
 "Qua thời gian tìm hiểu để nắm tình hình thực tế sản xuất không dưới 3 ngày, nếu thời gian ngừng công tác Máy trưởng từ 2 đến 3 tháng.",
@@ -1247,7 +1548,7 @@ const QTNV_MAY_TRUONG = [
 "Khi người nhận ca hỏi hoặc yêu cầu giải thích, người giao ca có nhiệm vụ giải đáp những thắc mắc đó và chỉ khi người nhận ca ký vào sổ nhật ký vận hành thì người giao ca mới được ký bàn giao và rời khỏi vị trí sản xuất."]
 ];
 
-/* ==================== NGÂN HÀNG QTNV – MÁY PHÓ ==================== */
+/* ==================== QTNV – MÁY PHÓ ==================== */
 const QTNV_MAY_PHO = [
 ["QTNV - Máy phó","E","MC","Trường hợp những Máy phó đã chuyển sang công tác khác hoặc bị đình chỉ do sự cố chủ quan, trước khi bố trí trở lại làm Máy phó thì phải:",4,
 "Qua thời gian tìm hiểu để nắm tình hình thực tế sản xuất không dưới 3 ngày, nếu thời gian ngừng công tác Máy phó từ 2 đến 3 tháng.",
@@ -1413,6 +1714,7 @@ function selectRole(role){
   const hint = document.getElementById('startHint');
   btn.disabled = false;
   hint.style.display = 'none';
+  triggerMascotDance();
 }
 
 /* ==================== TẠO ĐỀ ==================== */
@@ -1448,17 +1750,11 @@ function pickByDifficulty(pool, total, ratio){
 }
 
 function buildExam(role){
-  // 50 câu chuyên môn
   const mainPicked = pickByDifficulty(POOL_MAIN, N_MAIN, {E:0.34, M:0.40, H:0.26});
   shuffle(mainPicked);
-
-  // 5 câu VHDN
   const vhdnPicked = shuffle([...POOL_VHDN]).slice(0, N_VHDN);
-
-  // 5 câu QTNV: chỉ lấy từ pool của đúng chức danh đã chọn
   const qtnvPool = role === 'may-truong' ? POOL_QTNV_MAY_TRUONG : POOL_QTNV_MAY_PHO;
   const qtnvPicked = shuffle([...qtnvPool]).slice(0, N_QTNV);
-
   return [...mainPicked, ...vhdnPicked, ...qtnvPicked];
 }
 
@@ -1477,11 +1773,11 @@ function startExam(){
   document.getElementById('examArea').style.display = 'block';
   document.getElementById('overlay').style.display = 'none';
 
-  // Cập nhật pill chức danh
   document.getElementById('pillRole').textContent = `Chức danh: ${ROLE_LABEL[selectedRole]}`;
 
   renderExam();
   updateStats();
+  resetMascot();
   window.scrollTo(0,0);
 }
 
@@ -1490,13 +1786,11 @@ function catClass(cat){
   if(cat && cat.startsWith('QTNV')) return 'cat-qtnv';
   return '';
 }
-
 function catLabel(cat){
   if(cat === 'VHDN') return 'Văn hóa doanh nghiệp';
   if(cat && cat.startsWith('QTNV')) return cat.replace(/^QTNV\s*-\s*/,'QTNV: ');
   return cat;
 }
-
 function catBadgeClass(cat){
   if(cat === 'VHDN') return 'cat vhdn';
   if(cat && cat.startsWith('QTNV')) return 'cat qtnv';
@@ -1544,6 +1838,8 @@ function chooseOption(qIdx, oIdx){
   if(submitted) return;
   const q = exam[qIdx];
   const st = state[qIdx];
+  let justRevealed = false;
+  let wasCorrect = false;
 
   if(q.type === 'MC'){
     if(st.answered) return;
@@ -1577,6 +1873,9 @@ function chooseOption(qIdx, oIdx){
       ? '<span class="explain ok">✔ Chính xác!</span>'
       : '<span class="explain no">✘ Sai — đáp án đúng đã được đánh dấu xanh.</span>';
 
+    justRevealed = true;
+    wasCorrect = isCorrect;
+
   } else {
     if(!st.selected) st.selected = new Set();
     const set = st.selected;
@@ -1596,18 +1895,24 @@ function chooseOption(qIdx, oIdx){
 
     const sel = [...set].sort().join(',');
     const cor = [...q.correct].sort().join(',');
+    const wasAnswered = st.answered;
     st.correct = (sel === cor);
     st.answered = set.size > 0;
 
     const exp = document.getElementById(`exp-${qIdx}`);
     if(st.correct){
       exp.innerHTML = '<span class="explain ok">✔ Đúng hoàn toàn!</span>';
+      if(!wasAnswered) { justRevealed = true; wasCorrect = true; }
     }else{
       exp.innerHTML = '<span class="explain no">Đang chọn — cần chọn đủ các đáp án đúng.</span>';
     }
   }
 
   updateStats();
+
+  if(justRevealed){
+    setTimeout(()=>triggerMascot(wasCorrect ? 'correct' : 'wrong'), 100);
+  }
 }
 
 function updateStats(){
@@ -1699,7 +2004,20 @@ function submitExam(){
   }
   rev.innerHTML = html;
 
+  // Lưu lịch sử
+  saveHistory({
+    role: selectedRole,
+    roleLabel: ROLE_LABEL[selectedRole],
+    right, wrong, skip,
+    total: exam.length,
+    pct, pass: pct >= 70,
+    rMain, tMain, rVhdn, tVhdn, rQtnv, tQtnv,
+    time: new Date().toLocaleString('vi-VN')
+  });
+
   updateStats();
+  // Ẩn bottombar để modal không bị che
+  document.getElementById('bottombar').style.display = 'none';
   document.getElementById('overlay').style.display = 'flex';
 }
 
@@ -1720,6 +2038,10 @@ function revealAll(){
 
 function closeModal(){
   document.getElementById('overlay').style.display = 'none';
+  // Hiện lại bottombar nếu đang có bài thi
+  if(exam.length > 0){
+    document.getElementById('bottombar').style.display = 'flex';
+  }
 }
 
 function resetExam(){
@@ -1727,24 +2049,30 @@ function resetExam(){
   startExam();
 }
 
+/* ============ ĐÃ SỬA: goHome & goHomeFromModal ============ */
 function goHome(){
   const answered = state.filter(s => s && s.answered).length;
-  if(answered > 0 && !submitted){
+
+  const isDoing = !submitted && answered > 0;
+  const isDone  = submitted;
+
+  if(isDoing){
     const ok = confirm(
       '⚠️ Bạn đang làm dở bài thi.\n\n' +
       'Nếu quay về Trang chủ, toàn bộ kết quả sẽ bị xóa và bạn phải làm lại từ đầu.\n\n' +
       'Bạn có chắc muốn quay về Trang chủ không?'
     );
-    if(!ok) return;
-  } else if(submitted){
+    if(!ok) return;   // Cancel → KHÔNG làm gì, giữ nguyên trạng thái
+  } else if(isDone){
     const ok = confirm(
       '🏠 Quay về Trang chủ?\n\n' +
       'Bài thi hiện tại sẽ kết thúc. Bạn có thể bắt đầu đề mới sau khi quay về.\n\n' +
       'Tiếp tục?'
     );
-    if(!ok) return;
+    if(!ok) return;   // Cancel → modal kết quả vẫn còn nguyên
   }
 
+  // Chỉ ẩn/hiện SAU KHI đã xác nhận (hoặc khi không cần xác nhận)
   document.getElementById('overlay').style.display = 'none';
   document.getElementById('examArea').style.display = 'none';
   document.getElementById('topbar').style.display = 'none';
@@ -1755,13 +2083,12 @@ function goHome(){
   state = [];
   submitted = false;
   document.getElementById('examArea').innerHTML = '';
-
-  // Giữ nguyên chức danh đã chọn để người dùng đỡ phải chọn lại
+  resetMascot();
+  renderHistory();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function goHomeFromModal(){
-  closeModal();
   goHome();
 }
 
@@ -1772,6 +2099,172 @@ window.addEventListener('beforeunload', function(e){
     e.returnValue = '';
   }
 });
+
+/* ==================================================================
+   LỊCH SỬ THI
+   ================================================================== */
+const HIST_KEY = 'qtnv_hist_60_v1';
+const HIST_MAX = 10;
+
+function loadHistory(){
+  try {
+    const raw = localStorage.getItem(HIST_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e){ return []; }
+}
+function saveHistoryRecord(rec){
+  const hist = loadHistory();
+  hist.unshift(rec);
+  const trimmed = hist.slice(0, HIST_MAX);
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(trimmed)); } catch(e){}
+}
+function saveHistory(rec){
+  saveHistoryRecord(rec);
+  renderHistory();
+}
+function clearHistory(){
+  if(!confirm('⚠️ Xoá toàn bộ lịch sử thi?\nHành động này không thể hoàn tác.')) return;
+  try { localStorage.removeItem(HIST_KEY); } catch(e){}
+  renderHistory();
+}
+function renderHistory(){
+  const hist = loadHistory();
+  const list = document.getElementById('historyList');
+  const cnt  = document.getElementById('histCnt');
+  cnt.textContent = `${hist.length} / ${HIST_MAX}`;
+
+  if(hist.length === 0){
+    list.innerHTML = '<div class="hist-empty">🕐 Chưa có lần thi nào. Hãy bắt đầu làm bài để lưu kết quả!</div>';
+    return;
+  }
+
+  list.innerHTML = hist.map((h, i)=>{
+    const rank = i + 1;
+    const cls = h.pass ? 'pass' : 'fail';
+    const badge = h.pass ? '✔' : '✘';
+    return `<div class="hist-item ${cls}">
+      <div class="hist-rank">#${rank}</div>
+      <div class="hist-body">
+        <div class="hist-line1">
+          <span class="role-tag">${h.roleLabel || '—'}</span>
+          <span class="score">${h.right}/${h.total}</span>
+          <span>(${h.pct}%)</span>
+          <span>${badge} ${h.pass ? 'Đạt' : 'Chưa đạt'}</span>
+        </div>
+        <div class="hist-line2">
+          <span class="cat-detail">CM: <b>${h.rMain}/${h.tMain}</b></span>
+          <span class="cat-detail">VHDN: <b>${h.rVhdn}/${h.tVhdn}</b></span>
+          <span class="cat-detail">QTNV: <b>${h.rQtnv}/${h.tQtnv}</b></span>
+        </div>
+      </div>
+      <div class="hist-time">${h.time || ''}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ==================================================================
+   MASCOT
+   ================================================================== */
+const MASCOT_HAPPY = ['Giỏi lắm! 🎉','Xuất sắc! 🌟','Đúng rồi! 💯','Tuyệt vời! 👏','Chuẩn luôn! ✨','Bạn giỏi quá! 🏆','Quá đỉnh! 🚀','Chính xác! 🎯'];
+const MASCOT_SAD   = ['Cố lên nào... 😢','Sai mất rồi!','Đừng nản nhé!','Lần sau nhớ kỹ hơn!','Tiếc quá...','Bình tĩnh ôn lại nhé!','Ủ rũ quá đi... 😞','Sai cũng là học mà!'];
+const MASCOT_DANCE = ['Chọn xong rồi! 🎊','Sẵn sàng chưa? 💪','Chiến thôi nào! 🔥','Cùng cố gắng nhé! ✨'];
+
+let mascotTimer = null;
+
+function pickRandom(arr, n=1){
+  const c = [...arr];
+  for(let i=c.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [c[i],c[j]] = [c[j],c[i]];
+  }
+  return c.slice(0, n);
+}
+
+function showBubble(text, tone){
+  const b = document.getElementById('mascotBubble');
+  b.textContent = text;
+  b.className = 'mascot-bubble show ' + (tone || '');
+}
+function hideBubble(){
+  const b = document.getElementById('mascotBubble');
+  b.className = 'mascot-bubble';
+}
+
+function triggerMascot(state){
+  const m = document.getElementById('mascotEl');
+  m.classList.remove('idle','correct','wrong','dance');
+  void m.offsetWidth;
+
+  clearTimeout(mascotTimer);
+
+  if(state === 'correct'){
+    m.classList.add('correct');
+    burstConfetti();
+    showBubble(pickRandom(MASCOT_HAPPY,1)[0], 'happy');
+    mascotTimer = setTimeout(()=>{
+      m.classList.remove('correct');
+      m.classList.add('idle');
+      hideBubble();
+    }, 2600);
+  } else if(state === 'wrong'){
+    m.classList.add('wrong');
+    showBubble(pickRandom(MASCOT_SAD,1)[0], 'sad');
+    mascotTimer = setTimeout(()=>{
+      m.classList.remove('wrong');
+      m.classList.add('idle');
+      hideBubble();
+    }, 2600);
+  } else {
+    m.classList.add('idle');
+    hideBubble();
+  }
+}
+
+function triggerMascotDance(){
+  const m = document.getElementById('mascotEl');
+  m.classList.remove('idle','correct','wrong','dance');
+  void m.offsetWidth;
+  m.classList.add('dance');
+  showBubble(pickRandom(MASCOT_DANCE,1)[0], 'happy');
+  clearTimeout(mascotTimer);
+  mascotTimer = setTimeout(()=>{
+    m.classList.remove('dance');
+    m.classList.add('idle');
+    hideBubble();
+  }, 3800);
+}
+
+function resetMascot(){
+  const m = document.getElementById('mascotEl');
+  m.classList.remove('correct','wrong','dance');
+  m.classList.add('idle');
+  hideBubble();
+  clearTimeout(mascotTimer);
+}
+
+function burstConfetti(){
+  const cont = document.getElementById('confettiLayer');
+  cont.innerHTML = '';
+  const colors = ['#fbbf24','#ef4444','#3b82f6','#10b981','#a855f7','#ec4899','#f97316','#06b6d4'];
+  const shapes = ['', 'round', 'star'];
+  const N = 28;
+  for(let i=0;i<N;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece ' + shapes[i%3];
+    p.style.background = colors[i % colors.length];
+    const angle = (Math.random() * 360) * Math.PI / 180;
+    const dist = 55 + Math.random() * 85;
+    p.style.setProperty('--tx', (Math.cos(angle) * dist).toFixed(1) + 'px');
+    p.style.setProperty('--ty', (Math.sin(angle) * dist - 45).toFixed(1) + 'px');
+    p.style.setProperty('--rot', (Math.random() * 900 - 450) + 'deg');
+    p.style.animationDelay = (Math.random() * 0.18).toFixed(2) + 's';
+    cont.appendChild(p);
+  }
+  setTimeout(()=>{ cont.innerHTML = ''; }, 1500);
+}
+
+/* ==================== KHỞI TẠO ==================== */
+renderHistory();
 </script>
 </body>
 </html>
