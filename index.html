@@ -22,7 +22,7 @@
         }
         
         #main-wrapper {
-            max-width: 1100px; /* Nới rộng một chút cho 3 cột */
+            max-width: 1100px; 
             width: 100%;
         }
 
@@ -59,7 +59,7 @@
             grid-template-columns: 1fr;
             gap: 25px;
         }
-        /* Bố cục cho Màn hình từ 768px trở lên: Hàng trên 3 cột, Hàng dưới 2 cột (canh giữa) */
+        
         @media (min-width: 768px) {
             #screen-home { 
                 grid-template-columns: repeat(6, 1fr); 
@@ -68,7 +68,6 @@
             .folder-maypho { grid-column: 3 / 5; }
             .folder-safety { grid-column: 5 / 7; }
             
-            /* Hàng dưới căn giữa */
             .folder-quiz { grid-column: 2 / 4; }
             .folder-drive { grid-column: 4 / 6; }
         }
@@ -82,8 +81,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
-            text-decoration: none; /* Dùng cho thẻ <a> Drive */
-            display: block; /* Dùng cho thẻ <a> Drive */
+            text-decoration: none; 
+            display: block; 
             color: inherit;
         }
         
@@ -91,7 +90,7 @@
         .folder-maypho { border-bottom: 8px solid #00838f; }
         .folder-safety { border-bottom: 8px solid #2e7d32; }
         .folder-quiz { border-bottom: 8px solid #6a1b9a; }
-        .folder-drive { border-bottom: 8px solid #f4511e; } /* Đỏ cam cho Google Drive */
+        .folder-drive { border-bottom: 8px solid #f4511e; } 
         
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .folder-maytruong:hover { border-color: #0056b3; }
@@ -268,7 +267,7 @@
             <p class="folder-desc">Luyện thi trắc nghiệm các chuyên đề tổng hợp</p>
         </div>
 
-        <!-- Thư mục MỚI: Liên kết ra thẳng Google Drive -->
+        <!-- Thư mục Drive -->
         <a class="folder-card folder-drive" href="https://drive.google.com/drive/folders/1RNLyJO_PgKzgML6FNUyuJBboSq7ypu6F?usp=drive_link" target="_blank" rel="noopener noreferrer">
             <div class="folder-icon">☁️</div>
             <h2 class="folder-title">Thư Viện Drive</h2>
@@ -343,6 +342,8 @@
         </div>
         <div class="list-container">
             <a class="file-link" onclick="openDoc('tracnghiemtb.html')">Đề thi Trắc nghiệm Tuabin Bậc 3</a>
+            <!-- ĐÃ THÊM FILE AN TOÀN ĐIỆN VÀO ĐÂY -->
+            <a class="file-link" onclick="openDoc('antoandien.html')">Đề thi Trắc nghiệm An toàn điện</a>
         </div>
     </div>
 </div>
@@ -369,7 +370,6 @@
         document.getElementById(folderId).style.display = 'block';
         window.scrollTo(0, 0); 
 
-        // Nếu bấm vào thư mục Máy Phó, sẽ gọi hàm tự động quét đọc file
         if(folderId === 'screen-maypho') {
             loadMayPhoQuestionsAutomatically();
         }
@@ -397,17 +397,14 @@
         openFolder(currentFolderId);
     }
 
-    // TÍNH NĂNG TỰ ĐỘNG ĐỌC VÀ LỌC NỘI DUNG THÔNG MINH
     function loadMayPhoQuestionsAutomatically() {
         if (isMayPhoLoaded) return;
         isMayPhoLoaded = true;
 
         const container = document.getElementById('maypho-list-container');
         
-        // Tạo file tổng hợp
         container.innerHTML = `<a class="file-link" onclick="openDoc('tonghopmp.html')">📌 Tổng hợp toàn bộ đáp án chuyên môn Máy phó</a>`;
 
-        // Quét 23 câu
         for (let i = 1; i <= 23; i++) {
             let filename = `cau${i}.html`;
             
