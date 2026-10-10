@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Ôn Thi Tổng Hợp Bậc 3 - Nhiệt Điện Mông Dương 1</title>
     <style>
-        /* Phông nền lưới kỹ thuật */
+        /* Phông nền lưới kỹ thuật (Blueprint/Grid) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fa;
@@ -74,16 +74,17 @@
             border: 2px solid transparent;
         }
         
-        .folder-theory { border-bottom: 8px solid #0056b3; }
+        .folder-maytruong { border-bottom: 8px solid #0056b3; } /* Đổi tên class */
         .folder-safety { border-bottom: 8px solid #2e7d32; }
-        .folder-quiz { border-bottom: 8px solid #6a1b9a; }
         .folder-maypho { border-bottom: 8px solid #00838f; }
+        .folder-quiz { border-bottom: 8px solid #6a1b9a; }
+        
         
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .folder-theory:hover { border-color: #0056b3; }
+        .folder-maytruong:hover { border-color: #0056b3; } /* Đổi tên class */
         .folder-safety:hover { border-color: #2e7d32; }
-        .folder-quiz:hover { border-color: #6a1b9a; }
         .folder-maypho:hover { border-color: #00838f; }
+        .folder-quiz:hover { border-color: #6a1b9a; }
 
         .folder-icon { font-size: 60px; margin-bottom: 20px; }
         .folder-title { font-size: 22px; font-weight: bold; margin: 0 0 10px 0; color: #1a252f; text-transform: uppercase; }
@@ -101,10 +102,10 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        #screen-theory { border-top-color: #0056b3; }
+        #screen-maytruong { border-top-color: #0056b3; } /* Đổi ID */
         #screen-safety { border-top-color: #2e7d32; }
-        #screen-quiz { border-top-color: #6a1b9a; }
         #screen-maypho { border-top-color: #00838f; }
+        #screen-quiz { border-top-color: #6a1b9a; }
 
         .section-header {
             display: flex;
@@ -116,10 +117,11 @@
         }
         
         .section-title { font-size: 22px; font-weight: bold; margin: 0; text-transform: uppercase; }
-        #screen-theory .section-title { color: #0056b3; }
+        #screen-maytruong .section-title { color: #0056b3; } /* Đổi ID */
         #screen-safety .section-title { color: #2e7d32; }
-        #screen-quiz .section-title { color: #6a1b9a; }
         #screen-maypho .section-title { color: #00838f; }
+        #screen-quiz .section-title { color: #6a1b9a; }
+        
 
         .back-btn {
             background-color: #e53935;
@@ -160,10 +162,11 @@
             cursor: pointer;
         }
         
-        #screen-theory .file-link { border-left-color: #0056b3; }
+        #screen-maytruong .file-link { border-left-color: #0056b3; } /* Đổi ID */
         #screen-safety .file-link { border-left-color: #2e7d32; }
-        #screen-quiz .file-link { border-left-color: #6a1b9a; }
         #screen-maypho .file-link { border-left-color: #00838f; }
+        #screen-quiz .file-link { border-left-color: #6a1b9a; }
+        
         
         .file-link:hover {
             background-color: #e9ecef;
@@ -225,12 +228,13 @@
         <p>Chuyên Đề Máy Nhiệt Điện Mông Dương 1</p>
     </div>
 
-    <!-- MÀN HÌNH 1: HIỂN THỊ 4 THƯ MỤC -->
+    <!-- MÀN HÌNH 1: HIỂN THỊ 4 THƯ MỤC LỚN -->
     <div id="screen-home">
-        <div class="folder-card folder-theory" onclick="openFolder('screen-theory')">
+        <!-- Đã sửa tên thư mục thành MÁY TRƯỞNG -->
+        <div class="folder-card folder-maytruong" onclick="openFolder('screen-maytruong')">
             <div class="folder-icon">📚</div>
-            <h2 class="folder-title">Lý Thuyết</h2>
-            <p class="folder-desc">Cấu tạo, vận hành, xử lý sự cố thiết bị (16 bài)</p>
+            <h2 class="folder-title">Máy Trưởng</h2>
+            <p class="folder-desc">Đáp án chuyên môn Máy trưởng (16 bài)</p>
         </div>
         
         <div class="folder-card folder-safety" onclick="openFolder('screen-safety')">
@@ -252,10 +256,10 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH 2A: THƯ MỤC LÝ THUYẾT -->
-    <div id="screen-theory" class="list-section">
+    <!-- MÀN HÌNH 2A: THƯ MỤC MÁY TRƯỞNG (ĐỔI TỪ LÝ THUYẾT) -->
+    <div id="screen-maytruong" class="list-section">
         <div class="section-header">
-            <h2 class="section-title">📚 Mục: Lý Thuyết</h2>
+            <h2 class="section-title">📚 Mục: Chuyên Môn Máy Trưởng</h2>
             <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
         </div>
         <div class="list-container">
@@ -300,7 +304,7 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH 2C: THƯ MỤC MÁY PHÓ (TỰ ĐỘNG ĐỌC & LỌC TÊN FILE) -->
+    <!-- MÀN HÌNH 2C: THƯ MỤC MÁY PHÓ -->
     <div id="screen-maypho" class="list-section">
         <div class="section-header">
             <h2 class="section-title">👨‍🔧 Mục: Chuyên Môn Máy Phó</h2>
@@ -337,7 +341,7 @@
     function openFolder(folderId) {
         currentFolderId = folderId;
         document.getElementById('screen-home').style.display = 'none';
-        document.getElementById('screen-theory').style.display = 'none';
+        document.getElementById('screen-maytruong').style.display = 'none'; // Đổi ID
         document.getElementById('screen-safety').style.display = 'none';
         document.getElementById('screen-maypho').style.display = 'none';
         document.getElementById('screen-quiz').style.display = 'none';
@@ -352,7 +356,7 @@
     }
 
     function goBackToHome() {
-        document.getElementById('screen-theory').style.display = 'none';
+        document.getElementById('screen-maytruong').style.display = 'none'; // Đổi ID
         document.getElementById('screen-safety').style.display = 'none';
         document.getElementById('screen-maypho').style.display = 'none';
         document.getElementById('screen-quiz').style.display = 'none';
