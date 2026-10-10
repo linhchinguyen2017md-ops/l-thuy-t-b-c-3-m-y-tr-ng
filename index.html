@@ -53,14 +53,15 @@
         .header h1 { margin: 0; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; position: relative; z-index: 2; }
         .header p { margin: 10px 0 0 0; font-size: 16px; font-weight: 500; color: #e6f2ff; position: relative; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px;}
         
-        /* MÀN HÌNH 1: GIAO DIỆN CHỌN THƯ MỤC */
+        /* MÀN HÌNH 1: GIAO DIỆN CHỌN 4 THƯ MỤC (Lưới 2x2) */
         #screen-home {
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
         }
         @media (min-width: 768px) {
-            #screen-home { grid-template-columns: 1fr 1fr 1fr; }
+            /* Chia thành 2 cột đều nhau để chứa 4 nút rất đẹp */
+            #screen-home { grid-template-columns: 1fr 1fr; } 
         }
 
         .folder-card {
@@ -77,11 +78,13 @@
         .folder-theory { border-bottom: 8px solid #0056b3; }
         .folder-safety { border-bottom: 8px solid #2e7d32; }
         .folder-quiz { border-bottom: 8px solid #6a1b9a; }
+        .folder-maypho { border-bottom: 8px solid #00838f; } /* Màu Xanh Teal cho Máy phó */
         
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .folder-theory:hover { border-color: #0056b3; }
         .folder-safety:hover { border-color: #2e7d32; }
         .folder-quiz:hover { border-color: #6a1b9a; }
+        .folder-maypho:hover { border-color: #00838f; }
 
         .folder-icon { font-size: 60px; margin-bottom: 20px; }
         .folder-title { font-size: 22px; font-weight: bold; margin: 0 0 10px 0; color: #1a252f; text-transform: uppercase; }
@@ -102,6 +105,7 @@
         #screen-theory { border-top-color: #0056b3; }
         #screen-safety { border-top-color: #2e7d32; }
         #screen-quiz { border-top-color: #6a1b9a; }
+        #screen-maypho { border-top-color: #00838f; }
 
         .section-header {
             display: flex;
@@ -116,6 +120,7 @@
         #screen-theory .section-title { color: #0056b3; }
         #screen-safety .section-title { color: #2e7d32; }
         #screen-quiz .section-title { color: #6a1b9a; }
+        #screen-maypho .section-title { color: #00838f; }
 
         .back-btn {
             background-color: #e53935;
@@ -159,6 +164,7 @@
         #screen-theory .file-link { border-left-color: #0056b3; }
         #screen-safety .file-link { border-left-color: #2e7d32; }
         #screen-quiz .file-link { border-left-color: #6a1b9a; }
+        #screen-maypho .file-link { border-left-color: #00838f; }
         
         .file-link:hover {
             background-color: #e9ecef;
@@ -216,12 +222,11 @@
 
 <div id="main-wrapper">
     <div class="header">
-        <!-- Đã cập nhật tiêu đề theo đúng ý anh -->
         <h1>Hệ Thống Ôn Thi Tổng Hợp Bậc 3</h1>
         <p>Chuyên Đề Máy Nhiệt Điện Mông Dương 1</p>
     </div>
 
-    <!-- MÀN HÌNH 1: HIỂN THỊ 3 THƯ MỤC LỚN -->
+    <!-- MÀN HÌNH 1: HIỂN THỊ 4 THƯ MỤC LỚN -->
     <div id="screen-home">
         <div class="folder-card folder-theory" onclick="openFolder('screen-theory')">
             <div class="folder-icon">📚</div>
@@ -233,6 +238,12 @@
             <div class="folder-icon">🛡️</div>
             <h2 class="folder-title">An Toàn</h2>
             <p class="folder-desc">Quy định, thủ tục PCT, BPTC an toàn (12 bài)</p>
+        </div>
+
+        <div class="folder-card folder-maypho" onclick="openFolder('screen-maypho')">
+            <div class="folder-icon">👨‍🔧</div>
+            <h2 class="folder-title">Máy Phó</h2>
+            <p class="folder-desc">Đáp án chuyên môn Máy phó (23 câu + Tổng hợp)</p>
         </div>
 
         <div class="folder-card folder-quiz" onclick="openFolder('screen-quiz')">
@@ -290,60 +301,18 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH 2C: THƯ MỤC TRẮC NGHIỆM -->
-    <div id="screen-quiz" class="list-section">
+    <!-- MÀN HÌNH 2C: THƯ MỤC MÁY PHÓ (MỚI THÊM) -->
+    <div id="screen-maypho" class="list-section">
         <div class="section-header">
-            <h2 class="section-title">📝 Mục: Trắc Nghiệm</h2>
+            <h2 class="section-title">👨‍🔧 Mục: Chuyên Môn Máy Phó</h2>
             <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
         </div>
         <div class="list-container">
-            <a class="file-link" onclick="openDoc('tracnghiemtb.html')">Đề thi Trắc nghiệm Tuabin Bậc 3</a>
-        </div>
-    </div>
-</div>
-
-<!-- MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU CÓ SẴN NÚT BACK -->
-<div id="screen-content">
-    <button id="btn-close-doc" onclick="closeDoc()">⬅ QUAY LẠI DANH MỤC</button>
-    <iframe id="doc-iframe" src=""></iframe>
-</div>
-
-<!-- JAVASCRIPT ĐIỀU KHIỂN CHUYỂN TRANG -->
-<script>
-    let currentFolderId = '';
-
-    function openFolder(folderId) {
-        currentFolderId = folderId;
-        document.getElementById('screen-home').style.display = 'none';
-        document.getElementById('screen-theory').style.display = 'none';
-        document.getElementById('screen-safety').style.display = 'none';
-        document.getElementById('screen-quiz').style.display = 'none';
-        
-        document.getElementById(folderId).style.display = 'block';
-        window.scrollTo(0, 0); 
-    }
-
-    function goBackToHome() {
-        document.getElementById('screen-theory').style.display = 'none';
-        document.getElementById('screen-safety').style.display = 'none';
-        document.getElementById('screen-quiz').style.display = 'none';
-        
-        document.getElementById('screen-home').style.display = 'grid'; 
-    }
-
-    function openDoc(filename) {
-        document.getElementById('doc-iframe').src = filename;
-        document.getElementById('main-wrapper').style.display = 'none';
-        document.getElementById('screen-content').style.display = 'block';
-    }
-
-    function closeDoc() {
-        document.getElementById('doc-iframe').src = "";
-        document.getElementById('screen-content').style.display = 'none';
-        document.getElementById('main-wrapper').style.display = 'block';
-        openFolder(currentFolderId);
-    }
-</script>
-
-</body>
-</html>
+            <!-- File tổng hợp -->
+            <a class="file-link" onclick="openDoc('tonghopmp.html')">Tổng hợp đáp án chuyên môn Máy phó</a>
+            <!-- 23 câu hỏi -->
+            <a class="file-link" onclick="openDoc('cau1.html')">Câu 1 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau2.html')">Câu 2 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau3.html')">Câu 3 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau4.html')">Câu 4 - Chuyên môn Máy phó</a>
+            <a class
