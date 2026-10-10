@@ -74,14 +74,13 @@
             border: 2px solid transparent;
         }
         
-        .folder-maytruong { border-bottom: 8px solid #0056b3; } /* Đổi tên class */
+        .folder-maytruong { border-bottom: 8px solid #0056b3; }
         .folder-safety { border-bottom: 8px solid #2e7d32; }
         .folder-maypho { border-bottom: 8px solid #00838f; }
         .folder-quiz { border-bottom: 8px solid #6a1b9a; }
         
-        
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .folder-maytruong:hover { border-color: #0056b3; } /* Đổi tên class */
+        .folder-maytruong:hover { border-color: #0056b3; }
         .folder-safety:hover { border-color: #2e7d32; }
         .folder-maypho:hover { border-color: #00838f; }
         .folder-quiz:hover { border-color: #6a1b9a; }
@@ -102,7 +101,7 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        #screen-maytruong { border-top-color: #0056b3; } /* Đổi ID */
+        #screen-maytruong { border-top-color: #0056b3; }
         #screen-safety { border-top-color: #2e7d32; }
         #screen-maypho { border-top-color: #00838f; }
         #screen-quiz { border-top-color: #6a1b9a; }
@@ -117,11 +116,10 @@
         }
         
         .section-title { font-size: 22px; font-weight: bold; margin: 0; text-transform: uppercase; }
-        #screen-maytruong .section-title { color: #0056b3; } /* Đổi ID */
+        #screen-maytruong .section-title { color: #0056b3; }
         #screen-safety .section-title { color: #2e7d32; }
         #screen-maypho .section-title { color: #00838f; }
         #screen-quiz .section-title { color: #6a1b9a; }
-        
 
         .back-btn {
             background-color: #e53935;
@@ -162,11 +160,10 @@
             cursor: pointer;
         }
         
-        #screen-maytruong .file-link { border-left-color: #0056b3; } /* Đổi ID */
+        #screen-maytruong .file-link { border-left-color: #0056b3; }
         #screen-safety .file-link { border-left-color: #2e7d32; }
         #screen-maypho .file-link { border-left-color: #00838f; }
         #screen-quiz .file-link { border-left-color: #6a1b9a; }
-        
         
         .file-link:hover {
             background-color: #e9ecef;
@@ -228,25 +225,25 @@
         <p>Chuyên Đề Máy Nhiệt Điện Mông Dương 1</p>
     </div>
 
-    <!-- MÀN HÌNH 1: HIỂN THỊ 4 THƯ MỤC LỚN -->
+    <!-- MÀN HÌNH 1: HIỂN THỊ 4 THƯ MỤC -->
     <div id="screen-home">
-        <!-- Đã sửa tên thư mục thành MÁY TRƯỞNG -->
+        <!-- Đã đổi vị trí 2 thư mục -->
         <div class="folder-card folder-maytruong" onclick="openFolder('screen-maytruong')">
             <div class="folder-icon">📚</div>
             <h2 class="folder-title">Máy Trưởng</h2>
             <p class="folder-desc">Đáp án chuyên môn Máy trưởng (16 bài)</p>
         </div>
         
-        <div class="folder-card folder-safety" onclick="openFolder('screen-safety')">
-            <div class="folder-icon">🛡️</div>
-            <h2 class="folder-title">An Toàn</h2>
-            <p class="folder-desc">Quy định, thủ tục PCT, BPTC an toàn (12 bài)</p>
-        </div>
-
         <div class="folder-card folder-maypho" onclick="openFolder('screen-maypho')">
             <div class="folder-icon">👨‍🔧</div>
             <h2 class="folder-title">Máy Phó</h2>
             <p class="folder-desc">Đáp án chuyên môn Máy phó (23 câu tự động đọc)</p>
+        </div>
+
+        <div class="folder-card folder-safety" onclick="openFolder('screen-safety')">
+            <div class="folder-icon">🛡️</div>
+            <h2 class="folder-title">An Toàn</h2>
+            <p class="folder-desc">Quy định, thủ tục PCT, BPTC an toàn (12 bài)</p>
         </div>
 
         <div class="folder-card folder-quiz" onclick="openFolder('screen-quiz')">
@@ -256,7 +253,7 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH 2A: THƯ MỤC MÁY TRƯỞNG (ĐỔI TỪ LÝ THUYẾT) -->
+    <!-- MÀN HÌNH 2A: THƯ MỤC MÁY TRƯỞNG -->
     <div id="screen-maytruong" class="list-section">
         <div class="section-header">
             <h2 class="section-title">📚 Mục: Chuyên Môn Máy Trưởng</h2>
@@ -341,7 +338,7 @@
     function openFolder(folderId) {
         currentFolderId = folderId;
         document.getElementById('screen-home').style.display = 'none';
-        document.getElementById('screen-maytruong').style.display = 'none'; // Đổi ID
+        document.getElementById('screen-maytruong').style.display = 'none';
         document.getElementById('screen-safety').style.display = 'none';
         document.getElementById('screen-maypho').style.display = 'none';
         document.getElementById('screen-quiz').style.display = 'none';
@@ -356,7 +353,7 @@
     }
 
     function goBackToHome() {
-        document.getElementById('screen-maytruong').style.display = 'none'; // Đổi ID
+        document.getElementById('screen-maytruong').style.display = 'none';
         document.getElementById('screen-safety').style.display = 'none';
         document.getElementById('screen-maypho').style.display = 'none';
         document.getElementById('screen-quiz').style.display = 'none';
