@@ -60,7 +60,6 @@
             gap: 25px;
         }
         @media (min-width: 768px) {
-            /* Chia thành 2 cột đều nhau để chứa 4 nút rất đẹp */
             #screen-home { grid-template-columns: 1fr 1fr; } 
         }
 
@@ -78,7 +77,7 @@
         .folder-theory { border-bottom: 8px solid #0056b3; }
         .folder-safety { border-bottom: 8px solid #2e7d32; }
         .folder-quiz { border-bottom: 8px solid #6a1b9a; }
-        .folder-maypho { border-bottom: 8px solid #00838f; } /* Màu Xanh Teal cho Máy phó */
+        .folder-maypho { border-bottom: 8px solid #00838f; }
         
         .folder-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .folder-theory:hover { border-color: #0056b3; }
@@ -301,18 +300,96 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH 2C: THƯ MỤC MÁY PHÓ (MỚI THÊM) -->
+    <!-- MÀN HÌNH 2C: THƯ MỤC MÁY PHÓ -->
     <div id="screen-maypho" class="list-section">
         <div class="section-header">
             <h2 class="section-title">👨‍🔧 Mục: Chuyên Môn Máy Phó</h2>
             <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
         </div>
         <div class="list-container">
-            <!-- File tổng hợp -->
             <a class="file-link" onclick="openDoc('tonghopmp.html')">Tổng hợp đáp án chuyên môn Máy phó</a>
-            <!-- 23 câu hỏi -->
             <a class="file-link" onclick="openDoc('cau1.html')">Câu 1 - Chuyên môn Máy phó</a>
             <a class="file-link" onclick="openDoc('cau2.html')">Câu 2 - Chuyên môn Máy phó</a>
             <a class="file-link" onclick="openDoc('cau3.html')">Câu 3 - Chuyên môn Máy phó</a>
             <a class="file-link" onclick="openDoc('cau4.html')">Câu 4 - Chuyên môn Máy phó</a>
-            <a class
+            <a class="file-link" onclick="openDoc('cau5.html')">Câu 5 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau6.html')">Câu 6 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau7.html')">Câu 7 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau8.html')">Câu 8 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau9.html')">Câu 9 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau10.html')">Câu 10 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau11.html')">Câu 11 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau12.html')">Câu 12 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau13.html')">Câu 13 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau14.html')">Câu 14 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau15.html')">Câu 15 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau16.html')">Câu 16 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau17.html')">Câu 17 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau18.html')">Câu 18 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau19.html')">Câu 19 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau20.html')">Câu 20 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau21.html')">Câu 21 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau22.html')">Câu 22 - Chuyên môn Máy phó</a>
+            <a class="file-link" onclick="openDoc('cau23.html')">Câu 23 - Chuyên môn Máy phó</a>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 2D: THƯ MỤC TRẮC NGHIỆM -->
+    <div id="screen-quiz" class="list-section">
+        <div class="section-header">
+            <h2 class="section-title">📝 Mục: Trắc Nghiệm</h2>
+            <button class="back-btn" onclick="goBackToHome()">⬅ QUAY LẠI TỔNG</button>
+        </div>
+        <div class="list-container">
+            <a class="file-link" onclick="openDoc('tracnghiemtb.html')">Đề thi Trắc nghiệm Tuabin Bậc 3</a>
+        </div>
+    </div>
+</div>
+
+<!-- MÀN HÌNH 3: KHUNG ĐỌC TÀI LIỆU -->
+<div id="screen-content">
+    <button id="btn-close-doc" onclick="closeDoc()">⬅ QUAY LẠI DANH MỤC</button>
+    <iframe id="doc-iframe" src=""></iframe>
+</div>
+
+<!-- JAVASCRIPT ĐIỀU KHIỂN CHUYỂN TRANG -->
+<script>
+    let currentFolderId = '';
+
+    function openFolder(folderId) {
+        currentFolderId = folderId;
+        document.getElementById('screen-home').style.display = 'none';
+        document.getElementById('screen-theory').style.display = 'none';
+        document.getElementById('screen-safety').style.display = 'none';
+        document.getElementById('screen-maypho').style.display = 'none';
+        document.getElementById('screen-quiz').style.display = 'none';
+        
+        document.getElementById(folderId).style.display = 'block';
+        window.scrollTo(0, 0); 
+    }
+
+    function goBackToHome() {
+        document.getElementById('screen-theory').style.display = 'none';
+        document.getElementById('screen-safety').style.display = 'none';
+        document.getElementById('screen-maypho').style.display = 'none';
+        document.getElementById('screen-quiz').style.display = 'none';
+        
+        document.getElementById('screen-home').style.display = 'grid'; 
+    }
+
+    function openDoc(filename) {
+        document.getElementById('doc-iframe').src = filename;
+        document.getElementById('main-wrapper').style.display = 'none';
+        document.getElementById('screen-content').style.display = 'block';
+    }
+
+    function closeDoc() {
+        document.getElementById('doc-iframe').src = "";
+        document.getElementById('screen-content').style.display = 'none';
+        document.getElementById('main-wrapper').style.display = 'block';
+        openFolder(currentFolderId);
+    }
+</script>
+
+</body>
+</html>
