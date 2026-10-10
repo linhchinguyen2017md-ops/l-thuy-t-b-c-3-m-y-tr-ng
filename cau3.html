@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tách 01 nhánh bình ngưng ra khỏi vận hành & Biện pháp an toàn</title>
+<style>
+  :root {
+    --primary: #1f4e79;
+    --primary-light: #e6eef7;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #1f4e79, #2e6da4);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin: 34px 0 16px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--primary), #2e6da4);
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(31, 78, 121, 0.2);
+  }
+
+  h2.danger-head {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    box-shadow: 0 3px 10px rgba(192, 57, 43, 0.2);
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin: 24px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Danh sách điều kiện chuẩn bị ===== */
+  .prep-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+
+  .prep-list > li {
+    position: relative;
+    background: #fbfcfe;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+
+  .prep-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .prep-list ul { margin-top: 6px; margin-bottom: 0; }
+
+  /* ===== Các bước thao tác ===== */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .steps > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 68px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .steps > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps > li:hover {
+    box-shadow: 0 4px 14px rgba(31, 78, 121, 0.15);
+    transform: translateX(3px);
+  }
+
+  .steps > li strong { color: var(--primary); }
+  .steps > li ul { margin: 8px 0 0; }
+
+  /* ===== Khối an toàn (đỏ) ===== */
+  .safety-block {
+    background: #fff;
+    border: 2px solid var(--danger);
+    border-radius: 10px;
+    padding: 0;
+    margin: 18px 0;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(192, 57, 43, 0.1);
+  }
+
+  .safety-block .block-title {
+    background: linear-gradient(135deg, var(--danger), #e74c3c);
+    color: #fff;
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .safety-block .block-title .num {
+    background: #fff;
+    color: var(--danger);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .safety-block .block-body {
+    padding: 14px 20px 18px;
+  }
+
+  .safety-block ul { margin: 6px 0; }
+
+  /* ===== Khối cảnh báo ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    color: #7a1c14;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    color: #6b4a00;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    color: #123b5c;
+  }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.red { background: var(--danger); }
+  .tag.green { background: var(--ok); }
+  .tag.purple { background: var(--purple); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Ghi chú cuối ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e8f6ee, #d1f0dd);
+    border-left: 5px solid var(--ok);
+    border-radius: 0 8px 8px 0;
+    color: #14532d;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--ok); }
+
+  @media (max-width: 600px) {
+    .document { padding: 24px 18px; }
+    h1 { font-size: 1.1rem; }
+    h2 { font-size: 1rem; padding: 10px 14px; }
+    .steps > li { padding: 14px 14px 14px 58px; }
+    .steps > li::before { left: 14px; width: 30px; height: 30px; font-size: 0.9rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .safety-block .block-title { font-size: 0.95rem; padding: 10px 14px; }
+    .safety-block .block-body { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu trình tự tách 01 nhánh bình ngưng ra khỏi vận hành? Các biện pháp an toàn trước khi làm việc?</span>
+  </div>
+
+  <h1>Tách 01 nhánh bình ngưng ra khỏi vận hành<br>&amp; Biện pháp an toàn trước khi làm việc</h1>
+
+  <div class="info">
+    <strong>📘 Căn cứ áp dụng:</strong> Trình tự dưới đây được chuẩn hóa theo đúng cấu trúc thực tế và các quy trình
+    vận hành tại <strong>Nhà máy Nhiệt điện Mông Dương 1</strong> — Quy trình vận hành Tuabin
+    <strong>QTVH/01M-VH</strong> và Quy trình vận hành Hệ thống nước tuần hoàn <strong>QTVH/03M-VH</strong>.
+  </div>
+
+  <!-- ============ PHẦN I ============ -->
+  <section>
+    <h2>Phần I. Trình tự tách 01 nhánh bình ngưng ra khỏi vận hành</h2>
+
+    <h3>1. Điều kiện và công tác chuẩn bị trước khi tách</h3>
+
+    <ul class="prep-list">
+      <li>
+        <strong>🚩 Báo cáo và xin lệnh</strong>
+        Máy trưởng báo cáo Trưởng kíp lò máy và Trưởng ca để xin lệnh cho phép tách 01 nhánh
+        bình ngưng ra kiểm tra/sửa chữa.
+      </li>
+
+      <li>
+        <strong>📉 Giảm phụ tải tổ máy</strong>
+        Phối hợp cùng Lò trưởng hạ tải tổ máy xuống dưới mức cho phép chạy 01 nửa bình ngưng
+        (thường duy trì mức tải <span class="chip">50 – 60% định mức</span>, tức
+        <span class="chip">270 MW</span> đối với tổ máy 540 MW). Việc giảm tải là bắt buộc để
+        tránh quá tải nhiệt cho nửa bình ngưng còn lại và không làm suy giảm chân không bình ngưng.
+      </li>
+
+      <li>
+        <strong>⚙️ Kiểm tra hệ thống phụ trợ</strong>
+        <ul>
+          <li>Đảm bảo bơm nước tuần hoàn (CWP) và nhánh bình ngưng còn lại đang vận hành hoàn toàn ổn định.</li>
+          <li>Sẵn sàng cả 2 bơm hút chân không bình ngưng (chuyển bơm chân không dự phòng sẵn sàng vào làm việc nếu chân không suy giảm).</li>
+          <li>Đưa hệ thống phun giảm ôn hơi thoát hạ áp vào trạng thái sẵn sàng để kiểm soát nhiệt độ cổ xả tuabin hạ áp.</li>
+          <li>Thu hồi toàn bộ bi của hệ thống vệ sinh bình ngưng bằng bi (CTCS) ở nhánh chuẩn bị tách về bộ thu, sau đó dừng hệ thống vệ sinh bi của nhánh đó.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2. Các bước thao tác tách trên DCS và tại chỗ</h3>
+
+    <p>
+      <em>Phối hợp giữa các chức danh:</em>
+      <span class="tag">MÁY TRƯỞNG</span>
+      <span class="tag">MÁY PHÓ</span>
+      <span class="tag">TRỰC TUẦN HOÀN</span>
+    </p>
+
+    <ol class="steps">
+      <li>
+        <strong>Cô lập các hệ thống phụ trợ gắn với nhánh tách</strong>
+        <ul>
+          <li>Đóng van trích nước tuần hoàn tới bộ phân tích clo dư của nhánh tương ứng.</li>
+          <li>Tách và đóng van mồi chân không hộp nước tuần hoàn (Vacuum Priming System) nối với
+              khoang hộp nước của nhánh tách để tránh lọt khí vào hệ thống chân không hộp nước chung.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Cô lập đường nước tuần hoàn (CW) của nhánh tách</strong>
+        <ul>
+          <li>Trên DCS, Máy trưởng chuyển van động cơ (MOV) đường nước tuần hoàn <strong>đầu ra</strong>
+              của nhánh bình ngưng cần tách sang chế độ <em>Manual</em> và đóng hoàn toàn.</li>
+          <li>Sau khi van đầu ra đã đóng kín, tiến hành đóng hoàn toàn van động cơ (MOV) đường
+              nước tuần hoàn <strong>đầu vào</strong> của nhánh đó.</li>
+          <li>Máy phó / Trực tuần hoàn kiểm tra tại chỗ: xác nhận ti van, công tắc hành trình cơ
+              khí của cả 2 van MOV đầu vào và đầu ra đã đóng kín <strong>100%</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Phá chân không và xả cạn hộp nước tuần hoàn</strong>
+        <ul>
+          <li>Mở van xả khí (vent) phía trên đỉnh hộp nước tuần hoàn của nhánh tách để phá chân
+              không và thông khí quyển.</li>
+          <li>Mở hoàn toàn các van xả đáy (drain) của hộp nước tuần hoàn để thoát hết lượng nước
+              biển tồn đọng trong hộp nước và trong toàn bộ các ống trao đổi nhiệt về hố thu/kênh xả.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra độ kín cô lập và giám sát thông số tổ máy</strong>
+        <ul>
+          <li><strong>Kiểm tra đường xả đáy:</strong> khi nước đã xả hết, kiểm tra miệng xả đáy
+              không còn dòng nước chảy liên tục (chứng tỏ van đầu vào/đầu ra đóng kín, không bị
+              rò lọt nước biển qua van).</li>
+          <li><strong>Giám sát trên DCS:</strong> Máy trưởng liên tục giám sát độ chân không bình
+              ngưng, nhiệt độ hơi thoát hạ áp, độ chênh giãn nở, độ di trục và độ rung tuabin.
+              Nếu chân không tụt nhanh hoặc nhiệt độ cổ xả vượt giới hạn, phải báo ngay
+              Trưởng kíp / Trưởng ca xử lý kịp thời.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN II ============ -->
+  <section>
+    <h2 class="danger-head">Phần II. Các biện pháp an toàn trước khi cho người vào làm việc</h2>
+
+    <p>
+      <em>(Sửa chữa, tìm bịt ống xì, vệ sinh)</em> — Sau khi đã hoàn thành việc tách nhánh về mặt
+      công nghệ, trước khi bàn giao cho đơn vị sửa chữa mở cửa người chui vào bên trong hộp nước
+      bình ngưng, phải thực hiện <strong>nghiêm ngặt</strong> các biện pháp an toàn sau:
+    </p>
+
+    <!-- Biện pháp 1 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">1</span>
+        Thực hiện biện pháp cô lập nguồn năng lượng
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Cắt aptomat/máy cắt nguồn động lực và nguồn điều khiển của cả 2 van điện (MOV)
+              đầu vào và đầu ra nước tuần hoàn của nhánh đã tách.</li>
+
+          <li>Khóa cơ khí (khóa xích) tay van/hộp số bộ truyền động của 2 van trên và treo
+              biển cảnh báo an toàn:
+              <div class="alert" style="margin: 10px 0 4px;">
+                <strong>🚫 CẤM ĐÓNG ĐIỆN — CÓ NGƯỜI ĐANG LÀM VIỆC</strong>
+              </div>
+          </li>
+
+          <li>Giữ các van xả đáy và van xả khí hộp nước luôn ở trạng thái <strong>mở hoàn toàn</strong>
+              để phòng ngừa áp lực tích tụ.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Biện pháp 2 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">2</span>
+        Mở cửa người chui (Manhole) an toàn
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Trước khi tháo bu-lông cửa người chui, phải kiểm tra chắc chắn <strong>áp suất bên
+              trong đã về 0</strong> (qua van xả khí) và nước đã tháo cạn.</li>
+
+          <li>Khi nới lỏng bu-lông cửa người chui, nới lỏng dần các bu-lông <strong>phía dưới
+              và đối xứng</strong> trước; người thao tác phải <strong>đứng chếch sang một bên</strong>,
+              tuyệt đối không đứng đối diện trực tiếp trước nắp cửa để phòng ngừa nước nóng hoặc
+              khí còn sót lại phụt ra gây bỏng/tai nạn.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Biện pháp 3 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">3</span>
+        Biện pháp an toàn làm việc trong không gian hạn chế
+      </div>
+      <div class="block-body">
+        <ul>
+          <li><span class="tag">THÔNG GIÓ</span> Lắp đặt quạt hút/thổi thông gió cưỡng bức liên
+              tục vào khoang hộp nước để làm mát và cấp khí tươi.</li>
+
+          <li><span class="tag red">ĐO KHÍ</span> Đơn vị an toàn/hóa nghiệm phải tiến hành đo
+              nồng độ dưỡng khí (<strong>Oxy ≥ 19,5%</strong>) và kiểm tra các khí độc hại/khí
+              ngạt (đặc biệt là khí <strong>Clo</strong> tồn dư do hệ thống châm clo,
+              <strong>H₂S</strong>, <strong>CO</strong>) đảm bảo các chỉ số nằm trong giới hạn
+              an toàn lao động mới được phép vào.</li>
+
+          <li><span class="tag">CHIẾU SÁNG</span> Do làm việc trong khoang kim loại ẩm ướt,
+              hệ thống đèn chiếu sáng đưa vào bên trong bắt buộc phải dùng nguồn điện áp an toàn
+              cực thấp (<strong>12V hoặc 24V</strong>) có biến áp cách ly chống giật.</li>
+
+          <li><span class="tag">CẢNH GIỚI</span> Bắt buộc bố trí ít nhất <strong>01 nhân viên
+              cảnh giới</strong> túc trực liên tục ở ngoài cửa người chui, luôn giữ liên lạc
+              bằng mắt hoặc bộ đàm với người bên trong; có sẵn dây cứu nạn và phương án ứng cứu
+              khẩn cấp.</li>
+
+          <li><span class="tag green">BHLĐ</span> Trang bị đầy đủ bảo hộ lao động: quần áo không
+              thấm nước, ủng cao su chống trượt (do bùn rác và bề mặt trơn), găng tay cao su,
+              mũ bảo hộ có đèn gắn và kính bảo hộ.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Biện pháp 4 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">4</span>
+        Bàn giao hiện trường và khóa Phiếu công tác (PCT)
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Người cho phép <strong>(Vận hành)</strong> cùng Người chỉ huy trực tiếp
+              <strong>(Đơn vị sửa chữa)</strong> kiểm tra thực tế hiện trường các biện pháp an
+              toàn đã hoàn thành đầy đủ, ký xác nhận vào
+              <strong>Phiếu công tác / Giấy phép làm việc trong không gian kín</strong>
+              trước khi cho nhóm công tác vào làm việc.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>⚠ Nguyên tắc vàng:</strong> Không bao giờ cho người vào bên trong hộp nước bình
+      ngưng khi <strong>chưa xác nhận đủ 4 nhóm biện pháp an toàn</strong>: cô lập nguồn năng
+      lượng — mở cửa an toàn — kiểm tra môi trường khí — bàn giao &amp; khóa PCT.
+    </div>
+
+  </section>
+
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Việc tách nhánh bình ngưng phải tuân thủ nghiêm ngặt trình tự
+    4 bước từ giảm tải → cô lập → phá chân không → giám sát. Trước khi bàn giao cho đơn vị sửa
+    chữa, phải hoàn thành đầy đủ 4 nhóm biện pháp an toàn và ký xác nhận PCT/Giấy phép làm việc
+    trong không gian kín.
+  </div>
+
+</article>
+
+</body>
+</html>

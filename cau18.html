@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cấm khởi động tuabin & Ngừng tuabin không phá hoại chân không</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.35rem;
+    color: var(--danger);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--danger);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.12rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2.danger { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  h2.warn   { background: linear-gradient(135deg, #b45309, #d97706); }
+
+  h2 .num-badge {
+    background: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  h2.danger .num-badge { color: var(--danger); }
+  h2.warn .num-badge   { color: var(--warn); }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  /* ===== Danh sách trường hợp ===== */
+  .cases {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+    display: grid;
+    gap: 10px;
+    counter-reset: case;
+  }
+
+  .cases > li {
+    position: relative;
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 62px;
+    font-size: 0.98rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cases > li::before {
+    counter-increment: case;
+    content: counter(case);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cases > li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.18);
+  }
+
+  .cases > li strong {
+    color: var(--danger);
+  }
+
+  /* Danh sách cho ngừng không phá chân không (màu cam) */
+  .cases.warn-list > li {
+    background: var(--warn-light);
+    border-left-color: var(--warn);
+  }
+
+  .cases.warn-list > li::before {
+    background: var(--warn);
+  }
+
+  .cases.warn-list > li strong {
+    color: var(--warn);
+  }
+
+  .cases.warn-list > li:hover {
+    box-shadow: 0 3px 12px rgba(217, 119, 6, 0.18);
+  }
+
+  /* Danh sách con (sub-item) */
+  .cases > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .cases > li ul li {
+    margin: 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .cases > li ul li::marker {
+    color: var(--danger);
+    font-weight: 700;
+  }
+
+  .cases.warn-list > li ul li::marker {
+    color: var(--warn);
+  }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Khối tổng kết ===== */
+  .summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .summary .summary-card {
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: #fff;
+  }
+
+  .summary .summary-card.danger {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+  }
+
+  .summary .summary-card.warn {
+    background: linear-gradient(135deg, #b45309, #d97706);
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+  }
+
+  .summary .summary-card .num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .summary .summary-card .label {
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.95;
+    font-weight: 600;
+  }
+
+  /* ===== Khối cảnh báo ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.92rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { font-size: 0.72rem; padding: 5px 10px; }
+    h2 .sub-score { display: none; }
+    .cases > li { padding: 10px 12px 10px 52px; }
+    .cases > li::before { left: 10px; width: 28px; height: 28px; font-size: 0.75rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .summary { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu các trường hợp cấm khởi động tuabin? Nêu các trường hợp ngừng tuabin không phá hoại chân không?</span>
+  </div>
+
+  <h1>Cấm khởi động tuabin<br>&amp; Ngừng tuabin không phá hoại chân không</h1>
+
+  <!-- ============ TỔNG KẾT ============ -->
+  <div class="summary">
+    <div class="summary-card danger">
+      <div class="num">13</div>
+      <div class="label">Trường hợp cấm khởi động tuabin</div>
+    </div>
+    <div class="summary-card warn">
+      <div class="num">15</div>
+      <div class="label">Trường hợp ngừng không phá hoại chân không</div>
+    </div>
+  </div>
+
+  <!-- ============ PHẦN 1 ============ -->
+  <section>
+    <h2 class="danger">
+      <span class="num-badge">PHẦN 1</span>
+      Các trường hợp cấm khởi động tuabin
+      <span class="sub-score">1,25đ</span>
+    </h2>
+
+    <p>
+      <strong>Nghiêm cấm khởi động tuabin</strong> khi xuất hiện một trong các trường hợp sau:
+    </p>
+
+    <ol class="cases">
+      <li>
+        <strong>Hỏng hóc hệ thống đo tốc độ:</strong> Tất cả các bộ đo tốc độ của tuabin bị hỏng.
+      </li>
+
+      <li>
+        <strong>Thí nghiệm bảo vệ trip không đạt:</strong> Thí nghiệm bảo vệ trip tuabin có
+        một hạng mục nào đó không bình thường.
+      </li>
+
+      <li>
+        <strong>Hỏng hóc bảo vệ vượt tốc:</strong> Tất cả các hỏng hóc của hệ thống bảo vệ
+        vượt tốc cơ khí, điện hoặc tốc độ tuabin lớn hơn
+        <span class="chip red">3300 vòng/phút</span> khi sa thải phụ tải mà chưa tìm ra nguyên
+        nhân.
+      </li>
+
+      <li>
+        <strong>Hệ thống van hơi chính và van trích bất thường:</strong> Các van MSV, CV, RSV,
+        IV, van một chiều hơi thoát xylanh cao áp, van một chiều các cửa trích vận hành bất
+        thường hoặc đóng không kín.
+      </li>
+
+      <li>
+        <strong>Thông số đo lường chính bị lỗi/sai lệch:</strong> Các thông số chính hiển thị
+        lỗi hoặc hiển thị bất thường mà không có biện pháp kiểm tra định lượng thay thế
+        (áp suất hơi chính hoặc hơi tái nhiệt, nhiệt độ, chân không, áp suất dầu EH, áp suất
+        dầu chèn, độ di trục, tốc độ quay rotor).
+      </li>
+
+      <li>
+        <strong>Bơm dầu và thiết bị quay trục bất thường:</strong> Bơm dầu bôi trơn xoay chiều
+        (AC), bơm dầu một chiều (DC), thiết bị vần trục vận hành bất thường.
+      </li>
+
+      <li>
+        <strong>Chất lượng hơi, dầu không đạt tiêu chuẩn.</strong>
+      </li>
+
+      <li>
+        <strong>Quy định về thiết bị vần trục:</strong>
+        <ul>
+          <li>Lỗi thiết bị quay trục, bộ quay trục không hoạt động hoặc dòng điện của bộ quay
+              trục vượt quá giới hạn.</li>
+
+          <li>Thời gian chạy liên tục của động cơ vần trục trước khi khởi động tổ máy không
+              đáp ứng quy định (ít nhất không được dưới <span class="chip">4 giờ</span>; nếu bị
+              ngắt quãng giữa chừng phải tính giờ lại từ đầu).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Âm thanh cơ khí bất thường:</strong> Có sự va chạm kim loại hay tiếng ồn bất
+        thường bên trong khi tuabin đang quay trục.
+      </li>
+
+      <li>
+        <strong>Hệ thống điều chỉnh làm việc không bình thường:</strong> Khi hệ thống điều
+        chỉnh của tuabin làm việc không bình thường gây ảnh hưởng đến việc giám sát, điều
+        khiển vận hành tổ máy.
+      </li>
+
+      <li>
+        <strong>Chưa rõ nguyên nhân sự cố trước đó:</strong> Tổ máy sau khi bị trip muốn khởi
+        động lại mà chưa tìm rõ nguyên nhân phát sinh trip trước đó.
+      </li>
+
+      <li>
+        <strong>Độ lệch tâm rotor vượt giới hạn:</strong> Độ lệch tâm (độ đảo) của rotor lớn
+        hơn <span class="chip red">0,038 mm</span>.
+      </li>
+
+      <li>
+        <strong>Chênh lệch nhiệt độ vỏ xilanh không đạt:</strong> Khi sấy xilanh trước khi
+        khởi động, độ chênh lệch nhiệt độ giữa vách trên và vách dưới của xilanh trong cao áp,
+        trung áp lớn hơn <span class="chip red">50 °C</span>.
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN 2 ============ -->
+  <section>
+    <h2 class="warn">
+      <span class="num-badge">PHẦN 2</span>
+      Các trường hợp ngừng tuabin không phá hoại chân không
+      <span class="sub-score">1,25đ</span>
+    </h2>
+
+    <p>
+      Người vận hành phải thực hiện <strong>ngừng tuabin không phá hoại chân không</strong>
+      trong các trường hợp sau:
+    </p>
+
+    <ol class="cases warn-list">
+      <li>
+        Hệ thống <strong>điều khiển tuabin</strong> làm việc không bình thường dẫn đến mất khả
+        năng điều khiển phụ tải và tốc độ tuabin.
+      </li>
+
+      <li>
+        <strong>Chân không bình ngưng</strong> giảm tới giá trị bảo vệ
+        (<span class="chip red">&gt; 0,254 bar</span> khi tốc độ tuabin ≥ 300 vòng/phút) và
+        không phục hồi được dù tải đã giảm về 0.
+      </li>
+
+      <li>
+        <strong>Tốc độ tuabin vượt quá 3300 vòng/phút</strong> (bảo vệ vượt tốc đã tác động).
+      </li>
+
+      <li>
+        <strong>Nhiệt độ hơi thoát tuabin cao áp</strong> ≥
+        <span class="chip red">482,2 °C</span> kéo dài liên tục quá 15 phút, hoặc khi nhiệt độ
+        hơi thoát cao áp vượt quá <span class="chip red">510 °C</span>.
+      </li>
+
+      <li>
+        <strong>Nhiệt độ hơi thoát khỏi tuabin hạ áp</strong> cao ≥
+        <span class="chip red">107,2 °C</span>.
+      </li>
+
+      <li>
+        <strong>Mức dầu bể dầu bôi trơn tuabin</strong> giảm thấp ≤
+        <span class="chip red">406,4 mm</span> mà không có khả năng khôi phục.
+      </li>
+
+      <li>
+        <strong>Áp suất dầu thủy lực điều khiển (dầu EH)</strong> giảm thấp ≤
+        <span class="chip red">110 bar</span>.
+      </li>
+
+      <li>
+        <strong>Màng an toàn tuabin hạ áp</strong> (LP rupture diaphragm) bị tác động bung vỡ
+        (áp lực <span class="chip red">5 psi / 0,34 bar</span>).
+      </li>
+
+      <li>
+        Phát hiện <strong>nứt vỡ nghiêm trọng</strong> trên các đường ống dẫn dầu bôi trơn,
+        dầu thủy lực; các đường ống hơi chính, hơi tái nhiệt, đường hơi trích; các đường ống
+        hệ thống nước ngưng, nước cấp; các ống góp, mặt bích, van chính…
+      </li>
+
+      <li>
+        <strong>Áp lực hệ thống khí nén đo lường</strong> giảm thấp
+        <span class="chip red">&lt; 4 bar</span> mà không có khả năng khắc phục.
+      </li>
+
+      <li>
+        <strong>Hư hỏng các đầu dò đo độ di trục tuabin.</strong>
+      </li>
+
+      <li>
+        <strong>Hư hỏng các cảm biến (sensor) đo tốc độ tuabin.</strong>
+      </li>
+
+      <li>
+        Xuất hiện <strong>chất lỏng (nước hoặc dầu) trong thân máy phát</strong> ở mức cao.
+      </li>
+
+      <li>
+        <strong>Hư hỏng hệ thống khí Hydro (H₂)</strong> máy phát.
+      </li>
+
+      <li>
+        Khi <strong>an toàn tính mạng của người vận hành</strong> bị xâm phạm.
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Đây là <strong>2 nhóm trường hợp đặc biệt quan trọng</strong>
+    trong vận hành tuabin:
+    <br>• <strong>13 trường hợp cấm khởi động</strong> — bảo vệ an toàn thiết bị khi khởi
+    động, tuyệt đối không được vi phạm để tránh hư hỏng nặng.
+    <br>• <strong>15 trường hợp ngừng không phá hoại chân không</strong> — quy trình dừng máy
+    ưu tiên duy trì chân không để bảo vệ tuabin và giảm thiểu ứng suất nhiệt.
+  </div>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiểm tra, chuẩn bị và khởi động hệ thống dầu bôi trơn Tuabin</title>
+<style>
+  :root {
+    --primary: #0b5394;
+    --primary-light: #e8f0fa;
+    --accent: #c0392b;
+    --ok: #1e8449;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f7f9fc;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 940px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Tiêu đề câu hỏi */
+  .question {
+    background: linear-gradient(135deg, #0b5394, #1a6fb5);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin: 34px 0 14px;
+    padding: 8px 14px;
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin: 20px 0 10px;
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  /* Danh sách kiểm tra */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 12px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 8px 0 8px 32px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* Bảng chỉ tiêu chất lượng dầu */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 0.96rem;
+  }
+
+  caption {
+    caption-side: top;
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 6px 0 10px;
+    font-size: 0.98rem;
+  }
+
+  thead th {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  thead th:first-child { text-align: center; width: 60px; }
+
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody td:first-child { text-align: center; font-weight: 600; color: var(--muted); }
+
+  tbody tr:nth-child(even) { background: #f2f6fb; }
+  tbody tr:hover { background: #e6eefb; }
+
+  .value {
+    font-weight: 600;
+    color: var(--ok);
+    white-space: nowrap;
+  }
+
+  /* Các bước khởi động */
+  .steps { counter-reset: step; margin: 20px 0; padding: 0; list-style: none; }
+
+  .steps > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 14px 18px 14px 62px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .steps > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps > li:hover {
+    box-shadow: 0 4px 14px rgba(11, 83, 148, 0.15);
+    transform: translateX(3px);
+  }
+
+  .note {
+    background: #fff8e1;
+    border-left: 5px solid #f0ad4e;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+    color: #6b5300;
+  }
+
+  .highlight {
+    background: #fff3cd;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #7a5c00;
+  }
+
+  strong { color: #1a1a1a; }
+
+  @media (max-width: 600px) {
+    .document { padding: 24px 18px; }
+    h1 { font-size: 1.15rem; }
+    h2 { font-size: 1.02rem; }
+    table { font-size: 0.84rem; }
+    thead th, tbody td { padding: 8px 8px; }
+    .steps > li { padding: 12px 14px 12px 54px; }
+    .steps > li::before { left: 10px; width: 30px; height: 30px; font-size: 0.75rem; }
+    .question { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">3 điểm</span>
+    <span>Anh (Chị) hãy nêu trình tự kiểm tra, chuẩn bị khởi động và các bước khởi động hệ thống dầu bôi trơn?</span>
+  </div>
+
+  <h1>Kiểm tra, chuẩn bị và khởi động<br>hệ thống dầu bôi trơn Tuabin</h1>
+
+  <!-- ============ PHẦN 1 ============ -->
+  <section>
+    <h2>1. Trình tự kiểm tra, chuẩn bị trước khi khởi động</h2>
+
+    <p>
+      Chuẩn bị khởi động hệ thống dầu bôi trơn được tiến hành đồng thời với việc chuẩn bị
+      vận hành Tuabin. Trước khi khởi động hệ thống, các công tác chuẩn bị sau phải hoàn thành:
+    </p>
+
+    <ul class="checklist">
+      <li>Phải kiểm tra tất cả các công việc sửa chữa của hệ thống đã được kết thúc, tất cả
+          các sai sót khiếm khuyết được loại bỏ, phiếu công tác đã khóa.</li>
+
+      <li>Kiểm tra bằng mắt các thiết bị đảm bảo: Vệ sinh khu vực sạch sẽ; các mặt bích kết
+          nối, van chặn, van một chiều trong điều kiện tốt và hệ thống sẵn sàng cho khởi động.</li>
+
+      <li>Các thiết bị đo lường, điều khiển của hệ thống dầu bôi trơn các ổ đỡ của Tuabin –
+          Máy phát phải đưa vào vận hành và được kiểm tra.</li>
+
+      <li>Chất lượng dầu trong bể dầu chính phải được kiểm tra bằng cách lấy mẫu do nhân viên
+          vận hành hoá đảm nhận. Chất lượng dầu phải đảm bảo:</li>
+    </ul>
+
+    <!-- Bảng chất lượng dầu -->
+    <table>
+      <caption>Bảng chỉ tiêu chất lượng dầu bôi trơn</caption>
+      <thead>
+        <tr>
+          <th>TT</th>
+          <th>Các chỉ tiêu chất lượng</th>
+          <th>Kết quả yêu cầu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Độ nhớt Saybolt @ 37,8 °C</td>
+          <td class="value">140 – 170 SUS</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Độ nhớt Saybolt @ 98,9 °C</td>
+          <td class="value">43 – 45 SUS</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Giá trị trung hòa lớn nhất</td>
+          <td class="value">0,20 mg KOH/g</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Thí nghiệm phòng tránh ăn mòn</td>
+          <td class="value">Đạt</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Thí nghiệm quá trình oxy hóa</td>
+          <td class="value">1000 giờ</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ul class="checklist">
+      <li>Kiểm soát mức dầu trong bể dầu chính ở mức làm việc bình thường.</li>
+
+      <li>Trước khi khởi động hệ thống thì nhiệt độ dầu trong bể phải đạt:
+          <span class="highlight">không được nhỏ hơn 21 °C</span>.</li>
+
+      <li>Các mạch điều khiển, mạch tự động, bảo vệ, liên động và tín hiệu cảnh báo của hệ
+          thống phải được cấp điện.</li>
+
+      <li>Chức năng của hệ thống cảnh báo ở phòng điều khiển tổ máy phải được kiểm tra khi các
+          giá trị mức giới hạn ở bể dầu chính đạt tới.</li>
+
+      <li>Lượng dầu bổ sung cho hệ thống phải được sẵn sàng.</li>
+
+      <li>Động cơ và các thiết bị đã được cấp điện đầy đủ.</li>
+
+      <li>Các thiết bị phải được kiểm tra và mạch của hệ thống dầu bôi trơn phải sẵn sàng cho
+          vận hành.</li>
+
+      <li>Nước làm mát cấp cho bộ làm mát dầu đã được cung cấp đầy đủ.</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 2 ============ -->
+  <section>
+    <h2>2. Các bước khởi động hệ thống dầu bôi trơn</h2>
+
+    <p>
+      Sau khi tất cả các công việc kiểm tra, chuẩn bị khởi động hệ thống đã hoàn thành, đã
+      thiết lập phương thức vận hành của hệ thống dầu bôi trơn (đã xác nhận phin lọc cần đưa
+      vào làm việc, bình làm mát cần làm việc, nước làm mát đã được thiết lập...); hệ thống
+      dầu bôi trơn sẽ được các chức danh <strong>Máy trưởng</strong> và
+      <strong>Máy phó</strong> phối hợp đưa vào làm việc theo trình tự sau:
+    </p>
+
+    <ol class="steps">
+      <li>
+        Xác nhận chế độ điều khiển của các quạt hút khí bể dầu ở <strong>“Manu”</strong>,
+        Máy trưởng kích xác nhận quạt hút khí cần chạy, Máy phó đến tại vị trí quạt hút khí
+        để theo dõi.
+      </li>
+
+      <li>
+        Máy trưởng kích khởi động quạt hút khí bể dầu trên <strong>DCS</strong>, kiểm tra tình
+        trạng làm việc của quạt, các thông số dòng điện động cơ quạt; Máy phó kiểm tra tình
+        trạng làm việc thực tế của quạt tại vị trí: âm thanh, độ rung, áp lực đầu đẩy quạt...
+      </li>
+
+      <li>
+        Xác nhận chế độ điều khiển của các bơm dầu bôi trơn ở <strong>“Man”</strong>. Máy
+        trưởng kích xác nhận bơm dầu bôi trơn cần chạy, Máy phó đứng tại vị trí lắp đặt bơm
+        dầu bôi trơn ngoài công trường.
+      </li>
+
+      <li>
+        Máy trưởng kích khởi động bơm dầu bôi trơn trên <strong>DCS</strong>; kiểm tra khẳng
+        định áp lực, nhiệt độ dầu bôi trơn bình thường, dầu bôi trơn đã được đưa đến các gối,
+        kiểm tra kính thăm dầu tại các gối có dầu chảy bình thường, bơm dầu bôi trơn làm việc
+        bình thường; khẳng định hệ thống dầu bôi trơn làm việc bình thường. Đưa quạt hút khí
+        bể dầu, bơm dầu bôi trơn còn lại về chế độ dự phòng liên động
+        (<strong>Auto</strong>).
+      </li>
+    </ol>
+
+    <div class="note">
+      <strong>Lưu ý:</strong> Sau khi khởi động thành công, cần đưa các thiết bị dự phòng
+      (quạt hút khí bể dầu, bơm dầu bôi trơn còn lại) về chế độ <strong>Auto</strong> để đảm
+      bảo khả năng tự động khởi động khi có sự cố hoặc mất thiết bị đang vận hành.
+    </div>
+  </section>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống nước làm mát phụ - Vai trò và chuẩn bị khởi động</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --accent-light: #e0f7fa;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #0891b2);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Khối khái niệm ===== */
+  .intro-box {
+    background: linear-gradient(135deg, #e3f1f9, #e0f7fa);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.98rem;
+  }
+
+  .intro-box strong { color: var(--primary); }
+
+  /* ===== Danh sách vai trò ===== */
+  .role-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .role-list > li {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px 14px 58px;
+    position: relative;
+    font-size: 0.97rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .role-list > li::before {
+    content: attr(data-num);
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .role-list > li:hover {
+    box-shadow: 0 3px 12px rgba(8, 145, 178, 0.15);
+    transform: translateX(3px);
+  }
+
+  .role-list > li strong { color: var(--primary); }
+
+  /* ===== Danh sách thiết bị con ===== */
+  .equip-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 6px;
+  }
+
+  .equip-list li {
+    background: #f0f9fc;
+    border: 1px solid #b8dbe5;
+    border-radius: 6px;
+    padding: 6px 12px 6px 32px;
+    font-size: 0.88rem;
+    position: relative;
+    color: #0c3a5e;
+    font-weight: 500;
+  }
+
+  .equip-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 8px 0 8px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+    font-size: 0.96rem;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Các bước chuẩn bị ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.02rem;
+  }
+
+  /* ===== Nhóm con ===== */
+  .sub-group {
+    background: #fbfcfe;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin: 10px 0;
+  }
+
+  .sub-group .sub-title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sub-group .sub-title::before {
+    content: "▸";
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  .purple-box {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--purple); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.green {
+    background: var(--ok-light);
+    color: var(--ok);
+    border-color: #a7d9bc;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.92rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { font-size: 0.78rem; padding: 5px 10px; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 62px; }
+    .step-list > li::before { left: 14px; width: 32px; height: 32px; font-size: 0.9rem; }
+    .role-list > li { padding: 12px 14px 12px 52px; }
+    .role-list > li::before { left: 10px; width: 30px; height: 30px; font-size: 0.78rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .equip-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu vai trò, tác dụng của hệ thống nước làm mát phụ và trình tự kiểm tra, chuẩn bị trước khi khởi động hệ thống nước làm mát phụ?</span>
+  </div>
+
+  <h1>Vai trò, tác dụng &amp; chuẩn bị khởi động<br>hệ thống nước làm mát phụ</h1>
+
+  <!-- ============ PHẦN I: VAI TRÒ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">I</span>
+      Vai trò và tác dụng của hệ thống nước làm mát phụ
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <div class="intro-box">
+      <strong>📘 Khái niệm và môi chất:</strong> Hệ thống nước làm mát phụ
+      (<strong>Open / Auxiliary Cooling Water System</strong>) là hệ thống làm mát
+      <strong>mạch hở</strong>, lấy nguồn nước làm mát trực tiếp từ hệ thống nước tuần hoàn
+      (nước biển sau lưới chắn rác/kênh dẫn) để cấp đến các phụ tải trao đổi nhiệt.
+    </div>
+
+    <p><strong>Vai trò và tác dụng chính:</strong></p>
+
+    <ul class="role-list">
+      <li data-num="1">
+        <strong>Làm mát cho hệ thống nước làm mát kín (CCW):</strong> Đây là nhiệm vụ
+        <strong>quan trọng nhất</strong>. Nước làm mát phụ được cấp vào các bộ trao đổi nhiệt
+        (bình làm mát nước làm mát kín) để giải nhiệt cho vòng nước làm mát kín (vòng nước
+        khử khoáng tuần hoàn kín), giữ nhiệt độ nước làm mát kín luôn duy trì ổn định trong
+        dải cho phép (<span class="chip blue">&lt; 37 °C</span>).
+      </li>
+
+      <li data-num="2">
+        <strong>Bảo vệ và duy trì điều kiện làm việc của các thiết bị phụ trợ trọng yếu:</strong>
+        Thông qua việc giải nhiệt cho vòng tuần hoàn kín, hệ thống <strong>gián tiếp làm
+        mát</strong> cho toàn bộ các thiết bị chính và phụ của tổ máy:
+
+        <ul class="equip-list">
+          <li>Bộ làm mát dầu bôi trơn tuabin – máy phát</li>
+          <li>Bộ làm mát dầu điều khiển (EH)</li>
+          <li>Bộ làm mát dầu &amp; động cơ tổ bơm cấp (BFP), bơm nước ngưng (CEP)</li>
+          <li>Máy nén khí và các bộ làm mát khí nén</li>
+          <li>Quạt khói (IDF), quạt gió sơ cấp (PAF), quạt gió thứ cấp (SAF), quạt gió cao áp</li>
+          <li>Hệ thống bơm chân không bình ngưng, bình tách bơm chân không</li>
+        </ul>
+      </li>
+
+      <li data-num="3">
+        <strong>Ngăn ngừa sự cố quá nhiệt:</strong> Tránh tình trạng tăng nhiệt độ gối trục,
+        cháy ổ bạc, suy giảm chất lượng dầu bôi trơn hoặc quá nhiệt cuộn dây động cơ các thiết
+        bị quay.
+      </li>
+
+      <li data-num="4">
+        <strong>Cách ly chống ăn mòn:</strong> Sử dụng nước làm mát phụ
+        <strong>gián tiếp qua bộ trao đổi nhiệt</strong> giúp ngăn chặn nước biển tiếp xúc
+        trực tiếp với các thiết bị sinh nhiệt quan trọng, tránh bám cặn, ăn mòn kim loại và
+        kéo dài tuổi thọ thiết bị.
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN II: TRÌNH TỰ CHUẨN BỊ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">II</span>
+      Trình tự kiểm tra, chuẩn bị trước khi khởi động
+      <span class="sub-score">1,5đ</span>
+    </h2>
+
+    <p>
+      Trước khi khởi động hệ thống nước làm mát phụ, nhân viên vận hành
+      (<strong>Máy trưởng và Máy phó</strong>) phải thực hiện đầy đủ các bước kiểm tra, chuẩn
+      bị sau:
+    </p>
+
+    <ol class="step-list">
+      <!-- Bước 1 -->
+      <li>
+        <strong>Kiểm tra hiện trường, cơ khí và an toàn</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,5đ</span>
+
+        <ul class="checklist">
+          <li>Kiểm tra toàn bộ công tác sửa chữa, lắp đặt, bảo dưỡng liên quan đến hệ thống
+              nước làm mát phụ và các bộ trao đổi nhiệt <strong>đã kết thúc</strong>; phiếu
+              công tác đã được khóa, các biện pháp an toàn tạm thời đã được tháo dỡ hoàn toàn;
+              hiện trường sạch sẽ, không còn người làm việc hay chướng ngại vật.</li>
+
+          <li>Kiểm tra độ chắc chắn của các <strong>bu lông móng bệ bơm, động cơ</strong>, khớp
+              nối dẫn động và các giá đỡ, giá treo tuyến đường ống nước làm mát phụ.</li>
+
+          <li>Kiểm tra mức dầu và chất lượng dầu bôi trơn gối trục bơm và động cơ đảm bảo bình
+              thường (mức dầu nằm trong khoảng <span class="chip">1/2 ÷ 2/3</span> mắt thăm
+              dầu/ống thủy tại chỗ).</li>
+
+          <li>Kiểm tra hệ thống <strong>nước chèn gối, nước làm mát chèn trục</strong> (nếu có)
+              đã sẵn sàng, các van liên quan mở tốt.</li>
+
+          <li>Thử quay tay (vần trục) cụm bơm và động cơ: trục <strong>quay nhẹ nhàng, êm</strong>,
+              không bị kẹt cơ khí hay phát ra tiếng cọ sát kim loại.</li>
+        </ul>
+      </li>
+
+      <!-- Bước 2 -->
+      <li>
+        <strong>Kiểm tra nguồn điện, đo lường và liên động bảo vệ</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,5đ</span>
+
+        <ul class="checklist">
+          <li>Kiểm tra đóng điện đầy đủ cho động cơ bơm làm mát phụ, các van điện động đầu đẩy
+              và van điện liên quan trên tuyến ống; kiểm tra <strong>cách điện động cơ</strong>
+              đạt tiêu chuẩn.</li>
+
+          <li>Kiểm tra nút <strong>dừng khẩn cấp (Emergency Stop)</strong> tại chỗ của bơm không
+              bị kẹt, sẵn sàng tác động khi có sự cố.</li>
+
+          <li>Toàn bộ hệ thống đo lường và giám sát (<strong>áp kế đầu hút, áp kế đầu đẩy</strong>,
+              các cảm biến nhiệt độ cuộn dây, nhiệt độ gối đỡ, cảm biến độ rung) được kiểm tra,
+              cấp nguồn và hiển thị chính xác trên <strong>DCS</strong>.</li>
+
+          <li>Đưa các mạch <strong>liên động bảo vệ</strong> sẵn sàng (liên động áp lực đầu đẩy
+              thấp, liên động tự động khởi động bơm dự phòng).</li>
+        </ul>
+      </li>
+
+      <!-- Bước 3 -->
+      <li>
+        <strong>Kiểm tra kênh hút, thiết lập sơ đồ van và điền đầy, xả khí</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,5đ</span>
+
+        <!-- Kênh hút -->
+        <div class="sub-group">
+          <div class="sub-title">Kênh dẫn / Bể hút</div>
+          <ul class="checklist">
+            <li>Khẳng định hệ thống nước tuần hoàn đã làm việc, mức nước tại hố hút/kênh hút
+                đảm bảo yêu cầu.</li>
+
+            <li>Các <strong>phên lưới chắn rác, phin lọc đầu vào</strong> thông suốt, không bị
+                rác làm nghẽn.</li>
+          </ul>
+        </div>
+
+        <!-- Sơ đồ van bơm -->
+        <div class="sub-group">
+          <div class="sub-title">Thiết lập sơ đồ van bơm</div>
+          <ul class="checklist">
+            <li><span class="tag green">MỞ</span> Mở hoàn toàn van chặn <strong>đầu vào/đầu
+                hút</strong> của bơm chuẩn bị khởi động (đồng thời mở van đầu hút của bơm dự
+                phòng).</li>
+
+            <li><span class="tag red">ĐÓNG</span> Đóng hoàn toàn van điện động <strong>đầu
+                đẩy</strong> của bơm cần khởi động (hoặc để ở chế độ Auto theo quy định logic).</li>
+          </ul>
+        </div>
+
+        <!-- Điền đầy và xả khí -->
+        <div class="sub-group">
+          <div class="sub-title">Điền đầy và xả khí (đuổi khí) thân bơm</div>
+          <ul class="checklist">
+            <li>Mở van <strong>xả khí tại nắp thân bơm</strong> và đường ống đầu hút để điền đầy
+                nước và xả sạch toàn bộ không khí đọng bên trong thân bơm.</li>
+
+            <li>Khi quan sát thấy nước <strong>trào ra liên tục thành dòng không còn bọt
+                khí</strong>, tiến hành đóng kín hoàn toàn van xả khí.</li>
+          </ul>
+        </div>
+
+        <!-- Bộ trao đổi nhiệt -->
+        <div class="sub-group">
+          <div class="sub-title">Thiết lập phía các bộ trao đổi nhiệt</div>
+          <ul class="checklist">
+            <li>Kiểm tra mở các van nước làm mát phụ <strong>đầu vào và đầu ra</strong> của bộ
+                trao đổi nhiệt nước làm mát kín (bình làm mát nước làm mát kín đang làm việc).</li>
+
+            <li>Mở van xả khí phần nước làm mát phụ của bình trao đổi nhiệt để điền đầy nước và
+                xả sạch khí, sau đó đóng van xả khí lại.</li>
+
+            <li>Báo cáo <strong>Trưởng kíp / Máy trưởng</strong> xác nhận hệ thống đã sẵn sàng
+                để phát lệnh khởi động bơm.</li>
+          </ul>
+        </div>
+      </li>
+    </ol>
+
+    <div class="alert">
+      <strong>⚠ Nguyên tắc an toàn:</strong> Tuyệt đối <strong>không khởi động bơm nước làm
+      mát phụ</strong> khi chưa hoàn thành đầy đủ 3 bước kiểm tra – chuẩn bị phía trên, đặc
+      biệt là <strong>xả khí triệt để thân bơm</strong> và <strong>xác nhận kênh hút thông
+      suốt</strong> để tránh hiện tượng xâm thực, mất áp lực đầu đẩy gây hư hỏng bơm.
+    </div>
+
+    <div class="purple-box">
+      <strong>💡 Nguyên tắc vận hành:</strong> Hệ thống nước làm mát phụ là <strong>hệ thống
+      phụ trợ quan trọng bậc nhất</strong> — nó gián tiếp bảo vệ toàn bộ các thiết bị chính
+      của tổ máy (tuabin, máy phát, bơm cấp, quạt lò…). Vì vậy, khi có bất kỳ sự cố nào liên
+      quan đến hệ thống này, phải xử lý <strong>ưu tiên và khẩn trương</strong>.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Hệ thống nước làm mát phụ có <strong>4 vai trò chính</strong>:
+    (1) Làm mát cho hệ thống CCW — (2) Bảo vệ thiết bị phụ trợ trọng yếu — (3) Ngăn ngừa quá
+    nhiệt — (4) Cách ly chống ăn mòn. Trình tự chuẩn bị khởi động gồm
+    <strong>3 nhóm bước</strong>: (1) Kiểm tra hiện trường, cơ khí &amp; an toàn — (2) Kiểm tra
+    điện, đo lường &amp; bảo vệ — (3) Kiểm tra kênh hút, sơ đồ van &amp; điền đầy – xả khí.
+  </div>
+
+</article>
+
+</body>
+</html>

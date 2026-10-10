@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sơ đồ, nhiệm vụ và quy trình hệ thống hơi chèn</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --steam: #dc2626;
+    --steam-light: #fee2e2;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 1020px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #0891b2);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== SƠ ĐỒ KHỐI ===== */
+  .diagram {
+    background: linear-gradient(135deg, #f8fcff, #eef7fc);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 26px 22px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  .diagram .diagram-title {
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed var(--primary-light);
+  }
+
+  .flow-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    margin: 8px 0;
+  }
+
+  .flow-node {
+    background: #fff;
+    border: 2px solid var(--steam);
+    border-radius: 10px;
+    padding: 12px 18px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--steam);
+    font-size: 0.92rem;
+    max-width: 480px;
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .flow-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.18);
+  }
+
+  .flow-node.source {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    font-size: 0.95rem;
+  }
+
+  .flow-node.source::before {
+    content: "🔥 ";
+  }
+
+  .flow-node.valve {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: var(--warn);
+    color: #7a4e00;
+  }
+
+  .flow-node.valve::before {
+    content: "⚙️ ";
+  }
+
+  .flow-node.manifold {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    border-color: #1e40af;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(30, 64, 175, 0.35);
+    padding: 16px 22px;
+    font-size: 1rem;
+  }
+
+  .flow-node.manifold::before {
+    content: "⭕ ";
+  }
+
+  .flow-node .spec {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.22);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    margin-top: 6px;
+  }
+
+  .flow-node.manifold .spec {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .arrow {
+    color: var(--steam);
+    font-size: 1.3rem;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .arrow::before {
+    content: "▼";
+  }
+
+  /* Nhánh phân phối */
+  .branch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .branch-card {
+    background: #fff;
+    border: 2px solid var(--ok);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+    font-size: 0.88rem;
+    color: #0c3a5e;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .branch-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(30, 132, 73, 0.18);
+  }
+
+  .branch-card .icon {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+
+  .branch-card strong {
+    color: var(--ok);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .branch-card .spec-small {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--primary);
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* Khối thu hồi cuối */
+  .recovery-block {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    width: 100%;
+  }
+
+  .recovery-block .recovery-title {
+    text-align: center;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-size: 0.98rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .recovery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .recovery-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 0.86rem;
+    color: var(--primary);
+    border: 1px solid #93c5fd;
+    font-weight: 600;
+  }
+
+  /* ===== Nhiệm vụ ===== */
+  .mission-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .mission-list > li {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 54px;
+    position: relative;
+    font-size: 0.97rem;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .mission-list > li::before {
+    content: attr(data-num);
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mission-list > li:hover {
+    box-shadow: 0 3px 12px rgba(8, 145, 178, 0.15);
+  }
+
+  .mission-list > li strong { color: var(--primary); }
+
+  /* ===== Các bước thao tác ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    width: 40px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 5px 0; font-size: 0.96rem; }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 7px 0 7px 32px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+    font-size: 0.96rem;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 7px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  .purple-box {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--purple); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.green {
+    background: var(--ok-light);
+    color: var(--ok);
+    border-color: #a7d9bc;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.92rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { font-size: 0.78rem; padding: 5px 10px; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 12px; width: 34px; height: 28px; font-size: 0.72rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .branch-grid { grid-template-columns: 1fr; }
+    .recovery-grid { grid-template-columns: 1fr; }
+    .diagram { padding: 18px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy trình bày sơ đồ nguyên lý, nhiệm vụ và các bước đưa hệ thống hơi chèn vào làm việc?</span>
+  </div>
+
+  <h1>Sơ đồ nguyên lý, nhiệm vụ &amp; các bước<br>đưa hệ thống hơi chèn vào làm việc</h1>
+
+  <!-- ============ PHẦN I: SƠ ĐỒ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">I</span>
+      Sơ đồ nguyên lý hệ thống hơi chèn
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="diagram">
+      <div class="diagram-title">Sơ đồ khối hệ thống hơi chèn (Gland Steam System)</div>
+
+      <!-- Nguồn hơi tự dùng -->
+      <div class="flow-stage">
+        <div class="flow-node source">
+          Nguồn hơi tự dùng
+          <div class="spec" style="background: #fff3e0; color: #7a4e00; border-color: #fcd34d;">
+            15 bar · 250 – 350 °C
+          </div>
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Van xả đọng sấy ống -->
+        <div class="flow-node valve" style="max-width: 400px; font-size: 0.88rem;">
+          Van xả đọng sấy ống XHC18
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Van điều chỉnh HC2 -->
+        <div class="flow-node valve">
+          Van điều chỉnh cấp HC2 / SSAFV
+        </div>
+
+        <div class="arrow"></div>
+
+        <!-- Ống góp hơi chèn -->
+        <div class="flow-node manifold">
+          ⭕ ỐNG GÓP HƠI CHÈN
+          <div class="spec">0,21 – 0,34 bar</div>
+        </div>
+      </div>
+
+      <!-- Ghi chú hơi rò tự chèn -->
+      <div class="info" style="margin: 12px 0;">
+        <strong>💡 Chế độ tự chèn:</strong> Khi tổ máy mang tải cao (&gt; 70% công suất), hệ
+        thống tận dụng <strong>hơi chèn rò rỉ từ gối HP/IP</strong> để cấp ngược lại cho ống
+        góp chung, tự chèn cho tuabin mà không cần lấy thêm hơi từ ống góp hơi tự dùng.
+      </div>
+
+      <div class="arrow"></div>
+
+      <!-- Nhánh phân phối -->
+      <div class="branch-grid">
+        <div class="branch-card">
+          <span class="icon">🌀</span>
+          <strong>Chèn các gối trục</strong>
+          HP/IP: Ngăn hơi rò ra<br>
+          LP: Ngăn khí lọt vào
+        </div>
+
+        <div class="branch-card">
+          <span class="icon">🔓</span>
+          <strong>Van xả quá áp HC7 / SSDV</strong>
+          Xả về Bình ngưng (SSCDV)<br>
+          Xả về BGN hạ áp 1 (SSEDV)
+        </div>
+      </div>
+
+      <div class="arrow"></div>
+
+      <!-- Bình ngưng hơi chèn -->
+      <div class="flow-stage">
+        <div class="flow-node" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: var(--primary); color: var(--primary); max-width: 520px;">
+          🌊 Bình ngưng hơi chèn (Gland Steam Condenser)
+          <div class="spec" style="background: #fff; color: var(--primary); border-color: #93c5fd;">
+            Nước ngưng làm mát ≥ 324 t/h
+          </div>
+        </div>
+      </div>
+
+      <!-- Khối thu hồi -->
+      <div class="recovery-block">
+        <div class="recovery-title">Thu hồi nhiệt &amp; môi chất</div>
+        <div class="recovery-grid">
+          <div class="recovery-item">
+            💧 <strong>Nước ngưng đọng</strong><br>
+            <span style="font-size: 0.8rem;">Xả dồn về Bình ngưng</span>
+          </div>
+          <div class="recovery-item">
+            💨 <strong>Quạt hút hơi chèn</strong><br>
+            <span style="font-size: 0.8rem;">Duy trì chân không −0,029 ÷ −0,024 bar</span>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: var(--primary); font-weight: 600;">
+          ⬇ Khí không ngưng thoát ra khí quyển ⬇
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN II: NHIỆM VỤ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">II</span>
+      Nhiệm vụ của hệ thống hơi chèn
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <p>
+      Hệ thống hơi chèn (<strong>Gland Steam System</strong>) sử dụng sự chênh lệch áp lực giữa
+      các dòng hơi để <strong>làm kín các khe hở giữa trục rotor và vỏ tuabin</strong>:
+    </p>
+
+    <ul class="mission-list">
+      <li data-num="1">
+        <strong>Tại các vành chèn phần cao áp (HP) và trung áp (IP):</strong> Áp suất hơi bên
+        trong tuabin cao hơn áp suất khí quyển; hệ thống cấp hơi chèn tạo <strong>màn chắn</strong>
+        ngăn không cho hơi nóng mang nhiệt độ và áp suất cao rò rỉ ra ngoài môi trường gian máy.
+      </li>
+
+      <li data-num="2">
+        <strong>Tại các vành chèn phần hạ áp (LP):</strong> Vùng hơi thoát tuabin hạ áp làm việc
+        ở trạng thái chân không sâu; hệ thống duy trì một áp lực hơi bão hòa nhẹ (khoảng
+        <span class="chip blue">0,21 ÷ 0,34 bar</span>) ngăn chặn triệt để
+        <strong>không khí lạnh bên ngoài lọt vào bình ngưng</strong>, bảo đảm duy trì độ chân
+        không tối ưu cho tổ máy.
+      </li>
+
+      <li data-num="3">
+        <strong>Thu hồi nhiệt và môi chất:</strong> Quạt hút hơi chèn liên tục duy trì độ chân
+        không nhẹ trong bình ngưng hơi chèn để thu gom toàn bộ lượng hơi rò và hỗn hợp khí từ
+        các ngăn ngoài của vành chèn, ngưng tụ thành nước ngưng đưa về chu trình và thải khí
+        không ngưng ra ngoài khí quyển.
+      </li>
+
+      <li data-num="4">
+        <strong>Chế độ tự chèn:</strong> Khi tổ máy mang phụ tải cao (trên
+        <span class="chip blue">70% công suất</span>), hệ thống tận dụng nguồn hơi rò rỉ từ các
+        gối chèn HP &amp; IP để cấp ngược lại cho ống góp chung, <strong>tự chèn cho tuabin</strong>
+        mà không cần lấy thêm hơi từ ống góp hơi tự dùng.
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN III: CÁC BƯỚC ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">III</span>
+      Các bước đưa hệ thống hơi chèn vào làm việc
+      <span class="sub-score">1,5đ</span>
+    </h2>
+
+    <!-- Bước 1 -->
+    <div class="step-list">
+      <li>
+        <strong>Kiểm tra và chuẩn bị trước khi khởi động</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,25đ</span>
+        <ul class="checklist">
+          <li>Toàn bộ công tác <strong>sửa chữa, hiệu chỉnh</strong> trên hệ thống hơi chèn đã
+              hoàn tất, phiếu công tác đã khóa, thiết bị và công trường sạch sẽ.</li>
+
+          <li>Toàn bộ các van của hệ thống hơi chèn đã được kiểm tra
+              <strong>đóng/mở trơn tru</strong>, sẵn sàng làm việc.</li>
+
+          <li>Hệ thống <strong>điều khiển, chỉ thị đo lường</strong> và các liên động bảo vệ đã
+              được cấp điện, thử nghiệm tốt.</li>
+
+          <li>Bơm nước tuần hoàn đã chạy, <strong>bình ngưng đã sẵn sàng</strong> làm việc.</li>
+
+          <li>Hệ thống nước ngưng hoạt động bình thường, lưu lượng nước ngưng qua bình ngưng hơi
+              chèn bảo đảm <span class="chip blue">≥ 324 t/h</span>.</li>
+
+          <li>Điền đầy nước vào các <strong>ống bẫy chữ “U”</strong> của hệ thống hơi chèn.</li>
+        </ul>
+      </li>
+
+      <!-- Bước 2 -->
+      <li>
+        <strong>Khởi động quạt hút hơi chèn</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,25đ</span>
+        <ul class="checklist">
+          <li><span class="tag">BƯỚC 1</span> <strong>Máy phó</strong> đứng tại vị trí quạt hút
+              hơi chèn tại công trường, mở hé van đầu hút quạt khoảng
+              <span class="chip">25%</span> (hoặc mở cửa quạt khoảng 50% theo sơ đồ), van đầu
+              đẩy mở hoàn toàn.</li>
+
+          <li><strong>Máy trưởng</strong> kích xác nhận và ấn lệnh <strong>Start</strong> khởi
+              động quạt hút hơi chèn trên màn hình <strong>DCS</strong>.</li>
+
+          <li><strong>Máy phó</strong> kiểm tra tại chỗ quạt làm việc bình thường (tiếng ồn, độ
+              rung, dòng điện động cơ).</li>
+
+          <li>Điều chỉnh độ mở van cánh bướm đầu hút quạt, quan sát áp kế tại chỗ
+              (<em>13MAW60CP501</em>) để duy trì áp suất chân không trong bình ngưng hơi chèn
+              ổn định từ <span class="chip blue">−0,029 đến −0,024 bar</span> (áp lực bình gia
+              nhiệt hơi chèn <span class="chip blue">−0,21 ÷ −0,34 bar</span>).</li>
+        </ul>
+      </li>
+
+      <!-- Bước 3 -->
+      <li>
+        <strong>Sấy ấm đường ống cấp hơi từ hơi tự dùng</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,25đ</span>
+        <ul class="checklist">
+          <li><span class="tag">BƯỚC 2</span> Kiểm tra áp lực ống góp hơi tự dùng đạt định mức
+              (<span class="chip blue">15 bar</span>, nhiệt độ
+              <span class="chip blue">250 ÷ 350 °C</span>).</li>
+
+          <li>Mở van <strong>xả đọng</strong> (XHC18 – <em>13MAL60AA001 / MOV-SSFD</em>), tiến
+              hành xả đọng và sấy ấm tuyến đường ống cấp hơi từ ống góp hơi tự dùng đến trước
+              van điều chỉnh hơi chèn (HC2 – <em>13MAW20AA082 / AOV-SSAFV</em>) trong khoảng
+              thời gian từ <span class="chip">15 ÷ 20 phút</span>.</li>
+        </ul>
+      </li>
+
+      <!-- Bước 4 -->
+      <li>
+        <strong>Sấy hệ thống và nâng áp lực hơi chèn</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,5đ</span>
+        <ul class="checklist">
+          <li><span class="tag">BƯỚC 3</span> Mở từ từ van điều chỉnh cấp hơi chèn
+              <strong>HC2</strong> (AOV-SSAFV) để cấp hơi sấy ấm ống góp và các vành chèn
+              tuabin, <strong>nâng áp lực hơi chèn lên từ từ</strong>.</li>
+
+          <li>Theo dõi chặt chẽ <strong>tốc độ gia nhiệt của kim loại tuabin</strong>, kiểm tra
+              độ chênh lệch nhiệt độ bề mặt kim loại rotor tuabin và hơi chèn luôn nằm trong
+              dải cho phép (<span class="chip red">&lt; 110 °C</span>).</li>
+
+          <li>Theo dõi sự biến đổi <strong>nhiệt độ các tầng cánh</strong>, độ rung tuabin và
+              tình trạng làm việc của <strong>bộ vần trục</strong> (không để xảy ra cọ sát kim
+              loại).</li>
+
+          <li>Giám sát <strong>mức nước đọng</strong> bình ngưng hơi chèn và hoạt động của bẫy
+              xả.</li>
+        </ul>
+      </li>
+
+      <!-- Bước 5 -->
+      <li>
+        <strong>Đưa hệ thống vào làm việc tự động và dự phòng</strong>
+        <span class="chip" style="float: right; font-size: 0.75rem;">0,25đ</span>
+        <ul class="checklist">
+          <li><span class="tag">BƯỚC 4</span> Khi áp lực và nhiệt độ ống góp hơi chèn ổn định,
+              đặt van điều chỉnh cấp hơi chèn HC2 về chế độ <strong>tự động (Auto)</strong>,
+              duy trì áp lực hơi chèn ổn định ở giá trị định mức
+              <span class="chip blue">0,28 bar</span> (dải làm việc
+              <span class="chip blue">0,21 ÷ 0,34 bar</span>).</li>
+
+          <li><span class="tag">BƯỚC 5</span> Mở van cánh bướm đầu vào quạt hút hơi chèn số 2
+              ra <span class="chip">25%</span> và đưa quạt số 2 về chế độ
+              <strong>dự phòng tự động (Auto)</strong>.</li>
+        </ul>
+      </li>
+    </div>
+
+    <div class="alert">
+      <strong>⚠ LƯU Ý AN TOÀN QUAN TRỌNG:</strong> <strong>Không bao giờ</strong> được ngừng hệ
+      thống hơi chèn khi bình ngưng còn chân không. Chỉ được phép ngừng hệ thống hơi chèn
+      <strong>sau khi đã dừng bơm chân không</strong> và áp suất bình ngưng đã về hoàn toàn
+      bằng áp suất khí quyển <span class="chip red">0 bar</span> — để tránh
+      <strong>không khí lạnh tràn vào làm cong vênh rotor</strong>.
+    </div>
+
+    <div class="purple-box">
+      <strong>💡 Nguyên tắc xuyên suốt:</strong> Khi đưa hệ thống hơi chèn vào làm việc, phải
+      tuân thủ nghiêm ngặt trình tự <strong>xả đọng — sấy ấm từ từ — nâng áp lực từ từ — theo
+      dõi nhiệt độ</strong>. Đặc biệt lưu ý kiểm soát
+      <strong>độ chênh lệch nhiệt độ kim loại rotor và hơi chèn &lt; 110 °C</strong> để tránh
+      ứng suất nhiệt gây cong vênh trục.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Hệ thống hơi chèn có vai trò <strong>cực kỳ quan trọng</strong>
+    trong việc bảo vệ tuabin và duy trì chân không bình ngưng. Quy trình đưa vào làm việc gồm
+    <strong>5 bước chính</strong>: (1) Kiểm tra chuẩn bị — (2) Khởi động quạt hút hơi chèn —
+    (3) Sấy ấm đường ống — (4) Sấy hệ thống &amp; nâng áp lực — (5) Đưa về Auto &amp; dự phòng.
+    Đặc biệt nhớ: <strong>không ngừng hệ thống khi bình ngưng còn chân không</strong>.
+  </div>
+
+</article>
+
+</body>
+</html>

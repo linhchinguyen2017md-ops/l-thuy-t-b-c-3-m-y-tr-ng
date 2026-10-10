@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tách bộ trao đổi nhiệt nước làm mát kín ra sửa chữa</title>
+<style>
+  :root {
+    --primary: #0d4f8b;
+    --primary-light: #e5eff9;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0d4f8b, #2e6da4);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(13, 79, 139, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2.primary { background: linear-gradient(135deg, #0d4f8b, #2e6da4); }
+  h2.danger  { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+
+  h2 .num-badge {
+    background: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2.primary .num-badge { color: var(--primary); }
+  h2.danger .num-badge  { color: var(--danger); }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Khối giới thiệu ===== */
+  .intro {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 20px;
+    margin: 18px 0 24px;
+    color: #0c3a5e;
+    font-size: 0.97rem;
+  }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 8px 0 8px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Các bước dạng timeline ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(13, 79, 139, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 5px 0; }
+
+  /* ===== Nhóm bước nhỏ (sub-group) ===== */
+  .sub-group {
+    background: #fbfcfe;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0;
+  }
+
+  .sub-group .sub-title {
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+  }
+
+  .sub-group ul { margin: 4px 0; padding-left: 20px; }
+  .sub-group ul li { margin: 3px 0; font-size: 0.96rem; }
+
+  /* ===== Khối an toàn (đỏ) ===== */
+  .safety-block {
+    background: #fff;
+    border: 2px solid var(--danger);
+    border-radius: 10px;
+    padding: 0;
+    margin: 16px 0;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(192, 57, 43, 0.1);
+  }
+
+  .safety-block .block-title {
+    background: linear-gradient(135deg, var(--danger), #e74c3c);
+    color: #fff;
+    padding: 12px 18px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .safety-block .block-title .num {
+    background: #fff;
+    color: var(--danger);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .safety-block .block-body {
+    padding: 14px 20px 18px;
+  }
+
+  .safety-block .block-body ul { margin: 6px 0; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.red { background: var(--danger); }
+  .tag.green { background: var(--ok); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e8f6ee, #d1f0dd);
+    border-left: 5px solid var(--ok);
+    border-radius: 0 8px 8px 0;
+    color: #14532d;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--ok); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.96rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 14px; width: 30px; height: 30px; font-size: 0.9rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .safety-block .block-title { font-size: 0.95rem; padding: 10px 14px; }
+    .safety-block .block-body { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu các bước tách bộ trao đổi nhiệt nước làm kín ra sửa chữa? Và các biện pháp an toàn trước khi làm việc?</span>
+  </div>
+
+  <h1>Các bước tách bộ trao đổi nhiệt nước làm mát kín<br>ra sửa chữa &amp; Biện pháp an toàn</h1>
+
+  <!-- ============ GIỚI THIỆU ============ -->
+  <div class="intro">
+    <strong>📘 Bối cảnh:</strong> Hệ thống nước làm mát kín gồm <strong>02 bộ trao đổi nhiệt</strong>
+    (bình làm mát A và B). Khi tách bộ đang vận hành (ví dụ bộ A) ra sửa chữa/vệ sinh, người vận
+    hành phải tiến hành <strong>chuyển đổi và đưa bộ dự phòng (bộ B) vào làm việc bình thường
+    trước khi cô lập bộ A</strong>. Trình tự thao tác chuẩn như sau:
+  </div>
+
+  <!-- ============ PHẦN I ============ -->
+  <section>
+    <h2 class="primary">
+      <span class="num-badge">I</span>
+      Các bước tách bộ trao đổi nhiệt nước làm mát kín ra sửa chữa
+    </h2>
+
+    <ol class="step-list">
+      <!-- Bước 1 -->
+      <li>
+        <strong>Chuẩn bị và thông báo</strong>
+        <ul>
+          <li>Máy trưởng ghi nhận lại các thông số: <strong>áp lực nước làm mát kín</strong>,
+              <strong>mức nước bể giãn nở</strong>.</li>
+
+          <li>Báo cáo <strong>Trưởng ca</strong> và thông báo các vị trí liên quan trước khi
+              thực hiện chuyển đổi.</li>
+        </ul>
+      </li>
+
+      <!-- Bước 2 -->
+      <li>
+        <strong>Đưa bộ làm mát dự phòng (bộ B) vào làm việc</strong>
+
+        <div class="sub-group">
+          <div class="sub-title">▸ Điền đầy và xả khí bên nước làm mát kín</div>
+          <ul>
+            <li>Kiểm tra và <strong>đóng van xả đáy</strong> bình B phía nước làm mát kín (nếu
+                đang mở).</li>
+
+            <li>Mở <strong>nhỏ</strong> van nước làm mát kín đầu vào bình B để điền đầy nước.</li>
+
+            <li>Mở nhỏ van xả khí bình B, khi nước chảy đều và đuổi hết khí thì đóng kín lại.</li>
+
+            <li>Mở từ từ <strong>hoàn toàn</strong> van nước làm mát kín đầu vào bình B, đồng
+                thời theo dõi ổn định mức nước bể giãn nở.</li>
+          </ul>
+        </div>
+
+        <div class="sub-group">
+          <div class="sub-title">▸ Đưa môi chất làm mát (phía nước làm mát phụ) vào bình B</div>
+          <ul>
+            <li>Mở van đầu vào nước làm mát phụ cấp cho bộ làm mát B.</li>
+            <li>Đóng van xả khí và van xả đọng phần nước làm mát phụ của bộ B.</li>
+            <li>Mở van đầu ra nước làm mát phụ của bộ làm mát B.</li>
+          </ul>
+        </div>
+
+        <div class="sub-group">
+          <div class="sub-title">▸ Đưa dòng nước làm mát kín qua bình B</div>
+          <ul>
+            <li>Mở từ từ van đầu ra nước làm mát kín của bộ làm mát B, quan sát chặt chẽ áp lực
+                mạng nước làm mát kín <strong>tránh tụt áp</strong>.</li>
+
+            <li>Điều chỉnh van đầu ra nước làm mát phụ của bình B để duy trì nhiệt độ nước làm
+                mát kín cấp tới các thiết bị ổn định
+                <span class="chip blue">&lt; 37 °C</span>.</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Bước 3 -->
+      <li>
+        <strong>Tách và cô lập bộ trao đổi nhiệt cần sửa chữa (bộ A)</strong>
+        <ul>
+          <li>Đóng <strong>từ từ</strong> van đầu vào nước làm mát kín của bộ làm mát A, chú ý
+              theo dõi áp lực hệ thống nước kín.</li>
+
+          <li>Đóng <strong>hoàn toàn</strong> van đầu ra nước làm mát kín của bộ làm mát A.</li>
+
+          <li>Đóng van đầu vào nước làm mát phụ của bộ làm mát A.</li>
+
+          <li>Đóng van đầu ra nước làm mát phụ của bộ làm mát A.</li>
+
+          <li>Mở các van <strong>xả đọng/xả cạn</strong> của cả phía nước làm mát kín và phía
+              nước làm mát phụ của bộ A để xả hết áp lực và xả cạn môi chất bên trong bình ra
+              ngoài.</li>
+
+          <li>Trưởng ca lệnh cho bộ phận <strong>Hóa nghiệm</strong> lấy mẫu kiểm tra chất lượng
+              nước tuần hoàn kín (độ dẫn điện, độ cứng, pH).</li>
+
+          <li>Ghi lại thời gian chuyển đổi, trạng thái cô lập vào <strong>sổ nhật ký vận
+              hành</strong>.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="info">
+      <strong>💡 Nguyên tắc:</strong> Luôn <strong>đưa bộ dự phòng vào làm việc ổn định trước</strong>,
+      sau đó mới <strong>cô lập bộ cần sửa chữa</strong>. Trong suốt quá trình chuyển đổi, phải
+      theo dõi liên tục áp lực và nhiệt độ nước làm mát kín để tránh tụt áp hoặc quá nhiệt.
+    </div>
+  </section>
+
+  <!-- ============ PHẦN II ============ -->
+  <section>
+    <h2 class="danger">
+      <span class="num-badge">II</span>
+      Các biện pháp an toàn trước khi bàn giao làm việc
+    </h2>
+
+    <!-- Biện pháp 1 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">1</span>
+        Phiếu công tác và cô lập thiết bị
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Tất cả các công việc bảo dưỡng, sửa chữa phải có <strong>Phiếu công tác (PCT)</strong>
+              được cấp phép theo quy định.</li>
+
+          <li>Khóa chặt các van cách ly (van đầu vào, van đầu ra của cả đường nước kín và nước
+              làm mát phụ) bằng xích/khóa cơ khí chuyên dụng và thực hiện quy trình
+              <strong>LOTO (Lockout/Tagout)</strong>.</li>
+
+          <li>Treo biển cảnh báo an toàn tại tất cả các van cách ly:
+              <div class="alert" style="margin: 10px 0 4px;">
+                <strong>🚫 CẤM THAO TÁC! CÓ NGƯỜI ĐANG LÀM VIỆC</strong>
+              </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Biện pháp 2 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">2</span>
+        Triệt tiêu áp lực và xả nhiệt an toàn
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Xác nhận <strong>áp lực trong cả 2 khoang</strong> (nước kín và nước làm mát phụ)
+              đã giảm về <strong>0</strong> thông qua các đồng hồ đo tại chỗ.</li>
+
+          <li>Mở hoàn toàn các <strong>van xả đáy, xả khí</strong> để xả hết nước nóng, cặn đọng;
+              chờ bề mặt kim loại thiết bị <strong>nguội về nhiệt độ an toàn</strong> trước khi
+              cho phép nhân viên tiếp xúc.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Biện pháp 3 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">3</span>
+        Khu vực làm việc và môi trường
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Sàn công tác xung quanh bộ trao đổi nhiệt phải được <strong>quét dọn sạch sẽ, khô
+              ráo</strong>, không đọng nước hay dầu trơn trượt, không có tạp vật.</li>
+
+          <li><strong>Chiếu sáng đầy đủ</strong> (bao gồm ánh sáng làm việc và hệ thống đèn
+              chiếu sáng sự cố hoạt động tốt).</li>
+
+          <li>Chăng <strong>dây rào chắn</strong> và đặt biển báo nhận biết khu vực đang thi công.</li>
+
+          <li>Trang bị đầy đủ <strong>phương tiện cứu hỏa/chữa cháy</strong> tại khu vực theo
+              đúng quy định phòng cháy chữa cháy.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Biện pháp 4 -->
+    <div class="safety-block">
+      <div class="block-title">
+        <span class="num">4</span>
+        Bảo hộ lao động và dụng cụ thi công
+      </div>
+      <div class="block-body">
+        <ul>
+          <li>Nhân viên vào làm việc phải được trang bị đầy đủ <strong>bảo hộ cá nhân</strong>:
+              quần áo bảo hộ, giày mũi thép, găng tay chống cắt/chống nóng, kính bảo hộ.</li>
+
+          <li>Chuẩn bị đầy đủ <strong>dụng cụ chuyên dùng</strong>, đồ gá tháo lắp; kiểm tra an
+              toàn <strong>palăng/cẩu</strong> và điểm móc treo trước khi tháo các chi tiết nặng
+              (như mặt bích, nắp cửa người chui, nắp hộp nước).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>⚠ Nguyên tắc vàng:</strong> Không bao giờ cho người vào làm việc khi <strong>chưa
+      hoàn thành đủ 4 nhóm biện pháp an toàn</strong>: cô lập &amp; LOTO — triệt áp &amp; xả nhiệt
+      — chuẩn bị khu vực — trang bị BHLĐ &amp; dụng cụ.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Trình tự tách bộ trao đổi nhiệt nước làm mát kín gồm
+    <strong>3 bước chính</strong>: (1) Chuẩn bị &amp; thông báo — (2) Đưa bộ dự phòng vào làm
+    việc — (3) Tách &amp; cô lập bộ cần sửa chữa. Trước khi bàn giao cho đơn vị sửa chữa, phải
+    thực hiện nghiêm ngặt <strong>4 nhóm biện pháp an toàn</strong>: cô lập &amp; LOTO —
+    triệt áp &amp; xả nhiệt — khu vực làm việc — BHLĐ &amp; dụng cụ.
+  </div>
+
+</article>
+
+</body>
+</html>

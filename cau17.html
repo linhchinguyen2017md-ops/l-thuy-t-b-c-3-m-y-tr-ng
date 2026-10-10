@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Các bước đưa bình gia nhiệt cao áp (BGN cao áp) vào làm việc</title>
+<style>
+  :root {
+    --primary: #0d4f8b;
+    --primary-light: #e5eff9;
+    --accent: #d97706;
+    --accent-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0d4f8b, #2e6da4);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(13, 79, 139, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.12rem;
+    color: #fff;
+    margin: 30px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), #2e6da4);
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(13, 79, 139, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 8px 0 8px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Danh sách bước (steps) ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 40px;
+    height: 34px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(13, 79, 139, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 4px 0; }
+
+  /* ===== Khối cảnh báo ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--accent-light);
+    border-left: 5px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--accent); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--accent-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer kết luận ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e5eff9, #d1e4f4);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.96rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 12px; width: 34px; height: 30px; font-size: 0.75rem; }
+    .question { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Các bước đưa bình gia nhiệt cao áp (BGN cao áp) vào làm việc</span>
+  </div>
+
+  <h1>Các bước đưa bình gia nhiệt cao áp<br>(BGN cao áp) vào làm việc</h1>
+
+  <!-- ============ PHẦN 1 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">1</span>
+      Công tác kiểm tra và chuẩn bị trước khi đưa vào làm việc
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <h3>Kiểm tra hiện trường &amp; thiết bị</h3>
+    <ul class="checklist">
+      <li>Toàn bộ công việc sửa chữa trên hệ thống BGN cao áp đã kết thúc,
+          <strong>phiếu công tác đã khóa</strong>, hiện trường sạch sẽ, không có người làm
+          việc bên trong hay khu vực lân cận.</li>
+
+      <li>Các đường ống, van, mặt bích và thân bình <strong>không có hiện tượng rò rỉ,
+          nứt hỏng</strong>.</li>
+
+      <li>Kiểm tra <strong>con lăn giá đỡ tự do co giãn</strong>, không bị kẹt hoặc kênh khỏi
+          bề mặt đỡ.</li>
+    </ul>
+
+    <h3>Hệ thống đo lường, bảo vệ và nguồn điện</h3>
+    <ul class="checklist">
+      <li>Bộ hiển thị mức nước đọng tại chỗ (ống thủy) và đo mức gửi về DCS làm việc tốt, hiển
+          thị rõ ràng, chính xác.</li>
+
+      <li>Cấp điện cho toàn bộ các van điện động, van điều khiển của hệ thống.</li>
+
+      <li>Đưa <strong>hệ thống bảo vệ mức nước BGN cao áp</strong> vào làm việc (bảo vệ mức
+          cao, liên động đóng van hơi trích và mở van xả sự cố).</li>
+    </ul>
+
+    <div class="alert">
+      <strong>🚫 Nghiêm cấm:</strong> Đưa BGN cao áp vào vận hành nếu <strong>thiếu thiết bị
+      đo mức</strong> hoặc <strong>chưa có hệ thống bảo vệ</strong> mức nước hoạt động.
+    </div>
+
+    <h3>Trạng thái ban đầu của sơ đồ</h3>
+    <ul class="checklist">
+      <li>Bơm nước cấp và bơm nước ngưng đang vận hành ổn định.</li>
+
+      <li>Đường nước cấp đang đi qua đường <strong>bypass</strong>
+          (<span class="tag green">MỞ</span> van bypass —
+          <span class="tag red">ĐÓNG</span> van đầu vào/đầu ra phía nước của BGN).</li>
+
+      <li>Các van hơi trích, van một chiều hơi trích đang đóng.</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 2 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">2</span>
+      Trình tự đưa phía nước cấp vào làm việc
+      <span class="sub-score">0,75đ</span>
+    </h2>
+
+    <p><em>(Điền đầy và thông dòng nước cấp)</em></p>
+
+    <ol class="step-list">
+      <li>
+        <strong>Điền nước và xả khí</strong>
+        <ul>
+          <li>Mở các van xả khí (vent) phía đường nước của các BGN cao áp.</li>
+
+          <li>Mở từ từ van đi tắt (bypass van chặn đầu vào) để điền đầy nước cấp vào phía
+              đường ống của BGN với tốc độ <strong>chậm</strong>, tránh hiện tượng va đập thủy
+              lực (thủy kích).</li>
+
+          <li>Theo dõi đến khi nước cấp trào liên tục ra khỏi các van xả khí
+              (<strong>không còn bọt khí</strong>) thì tiến hành đóng kín các van xả khí lại.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Cân bằng áp lực và thông dòng</strong>
+        <ul>
+          <li>Tiếp tục duy trì để áp suất phía trong BGN cân bằng với áp lực đường ống nước
+              cấp chính.</li>
+
+          <li>Mở hoàn toàn van chặn <strong>đầu ra</strong> phía nước cấp của BGN cao áp.</li>
+
+          <li>Mở hoàn toàn van chặn <strong>đầu vào</strong> phía nước cấp của BGN cao áp.</li>
+
+          <li>Đóng từ từ van bypass đường nước cấp chính. Lúc này, toàn bộ lưu lượng nước cấp
+              đi qua các bình gia nhiệt cao áp.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN 3 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">3</span>
+      Trình tự đưa phía hơi vào làm việc
+      <span class="sub-score">0,75đ</span>
+    </h2>
+
+    <p><em>(Sấy nóng và gia nhiệt)</em></p>
+
+    <ol class="step-list">
+      <li>
+        <strong>Chuẩn bị đường xả đọng và xả khí phía hơi</strong>
+        <ul>
+          <li>Mở các van xả đọng khởi động trên đường hơi trích và van xả khí khoang hơi của
+              BGN cao áp.</li>
+
+          <li>Mở các van xả nước đọng sự cố/bình thường về bình ngưng hoặc bình giãn nở
+              (Flash tank).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Sấy ấm đường ống hơi trích và thân bình</strong>
+        <ul>
+          <li>Hé mở từ từ van bypass của van hơi trích (hoặc mở nhỏ van chặn hơi trích) để sấy
+              ấm từ từ tuyến đường ống hơi trích và khoang hơi của BGN cao áp.</li>
+
+          <li>Khống chế tốc độ tăng nhiệt độ kim loại theo đúng quy trình hướng dẫn của nhà
+              chế tạo nhằm tránh <strong>ứng suất nhiệt quá lớn</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Đưa hơi trích vào và thiết lập mức nước đọng</strong>
+        <ul>
+          <li>Khi đường ống hơi trích đã được sấy nóng hoàn toàn và thoát hết nước ngưng, đóng
+              các van xả đọng đường hơi trích.</li>
+
+          <li>Mở hoàn toàn van chặn hơi trích và van một chiều hơi trích vào BGN cao áp. Đóng
+              các van xả khí khoang hơi khi hơi bắt đầu thoát ra.</li>
+
+          <li>Đưa <strong>bộ điều chỉnh tự động mức nước đọng</strong> của BGN cao áp vào làm
+              việc (<strong>Auto</strong>). Thiết lập lưu trình xả dồn đọng bình thường từ BGN
+              cao về BGN cấp thấp hơn hoặc về bình khử khí theo thiết kế.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN 4 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">4</span>
+      Kiểm tra, theo dõi sau khi đưa vào vận hành
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Giám sát chặt chẽ <strong>mức nước đọng trong BGN cao áp</strong> trên DCS và đối
+          chiếu với ống thủy tại chỗ; đảm bảo mức nước duy trì ổn định ở giá trị vận hành bình
+          thường.</li>
+
+      <li>Theo dõi <strong>nhiệt độ nước cấp đầu vào và đầu ra</strong>, độ chênh nhiệt độ,
+          áp lực hơi trích để đánh giá hiệu quả trao đổi nhiệt.</li>
+
+      <li>Kiểm tra tại chỗ các <strong>gối đỡ, con lăn tự do giãn nở</strong> theo chiều dài
+          khi BGN đạt nhiệt độ ổn định.</li>
+
+      <li>Thường xuyên kiểm tra toàn diện hiện trường: <strong>không bị xì hở hơi, nước</strong>
+          tại các mặt bích, mối hàn, nắp van và các van an toàn.</li>
+    </ul>
+
+    <div class="note">
+      <strong>💡 Ghi nhớ:</strong> Sau khi đưa BGN cao áp vào vận hành, cần theo dõi liên tục
+      trong <strong>giai đoạn đầu</strong> để phát hiện sớm các bất thường về mức nước, nhiệt
+      độ, rò rỉ — đặc biệt khi thân bình còn đang trong quá trình giãn nở nhiệt.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Quy trình đưa BGN cao áp vào làm việc gồm
+    <strong>4 bước chính</strong>: (1) Kiểm tra &amp; chuẩn bị — (2) Đưa phía nước cấp vào
+    (điền đầy – thông dòng) — (3) Đưa phía hơi vào (sấy nóng – gia nhiệt) — (4) Kiểm tra theo
+    dõi sau vận hành. Nguyên tắc xuyên suốt là <strong>điền đầy chậm – sấy nóng từ từ – kiểm
+    tra kỹ</strong> để tránh thủy kích, ứng suất nhiệt và rò rỉ.
+  </div>
+
+</article>
+
+</body>
+</html>

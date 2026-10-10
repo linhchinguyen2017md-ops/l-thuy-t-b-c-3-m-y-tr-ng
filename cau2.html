@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Các trường hợp dừng khẩn cấp bơm cấp và thao tác khi dừng sự cố</title>
+<style>
+  :root {
+    --primary: #0b5394;
+    --primary-light: #e8f0fa;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #e67e22;
+    --warn-light: #fff5e6;
+    --ok: #1e8449;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f7f9fc;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 940px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.5rem;
+    color: var(--danger);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--danger);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin: 34px 0 14px;
+    padding: 8px 14px;
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  /* ===== Danh sách 11 trường hợp ===== */
+  .cases {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+    counter-reset: case;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .cases > li {
+    position: relative;
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 60px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cases > li::before {
+    counter-increment: case;
+    content: counter(case);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cases > li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.18);
+  }
+
+  .cases > li strong {
+    color: var(--danger);
+  }
+
+  /* ===== Các nhóm thao tác ===== */
+  .action-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 20px 16px;
+    margin: 16px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .action-block h3 {
+    margin-top: 18px;
+    color: var(--primary);
+    border-left-color: var(--primary);
+  }
+
+  .action-block ul {
+    margin: 8px 0;
+    padding-left: 22px;
+  }
+
+  .action-block ul li {
+    margin: 8px 0;
+    position: relative;
+    padding-left: 6px;
+  }
+
+  .action-block ul li::marker {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  strong { color: #1a1a1a; }
+
+  .emergency {
+    background: #fff3cd;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #7a5c00;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  /* ===== Khối cảnh báo ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+    color: #7a1c14;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  /* ===== Khối ghi chú ===== */
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+    color: #6b4a00;
+  }
+
+  @media (max-width: 600px) {
+    .document { padding: 24px 18px; }
+    h1 { font-size: 1.12rem; }
+    h2 { font-size: 1rem; }
+    .cases > li { padding: 10px 12px 10px 52px; }
+    .cases > li::before { left: 10px; width: 28px; height: 28px; font-size: 0.8rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .action-block { padding: 4px 14px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu các trường hợp dừng khẩn cấp bơm cấp và thao tác khi dừng sự cố?</span>
+  </div>
+
+  <h1>Các trường hợp dừng khẩn cấp bơm cấp<br>và thao tác khi dừng sự cố</h1>
+
+  <!-- ============ PHẦN I ============ -->
+  <section>
+    <h2>I. Các trường hợp phải dừng khẩn cấp bơm cấp</h2>
+
+    <p>
+      Bơm cấp phải được <strong>dừng khẩn cấp ngay lập tức</strong> (không chờ xin lệnh)
+      khi phát hiện một trong <strong>11 trường hợp</strong> đe dọa sự an toàn người và
+      thiết bị dưới đây:
+    </p>
+
+    <ol class="cases">
+      <li>Rò rỉ nước nóng ra bên ngoài đường ống với số lượng lớn.</li>
+
+      <li>Xảy ra <strong>rung động nghiêm trọng</strong> đối với tổ hợp bơm (hoặc xuất hiện
+          hiện tượng va đập, xung kích áp lực đột ngột trong thân bơm).</li>
+
+      <li>Xảy ra hiện tượng <strong>xâm thực khí</strong> nghiêm trọng đối với bơm cấp.</li>
+
+      <li>Thấy rõ sự <strong>cọ xát nghiêm trọng</strong> bên trong tổ hợp bơm (hoặc có tiếng
+          kêu cọ sát, va chạm kim loại rõ rệt trong thân bơm, động cơ điện, khớp nối thủy lực).</li>
+
+      <li><strong>Cháy hoặc bốc khói</strong> tại động cơ điện (hoặc tốc độ quay giảm nhiều
+          kèm tiếng kêu gầm gừ, động cơ nóng lên nhanh chóng).</li>
+
+      <li><strong>Nhiệt độ ổ đỡ tăng đột ngột</strong> hoặc bốc khói (hoặc khói bốc ra từ gối
+          đỡ, vành chèn mà không thể khắc phục).</li>
+
+      <li><strong>Dầu rò rỉ với số lượng lớn</strong>, mức dầu trong bể giảm tới giá trị tới
+          hạn mà không thể điền đầy bổ sung kịp thời.</li>
+
+      <li><strong>Lưu lượng nước cấp nhỏ hơn giá trị lưu lượng tối thiểu</strong>, đồng thời
+          van tái tuần hoàn không thể mở.</li>
+
+      <li>Có <strong>tín hiệu/lệnh bảo vệ dừng bơm</strong> nhưng mạch bảo vệ tự động không
+          tác động.</li>
+
+      <li><strong>Độ di trục của bơm vượt quá giá trị cho phép</strong> theo quy chuẩn.</li>
+
+      <li>Xảy ra <strong>tai nạn đối với con người</strong> liên quan đến quá trình vận hành
+          của tổ bơm cấp.</li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN II ============ -->
+  <section>
+    <h2>II. Thao tác xử lý khi dừng sự cố tổ máy bơm cấp</h2>
+
+    <!-- 1 -->
+    <div class="action-block">
+      <h3>1. Thao tác dừng bơm ngay lập tức</h3>
+      <ul>
+        <li><span class="tag">TẠI CHỖ</span> Nhấn ngay nút dừng khẩn cấp
+            (<strong>Emergency Stop</strong>) tại bảng điều khiển/tủ điều khiển tại chỗ của bơm.</li>
+        <li><span class="tag">DCS</span> Máy trưởng kích ngừng bơm ngay lập tức trên màn hình
+            <strong>DCS</strong>.</li>
+      </ul>
+    </div>
+
+    <!-- 2 -->
+    <div class="action-block">
+      <h3>2. Thao tác liên động và kiểm soát thiết bị phụ</h3>
+      <ul>
+        <li><strong>Bơm dầu phụ (bơm dầu khởi động):</strong> Phải đảm bảo khởi động cùng thời
+            điểm dừng bơm để duy trì bôi trơn các gối trục trong suốt quá trình rôto giảm tốc
+            độ đến khi dừng hẳn.</li>
+
+        <li><strong>Mở van tái tuần hoàn:</strong> Mở ngay van tái tuần hoàn của bơm vừa dừng
+            để bảo vệ bơm khỏi quá áp và sốc nhiệt.</li>
+
+        <li><strong>Đóng van đầu đẩy:</strong> Đóng hoàn toàn van điện đầu đẩy
+            (<strong>C3</strong>) để ngăn chặn hiện tượng dòng chảy ngược làm quay ngược rôto
+            bơm gây hư hỏng nghiêm trọng.</li>
+      </ul>
+    </div>
+
+    <!-- 3 -->
+    <div class="action-block">
+      <h3>3. Đảm bảo nguồn nước cấp liên tục cho Lò hơi</h3>
+      <ul>
+        <li>Kiểm tra liên động tự động khởi động của <strong>bơm cấp dự phòng</strong>. Nếu bơm
+            dự phòng không tự vào, phải lập tức kích chạy bơm dự phòng bằng tay trên DCS.</li>
+
+        <li>Điều chỉnh độ mở khớp nối thủy lực, phối hợp cùng <strong>Lò trưởng</strong> kiểm
+            soát mức nước bao hơi và duy trì ổn định chênh áp nước cấp/bao hơi.</li>
+      </ul>
+
+      <div class="alert">
+        <strong>⚠ Trường hợp xấu (không chạy được bơm dự phòng):</strong> Phải lập tức thông
+        báo <strong>Lò trưởng</strong> và <strong>Trưởng ca</strong> để xử lý khẩn cấp (giảm
+        tải khẩn cấp hoặc thực hiện quy trình ngừng lò/máy tránh cạn nước lò hơi).
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="action-block">
+      <h3>4. Báo cáo, cách ly và ghi chép nhật ký</h3>
+      <ul>
+        <li>Báo cáo kịp thời cho <strong>Trưởng kíp lò máy</strong> và <strong>Trưởng ca</strong>
+            diễn biến sự cố và các biện pháp đã triển khai.</li>
+
+        <li>Tiến hành <strong>cô lập thiết bị hư hỏng</strong> (cắt điện, khóa liên quan nếu
+            cần sửa chữa).</li>
+
+        <li>Ghi chép chi tiết vào <strong>Sổ nhật ký vận hành</strong>: thời gian xảy ra sự cố,
+            hiện tượng ban đầu, các thông số kỹ thuật trước và sau khi xử lý, mệnh lệnh đã
+            nhận và thực hiện.</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>Lưu ý:</strong> Khi dừng sự cố bơm cấp, nguyên tắc quan trọng nhất là
+      <strong>an toàn con người – thiết bị</strong>, sau đó là
+      <strong>duy trì cấp nước liên tục cho lò hơi</strong> để tránh sự cố lan rộng, và cuối
+      cùng là <strong>ghi chép – báo cáo đầy đủ</strong> để phục vụ phân tích, khắc phục.
+    </div>
+  </section>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cấm khởi động Tuabin & Ngừng Tuabin có phá hoại chân không</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.35rem;
+    color: var(--danger);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--danger);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2.danger { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  h2.warn   { background: linear-gradient(135deg, #b45309, #d97706); }
+  h2.ok     { background: linear-gradient(135deg, #14532d, #1e8449); }
+
+  h2 .num-badge {
+    background: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2.danger .num-badge { color: var(--danger); }
+  h2.warn   .num-badge { color: var(--warn); }
+  h2.ok     .num-badge { color: var(--ok); }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Danh sách trường hợp ===== */
+  .cases {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+    display: grid;
+    gap: 10px;
+    counter-reset: case;
+  }
+
+  .cases > li {
+    position: relative;
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 62px;
+    font-size: 0.98rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cases > li::before {
+    counter-increment: case;
+    content: counter(case);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cases > li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.18);
+  }
+
+  .cases > li strong { color: var(--danger); }
+
+  /* Danh sách cho trường hợp phá chân không (màu cam) */
+  .cases.warn-list > li {
+    background: var(--warn-light);
+    border-left-color: var(--warn);
+  }
+
+  .cases.warn-list > li::before { background: var(--warn); }
+  .cases.warn-list > li strong { color: var(--warn); }
+  .cases.warn-list > li:hover {
+    box-shadow: 0 3px 12px rgba(217, 119, 6, 0.18);
+  }
+
+  /* Danh sách con */
+  .cases > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+  .cases > li ul li { margin: 4px 0; font-size: 0.95rem; }
+  .cases > li ul li::marker { color: var(--danger); font-weight: 700; }
+  .cases.warn-list > li ul li::marker { color: var(--warn); }
+
+  /* ===== Khối giải thích ===== */
+  .explain-group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--ok);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 22px;
+    margin: 14px 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .explain-group:hover {
+    box-shadow: 0 4px 14px rgba(30, 132, 73, 0.12);
+  }
+
+  .explain-group .explain-title {
+    font-weight: 700;
+    color: var(--ok);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
+
+  .explain-group .explain-title .icon {
+    background: var(--ok);
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .explain-group p {
+    margin: 6px 0;
+    font-size: 0.97rem;
+    text-align: justify;
+  }
+
+  .explain-group .highlight {
+    background: linear-gradient(180deg, transparent 60%, #fef3c7 60%);
+    font-weight: 700;
+    padding: 0 2px;
+  }
+
+  /* ===== Khối tổng kết ===== */
+  .summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .summary .summary-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: #fff;
+    text-align: center;
+  }
+
+  .summary .summary-card.danger {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+  }
+
+  .summary .summary-card.warn {
+    background: linear-gradient(135deg, #b45309, #d97706);
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+  }
+
+  .summary .summary-card.ok {
+    background: linear-gradient(135deg, #14532d, #1e8449);
+    box-shadow: 0 4px 14px rgba(30, 132, 73, 0.25);
+  }
+
+  .summary .summary-card .num {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .summary .summary-card .label {
+    font-size: 0.78rem;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    opacity: 0.95;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* ===== Khối cảnh báo ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.92rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    h2 .sub-score { display: none; }
+    .cases > li { padding: 10px 12px 10px 52px; }
+    .cases > li::before { left: 10px; width: 28px; height: 28px; font-size: 0.75rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .summary { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu các trường hợp cấm khởi động Tuabin? Các trường hợp ngừng Tuabin có phá hoại chân không? Giải thích tại sao phải phá chân không trong các trường hợp này?</span>
+  </div>
+
+  <h1>Cấm khởi động Tuabin<br>&amp; Ngừng Tuabin có phá hoại chân không</h1>
+
+  <!-- ============ TỔNG KẾT ============ -->
+  <div class="summary">
+    <div class="summary-card danger">
+      <div class="num">13</div>
+      <div class="label">Cấm khởi động</div>
+    </div>
+    <div class="summary-card warn">
+      <div class="num">8</div>
+      <div class="label">Ngừng có phá chân không</div>
+    </div>
+    <div class="summary-card ok">
+      <div class="num">3</div>
+      <div class="label">Lý do phá chân không</div>
+    </div>
+  </div>
+
+  <!-- ============ PHẦN 1 ============ -->
+  <section>
+    <h2 class="danger">
+      <span class="num-badge">1</span>
+      Các trường hợp cấm khởi động Tuabin
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <p>
+      Căn cứ theo quy trình vận hành tuabin, <strong>nghiêm cấm khởi động tuabin</strong> khi
+      xảy ra một trong các trường hợp sau:
+    </p>
+
+    <ol class="cases">
+      <li>
+        Tất cả các <strong>bộ đo tốc độ</strong> của tuabin bị hỏng.
+      </li>
+
+      <li>
+        <strong>Thí nghiệm bảo vệ trip tuabin</strong> có một hạng mục nào đó không bình thường.
+      </li>
+
+      <li>
+        Tất cả các hỏng hóc của <strong>hệ thống bảo vệ vượt tốc</strong> cơ khí, điện hoặc
+        tốc độ tuabin lớn hơn <span class="chip red">3300 vòng/phút</span> khi sa thải phụ tải
+        mà chưa tìm ra nguyên nhân.
+      </li>
+
+      <li>
+        Các van hơi chính (<strong>MSV</strong>), van điều chỉnh (<strong>CV</strong>), van tái
+        nhiệt (<strong>RSV, IV</strong>), van một chiều hơi thoát xylanh cao áp, van một chiều
+        các cửa trích vận hành bất thường hoặc <strong>đóng không chặt</strong>.
+      </li>
+
+      <li>
+        Các <strong>thông số chính</strong> hiển thị lỗi hoặc hiển thị bất thường mà không có
+        biện pháp kiểm tra định lượng (áp suất, nhiệt độ hơi chính/hơi tái nhiệt; chân không
+        bình ngưng; áp suất dầu EH; áp suất dầu chèn; độ di trục; tốc độ quay rotor).
+      </li>
+
+      <li>
+        <strong>Bơm dầu bôi trơn</strong> xoay chiều (AC), một chiều (DC) hoặc
+        <strong>thiết bị vần trục</strong> vận hành bất thường.
+      </li>
+
+      <li>
+        <strong>Chất lượng hơi, dầu bôi trơn</strong> không đạt tiêu chuẩn kỹ thuật.
+      </li>
+
+      <li>
+        <strong>Thiết bị quay trục (bộ vần trục)</strong> bị lỗi, không hoạt động hoặc dòng
+        điện quay trục vượt quá giới hạn cho phép (<span class="chip red">&gt; 30A</span>).
+        Thời gian chạy liên tục của động cơ vần trục trước khi khởi động chưa đủ theo quy định
+        (ít nhất không dưới <span class="chip">4 giờ</span>; nếu bị gián đoạn phải tính lại từ
+        đầu).
+      </li>
+
+      <li>
+        Xuất hiện sự <strong>va chạm kim loại</strong> hay tiếng ồn bất thường bên trong khi
+        tuabin đang quay trục.
+      </li>
+
+      <li>
+        <strong>Hệ thống điều chỉnh của tuabin</strong> làm việc không bình thường, gây ảnh
+        hưởng đến việc giám sát và vận hành an toàn tổ máy (nhiễu tín hiệu điều khiển, van mở
+        sai lệnh, mất điều khiển tự động…).
+      </li>
+
+      <li>
+        Tổ máy sau khi bị trip muốn khởi động lại mà <strong>chưa tìm rõ nguyên nhân</strong>
+        và chưa xử lý triệt để nguyên nhân gây trip.
+      </li>
+
+      <li>
+        <strong>Độ lệch tâm (độ đảo)</strong> của rotor lớn hơn
+        <span class="chip red">0,038 mm</span>.
+      </li>
+
+      <li>
+        Trong quá trình sấy xilanh trước khi khởi động, <strong>độ chênh lệch nhiệt độ</strong>
+        giữa vách trên và vách dưới xilanh trong cao áp, trung áp lớn hơn
+        <span class="chip red">50 °C</span>.
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN 2 ============ -->
+  <section>
+    <h2 class="warn">
+      <span class="num-badge">2</span>
+      Các trường hợp ngừng Tuabin có phá hoại chân không
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <p>
+      Người vận hành phải <strong>lập tức dừng khẩn cấp tuabin</strong> kết hợp
+      <strong>mở van phá chân không bình ngưng</strong> trong các trường hợp sự cố nghiêm trọng
+      sau:
+    </p>
+
+    <ol class="cases warn-list">
+      <li>
+        Xuất hiện <strong>thủy kích</strong> trong tuabin hoặc trên các đường ống hơi chính
+        (nhiệt độ hơi chính giảm đột ngột, chênh lệch nhiệt độ vách trên/dưới xilanh tăng cao,
+        vỏ dưới lạnh đột ngột).
+      </li>
+
+      <li>
+        <strong>Độ rung của tuabin tăng vọt đột ngột</strong>, vượt quá giá trị bảo vệ cho phép
+        hoặc xuất hiện tiếng cọ sát, va chạm kim loại rõ rệt bên trong phần quay của tuabin,
+        máy phát.
+      </li>
+
+      <li>
+        <strong>Nhiệt độ dầu bôi trơn hồi</strong> về từ bất kỳ gối đỡ nào của tuabin – máy
+        phát <span class="chip red">&gt; 82 °C</span> hoặc có khói/tia lửa bốc ra từ các gối
+        đỡ, bộ chèn trục.
+      </li>
+
+      <li>
+        <strong>Nhiệt độ kim loại gối đỡ</strong> vượt quá giới hạn an toàn:
+        <ul>
+          <li>Các gối từ 1 đến 3: <span class="chip red">&gt; 127 °C</span></li>
+          <li>Các gối từ 4 đến 8: <span class="chip red">&gt; 121 °C</span></li>
+          <li>Gối chặn: <span class="chip red">&gt; 105 °C</span> (hoặc nhiệt độ dầu hồi gối
+              chặn tăng cao kèm tiếng kêu lạ và rung mạnh).</li>
+        </ul>
+      </li>
+
+      <li>
+        Xuất hiện <strong>đám cháy lớn</strong> tại khu vực tuabin – máy phát mà không có khả
+        năng khống chế dập tắt tại chỗ.
+      </li>
+
+      <li>
+        <strong>Hư hỏng toàn bộ</strong> các tín hiệu đo lường giám sát và hệ thống bảo vệ
+        tuabin.
+      </li>
+
+      <li>
+        <strong>Mất hoàn toàn nguồn nước tuần hoàn</strong> làm mát bình ngưng mà không thể
+        khôi phục được.
+      </li>
+
+      <li>
+        Khi <strong>độ di trục của rotor</strong> tăng cao đạt giá trị bảo vệ ngừng máy mà bảo
+        vệ tự động bị lỗi không tác động.
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN 3 ============ -->
+  <section>
+    <h2 class="ok">
+      <span class="num-badge">3</span>
+      Giải thích: Tại sao phải phá chân không trong các trường hợp này?
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <p>
+      Mục đích chính của việc <strong>chủ động mở van phá chân không bình ngưng</strong>
+      (đưa áp suất trong bình ngưng từ áp suất âm lên áp suất khí quyển) là:
+    </p>
+
+    <div class="explain-group">
+      <div class="explain-title">
+        <span class="icon">1</span>
+        Hãm cưỡng bức, rút ngắn thời gian dừng quay quán tính của rotor
+      </div>
+      <p>
+        Khi bình ngưng còn chân không cao, môi trường bên trong tuabin có
+        <span class="highlight">mật độ rất loãng (gần như chân không)</span>, lực cản khí động
+        học rất nhỏ khiến rotor quay theo quán tính rất lâu (có thể kéo dài hàng chục phút).
+        Việc đưa không khí vào sẽ tạo ra <span class="highlight">lực cản ma sát khí động học
+        lớn</span> tác động lên các tầng cánh tuabin, giúp tốc độ rotor giảm nhanh về 0 trong
+        thời gian ngắn nhất.
+      </p>
+    </div>
+
+    <div class="explain-group">
+      <div class="explain-title">
+        <span class="icon">2</span>
+        Ngăn ngừa và cắt đứt triệt để nguy cơ thủy kích
+      </div>
+      <p>
+        Giúp <span class="highlight">cô lập nguồn hút chân không</span>, ngăn nước từ bình ngưng
+        hoặc từ các bình gia nhiệt, đường xả bị hút ngược trở lại vào buồng tuabin khi các van
+        trích/van xả bị rò rỉ.
+      </p>
+    </div>
+
+    <div class="explain-group">
+      <div class="explain-title">
+        <span class="icon">3</span>
+        Hạn chế tối đa hư hỏng cơ khí nghiêm trọng
+      </div>
+      <p>
+        Khi đang xảy ra sự cố va chạm kim loại, rung lắc mạnh, cháy gối đỡ hoặc cháy dầu,
+        <span class="highlight">rotor càng quay lâu thì mức độ cọ quẹt, cong vênh trục, mài mòn
+        cháy gối và nguy cơ nổ vỡ cánh tuabin càng thảm khốc</span>; dừng rotor càng nhanh sẽ
+        bảo vệ tối đa tính mạng con người và thiết bị.
+      </p>
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Nguyên tắc khẩn cấp:</strong> Trong các trường hợp trên, <strong>không được
+      chần chừ</strong> — phải lập tức dừng khẩn cấp tuabin và mở van phá chân không. Mỗi phút
+      rotor còn quay trong tình trạng sự cố là một phút gia tăng nguy cơ hư hỏng nghiêm trọng
+      và mất an toàn.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Đây là 2 nhóm trường hợp đặc biệt quan trọng trong vận hành
+    tuabin:
+    <br>• <strong>13 trường hợp cấm khởi động</strong> — bảo vệ an toàn thiết bị khi khởi
+    động, tuyệt đối không được vi phạm.
+    <br>• <strong>8 trường hợp ngừng có phá hoại chân không</strong> — quy trình dừng khẩn cấp
+    ưu tiên <strong>dừng rotor nhanh nhất</strong> để bảo vệ thiết bị và con người.
+    <br>• <strong>3 lý do phá chân không</strong>: hãm cưỡng bức rotor — ngăn ngừa thủy kích —
+    hạn chế hư hỏng cơ khí.
+  </div>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phương pháp kiểm tra rò rỉ bằng khí Heli - Bình ngưng</title>
+<style>
+  :root {
+    --primary: #0b5394;
+    --primary-light: #e8f0fa;
+    --accent: #c0392b;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f7f9fc;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.35;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin: 32px 0 12px;
+    padding: 8px 14px;
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin: 20px 0 10px;
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  .formula {
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-style: italic;
+    white-space: nowrap;
+  }
+
+  ul {
+    margin: 10px 0;
+    padding-left: 22px;
+  }
+
+  ul li { margin: 6px 0; }
+
+  ul.positions > li { margin: 10px 0; }
+
+  /* Bảng đánh giá mức độ rò rỉ */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.97rem;
+  }
+
+  thead th {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr:nth-child(even) { background: #f2f6fb; }
+  tbody tr:hover { background: #e6eefb; }
+
+  .level {
+    font-weight: 600;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  .level.critical { color: var(--accent); }
+
+  .note {
+    background: #fff8e1;
+    border-left: 5px solid #f0ad4e;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+    font-style: italic;
+    color: #6b5300;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 28px 0;
+  }
+
+  @media (max-width: 600px) {
+    .document { padding: 24px 18px; }
+    h1 { font-size: 1.25rem; }
+    h2 { font-size: 1.05rem; }
+    table { font-size: 0.85rem; }
+    thead th, tbody td { padding: 8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <h1>Phương pháp kiểm tra bằng khí Heli<br>để tìm điểm rò rỉ gây giảm chân không bình ngưng</h1>
+
+  <!-- ================= NGUYÊN LÝ ================= -->
+  <section>
+    <h2>Nguyên lý kiểm tra</h2>
+
+    <p>
+      Khí Heli (<span class="formula">He</span>) là khí trơ, không độc hại, không cháy nổ,
+      không tác dụng hóa học với các chi tiết của bình ngưng và khuếch tán cực nhanh qua các
+      khe hở dù rất nhỏ. Đầu lấy mẫu của máy đo phổ khối Heli được kết nối vào đầu xả của
+      bơm hút chân không bình ngưng (khóa van xả để toàn bộ khí xả đi qua đầu đo lấy mẫu).
+      Trong quá trình thử, tổ máy và hệ thống chân không phải được duy trì chế độ vận hành
+      ổn định thực tế (có tải, đúng nhiệt độ và áp suất âm làm việc).
+    </p>
+
+    <p>
+      Khi kỹ thuật viên xịt khí Heli vào các vị trí nghi ngờ bên ngoài vùng chân không, nếu có
+      điểm hở, khí Heli sẽ bị hút vào trong bình ngưng rồi theo dòng khí không ngưng đi tới
+      đầu xả của bơm chân không. Tại đây, máy phổ khối sẽ ion hóa dòng khí, phân tách các phân
+      tử khí qua từ trường để phát hiện hàm lượng Heli cực nhỏ. Sự gia tăng đột biến của nồng
+      độ Heli so với mức nền xác nhận vị trí vừa xịt khí có rò rỉ; nồng độ đo được càng lớn
+      chứng tỏ độ rò rỉ tại vị trí đó càng cao.
+    </p>
+  </section>
+
+  <!-- ================= THIẾT BỊ ================= -->
+  <section>
+    <h2>Thiết bị và chuẩn bị tiếp cận</h2>
+
+    <p>
+      Sử dụng thiết bị phát hiện rò rỉ chuyên dụng (máy phổ khối Helium ASM 340 có điều khiển
+      từ xa), chai khí chuẩn Heli độ tinh khiết cao (<span class="formula">99,9999%</span>),
+      chai khí nén Heli thương mại, đồng hồ giảm áp, van an toàn, cuộn dây khí mềm, súng xịt
+      khí và các ống inox nối dài. Khu vực đặt máy cần được cấp nguồn điện 220V ổn định, có
+      đèn chiếu sáng và nối đất an toàn. Với các vị trí trên cao, ngoài tầm với của vòi xịt
+      khí (&gt; 3m) như bích vỏ tuabin hạ áp, màng an toàn, khớp nối giãn nở cổ bình ngưng,
+      phải bố trí thang hoặc bắc giàn giáo chắc chắn để tiếp cận.
+    </p>
+  </section>
+
+  <!-- ================= TRÌNH TỰ ================= -->
+  <section>
+    <h2>Trình tự thực hiện kiểm tra</h2>
+
+    <p>
+      Thực hiện đầy đủ thủ tục cấp phép làm việc, họp phổ biến an toàn đầu ca và trang bị bảo
+      hộ lao động (dây an toàn khi làm việc trên cao).
+    </p>
+
+    <p>
+      Tiến hành lắp đầu lấy mẫu vào đường ống xả của bơm chân không bình ngưng, bật máy phổ
+      khối, kiểm tra kết nối điều khiển từ xa và thực hiện hiệu chuẩn máy theo tiêu chuẩn nhà
+      sản xuất.
+    </p>
+
+    <p>
+      Tại hiện trường, kết nối chai khí Heli với van giảm áp và vòi xịt khí, sau đó xịt khí
+      vào từng vị trí nghi ngờ với lượng khí vừa đủ cho một lần xịt. Dừng lại chờ một khoảng
+      thời gian nhất định để khí kịp đi qua bình ngưng đến đầu xả bơm chân không.
+    </p>
+
+    <p>
+      Nếu máy phổ khối ghi nhận nồng độ Heli tăng vọt, tiến hành đánh dấu chính xác vị trí rò
+      rỉ tại hiện trường và ghi nhận kết quả. Chờ cho nồng độ khí Heli dư trong hệ thống giảm
+      hẳn về mức nền bình thường mới tiếp tục xịt kiểm tra vị trí tiếp theo. Lặp lại chu trình
+      cho đến khi hoàn thành toàn bộ các vị trí cần rà soát.
+    </p>
+  </section>
+
+  <!-- ================= VỊ TRÍ TRỌNG ĐIỂM ================= -->
+  <section>
+    <h2>Các vị trí trọng điểm cần rà soát</h2>
+
+    <ul class="positions">
+      <li>Bích vỏ tuabin hạ áp, màng an toàn tuabin hạ áp, các cửa người chui và khu vực các
+          gối trục 3, 4, 5, 6.</li>
+
+      <li>Khớp nối giãn nở cổ bình ngưng, hệ thống nước chèn cổ bình ngưng, cụm van phá chân
+          không bình ngưng.</li>
+
+      <li><strong>Thân bình ngưng:</strong> Các cửa người chui, điểm hàn các cảm biến (nhiệt
+          độ, áp lực, độ dẫn), kính quan sát mức nước tại chỗ, khu vực rốn bình ngưng, điểm
+          nối bơm chân không với bình ngưng.</li>
+
+      <li><strong>Khu vực hệ thống Bypass hạ áp:</strong> Van bypass 2A/2B, điểm hàn nối ống
+          bypass với bình ngưng, các đường phun giảm ôn bypass.</li>
+
+      <li><strong>Hệ thống xả và bể Flash tank:</strong> Các đường xả đọng/xả sự cố từ các
+          bình gia nhiệt (BGN 1, 2, 3, 4, 6, 7, 8), đường xả từ hệ thống hơi chèn, đường xả
+          đọng và đường rút khí từ bể Flash tank A/B về bình ngưng.</li>
+    </ul>
+  </section>
+
+  <!-- ================= ĐÁNH GIÁ MỨC ĐỘ ================= -->
+  <section>
+    <h2>Đánh giá mức độ rò rỉ</h2>
+
+    <p>
+      Căn cứ vào giá trị độ rò cực đại đo được tại đầu ra bơm chân không, mức độ rò rỉ được
+      phân loại như sau:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Mức độ</th>
+          <th>Giá trị độ rò</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="level">Nhỏ</td>
+          <td><span class="formula">1 × 10<sup>-7</sup> ÷ 10 × 10<sup>-7</sup></span> std.cc/sec</td>
+        </tr>
+        <tr>
+          <td class="level">Trung bình</td>
+          <td><span class="formula">1 × 10<sup>-6</sup> ÷ 10 × 10<sup>-6</sup></span> std.cc/sec</td>
+        </tr>
+        <tr>
+          <td class="level">Lớn</td>
+          <td><span class="formula">1 × 10<sup>-5</sup> ÷ 10 × 10<sup>-5</sup></span> std.cc/sec</td>
+        </tr>
+        <tr>
+          <td class="level critical">Rất lớn</td>
+          <td><span class="formula">&gt; 1 × 10<sup>-4</sup></span> std.cc/sec</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      Các vị trí rò rỉ sau khi được xử lý làm kín (siết bích, bơm keo hoặc sửa chữa trong kỳ
+      dừng lò máy) đều phải được xịt thử lại bằng khí Heli để khẳng định đã kín hoàn toàn.
+    </div>
+  </section>
+
+</article>
+
+</body>
+</html>

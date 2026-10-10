@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sự cố áp lực dầu chèn thấp</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --hydrogen: #7c3aed;
+    --hydrogen-light: #f3e8ff;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #1b7cb8);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2.danger { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  h2.warn   { background: linear-gradient(135deg, #b45309, #d97706); }
+  h2.ok     { background: linear-gradient(135deg, #14532d, #1e8449); }
+
+  h2 .num-badge {
+    background: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2.danger .num-badge { color: var(--danger); }
+  h2.warn   .num-badge { color: var(--warn); }
+  h2.ok     .num-badge { color: var(--ok); }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Danh sách hiện tượng ===== */
+  ul.symptoms {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  ul.symptoms > li {
+    position: relative;
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 50px;
+    font-size: 0.98rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  ul.symptoms > li::before {
+    content: "!";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.95rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul.symptoms > li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.18);
+  }
+
+  /* ===== Khối nguy cơ H2 ===== */
+  .h2-hazard {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 10px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .h2-hazard .icon {
+    background: #fff;
+    color: var(--hydrogen);
+    font-weight: 900;
+    font-size: 1.2rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .h2-hazard strong { color: #fff; }
+
+  /* ===== Nhóm nguyên nhân ===== */
+  .cause-group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 18px;
+    margin: 10px 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .cause-group:hover {
+    box-shadow: 0 3px 10px rgba(217, 119, 6, 0.12);
+  }
+
+  .cause-group .cause-title {
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+  }
+
+  .cause-group .cause-title .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--warn);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cause-group p {
+    margin: 4px 0;
+    font-size: 0.96rem;
+    text-align: justify;
+  }
+
+  /* ===== Các bước xử lý ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ok);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    background: var(--ok);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 40px;
+    height: 34px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(30, 132, 73, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--ok);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 6px 0; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .purple-box {
+    background: var(--hydrogen-light);
+    border-left: 5px solid var(--hydrogen);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--hydrogen); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.purple {
+    background: var(--hydrogen-light);
+    color: var(--hydrogen);
+    border-color: #d8b4fe;
+  }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e8f6ee, #d1f0dd);
+    border-left: 5px solid var(--ok);
+    border-radius: 0 8px 8px 0;
+    color: #14532d;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--ok); }
+
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.96rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 12px; width: 34px; height: 30px; font-size: 0.75rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .h2-hazard { flex-direction: column; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu hiện tượng, nguyên nhân và biện pháp khắc phục sự cố áp lực dầu chèn thấp?</span>
+  </div>
+
+  <h1>Hiện tượng, nguyên nhân và biện pháp khắc phục<br>sự cố áp lực dầu chèn thấp</h1>
+
+  <!-- ============ PHẦN 1: HIỆN TƯỢNG ============ -->
+  <section>
+    <h2 class="danger">
+      <span class="num-badge">1</span>
+      Hiện tượng
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="symptoms">
+      <li>
+        Xuất hiện cảnh báo <strong>áp lực dầu chèn thấp</strong> hoặc
+        <strong>độ chênh áp giữa dầu chèn và khí hydro (H₂)</strong> máy phát thấp trên màn
+        hình điều khiển DCS/TCS.
+      </li>
+
+      <li>
+        Đồng hồ áp kế đo tại chỗ và tín hiệu chênh áp dầu chèn tại bộ lọc, trạm cấp dầu
+        chỉ thị giá trị <strong>giảm</strong>.
+      </li>
+
+      <li>
+        Bơm dầu chèn dự phòng (<strong>bơm AC</strong> hoặc <strong>bơm sự cố DC</strong>) có
+        thể tự động liên động khởi động vào làm việc tùy theo mức độ sụt giảm áp lực.
+      </li>
+
+      <li>
+        Nguy cơ <strong>rò rỉ khí H₂ ra môi trường</strong> bên ngoài qua các vành chèn trục
+        máy phát tăng cao, có thể phát hiện mùi hoặc kích hoạt tín hiệu cảnh báo rò rỉ H₂.
+      </li>
+    </ul>
+
+    <div class="h2-hazard">
+      <div class="icon">H₂</div>
+      <div>
+        <strong>⚠ NGUY CƠ CHÁY NỔ:</strong> Khí Hydro là khí <strong>dễ cháy nổ</strong> khi
+        nồng độ trong không khí đạt <span style="background: rgba(255,255,255,0.22); padding: 1px 9px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.4); font-weight: 700;">4% – 75%</span>.
+        Rò rỉ H₂ qua vành chèn trục máy phát do mất màng dầu làm kín là <strong>cực kỳ nguy
+        hiểm</strong>, có thể gây cháy nổ toàn bộ tổ máy.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 2: NGUYÊN NHÂN ============ -->
+  <section>
+    <h2 class="warn">
+      <span class="num-badge">2</span>
+      Nguyên nhân
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Sự cố bơm dầu chèn</div>
+      <p>Bơm dầu chèn đang vận hành bị trip do nhảy rơle bảo vệ quá tải động cơ, mất nguồn
+         cấp, hỏng khớp nối hoặc kẹt cơ khí.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Tắc phin lọc dầu chèn</div>
+      <p>Bộ lọc dầu chèn đang làm việc bị bẩn, nghẹt cáu cặn làm chênh lệch áp suất trước/sau
+         phin lọc vượt ngưỡng cảnh báo (<span class="chip">&gt; 0,55 bar</span>), gây suy giảm
+         áp lực dầu cấp phía sau lọc.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Lỗi van điều chỉnh chênh áp dầu chèn – hydro</div>
+      <p>Van điều chỉnh tự động bị kẹt, hỏng màng điều khiển, lỗi bộ chấp hành hoặc cài đặt
+         sai lệch khiến van mở quá mức đường xả hồi dầu về bể chứa.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Rò rỉ, bục vỡ đường ống</div>
+      <p>Các đường ống dẫn dầu chèn, mối nối mặt bích hoặc van trên tuyến bị xì hở, nứt vỡ
+         làm thất thoát lưu lượng và áp lực dầu.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Hư hỏng vành chèn trục máy phát</div>
+      <p>Bọc trục, vành chèn cơ khí bị mài mòn, khe hở làm kín tăng lên quá lớn làm dầu chèn
+         thoát về khoang hồi nhanh hơn lưu lượng bơm cấp đến.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Mức dầu bể cấp thấp hoặc lọt khí</div>
+      <p>Mức dầu bôi trơn/dầu chèn trong bể quá thấp, hoặc đường hút của bơm bị lọt khí gây
+         hiện tượng xâm thực, làm bơm mất áp.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Lỗi thiết bị đo lường (C&amp;I)</div>
+      <p>Cảm biến áp suất bị lỗi, đứt dây tín hiệu hoặc tắc đường ống xung áp dẫn đến
+         <strong>báo tín hiệu giả</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 3: BIỆN PHÁP KHẮC PHỤC ============ -->
+  <section>
+    <h2 class="ok">
+      <span class="num-badge">3</span>
+      Biện pháp khắc phục theo trình tự
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <ol class="step-list">
+      <li>
+        <strong>Báo cáo và phối hợp giám sát</strong>
+        <ul>
+          <li>Báo cáo ngay cho <strong>Máy trưởng, Trưởng kíp lò máy và Trưởng ca</strong> biết
+              về sự cố sụt giảm áp lực dầu chèn.</li>
+
+          <li>Liên hệ nhân viên trực <strong>Điện</strong> phối hợp giám sát chặt chẽ áp lực
+              khí H₂, nhiệt độ máy phát và độ chênh áp giữa dầu chèn và H₂.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Khôi phục nguồn cấp dầu chèn</strong>
+        <ul>
+          <li>Kiểm tra tình trạng làm việc thực tế của bơm dầu chèn đang chạy. Nếu bơm chính đã
+              trip mà bơm dự phòng không tự động vào làm việc, phải <strong>lập tức khởi động
+              bằng tay bơm dự phòng</strong> (trên DCS hoặc nút ấn tại chỗ).</li>
+
+          <li>Kiểm tra <strong>van một chiều</strong> đầu đẩy bơm chạy đã mở, van đầu đẩy bơm
+              dừng đóng kín (tránh hiện tượng dầu bị hồi ngược).</li>
+
+          <li>Khẳng định độ sẵn sàng và nguồn điện một chiều (<strong>DC</strong>) của bơm dầu
+              chèn sự cố DC.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra và chuyển đổi bộ lọc dầu chèn</strong>
+        <em>(nếu chênh áp lọc cao &gt; 0,55 bar)</em>
+        <ul>
+          <li>Thực hiện chuyển đổi từ bộ lọc bẩn sang bộ lọc dự phòng đúng quy trình:</li>
+
+          <li>Kiểm tra van xả đọng của bộ lọc dự phòng đóng hoàn toàn, mở van xả khí.</li>
+
+          <li>Mở van nạp dầu vào bộ lọc dự phòng cho đến khi thấy dầu chảy ra liên tục từ van
+              xả khí (đuổi hết bọt khí) thì đóng hoàn toàn van xả khí lại.</li>
+
+          <li>Đóng van nạp, mở hoàn toàn các van đầu vào và đầu ra của bộ lọc dự phòng để đưa
+              vào vận hành.</li>
+
+          <li>Đóng các van đầu vào và đầu ra của bộ lọc bị bẩn để cô lập đưa ra ngoài; theo dõi
+              sát áp lực dầu chèn.</li>
+        </ul>
+
+        <div class="alert" style="margin-top: 10px;">
+          <strong>⚠ Lưu ý tuyệt đối:</strong> Thao tác nạp dầu và mở van phải
+          <strong>từ từ</strong>; tránh thao tác sai làm gián đoạn dầu chèn dẫn đến
+          <strong>rò rỉ H₂ ra môi trường rất nguy hiểm</strong>.
+        </div>
+      </li>
+
+      <li>
+        <strong>Kiểm tra và hiệu chỉnh van điều tiết chênh áp</strong>
+        <ul>
+          <li>Kiểm tra trạng thái làm việc của van điều chỉnh chênh áp dầu chèn – hydro. Nếu
+              van tự động bị kẹt hoặc sai lệch độ mở, chuyển sang điều khiển bằng tay
+              (<strong>Man</strong>) hoặc thao tác cụm van bypass để duy trì độ chênh áp dầu
+              chèn cao hơn áp lực khí H₂ trong giới hạn cho phép.</li>
+
+          <li>Báo nhân viên <strong>Đo lường Điều khiển (C&amp;I)</strong> kiểm tra cảm biến đo
+              áp suất và thông thổi đường ống xung nếu nghi ngờ báo giả.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra rò rỉ và mức dầu hệ thống</strong>
+        <ul>
+          <li>Phối hợp <strong>Máy phó</strong> kiểm tra tại chỗ toàn bộ tuyến ống, mặt bích,
+              van chặn xem có hiện tượng rò rỉ dầu ra ngoài hay không để kịp thời xử lý.</li>
+
+          <li>Kiểm tra mức dầu trong bể cấp, nếu mức dầu giảm thấp phải bổ sung ngay để tránh
+              lọt khí vào đầu hút bơm.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Xử lý dừng máy khẩn cấp (khi không khắc phục được)</strong>
+        <ul>
+          <li>Trong suốt quá trình xử lý, thường xuyên kiểm tra <strong>nồng độ khí H₂</strong>
+              xung quanh khu vực đầu trục máy phát.</li>
+
+          <li>Nếu áp lực dầu chèn mất hoàn toàn hoặc tụt sâu không thể khôi phục, không duy trì
+              được màng dầu làm kín làm khí H₂ phụt thoát ra ngoài gây nguy cơ cháy nổ, người
+              vận hành phải ấn nút <strong>dừng khẩn cấp Tuabin – Máy phát (Trip tổ máy)</strong>
+              theo đúng quy trình xử lý sự cố.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="purple-box">
+      <strong>💡 Nguyên tắc xuyên suốt:</strong> Khi xử lý sự cố áp lực dầu chèn thấp, phải
+      <strong>đặt an toàn khí H₂ lên hàng đầu</strong>. Mọi thao tác phải thực hiện
+      <strong>từ từ, đúng quy trình</strong>, tuyệt đối không để gián đoạn dầu chèn làm mất
+      màng dầu làm kín — vì khí H₂ rò rỉ có thể gây <strong>cháy nổ toàn bộ tổ máy</strong>.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Sự cố áp lực dầu chèn thấp là sự cố
+    <strong>đặc biệt nguy hiểm</strong> vì liên quan trực tiếp đến an toàn khí H₂ của máy phát.
+    Cần nắm vững <strong>hiện tượng – 7 nguyên nhân – 6 bước xử lý</strong> và luôn đặt
+    <strong>an toàn chống cháy nổ H₂</strong> lên hàng đầu trong mọi tình huống.
+  </div>
+
+</article>
+
+</body>
+</html>

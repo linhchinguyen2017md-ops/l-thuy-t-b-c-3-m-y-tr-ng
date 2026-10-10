@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sự cố độ rung gối trục tuabin tăng cao</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--danger);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--danger);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2.danger { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  h2.warn   { background: linear-gradient(135deg, #b45309, #d97706); }
+  h2.ok     { background: linear-gradient(135deg, #14532d, #1e8449); }
+
+  h2 .num-badge {
+    background: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2.danger .num-badge { color: var(--danger); }
+  h2.warn   .num-badge { color: var(--warn); }
+  h2.ok     .num-badge { color: var(--ok); }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Danh sách hiện tượng ===== */
+  ul.symptoms {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  ul.symptoms > li {
+    position: relative;
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 50px;
+    font-size: 0.98rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  ul.symptoms > li::before {
+    content: "!";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.95rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul.symptoms > li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.18);
+  }
+
+  /* ===== Khối ngưỡng Trip ===== */
+  .trip-threshold {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.3);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .trip-threshold .threshold-item {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .trip-threshold .threshold-item .label {
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.9;
+    font-weight: 600;
+  }
+
+  .trip-threshold .threshold-item .value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .trip-threshold .threshold-item .desc {
+    font-size: 0.82rem;
+    opacity: 0.9;
+    font-style: italic;
+  }
+
+  /* ===== Nhóm nguyên nhân ===== */
+  .cause-group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 18px;
+    margin: 10px 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .cause-group:hover {
+    box-shadow: 0 3px 10px rgba(217, 119, 6, 0.12);
+  }
+
+  .cause-group .cause-title {
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+  }
+
+  .cause-group .cause-title .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--warn);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cause-group ul { margin: 4px 0; padding-left: 20px; }
+  .cause-group ul li { margin: 4px 0; font-size: 0.96rem; }
+
+  /* ===== Các nhóm xử lý ===== */
+  .action-group {
+    margin: 22px 0;
+  }
+
+  .action-group-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.98rem;
+    margin-bottom: 12px;
+    border: 2px solid var(--primary);
+  }
+
+  .action-group-title .letter {
+    background: var(--primary);
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+  }
+
+  /* ===== Các bước xử lý ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ok);
+    border-radius: 6px;
+    padding: 14px 18px 14px 64px;
+    margin: 10px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    background: var(--ok);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(30, 132, 73, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--ok);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 4px 0; font-size: 0.96rem; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .purple-box {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--purple); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.green {
+    background: var(--ok-light);
+    color: var(--ok);
+    border-color: #a7d9bc;
+  }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e8f6ee, #d1f0dd);
+    border-left: 5px solid var(--ok);
+    border-radius: 0 8px 8px 0;
+    color: #14532d;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--ok); }
+
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.96rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    .step-list > li { padding: 12px 14px 12px 56px; }
+    .step-list > li::before { left: 12px; width: 28px; height: 28px; font-size: 0.85rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .trip-threshold { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu hiện tượng, nguyên nhân và biện pháp khắc phục sự cố độ rung gối trục tuabin tăng cao?</span>
+  </div>
+
+  <h1>Hiện tượng, nguyên nhân và biện pháp khắc phục<br>sự cố độ rung gối trục tuabin tăng cao</h1>
+
+  <!-- ============ PHẦN 1: HIỆN TƯỢNG ============ -->
+  <section>
+    <h2 class="danger">
+      <span class="num-badge">1</span>
+      Hiện tượng
+    </h2>
+
+    <ul class="symptoms">
+      <li>
+        Hệ thống <strong>DCS/TSI</strong> hiển thị độ rung trục hoặc độ rung gối đỡ
+        tuabin – máy phát <strong>tăng cao</strong>.
+      </li>
+
+      <li>
+        Xuất hiện <strong>báo động bằng âm thanh và hình ảnh</strong> (cảnh báo Alarm/Trip)
+        trên màn hình CRT tại phòng điều khiển.
+      </li>
+
+      <li>
+        Xuất hiện <strong>âm thanh bất thường</strong>, tiếng rung rền cơ khí hoặc tiếng va
+        chạm, cọ sát kim loại tại vị trí thân tuabin, máy phát, máy kích từ.
+      </li>
+    </ul>
+
+    <!-- Khối ngưỡng Trip -->
+    <div class="trip-threshold">
+      <div class="threshold-item">
+        <span class="label">⚠ Ngưỡng báo động</span>
+        <span class="value">0,125 mm</span>
+        <span class="desc">Giảm tải &amp; theo dõi</span>
+      </div>
+      <div class="threshold-item">
+        <span class="label">🚨 Ngưỡng Trip tự động</span>
+        <span class="value">0,229 mm</span>
+        <span class="desc">Tuabin Trip ngay lập tức</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 2: NGUYÊN NHÂN ============ -->
+  <section>
+    <h2 class="warn">
+      <span class="num-badge">2</span>
+      Nguyên nhân
+    </h2>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Về thông số hơi và phụ tải</div>
+      <ul>
+        <li>Phụ tải tổ máy <strong>thay đổi đột ngột</strong>.</li>
+        <li>Các thông số hơi (lưu lượng, áp suất, nhiệt độ) <strong>dao động lớn</strong> hoặc
+            tăng/giảm quá nhanh.</li>
+      </ul>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Về dầu bôi trơn và dầu chèn</div>
+      <ul>
+        <li>Biến động bất thường của <strong>áp lực dầu bôi trơn</strong>, nhiệt độ dầu bôi
+            trơn và nhiệt độ dầu chèn.</li>
+        <li>Màng dầu bôi trơn <strong>không bền vững</strong> (kích rung màng dầu).</li>
+      </ul>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Về nhiệt và giãn nở nhiệt</div>
+      <ul>
+        <li>Có sự thiếu sót trong quá trình <strong>sấy và khởi động</strong> tuabin.</li>
+        <li><strong>Độ chênh giãn nở</strong> vượt quá giá trị cho phép.</li>
+        <li>Rôto bị <strong>uốn cong do nhiệt</strong>; độ chênh lệch nhiệt độ giữa nửa trên và
+            nửa dưới xi lanh HP/IP quá lớn
+            (<span class="chip red">≥ 42 °C</span>).</li>
+        <li>Sự thay đổi quá nhanh của nhiệt độ máy phát, độ chênh lệch nhiệt độ khí H₂ làm mát
+            quá lớn.</li>
+      </ul>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Về cơ khí và tiếp xúc</div>
+      <ul>
+        <li>Sự <strong>cọ sát</strong> giữa phần tĩnh và phần động; cọ sát vành chèn trục của
+            tuabin – máy phát.</li>
+        <li><strong>Mất cân bằng động</strong> của hệ trục tuabin – máy phát.</li>
+        <li><strong>Lệch tâm (không đồng tâm)</strong> khớp nối giữa tuabin và máy phát; các
+            phần quay bị cong vênh.</li>
+        <li>Các bu-lông chân đế bắt giữ bệ gối tuabin – máy phát bị <strong>nới lỏng</strong>.</li>
+        <li><strong>Rơi vật lạ</strong> vào phần tĩnh và phần quay; cánh tuabin bị nứt, gãy.</li>
+      </ul>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Về thủy kích</div>
+      <ul>
+        <li>Xuất hiện <strong>nước ngưng/nước lạnh tràn vào</strong> trong thân tuabin.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 3: BIỆN PHÁP XỬ LÝ ============ -->
+  <section>
+    <h2 class="ok">
+      <span class="num-badge">3</span>
+      Biện pháp xử lý
+    </h2>
+
+    <!-- NHÓM A -->
+    <div class="action-group">
+      <div class="action-group-title">
+        <span class="letter">A</span>
+        Quy tắc khẩn cấp
+      </div>
+
+      <ol class="step-list">
+        <li>
+          <strong>Ngừng khẩn cấp tuabin</strong>
+          <ul>
+            <li>Thực hiện <strong>ngay lập tức</strong> khi độ rung quá lớn hoặc phát hiện có
+                tiếng va chạm kim loại rõ rệt trong thân máy.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Ngưỡng Trip tự động</strong>
+          <ul>
+            <li>Tuabin sẽ tự động Trip khi độ rung đạt ngưỡng
+                <span class="chip red">0,229 mm</span>.</li>
+
+            <li>Nếu thiết bị bảo vệ tự động bị lỗi không tác động, người vận hành phải
+                <strong>lập tức ngừng tuabin bằng tay</strong>.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Tiếng cọ sát cơ khí</strong>
+          <ul>
+            <li><span class="chip blue">Khi khởi động</span> Nếu nghe thấy tiếng cọ sát từ hệ
+                thống chèn hoặc các phần quay, phải <strong>dừng ngay việc khởi động</strong>
+                để kiểm tra và khắc phục.</li>
+
+            <li><span class="chip blue">Khi dừng máy</span> Nếu nghe thấy tiếng cọ sát, bắt
+                buộc phải kiểm tra và <strong>xử lý triệt để</strong> trước khi cho phép khởi
+                động lại tổ máy.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <!-- NHÓM B -->
+    <div class="action-group">
+      <div class="action-group-title">
+        <span class="letter">B</span>
+        Xử lý độ rung trong quá trình khởi động
+      </div>
+
+      <ol class="step-list">
+        <li>
+          <strong>Khi tốc độ tuabin &lt; 800 vòng/phút</strong>
+          <ul>
+            <li>Nếu <strong>độ đảo trục (độ lệch tâm)</strong> lớn quá trị số nhà chế tạo
+                khuyến cáo: Phải <strong>ngừng tăng tốc</strong> và tiếp tục duy trì quay trục
+                (vần trục).</li>
+
+            <li>Chỉ được phép khởi động lại khi độ đảo trục đã đảm bảo ổn định
+                <span class="chip green">&lt; 0,038 mm</span>.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Khi qua dải tốc độ cộng hưởng (tốc độ tới hạn)</strong>
+          <ul>
+            <li>Phải <strong>tăng tốc nhanh và dứt khoát</strong> để đưa tuabin nhanh chóng
+                vượt qua dải tốc độ cộng hưởng, <strong>không dừng ngâm tốc độ</strong> ở khu
+                vực này.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Khi tốc độ tuabin &gt; 800 vòng/phút và độ rung tăng đến ngưỡng báo động
+          (0,125 mm)</strong>
+          <ul>
+            <li><strong>Giữ nguyên tốc độ</strong> tuabin trong vòng <span class="chip">15
+                phút</span> để theo dõi.</li>
+
+            <li>Nếu độ rung <strong>không giảm</strong>: Giảm bớt tốc độ xuống một cấp và giữ
+                tiếp trong 15 phút.</li>
+
+            <li>Nếu độ rung <strong>vẫn không giảm</strong>: Tiếp tục giảm dần tốc độ cho đến
+                khi độ rung giảm về trị số yêu cầu.</li>
+
+            <li>Sau khi độ rung đã đạt yêu cầu, mới được phép tăng lại tốc độ lên
+                <span class="chip">800 vòng/phút</span> để tiếp tục chu trình sấy tuabin.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Trường hợp bảo vệ lỗi khi độ rung đạt 0,229 mm</strong>
+          <ul>
+            <li><strong>Ngừng máy ngay lập tức</strong>.</li>
+
+            <li><strong>Kiểm tra toàn diện:</strong> Các thông số hơi; tốc độ tăng tốc; độ
+                chênh nhiệt độ trên/dưới xi lanh HP/IP (đảm bảo trong dải cho phép); xác nhận
+                các van xả thân tuabin đã mở; kiểm tra sự thay đổi của tốc độ quay; kiểm tra
+                nhiệt độ khí H₂ và độ chênh nhiệt độ 2 đầu máy phát.</li>
+
+            <li>Chỉ <strong>xem xét khởi động lại</strong> khi đã có các biện pháp xử lý lỗi
+                thích hợp.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <!-- NHÓM C -->
+    <div class="action-group">
+      <div class="action-group-title">
+        <span class="letter">C</span>
+        Xử lý độ rung khi tuabin đang mang tải vận hành
+      </div>
+
+      <p>
+        <em>Khi độ rung tuabin tăng lên tới ngưỡng báo động 0,125 mm, hoặc phát hiện âm thanh
+        bất thường bên trong thân tuabin, máy phát, máy kích từ:</em>
+      </p>
+
+      <ol class="step-list">
+        <li>
+          <strong>Giảm tải</strong>
+          <ul>
+            <li>Tiến hành <strong>giảm phụ tải tuabin ngay lập tức</strong> cho đến khi độ rung
+                ổn định về giá trị cho phép.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Kiểm tra và giám sát các thông số liên quan</strong>
+          <ul>
+            <li>Kiểm tra nhiệt độ và áp lực dầu bôi trơn, nhiệt độ kim loại gối đỡ và nhiệt độ
+                dầu hồi từ các gối xem có thay đổi bất thường hay không.</li>
+
+            <li>Kiểm tra các thông số nhiệt độ, áp suất của hơi chính và hơi tái nhiệt.</li>
+
+            <li>Kiểm tra độ giãn nở xi lanh và độ chênh giãn nở xi lanh HP/IP.</li>
+
+            <li>Kiểm tra độ mở của cụm van chặn (<strong>Stop valve</strong>) ở cả hai phía xem
+                có mở đồng đều hay không.</li>
+
+            <li>Nếu rung lớn xuất hiện trên <strong>trục máy phát</strong>: Kiểm tra nhiệt độ
+                khí H₂ và độ chênh nhiệt độ hai đầu máy phát.</li>
+
+            <li><strong>Thử giảm bớt dòng kích từ:</strong> Nếu độ rung máy phát giảm khi giảm
+                kích từ thì nguyên nhân rung bắt nguồn từ <strong>phần điện/từ trường máy
+                phát</strong>.</li>
+
+            <li>Phối hợp lắng nghe cẩn thận tiếng động cơ khí bên trong thân tuabin – máy phát.</li>
+          </ul>
+        </li>
+
+        <li>
+          <strong>Điều kiện dừng khẩn cấp</strong>
+          <ul>
+            <li>Nếu độ chênh nhiệt độ giữa phần trên và phần dưới xi lanh đạt
+                <span class="chip red">≥ 42 °C</span>: Phải thực hiện <strong>ngừng khẩn cấp
+                tuabin</strong>.</li>
+
+            <li>Nếu độ rung tiếp tục tăng chạm ngưỡng <span class="chip red">0,229 mm</span>:
+                Tuabin phải <strong>Trip tự động</strong> hoặc <strong>ngừng bằng tay ngay lập
+                tức</strong>.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <div class="purple-box">
+      <strong>💡 Nguyên tắc vàng:</strong> Khi độ rung tuabin tăng cao, phải
+      <strong>ưu tiên an toàn thiết bị lên hàng đầu</strong>. Ngưỡng Trip
+      <span style="background: #fff; padding: 1px 8px; border-radius: 4px; color: #c0392b; font-weight: 700; border: 1px solid #f2b7b1;">0,229 mm</span>
+      là <strong>giới hạn tuyệt đối không được vượt qua</strong> — dù bảo vệ tự động có tác
+      động hay không, người vận hành phải chủ động dừng máy để tránh hư hỏng nặng cho trục và
+      cánh tuabin.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Sự cố rung gối trục tuabin tăng cao là sự cố
+    <strong>đặc biệt nguy hiểm</strong> vì có thể dẫn tới hư hỏng trục, cánh tuabin, gối đỡ
+    nếu không xử lý kịp thời. Cần nắm vững <strong>hiện tượng – 5 nhóm nguyên nhân – 3 nhóm
+    biện pháp xử lý (A/B/C)</strong> và tuân thủ nghiêm ngặt các ngưỡng
+    <strong>0,125 mm (báo động)</strong> và <strong>0,229 mm (Trip)</strong>.
+  </div>
+
+</article>
+
+</body>
+</html>

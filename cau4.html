@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trình tự kiểm tra, chuẩn bị khởi động hệ thống nước cấp sau sửa chữa</title>
+<style>
+  :root {
+    --primary: #0f6b8a;
+    --primary-light: #e3f2f7;
+    --accent: #0e7490;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0f6b8a, #17a2b8);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--primary), #17a2b8);
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(15, 107, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin: 24px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Khối mục đích & phạm vi ===== */
+  .scope {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 20px;
+    margin: 18px 0 24px;
+    color: #0c4a5c;
+  }
+
+  .scope .scope-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 12px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 8px 0 8px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 1rem;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Bảng van ===== */
+  table.valve-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  table.valve-table thead th {
+    background: var(--primary);
+    color: #fff;
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  table.valve-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  table.valve-table tbody tr:last-child td { border-bottom: none; }
+  table.valve-table tbody tr:nth-child(even) { background: #f2f8fb; }
+  table.valve-table tbody tr:hover { background: #e3f2f7; }
+
+  .status-open {
+    display: inline-block;
+    background: var(--ok-light);
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid #a7d9bc;
+    white-space: nowrap;
+  }
+
+  .status-close {
+    display: inline-block;
+    background: var(--danger-light);
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid #f2b7b1;
+    white-space: nowrap;
+  }
+
+  /* ===== Khối điều kiện khởi động ===== */
+  .conditions-box {
+    background: linear-gradient(135deg, #f0fdf4, #e8f6ee);
+    border: 2px solid var(--ok);
+    border-radius: 10px;
+    padding: 0;
+    margin: 22px 0;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(30, 132, 73, 0.12);
+  }
+
+  .conditions-box .cond-header {
+    background: linear-gradient(135deg, var(--ok), #27ae60);
+    color: #fff;
+    padding: 14px 20px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .conditions-box .cond-header .icon {
+    background: #fff;
+    color: var(--ok);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+  }
+
+  .conditions-box ul {
+    list-style: none;
+    padding: 8px 20px 16px;
+    margin: 0;
+  }
+
+  .conditions-box ul li {
+    position: relative;
+    padding: 9px 0 9px 30px;
+    margin: 0;
+    border-bottom: 1px dashed #c8e6d2;
+    font-size: 0.96rem;
+  }
+
+  .conditions-box ul li::before {
+    content: "▸";
+    position: absolute;
+    left: 6px;
+    top: 9px;
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .conditions-box ul li:last-child { border-bottom: none; }
+
+  .conditions-box .val {
+    font-weight: 700;
+    color: var(--primary);
+    background: #fff;
+    padding: 1px 8px;
+    border-radius: 4px;
+    border: 1px solid #b8dbe5;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Khối ghi chú ===== */
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    color: #6b4a00;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    color: #7a1c14;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f2f7, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c4a5c;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  @media (max-width: 600px) {
+    .document { padding: 24px 18px; }
+    h1 { font-size: 1.1rem; }
+    h2 { font-size: 1rem; padding: 10px 14px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    table.valve-table { font-size: 0.84rem; }
+    table.valve-table thead th,
+    table.valve-table tbody td { padding: 8px 10px; }
+    .question { flex-direction: column; gap: 8px; }
+    .conditions-box ul { padding: 8px 14px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">3 điểm</span>
+    <span>Anh (Chị) hãy nêu trình tự kiểm tra, chuẩn bị khởi động hệ thống nước cấp sau sửa chữa?</span>
+  </div>
+
+  <h1>Trình tự kiểm tra, chuẩn bị khởi động<br>hệ thống nước cấp sau sửa chữa</h1>
+
+  <!-- ============ MỤC ĐÍCH & PHẠM VI ============ -->
+  <div class="scope">
+    <div class="scope-title">📘 Mục đích &amp; phạm vi áp dụng</div>
+    Tài liệu chuẩn hóa trình tự kiểm tra, rà soát an toàn công nghệ, điền đầy khử khí sơ bộ và
+    xác nhận toàn bộ các điều kiện tiên quyết trước khi đưa <strong>tổ hợp bơm cấp nước lò hơi
+    (BFP/BFBP)</strong> và các <strong>bình gia nhiệt cao áp</strong> vào vận hành sau bảo dưỡng,
+    sửa chữa theo quy trình <strong>QTVH/08M-VH</strong>.
+  </div>
+
+  <!-- ============ PHẦN 1 ============ -->
+  <section>
+    <h2><span class="num-badge">1</span> Kiểm tra bình khử khí và điền nước vào bình khử khí</h2>
+
+    <ul class="checklist">
+      <li>Kiểm tra bình khử khí ở tình trạng tốt, tất cả công việc sửa chữa, lắp đặt đã kết
+          thúc, <strong>phiếu công tác đã khóa</strong>, các cửa người chui đã đóng kín, mặt
+          bằng khu vực công tác sạch sẽ.</li>
+
+      <li>Kiểm tra hệ thống nước ngưng sẵn sàng và làm việc bình thường.</li>
+
+      <li>Kiểm tra toàn bộ hệ thống đo lường, giám sát của bình khử khí hoàn hảo và sẵn sàng
+          làm việc.</li>
+
+      <li>Khẳng định trạng thái hoàn chỉnh của các van trên bình khử khí, các van đã được thao
+          tác thử tốt và sẵn sàng đưa vào làm việc.</li>
+
+      <li>Đóng điện cho toàn bộ các van trên hệ thống.</li>
+
+      <li>Lựa chọn phương án cấp nước lên bình khử khí bằng <strong>bơm khử khoáng</strong>
+          hoặc bằng <strong>bơm nước ngưng</strong> (điền đầy bình ngưng → chạy bơm ngưng →
+          thông rửa đường ống → cấp nước lên bình khử khí tới mức bình thường → bên hóa phân
+          tích mẫu nước đạt chuẩn).</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 2 ============ -->
+  <section>
+    <h2><span class="num-badge">2</span> Kiểm tra chuẩn bị khởi động bơm tái tuần hoàn bình khử khí</h2>
+
+    <ul class="checklist">
+      <li>Kiểm tra mức nước bình khử khí ở mức làm việc bình thường, chất lượng nước đạt yêu cầu.</li>
+
+      <li>Đảm bảo không có tạp vật trong đường ống; phiếu công tác đã khóa, ánh sáng và vệ sinh
+          đạt chuẩn.</li>
+
+      <li>Kiểm tra nối điện đúng, đo điện trở cách điện động cơ đạt tiêu chuẩn, nguồn điện cấp tốt.</li>
+
+      <li>Kiểm tra mức dầu bôi trơn bình thường; đồng hồ đo kết nối chính xác, nguồn điện đo
+          lường sẵn sàng.</li>
+
+      <li>Kiểm tra mở van nước vào/ra làm mát cho bộ làm mát bơm tái tuần hoàn, lưu lượng nước
+          bình thường.</li>
+
+      <li>Mở từ từ van đầu hút bơm tái tuần hoàn (<strong>ĐĐC1</strong>), xả hết khí ở bộ lọc
+          đầu hút và thân bơm; kiểm tra không rò rỉ tại vành chèn.</li>
+    </ul>
+
+    <h3>Trạng thái van</h3>
+
+    <table class="valve-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Trạng thái</th>
+          <th>Van &amp; ký hiệu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="status-open">● MỞ</span></td>
+          <td>
+            Van tay đầu đẩy — <strong>ĐĐC2</strong> (<em>13LAC40AA003</em>)<br>
+            Van tay cách ly tới đường đầu vào bình khử khí — <strong>ĐĐC4</strong>
+            (<em>13LAB45AA002</em>)
+          </td>
+        </tr>
+        <tr>
+          <td><span class="status-close">● ĐÓNG</span></td>
+          <td>
+            Van điện đầu đẩy — <strong>ĐĐC3</strong> (<em>13LAB45AA001</em>)<br>
+            Van điện động — <strong>ĐĐC7a</strong> (<em>13LAB44AA201</em>)<br>
+            Van tay cách ly đường sấy ban đầu bơm cấp — <strong>ĐĐC8a</strong><br>
+            Các van điền đầy đường ống nước cấp — <strong>ĐĐC5, ĐĐC6</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ PHẦN 3 ============ -->
+  <section>
+    <h2><span class="num-badge">3</span> Kiểm tra chuẩn bị khởi động tổ hợp bơm cấp (BFP &amp; BFBP)</h2>
+
+    <ul class="checklist">
+      <li>Khẳng định công việc sửa chữa hoàn tất, đường ống sạch sẽ, người rút hết, phiếu công
+          tác đã khóa.</li>
+
+      <li>Kiểm tra nối điện, cách điện động cơ, nguồn cấp cho tổ bơm đảm bảo tiêu chuẩn kỹ thuật.</li>
+
+      <li>Kiểm tra mức dầu bôi trơn trong bể đạt chuẩn (so sánh ống thủy tại chỗ và tín hiệu
+          DCS); chất lượng dầu đạt yêu cầu.</li>
+
+      <li>Khẳng định hệ thống nước làm mát kín (<strong>CCW</strong>) và hệ thống khí nén đo
+          lường đã vận hành bình thường.</li>
+
+      <li>Khẳng định bơm tái tuần hoàn đã chạy tuần hoàn và cấp hơi tự dùng gia nhiệt khử khí
+          sơ bộ nước cấp (khống chế tốc độ tăng nhiệt
+          <span class="chip">≤ 2 °C/phút</span>).</li>
+    </ul>
+
+    <h3>Khởi động và kiểm tra hệ thống dầu bôi trơn</h3>
+    <ul class="checklist">
+      <li>Mở tất cả các van trong hệ thống dầu bôi trơn; đặt ống phun khớp nối thủy lực
+          (<em>Scoop tube</em>) ở vị trí <strong>nhỏ nhất (0%)</strong>.</li>
+
+      <li>Chạy bơm dầu khởi động (bơm dầu phụ), khẳng định bơm làm việc tốt, áp lực dầu bôi
+          trơn đạt chuẩn (<span class="chip">≥ 1,7 bar</span>).</li>
+
+      <li>Quan sát kính thăm dầu: dầu chảy đều qua tất cả các gối đỡ bơm, động cơ, khớp nối;
+          không có rò rỉ.</li>
+
+      <li>Xả khí và nạp nước làm mát cho bộ làm mát dầu; mở van nước làm mát động cơ và nước
+          chèn bơm.</li>
+    </ul>
+
+    <h3>Điền đầy, xả khí và sấy nóng bơm cấp</h3>
+    <ul class="checklist">
+      <li>Mở từ từ van đầu hút bơm cấp (<strong>C1a</strong>), mở các van xả khí
+          (<strong>XKC1a1, XKC1a2, XKC2a1, XKC2a2</strong>), mở van tay đầu đẩy
+          (<strong>C2a</strong>), đóng van điện đầu đẩy (<strong>C3a</strong> –
+          <em>13LAB23AA201</em>).</li>
+
+      <li>Mở van đường sấy từ bơm tái tuần hoàn (hoặc từ đầu đẩy bơm tăng áp đang chạy) để điền
+          đầy, đuổi khí và sấy nóng vỏ bơm.</li>
+    </ul>
+
+    <!-- Hộp điều kiện khởi động -->
+    <div class="conditions-box">
+      <div class="cond-header">
+        <span class="icon">✓</span>
+        Điều kiện cho phép khởi động tổ bơm cấp
+      </div>
+      <ul>
+        <li>Nước bình khử khí đã được khử khí sơ bộ</li>
+        <li>Mức dầu bể dầu bơm cấp <span class="val">&gt; 1/2</span></li>
+        <li>Bơm dầu phụ chạy <span class="val">≥ 5 phút</span>, P<sub>dầu</sub>
+            <span class="val">≥ 1,7 bar</span></li>
+        <li>Mức nước bình khử khí bình thường</li>
+        <li>Áp lực đầu hút bơm tăng áp <span class="val">≥ 1,47 bar</span></li>
+        <li>Chênh lệch nhiệt độ vỏ trên – vỏ dưới <span class="val">≤ 40 °C</span></li>
+        <li>Chênh lệch nhiệt độ nước khử khí – vỏ bơm <span class="val">≤ 70 °C</span></li>
+        <li>Chênh áp phin lọc đầu hút bơm cấp <span class="val">≤ 0,3 bar</span></li>
+        <li>Van tái tuần hoàn mở hoàn toàn, chế độ <strong>Auto</strong></li>
+        <li>Van đầu vào bơm cấp (<strong>C1a</strong>) mở hoàn toàn</li>
+        <li>Độ mở khớp nối thủy lực <span class="val">&lt; 2%</span> (đặt <strong>0%</strong>)</li>
+        <li>Van điện đầu đẩy (<strong>C3a</strong>) đóng, chế độ <strong>Auto</strong></li>
+        <li>Các van trích phun giảm ôn đóng hoàn toàn</li>
+        <li>Không có tín hiệu <strong>Trip bơm</strong> / lỗi phần điện</li>
+      </ul>
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Lưu ý quan trọng:</strong> Chỉ được kích khởi động tổ bơm cấp khi
+      <strong>toàn bộ 14 điều kiện trên đã được xác nhận thỏa mãn</strong>. Bất kỳ điều kiện
+      nào chưa đạt đều phải xử lý dứt điểm trước khi khởi động.
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 4 ============ -->
+  <section>
+    <h2><span class="num-badge">4</span> Kiểm tra các bình gia nhiệt cao áp (BGN số 6, 7, 8)</h2>
+
+    <ul class="checklist">
+      <li>Kết quả kiểm tra hệ thống bảo vệ của các bình gia nhiệt cao áp bình thường.</li>
+
+      <li>Van động cơ đầu vào đường hơi, van xả đóng/mở linh hoạt.</li>
+
+      <li>Van điều chỉnh xả vận hành linh hoạt và duy trì mức nước bình thường.</li>
+
+      <li>Van một chiều đường hơi trích vận hành bằng tay linh hoạt, đóng/mở bình thường.</li>
+
+      <li>Chùm ống kim loại trao đổi nhiệt <strong>không bị rò rỉ</strong>; bộ đo và hiển thị
+          mức tại phòng điều khiển chính xác.</li>
+
+      <li>Các van đi tắt bình gia nhiệt <strong>mở</strong>, các van nước đầu vào và đầu ra
+          <strong>đóng</strong>.</li>
+
+      <li>Phối hợp <strong>C&amp;I</strong> kiểm tra thử nghiệm hệ thống bảo vệ mức nước cao
+          và các liên động bảo vệ hoàn hảo, sẵn sàng đưa vào làm việc trước khi đưa bình gia
+          nhiệt vào vận hành.</li>
+    </ul>
+
+    <div class="note">
+      <strong>💡 Ghi nhớ:</strong> Các bình gia nhiệt cao áp chỉ được đưa vào vận hành
+      <strong>sau khi</strong> hệ thống bảo vệ mức nước cao và các liên động bảo vệ đã được
+      kiểm tra, thử nghiệm hoàn hảo và sẵn sàng.
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Trình tự kiểm tra – chuẩn bị khởi động hệ thống nước cấp sau
+    sửa chữa gồm <strong>4 bước chính</strong>: (1) Kiểm tra bình khử khí và điền nước —
+    (2) Chuẩn bị khởi động bơm tái tuần hoàn — (3) Chuẩn bị khởi động tổ hợp bơm cấp (BFP &amp;
+    BFBP) — (4) Kiểm tra các bình gia nhiệt cao áp. Phải xác nhận <strong>đầy đủ các điều kiện
+    tiên quyết</strong> trước khi kích khởi động tổ bơm cấp.
+  </div>
+
+</article>
+
+</body>
+</html>

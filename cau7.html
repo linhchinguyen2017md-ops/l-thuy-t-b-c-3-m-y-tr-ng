@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trình tự kiểm tra, chuẩn bị khởi động hệ thống nước ngưng sau sửa chữa</title>
+<style>
+  :root {
+    --primary: #0f6b8a;
+    --primary-light: #e3f2f7;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0f6b8a, #17a2b8);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(15, 107, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.12rem;
+    color: #fff;
+    margin: 30px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), #17a2b8);
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(15, 107, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 9px 0 9px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Khối điều kiện mức nước ===== */
+  .conditions-box {
+    background: linear-gradient(135deg, #f0fdf4, #e8f6ee);
+    border: 2px solid var(--ok);
+    border-radius: 10px;
+    padding: 0;
+    margin: 20px 0;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(30, 132, 73, 0.12);
+  }
+
+  .conditions-box .cond-header {
+    background: linear-gradient(135deg, var(--ok), #27ae60);
+    color: #fff;
+    padding: 13px 20px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .conditions-box .cond-header .icon {
+    background: #fff;
+    color: var(--ok);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+  }
+
+  .conditions-box ul {
+    list-style: none;
+    padding: 10px 20px 16px;
+    margin: 0;
+  }
+
+  .conditions-box ul li {
+    position: relative;
+    padding: 9px 0 9px 30px;
+    margin: 0;
+    border-bottom: 1px dashed #c8e6d2;
+    font-size: 0.96rem;
+  }
+
+  .conditions-box ul li::before {
+    content: "▸";
+    position: absolute;
+    left: 6px;
+    top: 9px;
+    color: var(--ok);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .conditions-box ul li:last-child { border-bottom: none; }
+
+  .conditions-box .val {
+    font-weight: 700;
+    color: var(--primary);
+    background: #fff;
+    padding: 1px 8px;
+    border-radius: 4px;
+    border: 1px solid #b8dbe5;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .conditions-box .val.red {
+    color: var(--danger);
+    border-color: #f2b7b1;
+    background: var(--danger-light);
+  }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c4a5c;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.red { background: var(--danger); }
+  .tag.green { background: var(--ok); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f2f7, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c4a5c;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.96rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .conditions-box ul { padding: 8px 14px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">3 điểm</span>
+    <span>Anh (Chị) hãy nêu trình tự kiểm tra, chuẩn bị khởi động hệ thống nước ngưng sau sửa chữa?</span>
+  </div>
+
+  <h1>Trình tự kiểm tra, chuẩn bị khởi động<br>hệ thống nước ngưng sau sửa chữa</h1>
+
+  <!-- ============ PHẦN 1 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">1</span>
+      Kiểm tra thiết bị ngưng tụ và hiện trường sau sửa chữa
+    </h2>
+
+    <ul class="checklist">
+      <li>Khẳng định toàn bộ <strong>công việc sửa chữa đã kết thúc</strong>.</li>
+
+      <li>Hiện trường làm việc được thu dọn sạch sẽ, ánh sáng làm việc và chiếu sáng sự cố đầy
+          đủ, <strong>con người đã rút hết</strong> ra khỏi khu vực thiết bị.</li>
+
+      <li>Toàn bộ hệ thống đường ống đấu nối hoàn chỉnh, các <strong>phiếu công tác (PCT)</strong>
+          liên quan đều đã được hoàn thành và khóa phiếu.</li>
+
+      <li>Đảm bảo <strong>không còn tạp vật, rác thải</strong> bên trong hệ thống đường ống và
+          thiết bị.</li>
+
+      <li>Kiểm tra các <strong>cửa người chui (manhole)</strong> của bình ngưng ở cả khoang nước
+          và khoang hơi đã được đóng kín.</li>
+
+      <li>Kiểm tra <strong>van xả cạn</strong> của các bình ngưng ở trạng thái
+          <span class="tag red">ĐÓNG</span>.</li>
+
+      <li>Kiểm tra <strong>sự tiếp địa an toàn</strong> của động cơ và cáp điện.</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 2 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">2</span>
+      Kiểm tra hệ thống điện, đo lường và bảo vệ liên động
+    </h2>
+
+    <ul class="checklist">
+      <li>Kiểm tra khẳng định trạng thái hoàn chỉnh của toàn bộ hệ thống và các van trên tuyến
+          nước ngưng.</li>
+
+      <li>Kiểm tra sự hoàn hảo và sẵn sàng hoạt động của các thiết bị kiểm tra, giám sát, đo
+          lường điều khiển và <strong>bảo vệ liên động</strong> của hệ thống nước ngưng.</li>
+
+      <li>Tất cả các bộ đo lường giám sát (<strong>áp lực, nhiệt độ, mức nước</strong>) phải
+          đưa vào vị trí làm việc bình thường, nguồn điện cấp tới thiết bị đo tốt.</li>
+
+      <li>Đóng điện nguồn cho tất cả các van điện, bộ điều chỉnh mức nước của thiết bị ngưng tụ.</li>
+
+      <li>Kiểm tra nguồn điện bảo vệ sẵn sàng; tủ điều khiển cấp nguồn cho bơm ngưng
+          <strong>không để ở vị trí Local</strong>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 3 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">3</span>
+      Chuẩn bị sơ đồ công nghệ (thiết lập hệ thống tuyến ống và van)
+    </h2>
+
+    <h3>Van cần MỞ</h3>
+    <ul class="checklist">
+      <li>Mở các van nước ngưng đầu vào, đầu ra của <strong>bình ngưng hơi chèn</strong> và các
+          <strong>bình gia nhiệt hạ áp số 1, 2, 3, 4</strong>.</li>
+    </ul>
+
+    <h3>Van cần ĐÓNG</h3>
+    <ul class="checklist">
+      <li>Đóng các van nước ngưng <strong>đi tắt (bypass)</strong> qua bình ngưng hơi chèn và
+          các bình gia nhiệt hạ áp số 1, 2, 3, 4.</li>
+
+      <li>Kiểm tra các <strong>van trích nước ngưng đi phun giảm ôn</strong> cho các phụ tải và
+          van tay nước ngưng đi <strong>làm mát/thải xỉ</strong> đang ở trạng thái đóng.</li>
+
+      <li>Van điều chỉnh nước ngưng đi các phụ tải <strong>đóng</strong>.</li>
+    </ul>
+
+    <h3>Chế độ Auto</h3>
+    <ul class="checklist">
+      <li>Van tái tuần hoàn bơm ngưng đang đóng và để ở chế độ
+          <strong>tự động (AUTO)</strong>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 4 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">4</span>
+      Kiểm tra các điều kiện phụ trợ của tổ bơm ngưng
+    </h2>
+
+    <h3>Nguồn nước chèn trục bơm</h3>
+    <ul class="checklist">
+      <li>Nhận thông báo từ bộ phận <strong>Hóa nghiệm</strong> xác nhận hệ thống cấp nước khử
+          khoáng làm việc bình thường.</li>
+
+      <li>Tiến hành mở van nước chèn bơm ngưng lấy từ hệ thống <strong>nước khử khoáng</strong>.</li>
+
+      <li>Mở van chèn bơm ngưng lấy từ hệ thống <strong>nước chèn van</strong>, khẳng định van
+          một chiều đảm bảo độ kín.</li>
+    </ul>
+
+    <h3>Hệ thống bôi trơn</h3>
+    <ul class="checklist">
+      <li>Kiểm tra mức dầu tại các gối đỡ của bơm ngưng đảm bảo
+          <span class="chip">&gt; 2/3 ống thủy</span> đo mức tại chỗ; dầu
+          <strong>không bị nhũ hóa, biến màu</strong>.</li>
+    </ul>
+
+    <h3>Hệ thống làm mát</h3>
+    <ul class="checklist">
+      <li>Kiểm tra mở hoàn toàn các van nước cấp vào và ra làm mát gối trục bơm ngưng (khẳng
+          định hệ thống nước làm mát kín <strong>CCW</strong> của nhà máy đã vận hành ổn định).</li>
+    </ul>
+  </section>
+
+  <!-- ============ PHẦN 5 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">5</span>
+      Nạp nước thân bơm và điền đầy hệ thống
+    </h2>
+
+    <ul class="checklist">
+      <li>Mở các van tay đầu hút của các bơm ngưng.</li>
+
+      <li>Mở van xả khí tại phin lọc đầu hút nước ngưng, khi thấy nước ngưng trào ra liên tục
+          <strong>không còn bọt khí</strong> thì đóng chặt van lại.</li>
+
+      <li>Đảm bảo van xả cạn của phin lọc nước ngưng <strong>đóng kín</strong>.</li>
+
+      <li>Kiểm tra mức nước trong bình ngưng (<strong>hotwell</strong>) nằm trong dải làm việc
+          bình thường, không có cảnh báo mức thấp.</li>
+
+      <li>Thông báo nhân viên <strong>Đo lường Điều khiển (C&amp;I)</strong> phối hợp kiểm tra
+          hệ thống bảo vệ mức nước và các bảo vệ liên động khác của bình ngưng và các bình gia
+          nhiệt hạ áp; khi tất cả bình thường thì đưa các bảo vệ vào vận hành.</li>
+    </ul>
+
+    <!-- Hộp điều kiện mức nước -->
+    <div class="conditions-box">
+      <div class="cond-header">
+        <span class="icon">✓</span>
+        Điều kiện mức nước hotwell bình ngưng
+      </div>
+      <ul>
+        <li>Mức nước làm việc bình thường: <span class="val">&gt; 400 mm</span></li>
+        <li>Ngưỡng bảo vệ Trip: <span class="val red">&lt; 250 mm</span> — tuyệt đối không để vi phạm</li>
+      </ul>
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Lưu ý:</strong> Không được khởi động hệ thống nước ngưng khi mức nước hotwell
+      chưa đạt giá trị làm việc bình thường (<span class="chip">&gt; 400 mm</span>) hoặc khi
+      hệ thống bảo vệ mức nước chưa được đưa vào vận hành.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Trình tự kiểm tra – chuẩn bị khởi động hệ thống nước ngưng sau
+    sửa chữa gồm <strong>5 bước chính</strong>: (1) Kiểm tra thiết bị ngưng tụ &amp; hiện trường
+    — (2) Kiểm tra hệ thống điện, đo lường &amp; bảo vệ liên động — (3) Chuẩn bị sơ đồ công nghệ
+    — (4) Kiểm tra điều kiện phụ trợ tổ bơm ngưng — (5) Nạp nước thân bơm &amp; điền đầy hệ
+    thống. Phải xác nhận <strong>đầy đủ các điều kiện an toàn và bảo vệ</strong> trước khi khởi
+    động.
+  </div>
+
+</article>
+
+</body>
+</html>

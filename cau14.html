@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sự cố áp lực đầu đẩy bơm dầu thủy lực giảm</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.35rem;
+    color: var(--danger);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--danger);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2.danger { background: linear-gradient(135deg, #c0392b, #e74c3c); }
+  h2.warn   { background: linear-gradient(135deg, #b45309, #d97706); }
+  h2.ok     { background: linear-gradient(135deg, #14532d, #1e8449); }
+
+  h2 .num-badge {
+    background: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2.danger .num-badge { color: var(--danger); }
+  h2.warn   .num-badge { color: var(--warn); }
+  h2.ok     .num-badge { color: var(--ok); }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Danh sách hiện tượng ===== */
+  ul.symptoms {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  ul.symptoms > li {
+    position: relative;
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px 12px 50px;
+    font-size: 0.98rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  ul.symptoms > li::before {
+    content: "!";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--danger);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.95rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul.symptoms > li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.18);
+  }
+
+  /* ===== Khối ngưỡng áp lực ===== */
+  .pressure-band {
+    background: linear-gradient(135deg, #0e5a8a, #1b7cb8);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.3);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .pressure-band .band-item {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pressure-band .band-item .label {
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.9;
+    font-weight: 600;
+  }
+
+  .pressure-band .band-item .value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .pressure-band .band-item .desc {
+    font-size: 0.82rem;
+    opacity: 0.9;
+    font-style: italic;
+  }
+
+  .pressure-band .band-item.critical {
+    background: rgba(192, 57, 43, 0.45);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ===== Nhóm nguyên nhân ===== */
+  .cause-group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 18px;
+    margin: 10px 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .cause-group:hover {
+    box-shadow: 0 3px 10px rgba(217, 119, 6, 0.12);
+  }
+
+  .cause-group .cause-title {
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+  }
+
+  .cause-group .cause-title .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--warn);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cause-group p {
+    margin: 4px 0;
+    font-size: 0.96rem;
+    text-align: justify;
+  }
+
+  /* ===== Các bước xử lý ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ok);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    background: var(--ok);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    width: 40px;
+    height: 34px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(30, 132, 73, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--ok);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 6px 0; font-size: 0.96rem; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .purple-box {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--purple); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e8f6ee, #d1f0dd);
+    border-left: 5px solid var(--ok);
+    border-radius: 0 8px 8px 0;
+    color: #14532d;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--ok); }
+
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.94rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 12px; width: 34px; height: 30px; font-size: 0.75rem; }
+    .question { flex-direction: column; gap: 8px; }
+    .pressure-band { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu hiện tượng, nguyên nhân, biện pháp xử lý áp lực đầu đẩy bơm dầu thủy lực giảm?</span>
+  </div>
+
+  <h1>Hiện tượng, nguyên nhân, biện pháp xử lý<br>áp lực đầu đẩy bơm dầu thủy lực giảm</h1>
+
+  <!-- ============ PHẦN 1: HIỆN TƯỢNG ============ -->
+  <section>
+    <h2 class="danger">
+      <span class="num-badge">1</span>
+      Hiện tượng
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="symptoms">
+      <li>
+        Xuất hiện cảnh báo <strong>áp lực dầu thủy lực điều khiển thấp</strong> trên màn hình
+        DCS/TCS (áp lực định mức bình thường khoảng
+        <span class="chip red">140 – 160 bar</span>).
+      </li>
+
+      <li>
+        Đồng hồ áp kế đo áp lực đầu đẩy tại <strong>cụm trạm bơm dầu EH</strong> và cảm biến
+        áp suất chỉ thị giá trị <strong>giảm</strong>.
+      </li>
+
+      <li>
+        Bơm dầu thủy lực <strong>dự phòng tự động liên động</strong> khởi động vào làm việc
+        (nếu liên động tự động ở chế độ AUTO).
+      </li>
+
+      <li>
+        Tùy thuộc vào mức độ sụt giảm áp lực dầu:
+        <ul style="margin-top: 6px;">
+          <li>Các van điều khiển hơi (<strong>CV, IV</strong>) hoặc van chặn
+              (<strong>MSV, RSV</strong>) có thể <strong>dao động độ mở</strong> hoặc phản ứng
+              chậm với tín hiệu điều khiển.</li>
+          <li>Nếu áp lực dầu thủy lực giảm sâu chạm giá trị bảo vệ
+              (<span class="chip red">110 bar</span>), hệ thống bảo vệ tác động
+              <strong>Trip Tuabin</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- Khối dải áp lực -->
+    <div class="pressure-band">
+      <div class="band-item">
+        <span class="label">✅ Dải áp lực định mức</span>
+        <span class="value">140 – 160 bar</span>
+        <span class="desc">Vận hành bình thường</span>
+      </div>
+      <div class="band-item critical">
+        <span class="label">🚨 Ngưỡng bảo vệ Trip</span>
+        <span class="value">110 bar</span>
+        <span class="desc">Trip Tuabin tự động</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 2: NGUYÊN NHÂN ============ -->
+  <section>
+    <h2 class="warn">
+      <span class="num-badge">2</span>
+      Nguyên nhân
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Sự cố bơm dầu thủy lực đang vận hành</div>
+      <p>Bơm chính bị sự cố (nhảy rơ-le bảo vệ quá tải động cơ, mất nguồn điện cấp, gãy
+         then/hỏng khớp nối, hoặc kẹt cơ khí bên trong bơm piston).</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Tắc phin lọc dầu đầu đẩy</div>
+      <p>Phin lọc dầu cao áp đầu đẩy bơm bị bám bẩn nặng, chênh áp qua phin lọc tăng cao làm
+         giảm áp lực dầu cấp vào ống góp chung.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Hỏng hóc bộ điều chỉnh áp lực / van an toàn trạm dầu</div>
+      <p>Cơ cấu bù áp (áp suất cài đặt trên bơm bù áp suất biến đổi) bị sai lệch hoặc kẹt cơ
+         cấu góc nghiêng đĩa bơm.</p>
+      <p>Van an toàn (<strong>Relief Valve</strong>) trên cụm đầu đẩy bị hỏng lò xo, kẹt mở
+         hoặc cài đặt áp suất mở thấp làm dầu xả tràn liên tục về bể chứa.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Sự cố bình tích năng thủy lực (Accumulator)</div>
+      <p>Các bình tích năng áp lực cao bị mất áp suất khí <strong>nitơ (N₂)</strong> hoặc rách
+         màng cao su, làm mất khả năng duy trì và bù áp khi hệ thống có dao động lưu lượng lớn.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Rò rỉ hoặc vỡ bục đường ống dầu EH</div>
+      <p>Các đường ống dầu thủy lực cao áp, ống mềm, mặt bích nối hoặc khối van servo/actuator
+         của các van điều khiển bị xì hở, nứt vỡ nghiêm trọng.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Lỗi bộ chấp hành (Actuator / Van Servo)</div>
+      <p>Van Servo điều khiển van hơi chính/van tái nhiệt bị kẹt mở xả dầu lớn về đường hồi,
+         hoặc seal làm kín xi lanh thủy lực bị hỏng gây lọt dầu nội bộ lớn.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Mức dầu bể EH thấp hoặc nhiệt độ dầu quá cao</div>
+      <p>Mức dầu trong bồn chứa dầu EH quá thấp gây lọt khí vào cửa hút bơm; hoặc nhiệt độ dầu
+         EH tăng cao làm giảm độ nhớt dầu gây tụt áp và rò rỉ màng dầu.</p>
+    </div>
+
+    <div class="cause-group">
+      <div class="cause-title"><span class="dot"></span> Lỗi hệ thống đo lường (C&amp;I)</div>
+      <p>Hỏng cảm biến áp suất đầu đẩy, đứt dây cáp tín hiệu hoặc tắc đường ống xung áp dẫn đến
+         hiển thị và báo động <strong>giả</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN 3: BIỆN PHÁP XỬ LÝ ============ -->
+  <section>
+    <h2 class="ok">
+      <span class="num-badge">3</span>
+      Biện pháp xử lý theo trình tự
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <ol class="step-list">
+      <li>
+        <strong>Báo cáo và xác minh thông số</strong>
+        <ul>
+          <li>Báo cáo ngay cho <strong>Máy trưởng, Trưởng kíp lò máy và Trưởng ca</strong> về
+              hiện tượng áp lực dầu thủy lực suy giảm.</li>
+
+          <li>Kiểm tra chéo giữa các cảm biến đo áp suất đầu đẩy trên
+              <strong>DCS/TCS</strong> và <strong>đồng hồ áp kế tại trạm dầu EH</strong> để loại
+              trừ trường hợp lỗi thiết bị đo.</li>
+
+          <li>Cử <strong>Máy phó</strong> ra ngay trạm dầu EH để kiểm tra hiện trường.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra và khôi phục nguồn cấp dầu thủy lực</strong>
+        <ul>
+          <li>Kiểm tra tình trạng làm việc của tổ bơm dầu EH: Nếu bơm đang chạy bị trip hoặc
+              tụt áp mà bơm dự phòng chưa tự động hòa vào lưới, <strong>lập tức ấn nút khởi
+              động bằng tay</strong> bơm dầu dự phòng (trên màn hình điều khiển hoặc tại tủ
+              điều khiển tại chỗ).</li>
+
+          <li>Kiểm tra <strong>van một chiều đầu đẩy</strong> của bơm chạy mở tốt, khẳng định
+              van một chiều đầu đẩy của bơm dừng không bị lọt dầu hồi ngược lại.</li>
+
+          <li>Cả hai chức danh (<strong>Máy trưởng và Máy phó</strong>) cùng khẳng định bơm dự
+              phòng làm việc bình thường, đưa áp lực hệ thống trở lại dải định mức
+              (<span class="chip blue">140 – 160 bar</span>).</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra phin lọc và chuyển đổi lọc (nếu lọc bẩn)</strong>
+        <ul>
+          <li>Kiểm tra <strong>độ chênh áp</strong> qua bộ lọc đầu đẩy bơm dầu thủy lực.</li>
+
+          <li>Nếu chênh áp phin lọc cao: Tiến hành <strong>nạp dầu, xả khí và chuyển đổi</strong>
+              sang phin lọc dự phòng theo đúng quy trình công nghệ; sau đó cách ly phin lọc bẩn
+              ra để bàn giao bảo dưỡng.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra rò rỉ và van điều áp, bình tích năng</strong>
+        <ul>
+          <li>Kiểm tra toàn bộ tuyến ống dầu thủy lực dẫn đến các cụm chấp hành van
+              <strong>MSV, CV, RSV, IV</strong> xem có hiện tượng rò rỉ, xì vỡ mặt bích hoặc
+              nứt ống hay không (<em>đặc biệt lưu ý nguy cơ dầu EH bắn vào các bề mặt nhiệt độ
+              cao</em>).</li>
+
+          <li>Kiểm tra <strong>van xả tràn/van an toàn</strong> trên khối van đầu đẩy xem có bị
+              xả dầu nóng liên tục về bể chứa hay không.</li>
+
+          <li>Kiểm tra <strong>áp suất nạp khí N₂</strong> tại các bình tích năng thủy lực.</li>
+
+          <li>Báo nhân viên <strong>C&amp;I</strong> kiểm tra, xử lý nếu phát hiện van servo có
+              độ xả dầu bất thường hoặc lỗi cảm biến đo áp.</li>
+        </ul>
+
+        <div class="note" style="margin-top: 10px;">
+          <strong>⚠ Lưu ý an toàn:</strong> Dầu EH là <strong>dầu chống cháy
+          (tri-aryl phosphate ester)</strong> nhưng khi rò rỉ tiếp xúc với các <strong>bề mặt
+          nhiệt độ cao</strong> (đường ống hơi, thân tuabin) vẫn có thể <strong>gây cháy</strong>
+          và sinh khói độc. Phải xử lý rò rỉ ngay khi phát hiện.
+        </div>
+      </li>
+
+      <li>
+        <strong>Xử lý dừng máy bảo vệ tổ máy (khi sự cố không khắc phục được)</strong>
+        <ul>
+          <li>Trong suốt quá trình xử lý, giám sát chặt chẽ trạng thái ổn định của các
+              <strong>van hơi chính</strong> và <strong>độ rung, độ di trục</strong> của tuabin.</li>
+
+          <li>Nếu phát hiện <strong>nứt vỡ nghiêm trọng</strong> trên đường ống dẫn dầu thủy
+              lực cao áp: Phải thực hiện <strong>ngừng tuabin</strong> (ngừng không phá chân
+              không hoặc ngừng sự cố) theo quy định an toàn.</li>
+
+          <li>Nếu áp lực dầu thủy lực tiếp tục suy giảm và tụt xuống ngưỡng
+              <span class="chip red">110 bar</span> mà bảo vệ tự động không tác động, người
+              vận hành phải <strong>lập tức ấn nút dừng khẩn cấp Tuabin</strong> (Trip tổ máy)
+              bằng tay để bảo vệ an toàn cho thiết bị.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="purple-box">
+      <strong>💡 Nguyên tắc vàng:</strong> Khi áp lực dầu thủy lực đầu đẩy giảm, ưu tiên
+      <strong>khôi phục nguồn dầu</strong> trước (kích bơm dự phòng), sau đó mới
+      <strong>tìm và loại trừ nguyên nhân gốc</strong>, đồng thời
+      <strong>giám sát liên tục</strong> trạng thái van hơi chính và các thông số tuabin để
+      quyết định có phải dừng khẩn cấp hay không. Ngưỡng
+      <span style="background: #fff; padding: 1px 8px; border-radius: 4px; color: #c0392b; font-weight: 700; border: 1px solid #f2b7b1;">110 bar</span>
+      là <strong>giới hạn tuyệt đối</strong> — phải Trip tuabin ngay khi chạm ngưỡng.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Sự cố áp lực đầu đẩy bơm dầu thủy lực giảm là sự cố
+    <strong>đặc biệt nguy hiểm</strong> vì liên quan trực tiếp đến khả năng điều khiển các van
+    hơi chính và an toàn tuabin. Cần nắm vững <strong>hiện tượng – 8 nhóm nguyên nhân – 5 bước
+    xử lý</strong> và tuân thủ nghiêm ngặt ngưỡng bảo vệ
+    <strong>110 bar</strong> để tránh hư hỏng nặng cho tổ máy.
+  </div>
+
+</article>
+
+</body>
+</html>

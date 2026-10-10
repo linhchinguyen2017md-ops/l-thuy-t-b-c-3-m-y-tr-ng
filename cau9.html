@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nguyên tắc và các bước tạo chân không bình ngưng</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --accent-light: #e0f7fa;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #0891b2);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.12rem;
+    color: #fff;
+    margin: 30px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.92rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Khối nguyên lý ===== */
+  .principle-box {
+    background: linear-gradient(135deg, #e3f1f9, #e0f7fa);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 18px 0;
+    position: relative;
+  }
+
+  .principle-box .icon-quote {
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    background: var(--primary);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+
+  .principle-box p {
+    font-size: 1.02rem;
+    color: #0c3a5e;
+    margin: 6px 0;
+    text-align: justify;
+  }
+
+  .formula {
+    display: inline-block;
+    background: #fff;
+    padding: 2px 10px;
+    border-radius: 6px;
+    border: 1px solid #b8dbe5;
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  /* ===== Khối các bước ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 70px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1.02rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 5px 0; }
+
+  /* ===== Nhóm hệ thống cần kiểm tra ===== */
+  .system-group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 18px;
+    margin: 10px 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .system-group:hover {
+    box-shadow: 0 3px 10px rgba(8, 145, 178, 0.12);
+  }
+
+  .system-group .sys-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+  }
+
+  .system-group .sys-title .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .system-group p {
+    margin: 4px 0;
+    font-size: 0.96rem;
+    text-align: justify;
+  }
+
+  /* ===== Các bước xử lý sự cố ===== */
+  .trouble-list {
+    counter-reset: troub;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .trouble-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--danger);
+    border-radius: 6px;
+    padding: 14px 20px 14px 62px;
+    margin: 10px 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .trouble-list > li::before {
+    counter-increment: troub;
+    content: "B" counter(troub);
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    background: var(--danger);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    width: 36px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trouble-list > li:hover {
+    box-shadow: 0 3px 12px rgba(192, 57, 43, 0.15);
+  }
+
+  .trouble-list > li strong {
+    color: var(--danger);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  .trouble-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .trouble-list > li ul li { margin: 4px 0; font-size: 0.96rem; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.96rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.8rem; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 14px; width: 30px; height: 30px; font-size: 0.9rem; }
+    .trouble-list > li { padding: 12px 14px 12px 54px; }
+    .trouble-list > li::before { left: 10px; width: 32px; height: 28px; font-size: 0.72rem; }
+    .question { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu nguyên tắc tạo chân không bình ngưng. Các bước tạo chân không bình ngưng? Khi chân không bình ngưng giảm phải kiểm tra những hệ thống nào?</span>
+  </div>
+
+  <h1>Nguyên tắc tạo chân không bình ngưng<br>&amp; Các bước tạo chân không</h1>
+
+  <!-- ============ PHẦN I: NGUYÊN TẮC ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">I</span>
+      Nguyên tắc tạo chân không bình ngưng
+    </h2>
+
+    <div class="principle-box">
+      <div class="icon-quote">§</div>
+
+      <p>
+        Hơi thoát khỏi tuabin là hơi bão hòa có thể tích <span class="formula">V₁</span>.
+        Khi vào bình ngưng, hơi truyền nhiệt cho nước làm mát tuần hoàn và ngưng tụ thành
+        nước bão hòa có thể tích <span class="formula">V₂</span>.
+      </p>
+
+      <p>
+        Vì thể tích riêng của nước nhỏ hơn thể tích riêng của hơi rất nhiều lần
+        (<span class="formula">V₂ ≪ V₁</span>), sự giảm thể tích riêng đột ngột này tạo ra
+        <strong>độ chân không sâu</strong> trong bình ngưng.
+      </p>
+
+      <p>
+        Đồng thời, các bơm chân không làm việc liên tục để hút hết lượng <strong>không khí
+        và khí không ngưng</strong> lọt vào nhằm duy trì độ chân không ổn định.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN II: CÁC BƯỚC TẠO CHÂN KHÔNG ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">II</span>
+      Các bước tạo chân không bình ngưng (khi khởi động)
+    </h2>
+
+    <ol class="step-list">
+      <li>
+        <strong>Kiểm tra thông số nguồn cấp hơi tự dùng và hơi chèn</strong>
+        <ul>
+          <li>Kiểm tra áp lực ống góp hơi tự dùng (<strong>HTD</strong>) đạt khoảng
+              <span class="chip blue">15 bar</span>.</li>
+
+          <li>Đưa hệ thống <strong>hơi chèn trục tuabin</strong> vào làm việc, kiểm tra thông
+              số hơi chèn đạt áp lực <span class="chip blue">0,27 bar</span> và nhiệt độ khoảng
+              <span class="chip blue">250 °C</span>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Reset Tuabin</strong>
+        <ul>
+          <li>Tiến hành Reset tuabin trên giao diện điều khiển.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Đóng các van phá chân không và cấp nước chèn làm kín</strong>
+        <ul>
+          <li>Đóng <strong>02 van phá hoại chân không</strong> bình ngưng.</li>
+
+          <li>Cấp <strong>nước làm kín</strong> cho 02 van phá chân không và cấp
+              <strong>nước chèn cổ bình ngưng A, B</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Khởi động bơm chân không</strong>
+        <ul>
+          <li>Khởi động <strong>02 bơm chân không bình ngưng</strong> để hút khí, thiết lập và
+              kéo chân không bình ngưng lên giá trị làm việc.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN III: CÁC HỆ THỐNG CẦN KIỂM TRA ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">III</span>
+      Các hệ thống cần kiểm tra khi chân không bình ngưng giảm
+    </h2>
+
+    <p>
+      Khi phát hiện độ chân không bình ngưng suy giảm, nhân viên vận hành cần kiểm tra ngay
+      các hệ thống sau:
+    </p>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 1. Hệ thống nước tuần hoàn</div>
+      <p>Kiểm tra lưu lượng, áp lực nước tuần hoàn vào/ra bình ngưng; trạng thái và độ mở các
+         van tuần hoàn đầu vào, đầu ra bình ngưng; sự làm việc của các bơm tuần hoàn; chênh áp
+         phin lọc tinh đầu vào bình ngưng; hệ thống làm sạch ống bình ngưng bằng bi
+         (bơm bi, bẫy bi).</p>
+    </div>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 2. Hệ thống rút chân không hộp nước tuần hoàn</div>
+      <p>Kiểm tra sự làm việc của bơm hút chân không và van tạo xy-phông hộp nước tuần hoàn
+         bình ngưng.</p>
+    </div>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 3. Hệ thống hơi chèn trục Tuabin</div>
+      <p>Kiểm tra áp lực hơi chèn, nhiệt độ hơi chèn và hoạt động của van điều chỉnh áp lực
+         hơi chèn xem có bị giảm làm lọt không khí từ ngoài vào trục tuabin hay không.</p>
+    </div>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 4. Hệ thống bơm hút chân không bình ngưng</div>
+      <p>Kiểm tra tình trạng làm việc của các bơm chân không (dòng điện, nhiệt độ nước làm mát
+         dịch vụ bơm chân không, độ mở các van hút khí).</p>
+    </div>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 5. Mức nước bình ngưng (Hotwell)</div>
+      <p>Kiểm tra mức nước ngưng trong bình ngưng có bị dâng cao ngập các hàng ống trao đổi
+         nhiệt hay không.</p>
+    </div>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 6. Các van xả đọng và đường xả hơi về bình ngưng</div>
+      <p>Kiểm tra xem có nguồn hơi xả lớn nhiệt độ cao từ các van xả, van bypass xả bất thường
+         về bình ngưng hay không.</p>
+    </div>
+
+    <div class="system-group">
+      <div class="sys-title"><span class="dot"></span> 7. Độ kín hệ thống chân không</div>
+      <p>Kiểm tra các điểm hở, rò khí tại các mặt bích, van phá chân không, đường ống nối
+         chân không hoặc nứt vỡ đường ống.</p>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN IV: XỬ LÝ SỰ CỐ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">IV</span>
+      Trình tự xử lý sự cố giảm chân không bình ngưng
+    </h2>
+
+    <ol class="trouble-list">
+      <li>
+        <strong>Báo cáo và xác nhận thông số</strong>
+        <ul>
+          <li>Báo cáo ngay cho <strong>Trưởng ca, Trưởng kíp</strong>.</li>
+
+          <li>Kiểm tra đối chiếu các đồng hồ đo áp suất, áp lực hơi thoát, nhiệt độ hơi thoát
+              tuabin để loại trừ trường hợp tín hiệu đo đạc bị lỗi.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Khởi động bơm chân không dự phòng</strong>
+        <ul>
+          <li>Khởi động thêm bơm chân không thứ 2 vào làm việc (nếu liên động tự động chưa tác
+              động) để hỗ trợ kéo lại chân không.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Xử lý hệ thống hơi chèn</strong>
+        <ul>
+          <li>Kiểm tra và điều chỉnh đưa áp lực hơi chèn trục trở lại giá trị định mức bình
+              thường.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Kiểm tra và xử lý hệ thống nước tuần hoàn</strong>
+        <ul>
+          <li>Đưa hệ thống hút chân không hộp nước tuần hoàn làm việc bình thường.</li>
+
+          <li>Kiểm tra nếu chênh áp phin lọc tinh cao thì tiến hành súc rửa/vận hành phin lọc.</li>
+
+          <li>Tăng độ mở van tuần hoàn đầu vào, đầu ra bình ngưng; khẳng định van liên thông
+              nước tuần hoàn sang tổ máy bên cạnh đóng kín.</li>
+
+          <li>Kiểm tra đưa hệ thống làm sạch ống bình ngưng bằng bi vào vận hành nếu ống trao
+              đổi nhiệt bị bẩn.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Điều chỉnh mức nước bình ngưng</strong>
+        <ul>
+          <li>Nếu mức nước hotwell dâng cao, thực hiện mở van xả/tái tuần hoàn để đưa mức nước
+              bình ngưng về dải làm việc bình thường.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Xử lý nguồn hơi xả và cô lập rò rỉ</strong>
+        <ul>
+          <li>Tìm và cách ly các nguồn xả rò rỉ hơi lớn về bình ngưng.</li>
+
+          <li>Kiểm tra van phá chân không đảm bảo đóng kín và có đủ nước chèn làm kín.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Giảm tải hoặc dừng máy theo quy trình</strong>
+        <ul>
+          <li>Nếu chân không tiếp tục giảm vượt ngưỡng cho phép, người vận hành phải tiến hành
+              <strong>giảm tải tổ máy</strong> tương ứng để duy trì chân không.</li>
+
+          <li>Nếu chân không giảm chạm giá trị bảo vệ
+              (<span class="chip red">&gt; 0,254 bar</span>) mà không thể phục hồi sau khi đã
+              giảm tải về <strong>0 MW</strong>, người vận hành phải thực hiện
+              <strong>dừng tuabin</strong> (ngừng không phá chân không hoặc ngừng sự cố theo
+              quy định bảo vệ tuabin).</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="alert">
+      <strong>⚠ Ngưỡng bảo vệ:</strong> Khi chân không giảm chạm giá trị
+      <span class="chip red">&gt; 0,254 bar</span> không thể phục hồi — phải dừng tuabin theo
+      quy định bảo vệ, không cố gắng duy trì vận hành.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Nguyên tắc tạo chân không dựa trên
+    <strong>sự giảm thể tích riêng đột ngột</strong> khi hơi ngưng tụ thành nước, kết hợp với
+    <strong>bơm chân không hút khí không ngưng</strong>. Khi chân không giảm, cần kiểm tra
+    <strong>7 nhóm hệ thống</strong> và xử lý theo <strong>7 bước</strong>, đặc biệt lưu ý
+    ngưỡng bảo vệ <strong>&gt; 0,254 bar</strong> phải dừng tuabin.
+  </div>
+
+</article>
+
+</body>
+</html>

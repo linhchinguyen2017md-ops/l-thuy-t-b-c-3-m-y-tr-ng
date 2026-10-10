@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trình tự kiểm tra, chuẩn bị khởi động hệ thống dầu chèn</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --hydrogen: #7c3aed;
+    --hydrogen-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #0891b2);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 30px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 20px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 9px 0 9px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Nhóm con ===== */
+  .sub-group {
+    background: #fbfcfe;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    margin: 10px 0;
+  }
+
+  .sub-group .sub-title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sub-group .sub-title::before {
+    content: "▸";
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .purple-box {
+    background: var(--hydrogen-light);
+    border-left: 5px solid var(--hydrogen);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--hydrogen); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.purple {
+    background: var(--hydrogen-light);
+    color: var(--hydrogen);
+    border-color: #d8b4fe;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+  .tag.purple { background: var(--hydrogen); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.95rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    h2 .sub-score { display: none; }
+    .question { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">3 điểm</span>
+    <span>Anh (Chị) hãy nêu trình tự kiểm tra, chuẩn bị khởi động hệ thống dầu chèn?</span>
+  </div>
+
+  <h1>Trình tự kiểm tra, chuẩn bị khởi động<br>hệ thống dầu chèn</h1>
+
+  <!-- ============ BƯỚC 1 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">1</span>
+      Kiểm tra hiện trường và tình trạng thiết bị sau sửa chữa
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Khẳng định toàn bộ các công việc bảo dưỡng, sửa chữa trên hệ thống dầu chèn
+          <strong>đã hoàn thành</strong>; đội công tác <strong>rút hết</strong> khỏi vị trí
+          làm việc.</li>
+
+      <li>Tất cả các <strong>phiếu công tác (PCT)</strong> liên quan đến hệ thống dầu chèn đã
+          được nghiệm thu và khóa phiếu hoàn toàn.</li>
+
+      <li>Hiện trường làm việc, sàn thao tác xung quanh bồn chứa và trạm bơm dầu chèn phải
+          được dọn dẹp sạch sẽ, khô ráo, <strong>không đọng dầu mỡ trơn trượt</strong> hoặc
+          rác thải, tạp vật.</li>
+
+      <li>Hệ thống <strong>chiếu sáng làm việc và chiếu sáng sự cố</strong> tại chỗ đầy đủ,
+          đảm bảo an toàn.</li>
+
+      <li>Bố trí đầy đủ <strong>biển báo an toàn</strong> và trang thiết bị
+          <strong>phòng cháy, chữa cháy</strong> (bình bọt, bình khí CO₂) tại khu vực làm việc
+          theo đúng quy định.</li>
+    </ul>
+  </section>
+
+  <!-- ============ BƯỚC 2 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">2</span>
+      Kiểm tra chất lượng và mức dầu cấp
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Kiểm tra <strong>mức dầu</strong> tại bể dầu chính / bể dầu chèn đảm bảo nằm trong
+          dải làm việc bình thường (qua kính thăm mức tại chỗ và hiển thị trên DCS).</li>
+
+      <li>Khẳng định <strong>chất lượng dầu tuabin</strong> đã được bộ phận <strong>Hóa
+          nghiệm</strong> lấy mẫu phân tích đạt tiêu chuẩn: dầu sạch, độ nhớt đạt chuẩn,
+          <strong>không bị nhũ hóa</strong>, không lẫn nước và tạp chất cơ học.</li>
+
+      <li>Đảm bảo <strong>nhiệt độ dầu bôi trơn / dầu chèn</strong> nằm trong phạm vi cho phép
+          trước khi đưa vào lưu thông.</li>
+    </ul>
+  </section>
+
+  <!-- ============ BƯỚC 3 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">3</span>
+      Kiểm tra tổ bơm dầu chèn và hệ thống điện, điều khiển
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="sub-group">
+      <div class="sub-title">Tổ bơm và động cơ (bơm AC và bơm sự cố DC)</div>
+      <ul class="checklist">
+        <li>Bu-lông chân đế bơm và động cơ bắt chắc chắn, khớp nối cơ khí an toàn, nắp bảo vệ
+            khớp nối lắp đầy đủ.</li>
+
+        <li>Dây <strong>tiếp địa</strong> vỏ động cơ và thiết bị đấu nối hoàn hảo, chắc chắn.</li>
+
+        <li>Tình trạng <strong>cách điện</strong> của các động cơ bơm đạt tiêu chuẩn vận hành.</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Nguồn điện</div>
+      <ul class="checklist">
+        <li>Nguồn điện xoay chiều (<strong>AC</strong>) cấp cho động cơ bơm dầu chèn chính
+            sẵn sàng.</li>
+
+        <li>Nguồn điện một chiều (<strong>DC</strong>) cấp cho bơm dầu chèn sự cố DC sẵn sàng,
+            hệ thống <strong>ắc quy</strong> làm việc tốt.</li>
+
+        <li>Tủ điều khiển tại chỗ <strong>không báo lỗi</strong>, công tắc điều khiển đặt đúng
+            chế độ theo quy định.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ BƯỚC 4 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">4</span>
+      Kiểm tra hệ thống đo lường và bảo vệ liên động
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Kiểm tra các <strong>đồng hồ áp kế</strong> tại chỗ, <strong>cảm biến áp suất dầu
+          chèn</strong>, <strong>cảm biến áp suất khí hydro (H₂)</strong>, và
+          <strong>cảm biến đo chênh lệch áp suất dầu chèn – H₂</strong> lắp đặt hoàn chỉnh;
+          mở các van cách ly chân đồng hồ/cảm biến.</li>
+
+      <li>Nguồn điện cấp cho thiết bị <strong>đo lường điều khiển (C&amp;I)</strong> sẵn sàng,
+          tín hiệu hiển thị và truyền về <strong>DCS/TCS</strong> chính xác, rõ ràng.</li>
+
+      <li>Các <strong>liên động bảo vệ tự động</strong> của hệ thống dầu chèn (liên động tự
+          khởi động bơm dự phòng, cảnh báo chênh áp thấp) đã được thí nghiệm đạt yêu cầu và
+          đưa vào trạng thái sẵn sàng làm việc.</li>
+    </ul>
+  </section>
+
+  <!-- ============ BƯỚC 5 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">5</span>
+      Thiết lập sơ đồ công nghệ: tuyến ống, van và bộ lọc
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="sub-group">
+      <div class="sub-title">Tuyến ống và van</div>
+      <ul class="checklist">
+        <li><span class="tag green">MỞ</span> Mở hoàn toàn các van chặn <strong>đầu hút</strong>
+            của các bơm dầu chèn.</li>
+
+        <li><span class="tag red">ĐÓNG</span> Đóng kín các van <strong>xả đáy, xả cặn</strong>
+            của bể chứa, đường ống và các bộ lọc.</li>
+
+        <li><span class="tag red">ĐÓNG/AUTO</span> Đóng van <strong>đầu đẩy</strong> của các
+            bơm dầu chèn (hoặc để liên động tự mở/đặt chế độ tự động theo quy trình).</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Bộ lọc dầu chèn</div>
+      <ul class="checklist">
+        <li>Lựa chọn <strong>một bộ lọc làm việc</strong> và <strong>một bộ lọc ở chế độ dự
+            phòng</strong>.</li>
+
+        <li>Bộ lọc làm việc phải được <strong>điền đầy dầu</strong> và xả hết bọt khí qua van
+            xả khí; mở hoàn toàn van đầu vào và đầu ra của bộ lọc làm việc; đóng kín van xả
+            khí và xả đọng.</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Hệ thống điều áp và phụ trợ</div>
+      <ul class="checklist">
+        <li>Van điều chỉnh chênh áp dầu chèn – hydro (<strong>van vi sai</strong>) ở trạng thái
+            sẵn sàng, đường trích tín hiệu áp lực H₂ đến van điều áp thông suốt, các van cách
+            ly liên quan mở hoàn toàn.</li>
+
+        <li>Mở các van đường <strong>nước làm mát</strong> cấp tới các bộ làm mát dầu chèn
+            (hệ thống nước làm mát kín <strong>CCW</strong> sẵn sàng).</li>
+
+        <li>Quạt hút hơi dầu (<strong>Seal Oil Vapor Extractor</strong>) sẵn sàng vận hành để
+            duy trì độ chân không nhẹ trong khoang xả dầu chèn.</li>
+      </ul>
+    </div>
+
+    <div class="purple-box">
+      <strong>💡 Lưu ý quan trọng về khí H₂:</strong> Van điều chỉnh chênh áp dầu chèn – H₂
+      (van vi sai) có vai trò <strong>cực kỳ quan trọng</strong> trong việc duy trì màng dầu
+      làm kín, ngăn khí H₂ rò rỉ ra ngoài. Trước khi khởi động, phải khẳng định chắc chắn van
+      này ở trạng thái sẵn sàng và đường trích tín hiệu H₂ thông suốt.
+    </div>
+  </section>
+
+  <!-- ============ BƯỚC 6 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">6</span>
+      Báo cáo và nhận lệnh khởi động
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Sau khi kiểm tra và thiết lập hoàn chỉnh toàn bộ hệ thống, chức danh thực hiện
+          <strong>báo cáo kết quả</strong> cho <strong>Máy trưởng, Trưởng kíp lò máy và Trưởng
+          ca</strong>.</li>
+
+      <li><strong>Nhận lệnh</strong> từ Trưởng kíp / Máy trưởng để tiến hành khởi động bơm dầu
+          chèn và đưa hệ thống vào vận hành theo đúng trình tự.</li>
+    </ul>
+
+    <div class="alert">
+      <strong>⚠ Nguyên tắc:</strong> Tuyệt đối <strong>không tự ý khởi động</strong> hệ thống
+      dầu chèn khi chưa có lệnh của Trưởng kíp / Máy trưởng và chưa hoàn thành đầy đủ 5 bước
+      kiểm tra – chuẩn bị phía trên.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Trình tự kiểm tra – chuẩn bị khởi động hệ thống dầu chèn gồm
+    <strong>6 bước chính</strong>: (1) Kiểm tra hiện trường — (2) Chất lượng &amp; mức dầu —
+    (3) Tổ bơm &amp; điện — (4) Đo lường &amp; bảo vệ — (5) Sơ đồ công nghệ — (6) Báo cáo
+    &amp; nhận lệnh. Trong đó, <strong>van điều chỉnh chênh áp dầu chèn – H₂ (van vi sai)</strong>
+    là thiết bị then chốt để đảm bảo an toàn khí H₂ của máy phát.
+  </div>
+
+</article>
+
+</body>
+</html>

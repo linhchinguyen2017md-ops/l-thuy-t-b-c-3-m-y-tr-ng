@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Điền nước và kiểm tra hệ thống nước làm mát kín sau đại tu</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --accent-light: #e0f7fa;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #0891b2);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 30px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.95rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 20px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 9px 0 9px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Nhóm con ===== */
+  .sub-group {
+    background: #fbfcfe;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+
+  .sub-group .sub-title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 0.96rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sub-group .sub-title::before {
+    content: "▸";
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== Khối thiết lập van ===== */
+  .valve-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 18px;
+    margin: 10px 0;
+  }
+
+  .valve-box .valve-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    font-size: 0.98rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .valve-box .valve-title .icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .valve-box.open .icon { background: var(--ok); }
+  .valve-box.close .icon { background: var(--danger); }
+  .valve-box.mixed .icon { background: var(--accent); }
+
+  /* ===== Các bước điền nước ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 68px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.78rem;
+    width: 38px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+
+  .step-list > li ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+  }
+
+  .step-list > li ul li { margin: 5px 0; font-size: 0.96rem; }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.green {
+    background: var(--ok-light);
+    color: var(--ok);
+    border-color: #a7d9bc;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.08rem; }
+    h2 { font-size: 0.95rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.82rem; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 12px; width: 34px; height: 28px; font-size: 0.72rem; }
+    .question { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">2,5 điểm</span>
+    <span>Anh (Chị) hãy nêu các bước điền nước và kiểm tra hệ thống nước làm mát kín sau đại tu tổ máy?</span>
+  </div>
+
+  <h1>Các bước điền nước và kiểm tra<br>hệ thống nước làm mát kín sau đại tu tổ máy</h1>
+
+  <!-- ============ PHẦN I ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">I</span>
+      Kiểm tra và chuẩn bị hiện trường trước khi điền nước
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="sub-group">
+      <div class="sub-title">Kiểm tra công tác sửa chữa</div>
+      <ul class="checklist">
+        <li>Toàn bộ công việc sửa chữa, bảo dưỡng trên hệ thống nước làm mát kín và các phụ
+            tải làm mát (khu vực tuabin, máy phát, lò hơi) <strong>đã kết thúc</strong>.</li>
+
+        <li>Tất cả các <strong>phiếu công tác (PCT)</strong> liên quan đến hệ thống đã được
+            nghiệm thu và khóa phiếu hoàn toàn.</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Hiện trường và an toàn</div>
+      <ul class="checklist">
+        <li>Con người và dụng cụ thi công đã <strong>rút hết</strong> ra khỏi khu vực thiết bị;
+            sàn thao tác <strong>khô ráo, sạch sẽ</strong>, không có dầu mỡ hoặc rác thải.</li>
+
+        <li>Chiếu sáng tại chỗ và <strong>chiếu sáng sự cố</strong> đảm bảo.</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Kiểm tra cơ – điện và đo lường</div>
+      <ul class="checklist">
+        <li>Kiểm tra tình trạng <strong>tiếp địa</strong> động cơ các bơm làm mát kín chắc chắn.</li>
+
+        <li>Các thiết bị đo lường (<strong>áp suất, nhiệt độ, mức nước</strong>) và các liên
+            động bảo vệ đã được kiểm tra, sẵn sàng làm việc.</li>
+
+        <li><strong>Dầu bôi trơn</strong> tại các gối trục bơm làm mát kín đầy đủ.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN II ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">II</span>
+      Thiết lập sơ đồ van trước khi điền nước
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="valve-box close">
+      <div class="valve-title"><span class="icon">C</span> Đóng các van xả</div>
+      <ul class="checklist">
+        <li>Đóng chặt tất cả các <strong>van xả đáy, van xả cạn</strong> của bơm làm mát kín,
+            bể giãn nở, các bộ trao đổi nhiệt và toàn bộ các đường ống góp tới các phụ tải
+            làm mát.</li>
+
+        <li>Kiểm tra đóng kín van cách ly của đường đi tắt <strong>tái tuần hoàn bơm nước làm
+            mát kín</strong> (<em>13PGB13AA001</em>).</li>
+      </ul>
+    </div>
+
+    <div class="valve-box open">
+      <div class="valve-title"><span class="icon">O</span> Mở các van xả khí (đuổi khí)</div>
+      <ul class="checklist">
+        <li>Mở toàn bộ các van <strong>xả khí trên thân</strong> bơm nước làm mát kín.</li>
+
+        <li>Mở van xả khí tại <strong>02 bộ trao đổi nhiệt</strong> nước làm mát kín.</li>
+
+        <li>Mở van xả khí tại các <strong>vị trí cao nhất</strong> trên đường ống góp chính và
+            tại các bộ trao đổi nhiệt của từng phụ tải.</li>
+      </ul>
+    </div>
+
+    <div class="valve-box mixed">
+      <div class="valve-title"><span class="icon">S</span> Thiết lập van tuyến nước kín</div>
+      <ul class="checklist">
+        <li>Mở hoàn toàn van chặn <strong>đầu hút</strong> của các bơm làm mát kín
+            (<em>13PGB11CG201</em>).</li>
+
+        <li>Đóng van động cơ (MOV) <strong>đầu đẩy</strong> các bơm làm mát kín
+            (<em>13PGA11AA201</em>) và chuyển về chế độ <strong>Auto</strong>.</li>
+
+        <li>Mở các van cách ly đầu vào và đầu ra tại các <strong>bộ trao đổi nhiệt</strong>
+            nước làm mát kín (bên nước khử khoáng).</li>
+
+        <li>Mở các van cách ly đầu vào và đầu ra cấp nước làm mát tới các <strong>phụ tải</strong>
+            của tuabin và lò hơi.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN III ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">III</span>
+      Các bước điền nước và xả khí hệ thống
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <ol class="step-list">
+      <li>
+        <strong>Chuẩn bị nguồn nước bổ sung</strong>
+        <ul>
+          <li>Liên hệ phân xưởng <strong>Hóa</strong> vận hành hệ thống nước khử khoáng hoặc
+              khởi động hệ thống <strong>bơm bổ sung nước ngưng</strong> để sẵn sàng cấp nước
+              điền đầy cho bể giãn nở nước làm mát kín.</li>
+
+          <li>Kiểm tra xác nhận <strong>chất lượng nước</strong> điền đầy đạt tiêu chuẩn theo
+              quy định.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Nạp nước vào bể giãn nở (bình giãn nở) nước làm mát kín</strong>
+        <ul>
+          <li>Mở van tay/van điều khiển cấp <strong>nước ngưng</strong> (hoặc nước khử khoáng)
+              vào bể giãn nở nước làm mát kín.</li>
+
+          <li>Nạp nước đến khi mức nước bể giãn nở đạt mức bình thường (khoảng
+              <span class="chip blue">950 mm</span>, nằm trong dải làm việc an toàn, không có
+              cảnh báo mức thấp).</li>
+
+          <li>Đưa van điều chỉnh mức bể giãn nở về chế độ <strong>tự động (Auto)</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Điền nước từ bể giãn nở vào hệ thống tuyến ống</strong>
+        <ul>
+          <li>Mở van tay cấp nước từ bể giãn nở xuống hệ thống đường ống.</li>
+
+          <li>Nước từ bể giãn nở <strong>tự chảy</strong> xuống điền đầy đường ống đầu hút,
+              thân bơm và các đường ống góp chính.</li>
+
+          <li>Liên tục duy trì <strong>nguồn nước bổ sung</strong> vào bể giãn nở để bù lại
+              lượng nước chảy xuống điền đầy hệ thống, <strong>không để tụt cạn</strong> bể
+              giãn nở.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>Xả khí toàn diện hệ thống</strong>
+        <ul>
+          <li><span class="tag">TẠI BƠM</span> Theo dõi van xả khí thân bơm; khi quan sát thấy
+              nước trào ra liên tục, thành dòng và <strong>không còn bọt khí</strong> thì đóng
+              chặt các van xả khí lại.</li>
+
+          <li><span class="tag">TẠI BỘ TĐN</span> Theo dõi các van xả khí đầu ra của các bộ
+              làm mát; khi nước phụt ra liên tục thì đóng van xả khí lại.</li>
+
+          <li><span class="tag">TẠI PHỤ TẢI</span> Lần lượt kiểm tra các van xả khí tại các bộ
+              làm mát thiết bị (bộ làm mát dầu tuabin, máy phát, máy nén khí, bơm cấp, các quạt
+              lò hơi…); khi nước chảy đều hết khí thì đóng kín lại.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="note">
+      <strong>💡 Lưu ý:</strong> Trong suốt quá trình điền nước, phải <strong>liên tục theo
+      dõi mức nước bể giãn nở</strong> và <strong>duy trì nguồn nước bổ sung</strong> để bù
+      lại lượng nước chảy xuống hệ thống — tránh hiện tượng tụt cạn bể giãn nở gây lọt khí
+      vào hệ thống.
+    </div>
+  </section>
+
+  <!-- ============ PHẦN IV ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">IV</span>
+      Kiểm tra và hoàn tất sau khi điền nước
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="sub-group">
+      <div class="sub-title">Kiểm tra rò rỉ</div>
+      <ul class="checklist">
+        <li><strong>Máy phó</strong> đi kiểm tra toàn bộ hệ thống công trường: kiểm tra các
+            mối nối mặt bích, van chặn, van xả, tết chèn bơm và các bề mặt trao đổi nhiệt;
+            khẳng định <strong>không có hiện tượng rò rỉ nước</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Kiểm tra thông số tĩnh</div>
+      <ul class="checklist">
+        <li>Kiểm tra <strong>áp lực tĩnh</strong> tại đầu hút bơm nước làm mát kín và áp lực
+            tại các đồng hồ đo tại chỗ.</li>
+
+        <li>Kiểm tra ổn định mức nước bể giãn nở ở dải làm việc bình thường
+            (<span class="chip blue">950 mm</span>).</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Kiểm tra hóa nghiệm và sẵn sàng khởi động</div>
+      <ul class="checklist">
+        <li>Phối hợp với khu <strong>Hóa nghiệm</strong> lấy mẫu nước kiểm tra xác nhận lại
+            các chỉ tiêu chất lượng nước (<strong>độ cứng, pH 9,5</strong>).</li>
+
+        <li>Khẳng định hệ thống <strong>nước làm mát phụ</strong> (nước biển/nước làm mát hở)
+            đã sẵn sàng phục vụ làm mát cho các bộ trao đổi nhiệt.</li>
+
+        <li>Báo cáo kết quả kiểm tra cho <strong>Máy trưởng, Trưởng kíp lò máy và Trưởng
+            ca</strong> để xin lệnh tiến hành khởi động thử nghiệm bơm nước làm mát kín theo
+            quy trình.</li>
+      </ul>
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Nguyên tắc:</strong> Tuyệt đối <strong>không khởi động bơm nước làm mát
+      kín</strong> khi chưa hoàn thành đầy đủ 4 bước: (I) Kiểm tra hiện trường — (II) Thiết
+      lập van — (III) Điền nước &amp; xả khí — (IV) Kiểm tra &amp; hoàn tất.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Quy trình điền nước và kiểm tra hệ thống nước làm mát kín sau
+    đại tu gồm <strong>4 bước chính</strong>: (I) Kiểm tra &amp; chuẩn bị hiện trường
+    (0,5đ) — (II) Thiết lập sơ đồ van (0,5đ) — (III) Điền nước &amp; xả khí (1,0đ) —
+    (IV) Kiểm tra &amp; hoàn tất (0,5đ). Nguyên tắc xuyên suốt là
+    <strong>xả khí triệt để — duy trì mức bể giãn nở — kiểm tra rò rỉ — xác nhận chất lượng
+    nước</strong> trước khi khởi động bơm.
+  </div>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chuẩn bị khởi động hệ thống nước làm mát Stator</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --accent-light: #e0f7fa;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #0891b2);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 30px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 20px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Checklist ===== */
+  ul.checklist {
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0;
+  }
+
+  ul.checklist > li {
+    position: relative;
+    padding: 9px 0 9px 34px;
+    margin: 4px 0;
+    border-bottom: 1px dashed #eef1f6;
+  }
+
+  ul.checklist > li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    top: 9px;
+    color: var(--ok);
+    font-weight: 700;
+    background: var(--ok-light);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  ul.checklist > li:last-child { border-bottom: none; }
+
+  /* ===== Nhóm con ===== */
+  .sub-group {
+    background: #fbfcfe;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+
+  .sub-group .sub-title {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 0.96rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sub-group .sub-title::before {
+    content: "▸";
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ===== Khối van ===== */
+  .valve-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 18px;
+    margin: 10px 0;
+  }
+
+  .valve-box .valve-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    font-size: 0.98rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .valve-box .valve-title .icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .valve-box.open .icon { background: var(--ok); }
+  .valve-box.close .icon { background: var(--danger); }
+  .valve-box.mixed .icon { background: var(--accent); }
+  .valve-box.purple .icon { background: var(--purple); }
+
+  .valve-box.purple {
+    border-left-color: var(--purple);
+  }
+
+  /* ===== Bước thao tác lớn ===== */
+  .step-list {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 18px 0;
+  }
+
+  .step-list > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 68px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .step-list > li::before {
+    counter-increment: step;
+    content: "B" counter(step);
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.78rem;
+    width: 38px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list > li:hover {
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.15);
+    transform: translateX(3px);
+  }
+
+  .step-list > li strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1rem;
+  }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .purple-box {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--purple); }
+
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.green {
+    background: var(--ok-light);
+    color: var(--ok);
+    border-color: #a7d9bc;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .tag.green { background: var(--ok); }
+  .tag.red { background: var(--danger); }
+  .tag.purple { background: var(--purple); }
+
+  strong { color: #1a1a1a; }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.94rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { width: 28px; height: 28px; font-size: 0.9rem; }
+    h2 .sub-score { display: none; }
+    .step-list > li { padding: 14px 14px 14px 58px; }
+    .step-list > li::before { left: 12px; width: 34px; height: 28px; font-size: 0.72rem; }
+    .question { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <span class="score">3 điểm</span>
+    <span>Anh (Chị) hãy nêu trình tự kiểm tra, chuẩn bị trước khi khởi động hệ thống nước làm mát Stator?</span>
+  </div>
+
+  <h1>Trình tự kiểm tra, chuẩn bị trước khi khởi động<br>hệ thống nước làm mát Stator</h1>
+
+  <!-- ============ BƯỚC 1 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">1</span>
+      Kiểm tra hiện trường và tình trạng thiết bị sau sửa chữa
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Khẳng định toàn bộ các công việc <strong>bảo dưỡng, sửa chữa</strong> trên hệ thống
+          nước làm mát Stator máy phát và các phụ tải liên quan <strong>đã hoàn thành</strong>.</li>
+
+      <li>Tất cả các <strong>phiếu công tác (PCT)</strong> liên quan đến hệ thống đã được thu
+          hồi, nghiệm thu và khóa phiếu.</li>
+
+      <li>Khu vực đặt bể nước, tổ bơm, bình trao đổi nhiệt và bình Deionizer phải được
+          <strong>dọn dẹp sạch sẽ, khô ráo</strong>, không có nước rò rỉ, dầu nhớt trơn trượt
+          hoặc tạp vật.</li>
+
+      <li>Hệ thống <strong>chiếu sáng làm việc và chiếu sáng sự cố</strong> tại chỗ đầy đủ,
+          đảm bảo an toàn thao tác.</li>
+    </ul>
+  </section>
+
+  <!-- ============ BƯỚC 2 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">2</span>
+      Kiểm tra phần cơ khí, động cơ bơm và nguồn điện
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <div class="sub-group">
+      <div class="sub-title">Kiểm tra bơm và động cơ</div>
+      <ul class="checklist">
+        <li>Kiểm tra độ chắc chắn của <strong>bu-lông chân đế</strong> bơm và động cơ.</li>
+
+        <li><strong>Khớp nối</strong> giữa động cơ và bơm lắp đặt hoàn chỉnh, có chắn bảo vệ
+            khớp nối an toàn.</li>
+
+        <li>Đấu nối <strong>tiếp địa</strong> vỏ động cơ và thiết bị chắc chắn, đúng kỹ thuật.</li>
+
+        <li>Kiểm tra chất lượng và mức <strong>dầu mỡ bôi trơn</strong> tại các gối trục bơm
+            đảm bảo theo đúng quy định.</li>
+      </ul>
+    </div>
+
+    <div class="sub-group">
+      <div class="sub-title">Nguồn điện</div>
+      <ul class="checklist">
+        <li>Nguồn điện cấp cho động cơ các bơm nước làm mát Stator sẵn sàng,
+            <strong>đo cách điện</strong> đạt yêu cầu kỹ thuật.</li>
+
+        <li>Tủ điều khiển tại chỗ <strong>không báo lỗi nguồn</strong>; công tắc điều khiển đặt
+            đúng trạng thái vận hành theo quy định.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ BƯỚC 3 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">3</span>
+      Kiểm tra hệ thống đo lường và bảo vệ liên động
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Các <strong>cảm biến đo áp suất</strong> đầu hút, đầu đẩy, <strong>lưu lượng</strong>
+          nước làm mát Stator, <strong>nhiệt độ</strong> nước cấp/nước hồi, và thiết bị đo
+          <strong>độ dẫn điện (Conductivity)</strong> được kết nối hoàn chỉnh, mở các van cách
+          ly chân đồng hồ/cảm biến.</li>
+
+      <li>Nguồn điện cấp cho các bộ <strong>đo lường điều khiển (C&amp;I)</strong> sẵn sàng,
+          tín hiệu hiển thị tại chỗ và truyền về hệ thống điều khiển <strong>DCS/TCS</strong>
+          rõ ràng, chính xác.</li>
+
+      <li>Các <strong>liên động bảo vệ tự động</strong> của hệ thống (bảo vệ lưu lượng thấp,
+          áp lực thấp, nhiệt độ cao, độ dẫn điện cao, liên động tự khởi động bơm dự phòng) đã
+          được thí nghiệm đạt tiêu chuẩn và sẵn sàng làm việc.</li>
+    </ul>
+
+    <div class="info">
+      <strong>💡 Lưu ý:</strong> Hệ thống bảo vệ <strong>độ dẫn điện cao</strong> đặc biệt quan
+      trọng đối với nước làm mát Stator — vì nước có độ dẫn cao có thể gây <strong>ngắn mạch
+      cuộn dây Stator</strong> máy phát. Phải khẳng định chắc chắn hệ thống này đã sẵn sàng.
+    </div>
+  </section>
+
+  <!-- ============ BƯỚC 4 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">4</span>
+      Kiểm tra nguồn nước cấp và nạp nước bể chứa
+      <span class="sub-score">0,5đ</span>
+    </h2>
+
+    <ul class="checklist">
+      <li>Liên hệ phân xưởng <strong>Hóa</strong> xác nhận nguồn <strong>nước ngưng sạch</strong>
+          hoặc <strong>nước khử khoáng</strong> đạt tiêu chuẩn chất lượng
+          (<strong>độ dẫn điện cực thấp</strong>) để điền vào hệ thống.</li>
+
+      <li>Mở van cấp nước vào <strong>bể chứa nước làm mát Stator</strong>; theo dõi mức nước
+          qua ống thủy đo mức tại chỗ và trên DCS.</li>
+
+      <li>Điền nước bể chứa nước làm mát Stator máy phát tới mức vận hành bình thường
+          (đạt mức <span class="chip blue">2/3 ống thủy</span>) thì dừng cấp.</li>
+
+      <li>Kiểm tra van <strong>xả cặn, van xả đáy</strong> bể chứa ở trạng thái
+          <span class="tag red">ĐÓNG KÍN</span>.</li>
+    </ul>
+  </section>
+
+  <!-- ============ BƯỚC 5 ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">5</span>
+      Thiết lập sơ đồ van, nạp nước và xả khí hệ thống
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <!-- Nhóm A -->
+    <div class="valve-box open">
+      <div class="valve-title"><span class="icon">A</span> Thiết lập và xả khí cụm bơm và bộ làm mát</div>
+      <ul class="checklist">
+        <li>Mở lần lượt các van <strong>đầu hút</strong> của bơm nước làm mát Stator máy phát.</li>
+
+        <li>Theo dõi quá trình nước <strong>tự chảy</strong> điền đầy và đuổi khí hệ thống
+            đường ống nước làm mát Stator từ bể chứa tới các bộ làm mát.</li>
+
+        <li>Mở các van <strong>xả khí đầu ra</strong> của các bộ làm mát; khi thấy nước phụt ra
+            liên tục thành dòng <strong>không còn bọt khí</strong> thì đóng chặt các van xả khí
+            của các bộ làm mát đó lại.</li>
+
+        <li><span class="tag red">ĐÓNG</span> Đóng các van <strong>đầu đẩy</strong> của bơm
+            nước làm mát Stator (chuẩn bị khởi động).</li>
+      </ul>
+    </div>
+
+    <!-- Nhóm B -->
+    <div class="valve-box purple">
+      <div class="valve-title"><span class="icon">B</span> Thiết lập và xả khí bình lọc ion hóa (DEIONIZER) và phin lọc</div>
+      <ul class="checklist">
+        <li>Kiểm tra đường xả khí ở <strong>bình trao đổi Deionizer</strong>; khi thấy nước phụt
+            ra liên tục thì đóng van xả khí (<em>13MKF10AA502</em>) lại.</li>
+
+        <li>Kiểm tra đường xả khí <strong>phin lọc</strong> (<em>13MKF10AT001</em>); khi quan
+            sát thấy nước phụt ra đều thì đóng van xả khí (<em>13MKF10AA501</em>) lại.</li>
+      </ul>
+    </div>
+
+    <!-- Nhóm C -->
+    <div class="valve-box mixed">
+      <div class="valve-title"><span class="icon">C</span> Nguồn làm mát phụ</div>
+      <ul class="checklist">
+        <li>Kiểm tra và <strong>mở hoàn toàn</strong> các van nước làm mát kín
+            (<strong>CCW</strong>) đầu vào và đầu ra cấp làm mát cho các bộ làm mát nước
+            Stator — khẳng định hệ thống <strong>CCW</strong> đang vận hành ổn định.</li>
+      </ul>
+    </div>
+
+    <!-- Nhóm D -->
+    <div class="valve-box close">
+      <div class="valve-title"><span class="icon">D</span> Trạng thái van cấp vào cuộn dây Stator</div>
+      <ul class="checklist">
+        <li><span class="tag red">ĐÓNG</span> Đảm bảo van chặn cấp nước vào làm mát cuộn dây
+            Stator máy phát (<em>NS6-13MKF09AA101</em>) đang ở vị trí <strong>đóng</strong>
+            để phục vụ chu trình <strong>chạy tuần hoàn lọc khử ion</strong> qua bình Deionizer
+            trước khi cấp vào máy phát.</li>
+      </ul>
+    </div>
+
+    <div class="purple-box">
+      <strong>💡 Quy trình lọc khử ion:</strong> Trước khi cấp nước vào làm mát cuộn dây Stator
+      máy phát, hệ thống phải được <strong>chạy tuần hoàn qua bình Deionizer</strong> để giảm
+      độ dẫn điện của nước xuống mức cực thấp. Van
+      <em>NS6-13MKF09AA101</em> phải đóng trong giai đoạn này để nước tuần hoàn trong vòng lọc
+      kín, chưa cấp vào máy phát.
+    </div>
+  </section>
+
+  <!-- ============ BÁO CÁO ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">✓</span>
+      Báo cáo và nhận lệnh khởi động
+    </h2>
+
+    <ul class="checklist">
+      <li>Báo cáo <strong>Máy trưởng, Trưởng kíp lò máy và Trưởng ca</strong> xác nhận toàn bộ
+          hệ thống đã được kiểm tra, thiết lập hoàn chỉnh và <strong>sẵn sàng nhận lệnh khởi
+          động</strong> bơm nước làm mát Stator.</li>
+    </ul>
+
+    <div class="alert">
+      <strong>⚠ Nguyên tắc:</strong> Tuyệt đối <strong>không tự ý khởi động</strong> hệ thống
+      nước làm mát Stator khi chưa hoàn thành đầy đủ 5 bước kiểm tra – chuẩn bị phía trên và
+      chưa có lệnh của Trưởng kíp / Máy trưởng.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Trình tự kiểm tra – chuẩn bị khởi động hệ thống nước làm mát
+    Stator gồm <strong>5 bước chính</strong>: (1) Kiểm tra hiện trường (0,5đ) — (2) Kiểm tra cơ
+    khí &amp; điện (0,5đ) — (3) Đo lường &amp; bảo vệ liên động (0,5đ) — (4) Nạp nước bể chứa
+    (0,5đ) — (5) Thiết lập van, nạp nước &amp; xả khí (1,0đ). Trong đó,
+    <strong>độ dẫn điện của nước</strong> là yếu tố then chốt bảo vệ cuộn dây Stator, và
+    <strong>bình Deionizer</strong> phải được chạy tuần hoàn lọc trước khi cấp nước vào máy phát.
+  </div>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quy trình khởi động hệ thống dầu điều chỉnh (EH)</title>
+<style>
+  :root {
+    --primary: #1f4e79;
+    --primary-light: #e6eef7;
+    --accent: #d97706;
+    --accent-light: #fff7e6;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --text: #222;
+    --muted: #555;
+    --border: #d5dce5;
+    --bg: #f4f7fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Header trang ===== */
+  .doc-header {
+    background: linear-gradient(135deg, #1f4e79, #2e6da4);
+    color: #fff;
+    padding: 22px 26px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .doc-header::after {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 160px;
+    height: 160px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+  }
+
+  .doc-header .label {
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    font-weight: 600;
+  }
+
+  .doc-header h1 {
+    font-size: 1.4rem;
+    margin: 6px 0 0;
+    color: #fff;
+    border: none;
+    padding: 0;
+    text-align: left;
+    text-transform: none;
+    line-height: 1.4;
+  }
+
+  /* ===== Tiêu đề phần ===== */
+  h2 {
+    font-size: 1.15rem;
+    color: var(--primary);
+    margin: 34px 0 14px;
+    padding: 10px 16px;
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 6px 6px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  /* ===== Danh sách chung ===== */
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== Khối kiểm tra van ===== */
+  .valve-group {
+    background: #fbfcfe;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 20px 14px 20px;
+    margin: 12px 0;
+  }
+
+  .valve-group .title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .valve-group .title .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .valve-group.open .icon { background: var(--ok); }
+  .valve-group.close .icon { background: var(--danger); }
+  .valve-group.safe .icon { background: var(--accent); }
+
+  .valve-group ul { margin: 4px 0; padding-left: 22px; }
+
+  /* ===== Các bước khởi động ===== */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .steps > li {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    padding: 16px 20px 16px 68px;
+    margin: 12px 0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .steps > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps > li:hover {
+    box-shadow: 0 4px 14px rgba(31, 78, 121, 0.15);
+    transform: translateX(3px);
+  }
+
+  .steps > li strong { color: var(--primary); }
+
+  .steps .sub {
+    margin-top: 6px;
+    padding-left: 4px;
+    border-left: 2px solid var(--primary-light);
+    padding-left: 14px;
+  }
+
+  .steps .sub li { margin: 4px 0; }
+
+  /* ===== Bảng thông số ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 0.96rem;
+  }
+
+  thead th {
+    background: var(--primary);
+    color: #fff;
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody td:first-child {
+    font-weight: 600;
+    color: var(--primary);
+    width: 42%;
+  }
+
+  tbody tr:nth-child(even) { background: #f2f6fb; }
+  tbody tr:hover { background: #e6eefb; }
+
+  .value-ok {
+    color: var(--ok);
+    font-weight: 700;
+  }
+
+  /* ===== Khối cảnh báo / ghi chú ===== */
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+    color: #7a1c14;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .alert ul { margin: 8px 0 0; padding-left: 22px; }
+
+  .note {
+    background: var(--accent-light);
+    border-left: 5px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+    color: #6b4a00;
+  }
+
+  .note strong { color: var(--accent); }
+
+  .warning-box {
+    background: #fff3cd;
+    border: 1px solid #f0ad4e;
+    border-left: 5px solid #e67e22;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 18px 0;
+    color: #6b4a00;
+  }
+
+  .warning-box strong { color: #b45309; }
+
+  /* ===== Chip công thức / thông số ===== */
+  .chip {
+    display: inline-block;
+    background: var(--accent-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  strong { color: #1a1a1a; }
+
+  @media (max-width: 600px) {
+    .document { padding: 24px 18px; }
+    .doc-header { padding: 18px 20px; }
+    .doc-header h1 { font-size: 1.1rem; }
+    h2 { font-size: 1rem; }
+    table { font-size: 0.86rem; }
+    thead th, tbody td { padding: 8px 10px; }
+    .steps > li { padding: 14px 14px 14px 58px; }
+    .steps > li::before { left: 14px; width: 30px; height: 30px; font-size: 0.9rem; }
+    tbody td:first-child { width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ HEADER ============ -->
+  <header class="doc-header">
+    <div class="label">Quy trình vận hành</div>
+    <h1>Khởi động hệ thống dầu điều chỉnh (EH)</h1>
+  </header>
+
+  <p>
+    Theo <strong>Quy trình vận hành hệ thống dầu điều chỉnh (EH)</strong>, trình tự khởi động
+    hệ thống dầu EH và các điểm lưu ý kỹ thuật được quy định cụ thể như sau:
+  </p>
+
+  <!-- ============ PHẦN I ============ -->
+  <section>
+    <h2>I. Công tác chuẩn bị và kiểm tra trước khi khởi động</h2>
+
+    <h3>1. Kiểm tra trạng thái mở các van</h3>
+
+    <div class="valve-group open">
+      <div class="title"><span class="icon">O</span> Các van cần ở trạng thái <em>MỞ</em></div>
+      <ul>
+        <li>Các van chặn bình bù áp lực: <strong>DTL3, DTL4, DTL5, DTL6</strong>.</li>
+
+        <li>Các van nước làm mát kín vào/ra bình làm mát dầu EH:
+            <strong>LMDTL1a/b, LMDTL3a/b</strong>.</li>
+
+        <li>Các van cấp dầu EH đến các van 1 chiều đường tái lạnh lò A/B
+            (<strong>DTL7, DTL8</strong>) và đường hơi trích đi các bình gia nhiệt cao 8, 7, 6;
+            khử khí; bình gia nhiệt hạ 4, 3, 2.</li>
+
+        <li>Các van thiết bị đo: chuyển đổi áp suất, chỉ thị áp suất, công tắc áp suất, công
+            tắc chênh áp.</li>
+      </ul>
+    </div>
+
+    <h3>2. Kiểm tra trạng thái đóng các van</h3>
+
+    <div class="valve-group close">
+      <div class="title"><span class="icon">C</span> Các van cần ở trạng thái <em>ĐÓNG</em></div>
+      <ul>
+        <li>Van xả đọng bể dầu EH (<strong>XDTL1</strong>).</li>
+        <li>Van lấy mẫu bể dầu EH (<strong>LM1</strong>).</li>
+        <li>Các van xả áp lực của bình bù áp lực
+            (<strong>XB1, XB2, XB3, XB4</strong>).</li>
+      </ul>
+    </div>
+
+    <h3>3. Kiểm tra an toàn hệ thống</h3>
+
+    <div class="valve-group safe">
+      <div class="title"><span class="icon">!</span> Yêu cầu bắt buộc</div>
+      <ul>
+        <li>Tuyến đường ống dầu chắc chắn, kín khít, không có hiện tượng rò rỉ.</li>
+        <li>Liên động bơm dầu <strong>chưa</strong> đưa về trạng thái tự động (Auto).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN II ============ -->
+  <section>
+    <h2>II. Trình tự khởi động hệ thống dầu EH</h2>
+
+    <p>
+      Công tác khởi động do các chức danh <strong>Máy trưởng</strong> và
+      <strong>Máy phó</strong> phối hợp thực hiện sau khi nhận được sự đồng ý của
+      <strong>Trưởng kíp lò máy</strong>:
+    </p>
+
+    <ol class="steps">
+      <li>
+        <strong>Kiểm tra nhiệt độ dầu trong bể chứa.</strong>
+        Nếu nhiệt độ dầu nằm ngoài dải làm việc
+        (<span class="chip">35 ÷ 43 °C</span>), tiến hành vận hành bơm làm mát dầu
+        (nếu dầu nóng) hoặc bật sấy gia nhiệt tại bể (nếu nhiệt độ dầu thấp).
+      </li>
+
+      <li>
+        <strong>Máy trưởng</strong> kích chọn và xác nhận bơm dầu EH cần chạy trên màn hình
+        điều khiển <strong>DCS</strong>. <strong>Máy phó</strong> có mặt trực tiếp tại vị trí
+        bơm dầu ngoài công trường để giám sát.
+      </li>
+
+      <li>
+        <strong>Máy trưởng kích lệnh khởi động (Start/Run)</strong> bơm dầu đã chọn:
+        <ul class="sub">
+          <li><span class="tag">TRÊN DCS</span> Máy trưởng giám sát dòng điện động cơ, áp lực
+              dầu EH tăng lên đạt định mức.</li>
+          <li><span class="tag">TẠI CÔNG TRƯỜNG</span> Máy phó kiểm tra tình trạng làm việc
+              thực tế của bơm: âm thanh vận hành, độ rung, áp lực đầu đẩy…</li>
+        </ul>
+      </li>
+
+      <li>
+        Sau khi khẳng định bơm dầu EH đã làm việc ổn định và đạt đầy đủ các thông số định
+        mức, tiến hành đưa bơm dầu còn lại về chế độ
+        <strong>dự phòng liên động (Auto)</strong>.
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ PHẦN III ============ -->
+  <section>
+    <h2>III. Các thông số xác nhận bơm vận hành bình thường</h2>
+
+    <p>
+      Sau khi khởi động, hệ thống và bơm dầu EH được đánh giá làm việc bình thường khi thỏa
+      mãn các thông số sau:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Thông số</th>
+          <th>Giá trị yêu cầu</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Áp suất dầu thủy lực EH</td>
+          <td class="value-ok">165 bar</td>
+        </tr>
+        <tr>
+          <td>Dòng điện động cơ bơm</td>
+          <td class="value-ok">99 ÷ 99,3 A</td>
+        </tr>
+        <tr>
+          <td>Nhiệt độ dầu thủy lực</td>
+          <td class="value-ok">35 ÷ 43 °C</td>
+        </tr>
+        <tr>
+          <td>Mức bể dầu thủy lực</td>
+          <td class="value-ok">Ở mức làm việc bình thường</td>
+        </tr>
+        <tr>
+          <td>Chênh áp qua phin lọc dầu</td>
+          <td class="value-ok">Trong giới hạn cho phép (không có cảnh báo chênh áp cao)</td>
+        </tr>
+        <tr>
+          <td>Tình trạng cơ khí</td>
+          <td class="value-ok">Bơm làm việc êm, không có tiếng kêu dị thường hay rung động lớn</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ PHẦN IV ============ -->
+  <section>
+    <h2>IV. Những chú ý quan trọng trong quá trình khởi động</h2>
+
+    <h3>1. Khi vận hành bơm làm mát dầu</h3>
+    <ul>
+      <li>Áp lực dầu sau khi chạy bơm làm mát phải đạt: <span class="chip">&lt; 4,8 bar</span>.</li>
+      <li>Dòng điện động cơ bơm làm mát và tuần hoàn dầu: khoảng
+          <span class="chip">15,9 A</span>.</li>
+      <li>Máy phó phải kiểm tra tiếng kêu, độ rung, nhiệt độ gối trục bơm, độ chênh áp trước
+          và sau bộ làm mát và khẳng định không có sự rò rỉ dầu trên hệ thống.</li>
+    </ul>
+
+    <h3>2. Các trường hợp bắt buộc phải dừng khẩn cấp bơm dầu EH</h3>
+
+    <div class="alert">
+      <strong>⚠ DỪNG KHẨN CẤP ngay lập tức khi phát hiện:</strong>
+      <ul>
+        <li>Xuất hiện <strong>tiếng kêu va đập cơ khí rõ ràng</strong> bên trong thân bơm
+            (tiếng cọ sát/va chạm kim loại).</li>
+
+        <li>Bơm <strong>rung động mạnh bất thường</strong>, đe dọa trực tiếp đến sự vận hành
+            an toàn của bơm và thiết bị xung quanh.</li>
+
+        <li>Xuất hiện <strong>khói hoặc mùi khét</strong> bốc ra từ gối trục của bơm hoặc từ
+            động cơ điện.</li>
+      </ul>
+    </div>
+
+    <h3>3. Lưu ý về an toàn và bảo vệ hệ thống</h3>
+
+    <div class="warning-box">
+      <strong>🧪 Cảnh báo về dầu EH:</strong> Dầu EH là <strong>dầu chống cháy
+      (tri-aryl phosphate ester)</strong>, có tính <strong>ăn mòn hóa học cao</strong> đối
+      với sơn và vật liệu cách điện thông thường. Khi tiếp xúc hoặc phát hiện rò rỉ phải
+      trang bị đầy đủ <strong>BHLĐ thích hợp</strong>, tránh để dầu bắn vào da, mắt.
+    </div>
+
+    <div class="note">
+      <strong>📊 Giám sát chặt chẽ mức dầu bể EH:</strong> Nếu mức dầu tụt nhanh do bục vỡ
+      đường ống hoặc rò rỉ qua các cụm van servo/con trượt, phải xử lý kịp thời để tránh tụt
+      áp lực EH dẫn đến <strong>trip tuabin</strong>.
+      <br><br>
+      <strong>Ngưỡng bảo vệ trip tuabin:</strong>
+      <ul>
+        <li>Mức bể dầu giảm thấp: <span class="chip">≤ 282 mm</span></li>
+        <li>Áp suất dầu EH: <span class="chip">≤ 110 bar</span></li>
+      </ul>
+    </div>
+  </section>
+
+</article>
+
+</body>
+</html>

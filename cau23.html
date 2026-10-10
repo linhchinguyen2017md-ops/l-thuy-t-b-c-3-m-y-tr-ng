@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống khí nén - Sơ đồ, thông số kỹ thuật và vai trò thiết bị</title>
+<style>
+  :root {
+    --primary: #0e5a8a;
+    --primary-light: #e3f1f9;
+    --accent: #0891b2;
+    --air: #2563eb;
+    --air-light: #dbeafe;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+    --warn: #d97706;
+    --warn-light: #fff7e6;
+    --ok: #1e8449;
+    --ok-light: #e8f6ee;
+    --purple: #6b21a8;
+    --purple-light: #f3e8ff;
+    --text: #222;
+    --border: #d5dce5;
+    --bg: #f4f9fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    padding: 24px 16px;
+  }
+
+  .document {
+    max-width: 1020px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ===== Hộp câu hỏi ===== */
+  .question {
+    background: linear-gradient(135deg, #0e5a8a, #2563eb);
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0 0 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 14px rgba(14, 90, 138, 0.25);
+  }
+
+  .question .score {
+    background: #ffd54f;
+    color: #5a4200;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .question .cite {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 6px;
+    opacity: 0.9;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  /* ===== Tiêu đề ===== */
+  h1 {
+    font-size: 1.4rem;
+    color: var(--primary);
+    text-align: center;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 32px 0 16px;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  h2 .num-badge {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+
+  h2 .sub-score {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    color: var(--primary);
+    margin: 22px 0 10px;
+    padding-left: 12px;
+    border-left: 4px solid var(--warn);
+  }
+
+  p { margin: 10px 0; text-align: justify; }
+
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  /* ===== SƠ ĐỒ KHỐI ===== */
+  .diagram {
+    background: linear-gradient(135deg, #f8fcff, #eef7fc);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 26px 22px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  .diagram .diagram-title {
+    font-weight: 800;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed var(--primary-light);
+  }
+
+  .diagram-section-title {
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    font-size: 0.92rem;
+    margin: 20px 0 12px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .diagram-section-title::before,
+  .diagram-section-title::after {
+    content: "◆";
+    color: var(--accent);
+    margin: 0 8px;
+    font-size: 0.7rem;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .flow-node {
+    background: #fff;
+    border: 2px solid var(--air);
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--air);
+    font-size: 0.88rem;
+    min-width: 140px;
+    max-width: 200px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+  }
+
+  .flow-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+  }
+
+  .flow-node .icon {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .flow-node .label {
+    display: block;
+    font-size: 0.84rem;
+    line-height: 1.3;
+  }
+
+  .flow-node .spec {
+    display: inline-block;
+    background: var(--air-light);
+    color: var(--air);
+    padding: 1px 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 4px;
+    border: 1px solid #93c5fd;
+  }
+
+  .flow-node.compressor {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  .flow-node.compressor .spec {
+    background: #fff;
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  .flow-node.manifold {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: var(--warn);
+    color: #7a4e00;
+    min-width: 220px;
+  }
+
+  .flow-node.manifold .spec {
+    background: #fff;
+    color: #7a4e00;
+    border-color: #fcd34d;
+  }
+
+  .flow-node.dryer {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    border-color: var(--accent);
+    color: #0c4a5c;
+  }
+
+  .flow-node.dryer .spec {
+    background: #fff;
+    color: var(--accent);
+    border-color: #93c5fd;
+  }
+
+  .flow-node.tank {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    border-color: var(--ok);
+    color: #14532d;
+  }
+
+  .flow-node.tank .spec {
+    background: #fff;
+    color: var(--ok);
+    border-color: #86efac;
+  }
+
+  .flow-node.filter {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: var(--warn);
+    color: #7a4e00;
+  }
+
+  .flow-node.filter .spec {
+    background: #fff;
+    color: #7a4e00;
+    border-color: #fcd34d;
+  }
+
+  .arrow-down {
+    text-align: center;
+    color: var(--air);
+    font-size: 1.4rem;
+    line-height: 1;
+    margin: 6px 0;
+  }
+
+  .arrow-down::before {
+    content: "▼";
+  }
+
+  .arrow-right {
+    color: var(--air);
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .arrow-right::before {
+    content: "➜";
+  }
+
+  /* Nhánh phân phối */
+  .split-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .split-branch {
+    background: #fff;
+    border: 2px dashed var(--air);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .split-branch .branch-title {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .split-branch .branch-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .split-branch .branch-node {
+    background: var(--air-light);
+    border: 1px solid #93c5fd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--air);
+    width: 100%;
+  }
+
+  .split-branch .branch-node.green {
+    background: var(--ok-light);
+    border-color: #86efac;
+    color: var(--ok);
+  }
+
+  .split-branch .branch-node.purple {
+    background: var(--purple-light);
+    border-color: #d8b4fe;
+    color: var(--purple);
+  }
+
+  .loads-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--primary-light);
+  }
+
+  .load-card {
+    background: #fff;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--primary);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .load-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(14, 90, 138, 0.2);
+  }
+
+  .load-card .icon {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+  }
+
+  /* ===== Bảng thông số ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  thead th {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  thead th:first-child {
+    text-align: center;
+    width: 55px;
+  }
+
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody td:first-child {
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  tbody tr:nth-child(even) { background: #f8fbfe; }
+  tbody tr:hover { background: #e6eefb; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .value {
+    font-weight: 700;
+    color: var(--ok);
+    white-space: nowrap;
+  }
+
+  /* ===== Vai trò thiết bị ===== */
+  .role-grid {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .role-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px 14px 66px;
+    position: relative;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .role-card:hover {
+    box-shadow: 0 4px 14px rgba(8, 145, 178, 0.12);
+    transform: translateX(3px);
+  }
+
+  .role-card .icon-badge {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 3px 10px rgba(14, 90, 138, 0.25);
+  }
+
+  .role-card .role-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  .role-card .role-desc {
+    font-size: 0.95rem;
+    margin: 0;
+    text-align: justify;
+  }
+
+  /* ===== Khối thông tin / ghi chú ===== */
+  .info {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #0c3a5e;
+    font-size: 0.96rem;
+  }
+
+  .info strong { color: var(--primary); }
+
+  .note {
+    background: var(--warn-light);
+    border-left: 5px solid var(--warn);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #6b4a00;
+    font-size: 0.96rem;
+  }
+
+  .note strong { color: var(--warn); }
+
+  .alert {
+    background: var(--danger-light);
+    border-left: 5px solid var(--danger);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #7a1c14;
+    font-size: 0.96rem;
+  }
+
+  .alert strong { color: var(--danger); }
+
+  .purple-box {
+    background: var(--purple-light);
+    border-left: 5px solid var(--purple);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    color: #4c1d95;
+    font-size: 0.96rem;
+  }
+
+  .purple-box strong { color: var(--purple); }
+
+  /* ===== Chip / Tag ===== */
+  .chip {
+    display: inline-block;
+    background: var(--warn-light);
+    color: #92400e;
+    font-weight: 700;
+    padding: 1px 9px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+    border: 1px solid #fcd34d;
+  }
+
+  .chip.blue {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: #a8c8e5;
+  }
+
+  .chip.green {
+    background: var(--ok-light);
+    color: var(--ok);
+    border-color: #a7d9bc;
+  }
+
+  .chip.red {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: #f2b7b1;
+  }
+
+  /* ===== Footer ===== */
+  .footer-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #e3f1f9, #d1eaf3);
+    border-left: 5px solid var(--primary);
+    border-radius: 0 8px 8px 0;
+    color: #0c3a5e;
+    font-size: 0.95rem;
+  }
+
+  .footer-note strong { color: var(--primary); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 720px) {
+    .document { padding: 22px 16px; }
+    h1 { font-size: 1.05rem; }
+    h2 { font-size: 0.94rem; padding: 11px 14px; gap: 10px; }
+    h2 .num-badge { font-size: 0.78rem; padding: 5px 10px; }
+    h2 .sub-score { display: none; }
+    .question { flex-direction: column; gap: 8px; }
+
+    .flow-row { flex-direction: column; }
+    .arrow-right { transform: rotate(90deg); }
+    .flow-node { min-width: 200px; max-width: 100%; width: 100%; }
+
+    .split-row { grid-template-columns: 1fr; }
+    .loads-row { grid-template-columns: 1fr; }
+
+    table { font-size: 0.82rem; }
+    thead th, tbody td { padding: 8px 10px; }
+    thead th:first-child { width: auto; }
+
+    .role-card { padding: 12px 14px 12px 58px; }
+    .role-card .icon-badge { left: 10px; width: 36px; height: 36px; font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<article class="document">
+
+  <!-- ============ CÂU HỎI ============ -->
+  <div class="question">
+    <div>
+      <span class="score">2,5 điểm</span>
+      Anh (Chị) hãy vẽ sơ đồ tổng quan hệ thống khí nén? Nêu thông số kỹ thuật của máy nén khí? Vai trò của các thiết bị trong máy nén khí?
+      <span class="cite">📘 Căn cứ Quy trình vận hành hệ thống khí nén (QTVH/06M-VH)</span>
+    </div>
+  </div>
+
+  <h1>Sơ đồ tổng quan hệ thống khí nén<br>&amp; Thông số kỹ thuật máy nén khí</h1>
+
+  <!-- ============ PHẦN I: SƠ ĐỒ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">I</span>
+      Sơ đồ tổng quan hệ thống khí nén
+      <span class="sub-score">0,75đ</span>
+    </h2>
+
+    <div class="diagram">
+      <div class="diagram-title">Sơ đồ khối tổng quan hệ thống khí nén</div>
+
+      <!-- Không khí môi trường -->
+      <div class="flow-row">
+        <div class="flow-node" style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border-color: #0ea5e9; color: #0369a1;">
+          <span class="icon">🌬️</span>
+          <span class="label">Không khí<br>môi trường</span>
+        </div>
+      </div>
+
+      <div class="arrow-down"></div>
+
+      <!-- Cụm máy nén khí -->
+      <div class="diagram-section-title">Cụm máy nén khí</div>
+
+      <div class="flow-row">
+        <div class="flow-node compressor">
+          <span class="icon">⚙️</span>
+          <span class="label">MNK A<br><em>ZR630 – Atlas Copco</em></span>
+          <span class="spec">Trục vít không dầu</span>
+        </div>
+        <div class="flow-node compressor">
+          <span class="icon">⚙️</span>
+          <span class="label">MNK B<br><em>ZR630 – Atlas Copco</em></span>
+          <span class="spec">Trục vít không dầu</span>
+        </div>
+        <div class="flow-node compressor">
+          <span class="icon">⚙️</span>
+          <span class="label">MNK C<br><em>ZR630 – Atlas Copco</em></span>
+          <span class="spec">Dự phòng</span>
+        </div>
+      </div>
+
+      <div class="info" style="margin: 12px 0;">
+        <strong>💡 Phương thức vận hành:</strong> <strong>2 máy chạy</strong> (mang tải / không tải) — <strong>1 máy dự phòng</strong>, luân phiên theo giờ chạy.
+      </div>
+
+      <div class="arrow-down"></div>
+
+      <!-- Ống góp chung -->
+      <div class="flow-row">
+        <div class="flow-node manifold">
+          <span class="icon">🔵</span>
+          <span class="label">ỐNG GÓP CHUNG</span>
+          <span class="spec">7,5 ÷ 8 bar</span>
+        </div>
+      </div>
+
+      <div class="arrow-down"></div>
+
+      <!-- Nhánh phân phối 2 hướng -->
+      <div class="split-row">
+        <!-- Nhánh 1: đi qua bộ lọc - sấy - bình chứa -->
+        <div class="split-branch">
+          <div class="branch-title">Nhánh khí đo lường (IA)</div>
+          <div class="branch-flow">
+            <div class="branch-node">🔍 02 Bộ lọc thô<br>(Pre-Filters)</div>
+            <div class="arrow-down" style="font-size: 1rem;"></div>
+            <div class="branch-node">💧 02 Bộ sấy khí<br>(Hấp thụ / BD)</div>
+            <div class="arrow-down" style="font-size: 1rem;"></div>
+            <div class="branch-node">🧽 02 Bộ lọc tinh<br>(After-Filters)</div>
+            <div class="arrow-down" style="font-size: 1rem;"></div>
+            <div class="branch-node green">🛢️ 02 Bình chứa khí<br>(27 m³/bình · 8 bar)</div>
+          </div>
+        </div>
+
+        <!-- Nhánh 2: khí dịch vụ -->
+        <div class="split-branch">
+          <div class="branch-title">Nhánh khí dịch vụ (SA)</div>
+          <div class="branch-flow">
+            <div class="branch-node purple" style="padding: 20px 12px;">
+              🛠️ KHÍ DỊCH VỤ / PHỤC VỤ<br>
+              <em style="font-size: 0.78rem;">(Plant / Service Air)</em><br>
+              <strong style="display: block; margin-top: 6px;">Áp lực ~8 bar</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down"></div>
+
+      <!-- Phụ tải tiêu thụ cuối -->
+      <div class="diagram-section-title">Hệ thống khí đo lường &amp; điều khiển toàn nhà máy</div>
+
+      <div class="loads-row">
+        <div class="load-card">
+          <span class="icon">🎛️</span>
+          Van điều khiển khí nén
+        </div>
+
+        <div class="load-card">
+          <span class="icon">🔀</span>
+          Van bypass
+        </div>
+
+        <div class="load-card">
+          <span class="icon">📊</span>
+          Thiết bị C&amp;I
+        </div>
+
+        <div class="load-card">
+          <span class="icon">🛠️</span>
+          Dụng cụ khí nén
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHẦN II: THÔNG SỐ KỸ THUẬT ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">II</span>
+      Thông số kỹ thuật của máy nén khí
+      <span class="sub-score">0,75đ</span>
+    </h2>
+
+    <p>
+      Căn cứ thiết kế hệ thống khí nén (dòng máy nén khí <strong>trục vít không dầu Atlas
+      Copco ZR</strong>):
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>TT</th>
+          <th>Thông số kỹ thuật</th>
+          <th>Giá trị / Đặc tính</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Chủng loại máy nén</td>
+          <td><strong>Máy nén khí trục vít hai cấp, không dầu</strong><br>
+              <em>(Oil-free rotary screw compressor – model ZR630)</em></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Số lượng tổ máy</td>
+          <td><strong>03 máy</strong> (MNK A, B, C) — Phương thức: <strong>2 máy chạy</strong>
+              (mang tải / không tải), <strong>1 máy dự phòng</strong></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Môi chất nén</td>
+          <td>Không khí môi trường (lọc sạch hạt bụi <span class="chip">≥ 3 µm</span>)</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Áp suất làm việc định mức (đầu ra)</td>
+          <td class="value">7,5 ÷ 8,0 bar</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Áp suất thiết kế tối đa</td>
+          <td class="value">8,6 ÷ 10 bar</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Áp suất đóng tải (Loading pressure)</td>
+          <td class="value">≈ 7,0 ÷ 7,5 bar</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Áp suất ngắt tải (Unloading pressure)</td>
+          <td class="value">≈ 8,0 ÷ 8,5 bar</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Nhiệt độ khí đầu ra</td>
+          <td>Không vượt quá <span class="value">40 ÷ 50 °C</span> (sau khi qua bộ làm mát cuối)</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Phương thức làm mát</td>
+          <td>Làm mát bằng <strong>nước</strong> (sử dụng nguồn nước làm mát kín <strong>CCW</strong> của nhà máy)</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Hệ thống điều khiển</td>
+          <td>Bộ điều khiển vi xử lý <strong>Elektronikon (MK4)</strong> tích hợp bảo vệ tự động và giám sát thông số vận hành</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>💡 Ghi chú:</strong> Máy nén khí <strong>trục vít không dầu</strong> đặc biệt quan
+      trọng đối với <strong>khí nén điều khiển (IA)</strong> — vì dầu lẫn trong khí nén có thể
+      gây hỏng van điều khiển, dụng cụ đo lường và bám cặn đường ống.
+    </div>
+  </section>
+
+  <!-- ============ PHẦN III: VAI TRÒ THIẾT BỊ ============ -->
+  <section>
+    <h2>
+      <span class="num-badge">III</span>
+      Vai trò của các thiết bị trong máy nén khí
+      <span class="sub-score">1,0đ</span>
+    </h2>
+
+    <p>
+      Trong cấu trúc một tổ máy nén khí trục vít hai cấp giải nhiệt nước (<strong>ZR630</strong>),
+      các thiết bị chính đảm nhiệm các vai trò cụ thể như sau:
+    </p>
+
+    <div class="role-grid">
+
+      <div class="role-card">
+        <div class="icon-badge">🔍</div>
+        <div class="role-title">1. Bộ lọc khí đầu vào (Air Filter – AF)</div>
+        <p class="role-desc">
+          Lọc sạch <strong>bụi bẩn, tạp chất cơ học</strong> lơ lửng từ không khí môi trường
+          trước khi vào buồng nén, bảo vệ trục vít không bị <strong>mài mòn và bám bẩn</strong>.
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">🚪</div>
+        <div class="role-title">2. Cụm van điều khiển cửa hút / van tải (Inlet Valve / TV – UV)</div>
+        <p class="role-desc">
+          Tự động đóng/mở để chuyển đổi trạng thái làm việc của máy nén giữa chế độ
+          <strong>Có tải (Load)</strong> và <strong>Không tải (Unload)</strong> theo áp suất
+          cài đặt của hệ thống, giúp <strong>tiết kiệm điện năng</strong> và ổn định áp suất
+          mạng khí.
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">⬇️</div>
+        <div class="role-title">3. Cụm nén áp lực thấp (LP Element – El)</div>
+        <p class="role-desc">
+          <strong>Cấp nén thứ nhất:</strong> Nhận không khí từ cửa hút nén lên mức áp suất
+          trung gian (khoảng <span class="chip blue">2 ÷ 2,5 bar</span>).
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">❄️</div>
+        <div class="role-title">4. Bình làm mát trung gian (Intercooler – Ci)</div>
+        <p class="role-desc">
+          Giải nhiệt cho dòng khí nén sau cấp nén thấp (bằng nước làm mát kín) nhằm
+          <strong>giảm thể tích riêng của khí</strong>, tăng hiệu suất nén cho cấp tiếp theo và
+          giảm công tiêu hao.
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">⬆️</div>
+        <div class="role-title">5. Cụm nén áp lực cao (HP Element – Eh)</div>
+        <p class="role-desc">
+          <strong>Cấp nén thứ hai:</strong> Hút khí nén đã được làm mát từ bình làm mát trung
+          gian và nén tiếp lên áp lực làm việc định mức
+          (<span class="chip blue">7,5 ÷ 8 bar</span>).
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">🌡️</div>
+        <div class="role-title">6. Bình làm mát cuối (Aftercooler – Ca)</div>
+        <p class="role-desc">
+          Làm mát dòng khí nén áp lực cao sau cấp nén HP trước khi đưa ra khỏi máy nén vào ống
+          góp chung (hạ nhiệt độ khí nén xuống xấp xỉ nhiệt độ nước làm mát).
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">💧</div>
+        <div class="role-title">7. Các bẫy tách nước ngưng tự động (EWD / Bẫy MTa, MTi)</div>
+        <p class="role-desc">
+          Thu gom và <strong>xả tự động lượng hơi ẩm ngưng tụ</strong> sau các bộ làm mát trung
+          gian và làm mát cuối ra ngoài, ngăn không cho nước lỏng đi vào buồng nén cao áp hoặc
+          đi vào đường ống hệ thống.
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">🔇</div>
+        <div class="role-title">8. Bộ tiêu âm (Silencer – AS / US)</div>
+        <p class="role-desc">
+          Triệt tiêu <strong>xung động dòng khí</strong> và giảm thiểu <strong>độ ồn</strong>
+          phát sinh trong quá trình nén và khi xả khí ở chế độ không tải.
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">🛢️</div>
+        <div class="role-title">9. Hệ thống dầu bôi trơn bánh răng &amp; ổ trục (Bơm dầu OP, Phin lọc OF, Bộ làm mát dầu Co)</div>
+        <p class="role-desc">
+          Cung cấp dầu <strong>bôi trơn, làm mát các ổ đỡ (vòng bi)</strong> và
+          <strong>bộ bánh răng đồng tốc</strong> truyền động của máy nén (ngăn cách hoàn toàn
+          với khoang nén trục vít bằng các vòng chèn làm kín).
+        </p>
+      </div>
+
+      <div class="role-card">
+        <div class="icon-badge">📊</div>
+        <div class="role-title">10. Bộ điều khiển Elektronikon</div>
+        <p class="role-desc">
+          <strong>Trung tâm điều khiển tự động:</strong> Đo lường, hiển thị các thông số
+          (áp suất, nhiệt độ, dòng điện), thực hiện logic đóng/cắt tải và kích hoạt các
+          <strong>bảo vệ cảnh báo, dừng máy sự cố</strong> khi có thông số vượt ngưỡng an toàn.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="alert">
+      <strong>⚠ Lưu ý vận hành:</strong> Khí nén điều khiển (IA) là <strong>hệ thống sống
+      còn</strong> của nhà máy — mất khí nén điều khiển có thể dẫn đến mất điều khiển van,
+      trip tuabin hoặc lò hơi. Vì vậy, hệ thống khí nén luôn phải có
+      <strong>máy nén dự phòng</strong> sẵn sàng và <strong>bình chứa khí</strong> đủ lớn để
+      duy trì áp suất khi có sự cố ngắn.
+    </div>
+  </section>
+
+  <!-- ============ KẾT LUẬN ============ -->
+  <div class="footer-note">
+    <strong>✅ Kết luận:</strong> Hệ thống khí nén gồm <strong>3 khối chính</strong>:
+    (1) <strong>Khối sản xuất</strong> — 03 máy nén khí ZR630 (2 chạy, 1 dự phòng) + hệ dầu;
+    (2) <strong>Khối xử lý &amp; phân phối</strong> — bộ lọc thô, bộ sấy khí, bộ lọc tinh,
+    02 bình chứa 27 m³/bình;
+    (3) <strong>Khối tiêu thụ</strong> — khí đo lường (IA ~8 bar) và khí dịch vụ (SA).
+    Mỗi thiết bị trong máy nén có vai trò riêng nhưng đều hướng tới mục tiêu chung:
+    <strong>cung cấp khí nén sạch – khô – áp suất ổn định</strong> cho toàn nhà máy.
+  </div>
+
+</article>
+
+</body>
+</html>
